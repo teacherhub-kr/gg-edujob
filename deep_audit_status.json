@@ -13,7 +13,7 @@
   },
   "lastFailureAt": "2026-09-13T13:26:47+09:00",
   "lastSuccessAt": "2026-09-06T08:24:05+09:00",
-  "effectiveState": "success",
+  "effectiveState": "unknown",
   "effectiveAt": "2026-09-13T19:01:50+09:00",
   "effectiveWorkflow": "official-id-restore",
   "effectiveProof": "38-source-reconciliation",
@@ -27,5 +27,6 @@
     "missingOfficialIdsFromCurrentDataset": 0,
     "centralPaginationComplete": true,
     "supportCoverageCurrentComplete": true
-  }
+  },
+  "effectiveReason": "no successful collector has completeness evidence bound to the current dataset"
 }
