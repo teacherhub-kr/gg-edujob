@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-13T20:07:21+09:00",
+  "generatedAt": "2026-09-13T21:09:12+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-13T20:07:21+09:00",
+    "generatedAt": "2026-09-13T21:09:12+09:00",
     "official": {
       "datasetCount": 19420,
       "officialIdCount": 17861,
@@ -332,12 +332,12 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-12T20:06:45+09:00",
+      "baselineAt": "2026-09-12T21:08:51+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
-          "baseline": 19420,
-          "changeRatio": 0.0
+          "baseline": 19421,
+          "changeRatio": -0.0001
         },
         "official.officialIdCount": {
           "current": 17861,
@@ -399,11 +399,11 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-06T20:07:37+09:00",
+      "baselineAt": "2026-09-06T21:10:12+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
-          "baseline": 18903,
+          "baseline": 18902,
           "changeRatio": 0.0274
         },
         "official.officialIdCount": {
