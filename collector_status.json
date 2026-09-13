@@ -1,7 +1,7 @@
 {
   "fast": {
     "state": "failed",
-    "updatedAt": "2026-09-14T03:55:34+09:00",
+    "updatedAt": "2026-09-14T05:32:08+09:00",
     "jobsCount": 19420,
     "artifacts": {
       "jobLedger": true,
@@ -14,7 +14,7 @@
       "boardDiscoveryReport": true
     },
     "stage": "publication-guard",
-    "lastFailureAt": "2026-09-14T03:55:34+09:00",
+    "lastFailureAt": "2026-09-14T05:32:08+09:00",
     "lastSuccessAt": "2026-09-13T15:51:26+09:00",
     "artifactGeneratedAt": {
       "coverageReport": "2026-09-12T07:18:42.218994+00:00",
@@ -23,11 +23,11 @@
       "centralPaginationReport": "2026-09-12 16:13:46 KST",
       "missingRecoveryReport": "",
       "boardDiscoveryReport": "",
-      "collectionState": "2026-09-14 02:47:53 KST"
+      "collectionState": "2026-09-14 03:50:40 KST"
     },
     "coverageEvidence": {
       "generatedAt": "2026-09-12T07:18:42.218994+00:00",
-      "ageHours": 35.61,
+      "ageHours": 37.22,
       "freshWithinHours": 30,
       "fresh": false,
       "gyeonggiComplete": 25,
@@ -45,7 +45,7 @@
       "proof": "none",
       "supportCoverage": {
         "generatedAt": "2026-09-12T07:18:42.218994+00:00",
-        "ageHours": 35.61,
+        "ageHours": 37.22,
         "freshWithinHours": 30,
         "fresh": false,
         "gyeonggiComplete": 25,
@@ -63,7 +63,7 @@
       },
       "sourceReconciliation": {
         "generatedAt": "2026-09-12 15:53:31 KST",
-        "ageHours": 36.03,
+        "ageHours": 37.64,
         "freshWithinHours": 30,
         "fresh": false,
         "reconciledSources": 38,
@@ -71,10 +71,10 @@
         "missingAfter": 0,
         "centralPaginationComplete": true,
         "centralGeneratedAt": "2026-09-12 16:13:46 KST",
-        "centralAgeHours": 35.7,
+        "centralAgeHours": 37.31,
         "ledgerPresent": true,
         "ledgerGeneratedAt": "2026-09-12 15:53:31 KST",
-        "ledgerAgeHours": 36.03,
+        "ledgerAgeHours": 37.64,
         "sameScanWindow": true,
         "reportLedgerSkewHours": 0.0,
         "reportCentralSkewHours": 0.338,
