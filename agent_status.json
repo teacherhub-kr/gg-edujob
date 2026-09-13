@@ -18,24 +18,15 @@
       "count": 18
     },
     "recover-missing-jobs.yml": {
-      "lastAttemptAt": "2026-09-14T04:14:45+09:00",
+      "lastAttemptAt": "2026-09-14T08:16:33+09:00",
       "lastResult": "dispatched",
       "lastReason": "공식 ID/출처 대사·페이지네이션·상세링크 중 하나 이상이 완전성 기준을 통과하지 못했습니다.",
       "lastCode": "coverage-integrity-failure",
       "message": "공식 ID/출처 대사·페이지네이션·상세링크 중 하나 이상이 완전성 기준을 통과하지 못했습니다.",
-      "count": 4
+      "count": 5
     }
   },
   "recentDispatches": [
-    {
-      "workflow": "update-jobs.yml",
-      "lastAttemptAt": "2026-09-07T22:20:25+09:00",
-      "lastResult": "dispatched",
-      "lastReason": "빠른 수집기가 성공/완료 상태가 아닙니다: state=failed stage=publication-guard",
-      "lastCode": "fast-collector-unhealthy",
-      "message": "빠른 수집기가 성공/완료 상태가 아닙니다: state=failed stage=publication-guard",
-      "count": 10
-    },
     {
       "workflow": "daily-deep-audit.yml",
       "lastAttemptAt": "2026-09-08T00:18:06+09:00",
@@ -206,12 +197,21 @@
       "lastCode": "coverage-integrity-failure",
       "message": "공식 ID/출처 대사·페이지네이션·상세링크 중 하나 이상이 완전성 기준을 통과하지 못했습니다.",
       "count": 4
+    },
+    {
+      "workflow": "recover-missing-jobs.yml",
+      "lastAttemptAt": "2026-09-14T08:16:33+09:00",
+      "lastResult": "dispatched",
+      "lastReason": "공식 ID/출처 대사·페이지네이션·상세링크 중 하나 이상이 완전성 기준을 통과하지 못했습니다.",
+      "lastCode": "coverage-integrity-failure",
+      "message": "공식 ID/출처 대사·페이지네이션·상세링크 중 하나 이상이 완전성 기준을 통과하지 못했습니다.",
+      "count": 5
     }
   ],
-  "lastUpdatedAt": "2026-09-14T04:14:45+09:00",
+  "lastUpdatedAt": "2026-09-14T08:16:33+09:00",
   "lastHealth": "critical",
   "lastPlanSummary": {
-    "generatedAt": "2026-09-14T04:14:41+09:00",
+    "generatedAt": "2026-09-14T08:16:27+09:00",
     "selectedAction": {
       "workflow": "recover-missing-jobs.yml",
       "code": "coverage-integrity-failure",
