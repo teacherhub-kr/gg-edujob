@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T23:07:21+09:00",
+  "generatedAt": "2026-09-14T00:07:20+09:00",
   "registrySourceCount": 38,
   "observedSourceCount": 38,
   "healthy": true,
@@ -273,7 +273,7 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-12T23:06:56+09:00",
+      "baselineAt": "2026-09-13T00:07:13+09:00",
       "sources": {
         "경기도교육청 통합 구인구직": {
           "current": 10245,
@@ -544,7 +544,7 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-06T23:08:10+09:00",
+      "baselineAt": "2026-09-07T00:08:11+09:00",
       "sources": {
         "경기도교육청 통합 구인구직": {
           "current": 10245,
@@ -576,10 +576,10 @@
         },
         "광주하남교육지원청": {
           "current": 330,
-          "baseline": 337,
-          "changeRatio": -0.0208,
+          "baseline": 338,
+          "changeRatio": -0.0237,
           "latestRegistered": "2026-09-12",
-          "baselineLatestRegistered": "2026-09-04"
+          "baselineLatestRegistered": "2026-09-06"
         },
         "구리남양주교육지원청": {
           "current": 575,
@@ -822,42 +822,42 @@
       "code": "official-source-freshness-stall",
       "source": "군포의왕교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 10
+      "ageDays": 11
     },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
       "source": "안양과천교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 10
+      "ageDays": 11
     },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
       "source": "여주교육지원청",
       "latestRegistered": "2026-09-01",
-      "ageDays": 12
+      "ageDays": 13
     },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
       "source": "이천교육지원청",
       "latestRegistered": "2026-09-02",
-      "ageDays": 11
+      "ageDays": 12
     },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
       "source": "서부교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 10
+      "ageDays": 11
     },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
       "source": "북부교육지원청",
       "latestRegistered": "2026-09-04",
-      "ageDays": 9
+      "ageDays": 10
     }
   ],
   "criticalCount": 0,
