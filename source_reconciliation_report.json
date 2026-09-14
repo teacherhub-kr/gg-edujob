@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-14 22:54:44 KST",
+  "generatedAt": "2026-09-14 23:56:26 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
   "summary": {
-    "generatedAt": "2026-09-14 22:54:44 KST",
+    "generatedAt": "2026-09-14 23:56:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
-    "officialIdCount": 17620,
+    "officialIdCount": 17610,
     "datasetIdCountBefore": 19847,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "missingBefore": 3,
+    "recoveredNow": 3,
     "missingAfter": 0,
     "reconciledSources": 38,
     "totalSources": 38,
     "reconciledOffices": 38,
     "totalOffices": 38,
-    "scanId": "20260914T134947Z-34851564379-1"
+    "scanId": "20260914T145038Z-34858144991-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 384,
+      "officialIdCount": 376,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 384,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 384,
+      "inDatasetBefore": 373,
+      "missingBeforeCount": 3,
+      "recoveredNowCount": 3,
+      "inDatasetAfter": 376,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1664,16 +1664,16 @@
       "boards": [
         "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 21,
+      "officialIdCount": 19,
       "coverageComplete": true,
-      "pagesScanned": 4,
+      "pagesScanned": 3,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 4,
-          "rawRows": 22,
-          "recentRows": 21,
+          "pagesScanned": 3,
+          "rawRows": 20,
+          "recentRows": 19,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1684,10 +1684,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 21,
+      "inDatasetBefore": 19,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 21,
+      "inDatasetAfter": 19,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2064,15 +2064,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 384,
+      "officialIdCount": 376,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 384,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 384,
+      "inDatasetBefore": 373,
+      "missingBeforeCount": 3,
+      "recoveredNowCount": 3,
+      "inDatasetAfter": 376,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3609,16 +3609,16 @@
       "boards": [
         "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 21,
+      "officialIdCount": 19,
       "coverageComplete": true,
-      "pagesScanned": 4,
+      "pagesScanned": 3,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 4,
-          "rawRows": 22,
-          "recentRows": 21,
+          "pagesScanned": 3,
+          "rawRows": 20,
+          "recentRows": 19,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3629,10 +3629,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 21,
+      "inDatasetBefore": 19,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 21,
+      "inDatasetAfter": 19,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3910,5 +3910,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260914T134947Z-34851564379-1"
+  "scanId": "20260914T145038Z-34858144991-1"
 }

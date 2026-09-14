@@ -1717,7 +1717,7 @@
   ],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-09-14 22:21 KST",
+    "checkedAt": "2026-09-15 00:23 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 1/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
@@ -1745,8 +1745,8 @@
         }
       ]
     },
-    "previousTotal": 19891,
-    "currentTotal": 19893
+    "previousTotal": 19893,
+    "currentTotal": 19896
   },
   "jobs": [
     {
@@ -4604,6 +4604,33 @@
       "bbsId": "6327",
       "mi": "11084",
       "periodStatus": "parsed"
+    },
+    {
+      "id": "sen-110311",
+      "province": "서울",
+      "school": "은평문화예술정보학교",
+      "title": "은평문화예술정보학교 실내건축기능사 신 요강 지도 가능한 산학겸임교사 채용 공고",
+      "subject": "건축(실내건축기능사)",
+      "region": "은평구",
+      "regions": [
+        "은평구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/09/15",
+      "applyEnd": "2026/09/20",
+      "workStart": "2026/10/13",
+      "workEnd": "2026/10/16",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110311",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul-central:110311"
     },
     {
       "id": "goe-59824",
@@ -12324,6 +12351,33 @@
       "sourceIdentity": "seoul-central:110382"
     },
     {
+      "id": "sen-110374",
+      "province": "서울",
+      "school": "잠일고등학교",
+      "title": "잠일고등학교 계약제교원(국어) 채용 공고",
+      "subject": "국어",
+      "region": "송파구",
+      "regions": [
+        "송파구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/09/15",
+      "applyEnd": "2026/09/17",
+      "workStart": "2026/10/06",
+      "workEnd": "2026/12/31",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110374",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul-central:110374"
+    },
+    {
       "id": "goe-complete-695c6cbd773a91afa0",
       "province": "경기",
       "school": "불곡고등학교",
@@ -13956,6 +14010,33 @@
       "bbsId": "8653",
       "mi": "16003",
       "periodStatus": "parsed"
+    },
+    {
+      "id": "sen-110378",
+      "province": "서울",
+      "school": "양서중학교",
+      "title": "[양서중학교] 2학기 도덕과 대체시간강사 채용 공고",
+      "subject": "도덕",
+      "region": "양천구",
+      "regions": [
+        "양천구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/09/15",
+      "applyEnd": "2026/09/15",
+      "workStart": "2026/09/16",
+      "workEnd": "2026/09/23",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110378",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul-central:110378"
     },
     {
       "id": "sen-110276",
@@ -553067,11 +553148,11 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-09-14 22:19 KST",
+    "checkedAt": "2026-09-15 00:21 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-09-14 22:19 KST",
+    "checkedAt": "2026-09-15 00:21 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
@@ -553092,17 +553173,17 @@
     "seoulTotal": 511
   },
   "periodEnrichment": {
-    "checkedAt": "2026-09-14 22:19 KST",
+    "checkedAt": "2026-09-15 00:21 KST",
     "parserVersion": 2,
-    "recentSupportJobs": 5725,
-    "detailPagesParsed": 2350,
+    "recentSupportJobs": 5610,
+    "detailPagesParsed": 2299,
     "fieldsFilledThisRun": 0,
-    "missingApplicationPeriod": 1017,
-    "missingWorkPeriod": 1896,
+    "missingApplicationPeriod": 989,
+    "missingWorkPeriod": 1856,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-09-14 22:19 KST",
+      "checkedAt": "2026-09-15 00:21 KST",
       "candidates": 252,
       "detailPagesConfirmed": 245,
       "cacheEntriesImproved": 0,
@@ -553114,24 +553195,24 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-09-14 21:58:02 KST",
+    "generatedAt": "2026-09-14 23:56:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
-    "officialIdCount": 17621,
-    "datasetIdCountBefore": 19845,
-    "missingBefore": 2,
-    "recoveredNow": 2,
+    "officialIdCount": 17610,
+    "datasetIdCountBefore": 19847,
+    "missingBefore": 3,
+    "recoveredNow": 3,
     "missingAfter": 0,
     "reconciledSources": 38,
     "totalSources": 38,
     "reconciledOffices": 38,
     "totalOffices": 38,
-    "scanId": "20260914T125318Z-34845819184-1"
+    "scanId": "20260914T145038Z-34858144991-1"
   },
   "officialIdRestore": {
-    "checkedAt": "2026-09-14 22:19:39 KST",
-    "ledgerScanId": "20260914T125318Z-34845819184-1",
-    "protectedOfficialIds": 17621,
+    "checkedAt": "2026-09-15 00:21:29 KST",
+    "ledgerScanId": "20260914T145038Z-34858144991-1",
+    "protectedOfficialIds": 17610,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0
