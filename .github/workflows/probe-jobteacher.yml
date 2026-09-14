@@ -2,11 +2,6 @@ name: Probe JobTeacher source
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_jobteacher.py'
-      - '.github/workflows/probe-jobteacher.yml'
-
 permissions:
   contents: write
 

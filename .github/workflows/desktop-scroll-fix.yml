@@ -2,11 +2,6 @@ name: Apply desktop scroll fix
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/hotfix_desktop_scroll.py'
-      - '.github/workflows/desktop-scroll-fix.yml'
-
 permissions:
   contents: write
 

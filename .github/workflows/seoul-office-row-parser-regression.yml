@@ -6,12 +6,6 @@ on:
       - 'scripts/harden_seoul_office_row_parser.py'
       - 'scripts/scrape_jobs.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/harden_seoul_office_row_parser.py'
-      - 'scripts/scrape_jobs.py'
-      - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
 permissions:

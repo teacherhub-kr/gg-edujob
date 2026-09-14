@@ -2,11 +2,6 @@ name: Probe ArtMore filter payload
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_filter_payload.py'
-      - '.github/workflows/probe-artmore-filter-payload.yml'
-
 permissions:
   contents: write
 

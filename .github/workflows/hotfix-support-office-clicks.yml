@@ -1,9 +1,6 @@
 name: Hotfix support-office clicks
 
 on:
-  push:
-    paths:
-      - '.github/workflows/hotfix-support-office-clicks.yml'
   workflow_dispatch:
 
 permissions:

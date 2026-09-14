@@ -2,30 +2,6 @@ name: Fast refresh schedule watchdog
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/fast-refresh-watchdog.yml'
-      - '.github/workflows/update-jobs.yml'
-      - 'scripts/hotfix_sources.py'
-      - 'scripts/scrape_jobs.py'
-      - 'scripts/repair_gyeonggi_support.py'
-      - 'scripts/resolve_support_links.py'
-      - 'scripts/enrich_support_periods.py'
-      - 'scripts/enrich_seoul_get_fallback.py'
-      - 'scripts/recover_seoul_office_cms_jobs.py'
-      - 'scripts/verify_jobs.py'
-      - 'scripts/merge_recovery_snapshot.py'
-      - 'scripts/validate_reconciliation_policy.py'
-      - 'scripts/harden_fast_pagination.py'
-      - 'scripts/harden_gyeonggi_central_retention.py'
-      - 'scripts/harden_network_retries.py'
-  schedule:
-    # GitHub scheduled workflows can occasionally be delayed or skipped. Use two
-    # deliberately off-peak minute slots so one missed scheduler tick does not
-    # leave fast collection stale for another full hour.
-    - cron: '17 * * 1-12 *'
-    - cron: '47 * * 1-12 *'
-
 permissions:
   contents: read
   actions: write

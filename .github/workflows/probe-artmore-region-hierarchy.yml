@@ -2,11 +2,6 @@ name: Probe ArtMore region hierarchy
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_region_hierarchy.py'
-      - '.github/workflows/probe-artmore-region-hierarchy.yml'
-
 permissions:
   contents: write
 

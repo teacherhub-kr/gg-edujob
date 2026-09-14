@@ -2,16 +2,6 @@ name: Verify Lessoninfo culture links cold
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Update Lessoninfo recruitment jobs"]
-    types: [completed]
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/verify_lessoninfo_culture_cold.py'
-      - 'scripts/recover_lessoninfo_culture_artmore.py'
-      - '.github/workflows/lessoninfo-culture-cold-verify.yml'
-
 permissions:
   contents: write
 

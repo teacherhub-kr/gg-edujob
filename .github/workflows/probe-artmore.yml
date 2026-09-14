@@ -2,11 +2,6 @@ name: Probe ArtMore source
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_browser.py'
-      - '.github/workflows/probe-artmore.yml'
-
 permissions:
   contents: write
 

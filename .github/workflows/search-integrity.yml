@@ -2,18 +2,6 @@ name: Verify 수도권에듀잡 search integrity
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'index.html'
-      - 'jobs.json'
-      - 'direct-link-guard.js'
-      - 'tests/test_lessoninfo_culture_failclosed.js'
-      - 'scripts/ensure_search_logic.py'
-      - 'scripts/verify_search.py'
-      - '.github/workflows/search-integrity.yml'
-  schedule:
-    - cron: '37 * * 1-12 *' # 매시간 37분, 수집 작업 뒤 검색 정확도 독립 재검증
-
 permissions:
   contents: write
 

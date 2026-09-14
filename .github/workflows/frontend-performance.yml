@@ -2,11 +2,6 @@ name: Frontend performance hardening
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/optimize_frontend_performance.py'
-      - '.github/workflows/frontend-performance.yml'
-
 permissions:
   contents: write
 

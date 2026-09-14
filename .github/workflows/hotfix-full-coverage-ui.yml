@@ -2,10 +2,6 @@ name: Hotfix full support-office coverage and desktop scroll
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/hotfix_full_coverage_ui.py'
-
 permissions:
   contents: write
 

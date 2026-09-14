@@ -6,10 +6,6 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/lessoninfo-deployed-blackbox.yml'
-  workflow_run:
-    workflows: ['Unified recruitment search']
-    types: [completed]
-
 permissions:
   contents: read
 

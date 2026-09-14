@@ -2,11 +2,6 @@ name: Probe ArtMore public JS handlers
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_public_js_handlers.py'
-      - '.github/workflows/probe-artmore-public-js-handlers.yml'
-
 permissions:
   contents: write
 

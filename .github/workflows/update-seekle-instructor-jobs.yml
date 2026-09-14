@@ -2,8 +2,6 @@ name: Update Seekle instructor jobs
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '31 * * 1-12 *'
   pull_request:
     paths:
       - 'scripts/crawl_seekle_instructor_jobs.py'
@@ -13,11 +11,6 @@ on:
       - 'seekle_jobs.json'
       - 'seekle_reconciliation_report.json'
       - '.github/workflows/update-seekle-instructor-jobs.yml'
-  push:
-    paths:
-      - 'scripts/crawl_seekle_instructor_jobs.py'
-      - '.github/workflows/update-seekle-instructor-jobs.yml'
-
 permissions:
   contents: write
 

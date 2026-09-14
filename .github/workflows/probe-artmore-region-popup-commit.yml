@@ -2,11 +2,6 @@ name: Probe ArtMore region popup commit
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_region_popup_commit.py'
-      - '.github/workflows/probe-artmore-region-popup-commit.yml'
-
 permissions:
   contents: write
 

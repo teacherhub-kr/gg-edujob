@@ -2,11 +2,6 @@ name: Probe ArtMore visible region controls
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_artmore_visible_region_controls.py'
-      - '.github/workflows/probe-artmore-visible-region-controls.yml'
-
 permissions:
   contents: write
 

@@ -2,23 +2,6 @@ name: Cultural foundation coverage
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '25 22 * 1-12 *'
-  push:
-    branches: [main]
-    paths:
-      - 'cultural_foundation_registry.json'
-      - 'verified_foundation_official_sources.json'
-      - 'scripts/validate_cultural_foundation_registry.py'
-      - 'scripts/crawl_official_foundation_jobs_v2.py'
-      - 'scripts/probe_cultural_sources.py'
-      - 'scripts/probe_cleaneye_api.py'
-      - 'scripts/crawl_cleaneye_foundation_jobs.py'
-      - 'scripts/crawl_ancf_foundation_jobs.py'
-      - 'scripts/audit_artmore_foundations.py'
-      - 'scripts/discover_foundation_official_sources.py'
-      - '.github/workflows/cultural-foundation-coverage.yml'
-
 permissions:
   contents: write
 

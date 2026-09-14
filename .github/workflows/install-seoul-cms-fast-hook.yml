@@ -1,9 +1,6 @@
 name: Install Seoul CMS cleanup into fast refresh
 
 on:
-  push:
-    paths:
-      - '.github/workflows/install-seoul-cms-fast-hook.yml'
   workflow_dispatch:
 
 permissions:
