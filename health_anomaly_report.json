@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T18:09:30+09:00",
+  "generatedAt": "2026-09-14T19:07:41+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-14T18:09:30+09:00",
+    "generatedAt": "2026-09-14T19:07:41+09:00",
     "official": {
       "datasetCount": 19420,
       "officialIdCount": 17861,
@@ -12,11 +12,11 @@
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7260,
+      "publishedJobs": 7267,
       "officialDisplayed": 2888,
-      "privateDisplayed": 4372,
-      "privateDiscovered": 4375,
-      "officialPrivateAliases": 3,
+      "privateDisplayed": 4379,
+      "privateDiscovered": 4384,
+      "officialPrivateAliases": 5,
       "healthy": true,
       "missingPrivateIds": 0,
       "nonMetroPrivate": 0,
@@ -248,13 +248,13 @@
         "name": "레슨인포",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 228,
-        "rawCount": 228,
-        "currentCount": 228,
+        "datasetCount": 237,
+        "rawCount": 237,
+        "currentCount": 237,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
-        "latestRegistered": "2026-09-12"
+        "latestRegistered": "2026-09-14"
       },
       "cleaneye": {
         "name": "클린아이 잡플러스",
@@ -332,7 +332,7 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-13T18:31:04+09:00",
+      "baselineAt": "2026-09-13T19:15:34+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
@@ -345,9 +345,9 @@
           "changeRatio": 0.0
         },
         "unified.publishedJobs": {
-          "current": 7260,
+          "current": 7267,
           "baseline": 7117,
-          "changeRatio": 0.0201
+          "changeRatio": 0.0211
         },
         "unified.officialDisplayed": {
           "current": 2888,
@@ -355,16 +355,16 @@
           "changeRatio": -0.0296
         },
         "unified.privateDiscovered": {
-          "current": 4375,
+          "current": 4384,
           "baseline": 4141,
-          "changeRatio": 0.0565
+          "changeRatio": 0.0587
         }
       },
       "privateSources": {
         "lessoninfo": {
-          "current": 228,
+          "current": 237,
           "baseline": 251,
-          "changeRatio": -0.0916
+          "changeRatio": -0.0558
         },
         "cleaneye": {
           "current": 20,
@@ -399,39 +399,39 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-07T18:09:03+09:00",
+      "baselineAt": "2026-09-07T19:08:50+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
-          "baseline": 18957,
-          "changeRatio": 0.0244
+          "baseline": 19070,
+          "changeRatio": 0.0184
         },
         "official.officialIdCount": {
           "current": 17861,
-          "baseline": 17745,
-          "changeRatio": 0.0065
+          "baseline": 17844,
+          "changeRatio": 0.001
         },
         "unified.publishedJobs": {
-          "current": 7260,
-          "baseline": 7607,
-          "changeRatio": -0.0456
+          "current": 7267,
+          "baseline": 7723,
+          "changeRatio": -0.059
         },
         "unified.officialDisplayed": {
           "current": 2888,
-          "baseline": 3231,
-          "changeRatio": -0.1062
+          "baseline": 3345,
+          "changeRatio": -0.1366
         },
         "unified.privateDiscovered": {
-          "current": 4375,
-          "baseline": 4387,
-          "changeRatio": -0.0027
+          "current": 4384,
+          "baseline": 4389,
+          "changeRatio": -0.0011
         }
       },
       "privateSources": {
         "lessoninfo": {
-          "current": 228,
+          "current": 237,
           "baseline": 269,
-          "changeRatio": -0.1524
+          "changeRatio": -0.119
         },
         "cleaneye": {
           "current": 20,
@@ -450,8 +450,8 @@
         },
         "gonggonggangsa": {
           "current": 45,
-          "baseline": 58,
-          "changeRatio": -0.2241
+          "baseline": 60,
+          "changeRatio": -0.25
         },
         "seekle": {
           "current": 1,
