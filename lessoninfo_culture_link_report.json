@@ -1,32 +1,27 @@
 {
-  "generatedAt": "2026-09-14T22:06:34+09:00",
-  "startedAt": "2026-09-14T21:57:55+09:00",
+  "generatedAt": "2026-09-14T22:58:08+09:00",
+  "startedAt": "2026-09-14T22:56:54+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
   "totalInputJobs": 237,
   "expiredCultureRemoved": 0,
   "expiredCultureExamples": [],
   "eligibleCultureRows": 177,
-  "verifiedCultureRows": 169,
-  "verifiedOfficialRows": 169,
+  "verifiedCultureRows": 0,
+  "verifiedOfficialRows": 0,
   "verifiedLessoninfoRows": 0,
-  "unverifiedCultureRows": 8,
+  "unverifiedCultureRows": 177,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
   "knownBadSentinels": [
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 52,
-    "cold-browser-artmore-id-title-match": 117,
-    "cold-browser-route-mismatch": 7,
+    "cold-browser-title-mismatch": 176,
     "known-bad-cold-regression-sentinel": 1
   },
-  "artmoreFallbackAttemptedRows": 124,
-  "artmoreFallbackRecoveredRows": 117,
-  "artmoreFallbackOutcomeCounts": {
-    "recovered": 117,
-    "artmore-title-mismatch": 7
-  },
+  "artmoreFallbackAttemptedRows": 0,
+  "artmoreFallbackRecoveredRows": 0,
+  "artmoreFallbackOutcomeCounts": {},
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
 }
