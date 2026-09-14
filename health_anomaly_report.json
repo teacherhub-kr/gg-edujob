@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-15T01:08:03+09:00",
+  "generatedAt": "2026-09-15T02:06:44+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-15T01:08:03+09:00",
+    "generatedAt": "2026-09-15T02:06:44+09:00",
     "official": {
       "datasetCount": 19896,
-      "officialIdCount": 17610,
+      "officialIdCount": 17340,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7346,
-      "officialDisplayed": 2998,
-      "privateDisplayed": 4348,
-      "privateDiscovered": 4360,
+      "publishedJobs": 7312,
+      "officialDisplayed": 2965,
+      "privateDisplayed": 4347,
+      "privateDiscovered": 4359,
       "officialPrivateAliases": 12,
       "healthy": true,
       "missingPrivateIds": 0,
@@ -284,9 +284,9 @@
         "name": "아트모아",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 47,
-        "rawCount": 47,
-        "currentCount": 45,
+        "datasetCount": 46,
+        "rawCount": 46,
+        "currentCount": 44,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -332,7 +332,7 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-14T01:07:47+09:00",
+      "baselineAt": "2026-09-14T02:07:00+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19896,
@@ -340,24 +340,24 @@
           "changeRatio": 0.0245
         },
         "official.officialIdCount": {
-          "current": 17610,
+          "current": 17340,
           "baseline": 17861,
-          "changeRatio": -0.0141
+          "changeRatio": -0.0292
         },
         "unified.publishedJobs": {
-          "current": 7346,
+          "current": 7312,
           "baseline": 7250,
-          "changeRatio": 0.0132
+          "changeRatio": 0.0086
         },
         "unified.officialDisplayed": {
-          "current": 2998,
+          "current": 2965,
           "baseline": 2888,
-          "changeRatio": 0.0381
+          "changeRatio": 0.0267
         },
         "unified.privateDiscovered": {
-          "current": 4360,
+          "current": 4359,
           "baseline": 4365,
-          "changeRatio": -0.0011
+          "changeRatio": -0.0014
         }
       },
       "privateSources": {
@@ -377,9 +377,9 @@
           "changeRatio": -0.0002
         },
         "artmore": {
-          "current": 45,
+          "current": 44,
           "baseline": 34,
-          "changeRatio": 0.3235
+          "changeRatio": 0.2941
         },
         "gonggonggangsa": {
           "current": 32,
@@ -399,32 +399,32 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-08T01:08:46+09:00",
+      "baselineAt": "2026-09-08T02:08:03+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19896,
-          "baseline": 19079,
-          "changeRatio": 0.0428
+          "baseline": 19081,
+          "changeRatio": 0.0427
         },
         "official.officialIdCount": {
-          "current": 17610,
-          "baseline": 17852,
-          "changeRatio": -0.0136
+          "current": 17340,
+          "baseline": 17576,
+          "changeRatio": -0.0134
         },
         "unified.publishedJobs": {
-          "current": 7346,
-          "baseline": 7350,
-          "changeRatio": -0.0005
+          "current": 7312,
+          "baseline": 7334,
+          "changeRatio": -0.003
         },
         "unified.officialDisplayed": {
-          "current": 2998,
-          "baseline": 2974,
-          "changeRatio": 0.0081
+          "current": 2965,
+          "baseline": 2958,
+          "changeRatio": 0.0024
         },
         "unified.privateDiscovered": {
-          "current": 4360,
+          "current": 4359,
           "baseline": 4383,
-          "changeRatio": -0.0052
+          "changeRatio": -0.0055
         }
       },
       "privateSources": {
@@ -444,9 +444,9 @@
           "changeRatio": -0.0002
         },
         "artmore": {
-          "current": 45,
+          "current": 44,
           "baseline": 20,
-          "changeRatio": 1.25
+          "changeRatio": 1.2
         },
         "gonggonggangsa": {
           "current": 32,
