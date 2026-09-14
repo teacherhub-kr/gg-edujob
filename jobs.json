@@ -1716,9 +1716,9 @@
     "성북강북교육지원청:서울 지원청 행 파싱 불완전 2건"
   ],
   "verification": {
-    "state": "ok",
-    "checkedAt": "2026-09-14 21:16 KST",
-    "message": "2차 검증 정상",
+    "state": "warning",
+    "checkedAt": "2026-09-14 22:21 KST",
+    "message": "원문 링크 일시/본문증거 확인 필요 1/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
       "total": 7485,
@@ -1729,12 +1729,24 @@
     "linkChecks": {
       "checked": 50,
       "failed": 0,
-      "soft": 0,
+      "soft": 1,
       "supportFailed": 0,
-      "failures": []
+      "failures": [
+        {
+          "title": "대현초등학교 영양사(대체) 채용 공고",
+          "source": "용인교육지원청",
+          "sourceType": "교육지원청 개별 게시판",
+          "province": "경기",
+          "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1566944&mi=20165",
+          "status": 200,
+          "hard": false,
+          "reason": "title-evidence-missing",
+          "finalUrl": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1566944&mi=20165"
+        }
+      ]
     },
-    "previousTotal": 19890,
-    "currentTotal": 19891
+    "previousTotal": 19891,
+    "currentTotal": 19893
   },
   "jobs": [
     {
@@ -12256,6 +12268,60 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60057",
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "goe-central:60057"
+    },
+    {
+      "id": "goe-60058",
+      "province": "경기",
+      "school": "풍산중학교",
+      "title": "계약제교원(시간강사) 채용 공고",
+      "subject": "보건",
+      "region": "고양시",
+      "regions": [
+        "고양시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/09/14",
+      "applyEnd": "2026/09/17",
+      "workStart": "2026/10/29",
+      "workEnd": "2026/10/30",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60058",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "goe-central:60058"
+    },
+    {
+      "id": "sen-110382",
+      "province": "서울",
+      "school": "서울내발산초등학교",
+      "title": "(서울내발산초) 초등 기간제교원 채용 공고(2학년 담임)",
+      "subject": "초등 2학년 담임교사",
+      "region": "강서구",
+      "regions": [
+        "강서구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/09/14",
+      "applyEnd": "2026/09/17",
+      "workStart": "2026/09/22",
+      "workEnd": "2026/10/23",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110382",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul-central:110382"
     },
     {
       "id": "goe-complete-695c6cbd773a91afa0",
@@ -553001,11 +553067,11 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-09-14 21:14 KST",
+    "checkedAt": "2026-09-14 22:19 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-09-14 21:14 KST",
+    "checkedAt": "2026-09-14 22:19 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
@@ -553026,7 +553092,7 @@
     "seoulTotal": 511
   },
   "periodEnrichment": {
-    "checkedAt": "2026-09-14 21:14 KST",
+    "checkedAt": "2026-09-14 22:19 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5725,
     "detailPagesParsed": 2350,
@@ -553036,7 +553102,7 @@
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-09-14 21:14 KST",
+      "checkedAt": "2026-09-14 22:19 KST",
       "candidates": 252,
       "detailPagesConfirmed": 245,
       "cacheEntriesImproved": 0,
@@ -553048,24 +553114,24 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-09-14 20:53:26 KST",
+    "generatedAt": "2026-09-14 21:58:02 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
-    "officialIdCount": 17620,
-    "datasetIdCountBefore": 19844,
-    "missingBefore": 1,
-    "recoveredNow": 1,
+    "officialIdCount": 17621,
+    "datasetIdCountBefore": 19845,
+    "missingBefore": 2,
+    "recoveredNow": 2,
     "missingAfter": 0,
     "reconciledSources": 38,
     "totalSources": 38,
     "reconciledOffices": 38,
     "totalOffices": 38,
-    "scanId": "20260914T114841Z-34840006043-1"
+    "scanId": "20260914T125318Z-34845819184-1"
   },
   "officialIdRestore": {
-    "checkedAt": "2026-09-14 21:14:20 KST",
-    "ledgerScanId": "20260914T114841Z-34840006043-1",
-    "protectedOfficialIds": 17620,
+    "checkedAt": "2026-09-14 22:19:39 KST",
+    "ledgerScanId": "20260914T125318Z-34845819184-1",
+    "protectedOfficialIds": 17621,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0

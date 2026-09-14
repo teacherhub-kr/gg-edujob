@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-14 20:53:26 KST",
+  "generatedAt": "2026-09-14 21:58:02 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
   "summary": {
-    "generatedAt": "2026-09-14 20:53:26 KST",
+    "generatedAt": "2026-09-14 21:58:02 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
-    "officialIdCount": 17620,
-    "datasetIdCountBefore": 19844,
-    "missingBefore": 1,
-    "recoveredNow": 1,
+    "officialIdCount": 17621,
+    "datasetIdCountBefore": 19845,
+    "missingBefore": 2,
+    "recoveredNow": 2,
     "missingAfter": 0,
     "reconciledSources": 38,
     "totalSources": 38,
     "reconciledOffices": 38,
     "totalOffices": 38,
-    "scanId": "20260914T114841Z-34840006043-1"
+    "scanId": "20260914T125318Z-34845819184-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -27,7 +27,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 10136,
+      "officialIdCount": 10137,
       "coverageComplete": true,
       "pagesScanned": 218,
       "accessErrors": 0,
@@ -49,7 +49,7 @@
           "name": "초중등시간강사",
           "pagesScanned": 73,
           "rawRows": 3650,
-          "acceptedRecentRows": 3547,
+          "acceptedRecentRows": 3548,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -105,10 +105,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 10135,
+      "inDatasetBefore": 10136,
       "missingBeforeCount": 1,
       "recoveredNowCount": 1,
-      "inDatasetAfter": 10136,
+      "inDatasetAfter": 10137,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 384,
+      "officialIdCount": 385,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
       "inDatasetBefore": 384,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 384,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 385,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1206,7 +1206,7 @@
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
       ],
-      "officialIdCount": 122,
+      "officialIdCount": 121,
       "coverageComplete": true,
       "pagesScanned": 24,
       "accessErrors": 0,
@@ -1227,7 +1227,7 @@
           "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
           "pagesScanned": 12,
           "rawRows": 120,
-          "recentRows": 98,
+          "recentRows": 97,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1260,10 +1260,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 122,
+      "inDatasetBefore": 121,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 122,
+      "inDatasetAfter": 121,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1972,7 +1972,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 10136,
+      "officialIdCount": 10137,
       "coverageComplete": true,
       "pagesScanned": 218,
       "accessErrors": 0,
@@ -1994,7 +1994,7 @@
           "name": "초중등시간강사",
           "pagesScanned": 73,
           "rawRows": 3650,
-          "acceptedRecentRows": 3547,
+          "acceptedRecentRows": 3548,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2050,10 +2050,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 10135,
+      "inDatasetBefore": 10136,
       "missingBeforeCount": 1,
       "recoveredNowCount": 1,
-      "inDatasetAfter": 10136,
+      "inDatasetAfter": 10137,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2064,15 +2064,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 384,
+      "officialIdCount": 385,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
       "inDatasetBefore": 384,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 384,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 385,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3151,7 +3151,7 @@
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
       ],
-      "officialIdCount": 122,
+      "officialIdCount": 121,
       "coverageComplete": true,
       "pagesScanned": 24,
       "accessErrors": 0,
@@ -3172,7 +3172,7 @@
           "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
           "pagesScanned": 12,
           "rawRows": 120,
-          "recentRows": 98,
+          "recentRows": 97,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3205,10 +3205,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 122,
+      "inDatasetBefore": 121,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 122,
+      "inDatasetAfter": 121,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3910,5 +3910,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260914T114841Z-34840006043-1"
+  "scanId": "20260914T125318Z-34845819184-1"
 }
