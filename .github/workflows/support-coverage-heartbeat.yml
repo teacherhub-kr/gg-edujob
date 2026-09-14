@@ -45,7 +45,10 @@ jobs:
           parent = '577314551ad18f959f43ec0c04ecfb06c7c23ac9'
           target = 'scripts/complete_support_coverage.py'
           parent_sha256 = '78fa7f03fc97360ebbbf13d532533067bac0f2ee85ec6230107831c771c5c040'
-          result_sha256 = '36ba8fa39eb58d41294026c348d590ee8d886eb0b85f01b8a1f3f77d2c3e3ba0'
+          # Live reconstruction from the verified parent plus the three production-population
+          # edits below deterministically yields this digest. Keep the check fail-closed.
+          result_sha256 = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
+          expected_lines = 599
 
           raw = subprocess.run(
               ['git', 'show', f'{parent}:{target}'],
@@ -90,11 +93,14 @@ jobs:
 
           data = text.encode('utf-8')
           result_digest = hashlib.sha256(data).hexdigest()
+          line_count = len(text.splitlines())
           if result_digest != result_sha256:
               raise SystemExit(f'restored content sha256 mismatch: {result_digest}')
+          if line_count != expected_lines:
+              raise SystemExit(f'restored line count mismatch: {line_count}')
 
           Path(target).write_bytes(data)
-          print(f'restored {target}: {len(text.splitlines())} lines, sha256 {result_digest}')
+          print(f'restored {target}: {line_count} lines, sha256 {result_digest}')
           PY
 
           python -m py_compile scripts/complete_support_coverage.py
@@ -109,11 +115,16 @@ jobs:
           from pathlib import Path
 
           target = Path('scripts/complete_support_coverage.py')
-          expected = '36ba8fa39eb58d41294026c348d590ee8d886eb0b85f01b8a1f3f77d2c3e3ba0'
-          digest = hashlib.sha256(target.read_bytes()).hexdigest()
+          expected = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
+          expected_lines = 599
+          data = target.read_bytes()
+          digest = hashlib.sha256(data).hexdigest()
+          line_count = len(data.decode('utf-8').splitlines())
           if digest != expected:
               raise SystemExit(f'hardener changed verified traversal: {digest}')
-          print(f'verified restored traversal sha256: {digest}')
+          if line_count != expected_lines:
+              raise SystemExit(f'hardener changed verified traversal line count: {line_count}')
+          print(f'verified restored traversal: {line_count} lines, sha256 {digest}')
           PY
 
           git config user.name 'github-actions[bot]'
