@@ -7,10 +7,41 @@ hitting that cap is fail-closed rather than being treated as complete coverage.
 """
 from pathlib import Path
 import runpy
+import ast
 
 ROOT = Path(__file__).resolve().parents[1]
 p = ROOT / "scripts/scrape_jobs.py"
 s = p.read_text(encoding="utf-8")
+original = s
+
+
+def validate_support(text):
+    tree = ast.parse(text, filename=str(p))
+    compile(tree, str(p), "exec")
+    functions = {n.name: ast.get_source_segment(text, n) for n in tree.body
+                 if isinstance(n, ast.FunctionDef)}
+    for name, counter in (("scrape_mircms_board", "page_candidates"),
+                          ("scrape_seoul_office", "page_raw")):
+        block = functions.get(name)
+        if block is None:
+            raise SystemExit(f"Missing required support collector: {name}")
+        # A recognized legacy bounded loop is migrated below. Once the unbounded
+        # loop exists, every part of its termination/retention proof is mandatory.
+        if "while True:" not in block:
+            continue
+        compact = "".join(block.split())
+        for marker in ("page=1", "consecutive_old_pages=0", "page_dates=[]",
+                       "ifregistered:page_dates.append(registered)",
+                       "ifregisteredandnotrecent_enough(registered,90):continue",
+                       f"fully_dated=len(page_dates)=={counter}",
+                       "iffully_datedandpage_datesandall(notrecent_enough(d,90)fordinpage_dates):",
+                       "consecutive_old_pages+=1", "else:consecutive_old_pages=0",
+                       "ifconsecutive_old_pages>=2:break", "page+=1"):
+            if marker not in compact:
+                raise SystemExit(f"Partial support pagination hardening in {name}: {marker}")
+
+
+validate_support(s)
 
 
 def transform_between(text, start_marker, end_marker, fn):
@@ -108,7 +139,7 @@ for required in ('"srchEcptDl":""', "while True:", "fully_dated =", "consecutive
     if required not in s:
         raise SystemExit(f"Fast completeness hardening missing: {required}")
 
-p.write_text(s, encoding="utf-8")
+validate_support(s)
 
 # The second-pass Gyeonggi checker is operationally bounded, but a cap hit must never
 # count as complete coverage. Validate the newer parameterized/fail-closed contract;
@@ -139,9 +170,20 @@ if "for page in range(1, 8)" in repair_block:
     raise SystemExit("Fixed seven-page Gyeonggi repair ceiling remains")
 if 'safe_stops = {"no_rows", "repeated_page", "retention_boundary", "page_cap"}' in rs:
     raise SystemExit("Gyeonggi repair page cap must not be classified as complete")
+compile(rs, str(rp), "exec")
+if s != original:
+    p.write_text(s, encoding="utf-8")
 
 # Run the remaining hardeners after the population/pagination transforms.
 for script in ("harden_central_pagination.py", "harden_identity_dedupe.py", "harden_status_semantics.py"):
-    runpy.run_path(str(ROOT / "scripts" / script), run_name="__main__")
+    try:
+        runpy.run_path(str(ROOT / "scripts" / script), run_name="__main__")
+    except SystemExit as exc:
+        if exc.code not in (None, 0):
+            raise
+
+validate_support(p.read_text(encoding="utf-8"))
+if p.read_text(encoding="utf-8") == original:
+    print("Fast pagination already hardened; validation passed (no-op)")
 
 print("Fast population, evidence-driven support pagination, bounded fail-closed second-pass checks, central pagination, identity, and status semantics hardened")
