@@ -48,7 +48,7 @@ jobs:
           # Live reconstruction from the verified parent plus the three production-population
           # edits below deterministically yields this digest. Keep the check fail-closed.
           result_sha256 = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
-          expected_lines = 599
+          expected_lines = 598
 
           raw = subprocess.run(
               ['git', 'show', f'{parent}:{target}'],
@@ -116,7 +116,7 @@ jobs:
 
           target = Path('scripts/complete_support_coverage.py')
           expected = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
-          expected_lines = 599
+          expected_lines = 598
           data = target.read_bytes()
           digest = hashlib.sha256(data).hexdigest()
           line_count = len(data.decode('utf-8').splitlines())
