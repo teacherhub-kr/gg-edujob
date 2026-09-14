@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-09-14T22:41:43+09:00",
+  "generatedAt": "2026-09-14T22:56:23+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
   "canonicalOfficialJobs": 19893,
   "canonicalFoundationOfficialJobs": 3,
-  "canonicalPrivateJobs": 4399,
+  "canonicalPrivateJobs": 4162,
   "selectedCanonicalOfficialJobs": 3290,
   "selectedFoundationOfficialJobs": 3,
   "selectedOfficialJobs": 3293,
-  "selectedPrivateJobs": 4384,
-  "publishedJobs": 7665,
+  "selectedPrivateJobs": 4147,
+  "publishedJobs": 7440,
   "perFeed": {
     "official": 3293,
-    "private": 4372
+    "private": 4147
   },
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
       "configuredPublicationEnabled": true,
-      "publicationEnabled": true,
-      "degraded": false,
-      "ok": true,
+      "publicationEnabled": false,
+      "degraded": true,
+      "ok": false,
       "candidateCount": 237,
-      "count": 237,
-      "lastVerifiedAt": "2026-09-14T21:56:16+09:00",
+      "count": 0,
+      "lastVerifiedAt": "2026-09-14T22:55:14+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 225
+      "displayedAsPrivate": 0
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -100,17 +100,19 @@
       "ok": true,
       "candidateCount": 2,
       "count": 2,
-      "lastVerifiedAt": "2026-09-14T21:52:28+09:00",
+      "lastVerifiedAt": "2026-09-14T22:49:07+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "displayedAsPrivate": 2
     }
   },
   "protectedOfficialIds": 17621,
-  "explicitOfficialAliasGroupsMerged": 12,
+  "explicitOfficialAliasGroupsMerged": 0,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
-  "degradedPrivateSources": [],
-  "allPublicationEnabledSourcesHealthy": true
+  "degradedPrivateSources": [
+    "lessoninfo"
+  ],
+  "allPublicationEnabledSourcesHealthy": false
 }
