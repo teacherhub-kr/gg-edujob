@@ -970,7 +970,7 @@
   ],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-09-14 12:52 KST",
+    "checkedAt": "2026-09-14 13:52 KST",
     "message": "교육지원청 확인 필요 4곳",
     "supportOfficeIssues": [
       {
@@ -17599,6 +17599,40 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59530"
     },
     {
+      "id": "sen-office-gsycedu.sen.go.kr-15125",
+      "province": "서울",
+      "school": "서울강신초등학교병설유치원",
+      "title": "기간제",
+      "subject": "아침돌봄 자원봉사자 / 육아시간 대체강사",
+      "region": "",
+      "regions": [
+        "강서구",
+        "양천구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "유치원",
+      "applyStart": "2026/09/09",
+      "applyEnd": "2026/10/12",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/09/09",
+      "headcount": "",
+      "source": "강서양천교육지원청",
+      "checkedSources": [
+        "강서양천교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125",
+      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "15125"
+      },
+      "detailLinkResolved": true,
+      "periodStatus": "parsed"
+    },
+    {
       "id": "sen-office-dgedu.sen.go.kr-10254",
       "province": "서울",
       "school": "서울우솔초등학교병설유치원",
@@ -24378,40 +24412,6 @@
       "mi": "17846",
       "detailLinkResolved": true,
       "periodStatus": "unavailable"
-    },
-    {
-      "id": "sen-office-gsycedu.sen.go.kr-15125",
-      "province": "서울",
-      "school": "서울강신초등학교병설유치원",
-      "title": "기간제",
-      "subject": "아침돌봄 자원봉사자 / 육아시간 대체강사",
-      "region": "",
-      "regions": [
-        "강서구",
-        "양천구"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "유치원",
-      "applyStart": "2026/09/09",
-      "applyEnd": "2026/10/12",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/09/09",
-      "headcount": "",
-      "source": "강서양천교육지원청",
-      "checkedSources": [
-        "강서양천교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125",
-      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "15125"
-      },
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
     },
     {
       "id": "sen-office-gnscedu.sen.go.kr-14246",
@@ -538959,11 +538959,11 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-09-14 12:49 KST",
+    "checkedAt": "2026-09-14 13:49 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-09-14 12:49 KST",
+    "checkedAt": "2026-09-14 13:49 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
@@ -538984,21 +538984,21 @@
     "seoulTotal": 507
   },
   "periodEnrichment": {
-    "checkedAt": "2026-09-14 12:49 KST",
+    "checkedAt": "2026-09-14 13:49 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5596,
-    "detailPagesParsed": 2307,
+    "detailPagesParsed": 2308,
     "fieldsFilledThisRun": 0,
     "missingApplicationPeriod": 992,
     "missingWorkPeriod": 1859,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-09-14 12:49 KST",
-      "candidates": 250,
-      "detailPagesConfirmed": 243,
-      "cacheEntriesImproved": 1,
-      "fieldsFilled": 1
+      "checkedAt": "2026-09-14 13:49 KST",
+      "candidates": 249,
+      "detailPagesConfirmed": 242,
+      "cacheEntriesImproved": 0,
+      "fieldsFilled": 0
     },
     "seoulCmsDiscoverySync": {
       "newCandidates": 0,
@@ -539021,7 +539021,7 @@
     "scanId": "20260913T062546Z-34741360204-1"
   },
   "officialIdRestore": {
-    "checkedAt": "2026-09-14 12:49:46 KST",
+    "checkedAt": "2026-09-14 13:49:30 KST",
     "ledgerScanId": "20260912T064842Z-34679059160-1",
     "protectedOfficialIds": 17861,
     "missingBefore": 0,
