@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-09-15T00:41:14+09:00",
+  "generatedAt": "2026-09-15T00:54:46+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
   "canonicalOfficialJobs": 19896,
   "canonicalFoundationOfficialJobs": 3,
-  "canonicalPrivateJobs": 4386,
+  "canonicalPrivateJobs": 4149,
   "selectedCanonicalOfficialJobs": 2995,
   "selectedFoundationOfficialJobs": 3,
   "selectedOfficialJobs": 2998,
-  "selectedPrivateJobs": 4361,
-  "publishedJobs": 7347,
+  "selectedPrivateJobs": 4124,
+  "publishedJobs": 7122,
   "perFeed": {
     "official": 2998,
-    "private": 4349
+    "private": 4124
   },
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
       "configuredPublicationEnabled": true,
-      "publicationEnabled": true,
-      "degraded": false,
-      "ok": true,
-      "candidateCount": 237,
-      "count": 237,
-      "lastVerifiedAt": "2026-09-14T23:56:28+09:00",
+      "publicationEnabled": false,
+      "degraded": true,
+      "ok": false,
+      "candidateCount": 235,
+      "count": 0,
+      "lastVerifiedAt": "2026-09-15T00:53:31+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 225
+      "displayedAsPrivate": 0
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -100,17 +100,19 @@
       "ok": true,
       "candidateCount": 2,
       "count": 2,
-      "lastVerifiedAt": "2026-09-14T23:49:55+09:00",
+      "lastVerifiedAt": "2026-09-15T00:49:09+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "displayedAsPrivate": 2
     }
   },
   "protectedOfficialIds": 17610,
-  "explicitOfficialAliasGroupsMerged": 12,
+  "explicitOfficialAliasGroupsMerged": 0,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
-  "degradedPrivateSources": [],
-  "allPublicationEnabledSourcesHealthy": true
+  "degradedPrivateSources": [
+    "lessoninfo"
+  ],
+  "allPublicationEnabledSourcesHealthy": false
 }
