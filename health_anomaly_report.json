@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T08:07:02+09:00",
+  "generatedAt": "2026-09-14T09:11:11+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-14T08:07:02+09:00",
+    "generatedAt": "2026-09-14T09:11:11+09:00",
     "official": {
       "datasetCount": 19420,
       "officialIdCount": 17861,
@@ -332,12 +332,12 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-13T08:06:27+09:00",
+      "baselineAt": "2026-09-13T09:10:20+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
-          "baseline": 19421,
-          "changeRatio": -0.0001
+          "baseline": 19419,
+          "changeRatio": 0.0001
         },
         "official.officialIdCount": {
           "current": 17861,
@@ -346,13 +346,13 @@
         },
         "unified.publishedJobs": {
           "current": 7250,
-          "baseline": 7356,
-          "changeRatio": -0.0144
+          "baseline": 7360,
+          "changeRatio": -0.0149
         },
         "unified.officialDisplayed": {
           "current": 2888,
-          "baseline": 2971,
-          "changeRatio": -0.0279
+          "baseline": 2975,
+          "changeRatio": -0.0292
         },
         "unified.privateDiscovered": {
           "current": 4365,
@@ -399,7 +399,7 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-07T08:07:48+09:00",
+      "baselineAt": "2026-09-07T09:13:54+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
@@ -413,8 +413,8 @@
         },
         "unified.publishedJobs": {
           "current": 7250,
-          "baseline": 7061,
-          "changeRatio": 0.0268
+          "baseline": 7319,
+          "changeRatio": -0.0094
         },
         "unified.officialDisplayed": {
           "current": 2888,
@@ -423,8 +423,8 @@
         },
         "unified.privateDiscovered": {
           "current": 4365,
-          "baseline": 4117,
-          "changeRatio": 0.0602
+          "baseline": 4386,
+          "changeRatio": -0.0048
         }
       },
       "privateSources": {
