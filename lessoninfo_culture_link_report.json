@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-14T09:03:47+09:00",
-  "startedAt": "2026-09-14T08:52:39+09:00",
+  "generatedAt": "2026-09-14T10:11:22+09:00",
+  "startedAt": "2026-09-14T10:00:21+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
   "totalInputJobs": 227,
@@ -8,8 +8,8 @@
   "expiredCultureExamples": [],
   "eligibleCultureRows": 177,
   "verifiedCultureRows": 169,
-  "verifiedOfficialRows": 168,
-  "verifiedLessoninfoRows": 1,
+  "verifiedOfficialRows": 169,
+  "verifiedLessoninfoRows": 0,
   "unverifiedCultureRows": 8,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
@@ -17,8 +17,7 @@
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 51,
-    "cold-browser-id-title-match": 1,
+    "cold-browser-official-title-match": 52,
     "cold-browser-artmore-id-title-match": 117,
     "cold-browser-route-mismatch": 7,
     "known-bad-cold-regression-sentinel": 1
