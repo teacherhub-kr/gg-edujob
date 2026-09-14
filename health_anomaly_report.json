@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-15T00:10:12+09:00",
+  "generatedAt": "2026-09-15T01:08:03+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-15T00:10:12+09:00",
+    "generatedAt": "2026-09-15T01:08:03+09:00",
     "official": {
-      "datasetCount": 19893,
-      "officialIdCount": 17620,
+      "datasetCount": 19896,
+      "officialIdCount": 17610,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7119,
-      "officialDisplayed": 2995,
-      "privateDisplayed": 4124,
-      "privateDiscovered": 4124,
-      "officialPrivateAliases": 0,
+      "publishedJobs": 7346,
+      "officialDisplayed": 2998,
+      "privateDisplayed": 4348,
+      "privateDiscovered": 4360,
+      "officialPrivateAliases": 12,
       "healthy": true,
       "missingPrivateIds": 0,
       "nonMetroPrivate": 0,
@@ -27,6 +27,7 @@
       "missingLinks": 0,
       "badCrossSourceAliasEvidence": 0,
       "enabledPrivateSources": [
+        "lessoninfo",
         "cleaneye",
         "jobteacher",
         "artmore",
@@ -34,9 +35,7 @@
         "seekle",
         "boramyc"
       ],
-      "degradedPrivateSources": [
-        "lessoninfo"
-      ]
+      "degradedPrivateSources": []
     },
     "officialSources": {
       "가평교육지원청": {
@@ -152,7 +151,7 @@
         "latestRegistered": "2026-09-03"
       },
       "서울교육일자리포털": {
-        "count": 1740,
+        "count": 1743,
         "latestRegistered": "2026-09-14"
       },
       "서울교육일자리포털 + 강남서초교육지원청": {
@@ -247,11 +246,11 @@
     "privateSources": {
       "lessoninfo": {
         "name": "레슨인포",
-        "enabled": false,
+        "enabled": true,
         "healthy": true,
-        "datasetCount": 237,
-        "rawCount": 237,
-        "currentCount": 237,
+        "datasetCount": 235,
+        "rawCount": 235,
+        "currentCount": 235,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -273,13 +272,13 @@
         "name": "잡티처",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 4034,
-        "rawCount": 4034,
-        "currentCount": 4034,
+        "datasetCount": 4035,
+        "rawCount": 4035,
+        "currentCount": 4035,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
-        "latestRegistered": "2026-09-14"
+        "latestRegistered": "2026-09-15"
       },
       "artmore": {
         "name": "아트모아",
@@ -297,8 +296,8 @@
         "name": "공공강사",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 45,
-        "rawCount": 45,
+        "datasetCount": 32,
+        "rawCount": 32,
         "currentCount": 32,
         "missingAfter": 0,
         "detailErrors": 0,
@@ -333,39 +332,39 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-14T00:07:20+09:00",
+      "baselineAt": "2026-09-14T01:07:47+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19893,
+          "current": 19896,
           "baseline": 19420,
-          "changeRatio": 0.0244
+          "changeRatio": 0.0245
         },
         "official.officialIdCount": {
-          "current": 17620,
+          "current": 17610,
           "baseline": 17861,
-          "changeRatio": -0.0135
+          "changeRatio": -0.0141
         },
         "unified.publishedJobs": {
-          "current": 7119,
-          "baseline": 7273,
-          "changeRatio": -0.0212
+          "current": 7346,
+          "baseline": 7250,
+          "changeRatio": 0.0132
         },
         "unified.officialDisplayed": {
-          "current": 2995,
+          "current": 2998,
           "baseline": 2888,
-          "changeRatio": 0.037
+          "changeRatio": 0.0381
         },
         "unified.privateDiscovered": {
-          "current": 4124,
-          "baseline": 4388,
-          "changeRatio": -0.0602
+          "current": 4360,
+          "baseline": 4365,
+          "changeRatio": -0.0011
         }
       },
       "privateSources": {
         "lessoninfo": {
-          "current": 237,
-          "baseline": 250,
-          "changeRatio": -0.052
+          "current": 235,
+          "baseline": 227,
+          "changeRatio": 0.0352
         },
         "cleaneye": {
           "current": 10,
@@ -373,9 +372,9 @@
           "changeRatio": -0.5
         },
         "jobteacher": {
-          "current": 4034,
-          "baseline": 4037,
-          "changeRatio": -0.0007
+          "current": 4035,
+          "baseline": 4036,
+          "changeRatio": -0.0002
         },
         "artmore": {
           "current": 45,
@@ -384,8 +383,8 @@
         },
         "gonggonggangsa": {
           "current": 32,
-          "baseline": 44,
-          "changeRatio": -0.2727
+          "baseline": 45,
+          "changeRatio": -0.2889
         },
         "seekle": {
           "current": 1,
@@ -400,39 +399,39 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-08T00:08:46+09:00",
+      "baselineAt": "2026-09-08T01:08:46+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19893,
+          "current": 19896,
           "baseline": 19079,
-          "changeRatio": 0.0427
+          "changeRatio": 0.0428
         },
         "official.officialIdCount": {
-          "current": 17620,
+          "current": 17610,
           "baseline": 17852,
-          "changeRatio": -0.013
+          "changeRatio": -0.0136
         },
         "unified.publishedJobs": {
-          "current": 7119,
-          "baseline": 7353,
-          "changeRatio": -0.0318
+          "current": 7346,
+          "baseline": 7350,
+          "changeRatio": -0.0005
         },
         "unified.officialDisplayed": {
-          "current": 2995,
+          "current": 2998,
           "baseline": 2974,
-          "changeRatio": 0.0071
+          "changeRatio": 0.0081
         },
         "unified.privateDiscovered": {
-          "current": 4124,
-          "baseline": 4386,
-          "changeRatio": -0.0597
+          "current": 4360,
+          "baseline": 4383,
+          "changeRatio": -0.0052
         }
       },
       "privateSources": {
         "lessoninfo": {
-          "current": 237,
-          "baseline": 269,
-          "changeRatio": -0.119
+          "current": 235,
+          "baseline": 268,
+          "changeRatio": -0.1231
         },
         "cleaneye": {
           "current": 10,
@@ -440,9 +439,9 @@
           "changeRatio": null
         },
         "jobteacher": {
-          "current": 4034,
-          "baseline": 4038,
-          "changeRatio": -0.001
+          "current": 4035,
+          "baseline": 4036,
+          "changeRatio": -0.0002
         },
         "artmore": {
           "current": 45,
