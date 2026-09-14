@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-14T20:05:08+09:00",
+  "generatedAt": "2026-09-14T20:38:59+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
   "privateJobs": 4399,
-  "officialJobs": 19716,
+  "officialJobs": 19890,
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
@@ -64,9 +64,9 @@
   "perSource": {
     "lessoninfo": {
       "jobs": 237,
-      "strongOfficialMatches": 48,
+      "strongOfficialMatches": 55,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 15
+      "officialGapCandidates": 8
     },
     "cleaneye": {
       "jobs": 23,
@@ -105,10 +105,108 @@
       "officialGapCandidates": 0
     }
   },
-  "strongOfficialMatches": 48,
+  "strongOfficialMatches": 55,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 53,
+  "officialGapCandidates": 46,
   "strongMatches": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7638",
+      "privateTitle": "2026학년도 시간강사 교원 채용 공고(음악) N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "[은계중학교] 2026학년도 시간강사 교원 채용 공고(음악)",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59843",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7637",
+      "privateTitle": "경기 시흥시 고등학교 음악 시간강사 채용 공고 N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "시흥고등학교 역사, 음악 시간강사 채용",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59848",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7636",
+      "privateTitle": "오케스트라 운영 외부강사 채용 공고(비올라) N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "[경안중] 2026학년도 오케스트라 운영 외부강사 채용",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59882",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7635",
+      "privateTitle": "하남시 중학교 시간강사(음악, 미술) 채용 공고 N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "2026학년도 시간강사(수학, 사회, 과학, 중국어, 음악, 미술) 채용 공고",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59999",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7634",
+      "privateTitle": "화성시 고등학교 기간제교원 채용 공고(음악) N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "정현고 기간제교원 채용 공고(음악)",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59844",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7633",
+      "privateTitle": "중학교 기간제교사(음악, 3개월 3일) 채용공고 N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "일산양일중학교 기간제교사(음악, 3개월 3일) 채용공고",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59971",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7632",
+      "privateTitle": "경기 부천시 중학교 시간강사 채용 공고문 N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "2026학년도 부천일신중 시간강사 채용 공고문(정보,국어,가정,과학2,음악)",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60052",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
@@ -784,90 +882,6 @@
   ],
   "reviewCandidates": [],
   "gapCandidates": [
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7638",
-      "privateTitle": "2026학년도 시간강사 교원 채용 공고(음악) N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7638",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7637",
-      "privateTitle": "경기 시흥시 고등학교 음악 시간강사 채용 공고 N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7637",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7636",
-      "privateTitle": "오케스트라 운영 외부강사 채용 공고(비올라) N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7636",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7635",
-      "privateTitle": "하남시 중학교 시간강사(음악, 미술) 채용 공고 N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7635",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7634",
-      "privateTitle": "화성시 고등학교 기간제교원 채용 공고(음악) N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7634",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7633",
-      "privateTitle": "중학교 기간제교사(음악, 3개월 3일) 채용공고 N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7633",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7632",
-      "privateTitle": "경기 부천시 중학교 시간강사 채용 공고문 N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-14",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7632",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
