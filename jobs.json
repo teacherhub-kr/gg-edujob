@@ -1717,7 +1717,7 @@
   ],
   "verification": {
     "state": "ok",
-    "checkedAt": "2026-09-14 20:16 KST",
+    "checkedAt": "2026-09-14 21:16 KST",
     "message": "2차 검증 정상",
     "supportOfficeIssues": [],
     "supportExactLinks": {
@@ -1733,8 +1733,8 @@
       "supportFailed": 0,
       "failures": []
     },
-    "previousTotal": 19716,
-    "currentTotal": 19890
+    "previousTotal": 19890,
+    "currentTotal": 19891
   },
   "jobs": [
     {
@@ -12229,6 +12229,33 @@
       "bbsId": "2103",
       "mi": "2192",
       "periodStatus": "parsed"
+    },
+    {
+      "id": "goe-60057",
+      "province": "경기",
+      "school": "분당아람고등학교",
+      "title": "분당아람고등학교 시간강사채용 공고(조리 또는 관광,식품가공,가정) 1명",
+      "subject": "조리 또는 관광,식품가공,가정",
+      "region": "성남시",
+      "regions": [
+        "성남시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/09/15",
+      "applyEnd": "2026/09/17",
+      "workStart": "2026/09/29",
+      "workEnd": "2026/12/23",
+      "registered": "2026/09/14",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60057",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "goe-central:60057"
     },
     {
       "id": "goe-complete-695c6cbd773a91afa0",
@@ -552974,11 +553001,11 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-09-14 20:14 KST",
+    "checkedAt": "2026-09-14 21:14 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-09-14 20:14 KST",
+    "checkedAt": "2026-09-14 21:14 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
@@ -552999,7 +553026,7 @@
     "seoulTotal": 511
   },
   "periodEnrichment": {
-    "checkedAt": "2026-09-14 20:14 KST",
+    "checkedAt": "2026-09-14 21:14 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5725,
     "detailPagesParsed": 2350,
@@ -553009,7 +553036,7 @@
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-09-14 20:14 KST",
+      "checkedAt": "2026-09-14 21:14 KST",
       "candidates": 252,
       "detailPagesConfirmed": 245,
       "cacheEntriesImproved": 0,
@@ -553021,24 +553048,24 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-09-14 19:53:26 KST",
+    "generatedAt": "2026-09-14 20:53:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-38-v2-gyeonggi-central-90d",
-    "officialIdCount": 17619,
-    "datasetIdCountBefore": 19487,
-    "missingBefore": 357,
-    "recoveredNow": 357,
+    "officialIdCount": 17620,
+    "datasetIdCountBefore": 19844,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 38,
     "totalSources": 38,
     "reconciledOffices": 38,
     "totalOffices": 38,
-    "scanId": "20260914T104840Z-34834936628-1"
+    "scanId": "20260914T114841Z-34840006043-1"
   },
   "officialIdRestore": {
-    "checkedAt": "2026-09-14 20:14:19 KST",
-    "ledgerScanId": "20260914T104840Z-34834936628-1",
-    "protectedOfficialIds": 17619,
+    "checkedAt": "2026-09-14 21:14:20 KST",
+    "ledgerScanId": "20260914T114841Z-34840006043-1",
+    "protectedOfficialIds": 17620,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0
