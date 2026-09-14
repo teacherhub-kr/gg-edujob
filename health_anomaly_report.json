@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-15T05:08:21+09:00",
+  "generatedAt": "2026-09-15T06:07:55+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-15T05:08:21+09:00",
+    "generatedAt": "2026-09-15T06:07:55+09:00",
     "official": {
-      "datasetCount": 19896,
+      "datasetCount": 20077,
       "officialIdCount": 17339,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7312,
-      "officialDisplayed": 2965,
+      "publishedJobs": 7373,
+      "officialDisplayed": 3026,
       "privateDisplayed": 4347,
       "privateDiscovered": 4359,
       "officialPrivateAliases": 12,
@@ -51,7 +51,7 @@
         "latestRegistered": "2026-09-12"
       },
       "강서양천교육지원청": {
-        "count": 132,
+        "count": 195,
         "latestRegistered": "2026-09-11"
       },
       "경기도교육청 통합 구인구직": {
@@ -103,7 +103,7 @@
         "latestRegistered": "2026-09-14"
       },
       "광명교육지원청": {
-        "count": 297,
+        "count": 309,
         "latestRegistered": "2026-09-14"
       },
       "광주하남교육지원청": {
@@ -139,7 +139,7 @@
         "latestRegistered": "2026-09-14"
       },
       "부천교육지원청": {
-        "count": 713,
+        "count": 743,
         "latestRegistered": "2026-09-14"
       },
       "북부교육지원청": {
@@ -183,7 +183,7 @@
         "latestRegistered": "2026-09-08"
       },
       "시흥교육지원청": {
-        "count": 67,
+        "count": 68,
         "latestRegistered": "2026-09-11"
       },
       "안산교육지원청": {
@@ -191,7 +191,7 @@
         "latestRegistered": "2026-09-11"
       },
       "안성교육지원청": {
-        "count": 223,
+        "count": 238,
         "latestRegistered": "2026-09-14"
       },
       "안양과천교육지원청": {
@@ -211,7 +211,7 @@
         "latestRegistered": "2026-09-14"
       },
       "용인교육지원청": {
-        "count": 130,
+        "count": 132,
         "latestRegistered": "2026-09-14"
       },
       "의정부교육지원청": {
@@ -223,11 +223,11 @@
         "latestRegistered": "2026-09-02"
       },
       "중부교육지원청": {
-        "count": 46,
+        "count": 65,
         "latestRegistered": "2026-09-07"
       },
       "파주교육지원청": {
-        "count": 480,
+        "count": 519,
         "latestRegistered": "2026-09-14"
       },
       "평택교육지원청": {
@@ -332,12 +332,12 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-14T05:07:42+09:00",
+      "baselineAt": "2026-09-14T06:07:30+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19896,
+          "current": 20077,
           "baseline": 19420,
-          "changeRatio": 0.0245
+          "changeRatio": 0.0338
         },
         "official.officialIdCount": {
           "current": 17339,
@@ -345,14 +345,14 @@
           "changeRatio": -0.0292
         },
         "unified.publishedJobs": {
-          "current": 7312,
+          "current": 7373,
           "baseline": 7250,
-          "changeRatio": 0.0086
+          "changeRatio": 0.017
         },
         "unified.officialDisplayed": {
-          "current": 2965,
+          "current": 3026,
           "baseline": 2888,
-          "changeRatio": 0.0267
+          "changeRatio": 0.0478
         },
         "unified.privateDiscovered": {
           "current": 4359,
@@ -399,12 +399,12 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-08T05:08:50+09:00",
+      "baselineAt": "2026-09-08T06:08:26+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19896,
+          "current": 20077,
           "baseline": 18816,
-          "changeRatio": 0.0574
+          "changeRatio": 0.067
         },
         "official.officialIdCount": {
           "current": 17339,
@@ -412,14 +412,14 @@
           "changeRatio": -0.0135
         },
         "unified.publishedJobs": {
-          "current": 7312,
+          "current": 7373,
           "baseline": 7334,
-          "changeRatio": -0.003
+          "changeRatio": 0.0053
         },
         "unified.officialDisplayed": {
-          "current": 2965,
+          "current": 3026,
           "baseline": 2958,
-          "changeRatio": 0.0024
+          "changeRatio": 0.023
         },
         "unified.privateDiscovered": {
           "current": 4359,
