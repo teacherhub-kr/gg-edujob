@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-14T23:08:48+09:00",
+  "generatedAt": "2026-09-15T00:10:12+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-14T23:08:48+09:00",
+    "generatedAt": "2026-09-15T00:10:12+09:00",
     "official": {
       "datasetCount": 19893,
-      "officialIdCount": 17621,
+      "officialIdCount": 17620,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7665,
-      "officialDisplayed": 3293,
-      "privateDisplayed": 4372,
-      "privateDiscovered": 4384,
-      "officialPrivateAliases": 12,
+      "publishedJobs": 7119,
+      "officialDisplayed": 2995,
+      "privateDisplayed": 4124,
+      "privateDiscovered": 4124,
+      "officialPrivateAliases": 0,
       "healthy": true,
       "missingPrivateIds": 0,
       "nonMetroPrivate": 0,
@@ -27,7 +27,6 @@
       "missingLinks": 0,
       "badCrossSourceAliasEvidence": 0,
       "enabledPrivateSources": [
-        "lessoninfo",
         "cleaneye",
         "jobteacher",
         "artmore",
@@ -35,7 +34,9 @@
         "seekle",
         "boramyc"
       ],
-      "degradedPrivateSources": []
+      "degradedPrivateSources": [
+        "lessoninfo"
+      ]
     },
     "officialSources": {
       "가평교육지원청": {
@@ -246,7 +247,7 @@
     "privateSources": {
       "lessoninfo": {
         "name": "레슨인포",
-        "enabled": true,
+        "enabled": false,
         "healthy": true,
         "datasetCount": 237,
         "rawCount": 237,
@@ -262,7 +263,7 @@
         "healthy": true,
         "datasetCount": 23,
         "rawCount": 23,
-        "currentCount": 20,
+        "currentCount": 10,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -272,9 +273,9 @@
         "name": "잡티처",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 4035,
-        "rawCount": 4035,
-        "currentCount": 4035,
+        "datasetCount": 4034,
+        "rawCount": 4034,
+        "currentCount": 4034,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -284,9 +285,9 @@
         "name": "아트모아",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 46,
-        "rawCount": 46,
-        "currentCount": 44,
+        "datasetCount": 47,
+        "rawCount": 47,
+        "currentCount": 45,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -298,7 +299,7 @@
         "healthy": true,
         "datasetCount": 45,
         "rawCount": 45,
-        "currentCount": 45,
+        "currentCount": 32,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -332,7 +333,7 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-13T23:07:20+09:00",
+      "baselineAt": "2026-09-14T00:07:20+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19893,
@@ -340,51 +341,51 @@
           "changeRatio": 0.0244
         },
         "official.officialIdCount": {
-          "current": 17621,
+          "current": 17620,
           "baseline": 17861,
-          "changeRatio": -0.0134
+          "changeRatio": -0.0135
         },
         "unified.publishedJobs": {
-          "current": 7665,
-          "baseline": 7365,
-          "changeRatio": 0.0407
+          "current": 7119,
+          "baseline": 7273,
+          "changeRatio": -0.0212
         },
         "unified.officialDisplayed": {
-          "current": 3293,
-          "baseline": 2976,
-          "changeRatio": 0.1065
+          "current": 2995,
+          "baseline": 2888,
+          "changeRatio": 0.037
         },
         "unified.privateDiscovered": {
-          "current": 4384,
-          "baseline": 4392,
-          "changeRatio": -0.0018
+          "current": 4124,
+          "baseline": 4388,
+          "changeRatio": -0.0602
         }
       },
       "privateSources": {
         "lessoninfo": {
           "current": 237,
-          "baseline": 251,
-          "changeRatio": -0.0558
+          "baseline": 250,
+          "changeRatio": -0.052
         },
         "cleaneye": {
-          "current": 20,
+          "current": 10,
           "baseline": 20,
-          "changeRatio": 0.0
+          "changeRatio": -0.5
         },
         "jobteacher": {
-          "current": 4035,
+          "current": 4034,
           "baseline": 4037,
-          "changeRatio": -0.0005
+          "changeRatio": -0.0007
         },
         "artmore": {
-          "current": 44,
+          "current": 45,
           "baseline": 34,
-          "changeRatio": 0.2941
+          "changeRatio": 0.3235
         },
         "gonggonggangsa": {
-          "current": 45,
-          "baseline": 47,
-          "changeRatio": -0.0426
+          "current": 32,
+          "baseline": 44,
+          "changeRatio": -0.2727
         },
         "seekle": {
           "current": 1,
@@ -399,7 +400,7 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-07T23:09:03+09:00",
+      "baselineAt": "2026-09-08T00:08:46+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19893,
@@ -407,24 +408,24 @@
           "changeRatio": 0.0427
         },
         "official.officialIdCount": {
-          "current": 17621,
-          "baseline": 17844,
-          "changeRatio": -0.0125
+          "current": 17620,
+          "baseline": 17852,
+          "changeRatio": -0.013
         },
         "unified.publishedJobs": {
-          "current": 7665,
-          "baseline": 7735,
-          "changeRatio": -0.009
+          "current": 7119,
+          "baseline": 7353,
+          "changeRatio": -0.0318
         },
         "unified.officialDisplayed": {
-          "current": 3293,
-          "baseline": 3356,
-          "changeRatio": -0.0188
+          "current": 2995,
+          "baseline": 2974,
+          "changeRatio": 0.0071
         },
         "unified.privateDiscovered": {
-          "current": 4384,
-          "baseline": 4390,
-          "changeRatio": -0.0014
+          "current": 4124,
+          "baseline": 4386,
+          "changeRatio": -0.0597
         }
       },
       "privateSources": {
@@ -434,24 +435,24 @@
           "changeRatio": -0.119
         },
         "cleaneye": {
-          "current": 20,
+          "current": 10,
           "baseline": 0,
           "changeRatio": null
         },
         "jobteacher": {
-          "current": 4035,
+          "current": 4034,
           "baseline": 4038,
-          "changeRatio": -0.0007
+          "changeRatio": -0.001
         },
         "artmore": {
-          "current": 44,
+          "current": 45,
           "baseline": 20,
-          "changeRatio": 1.2
+          "changeRatio": 1.25
         },
         "gonggonggangsa": {
-          "current": 45,
-          "baseline": 60,
-          "changeRatio": -0.25
+          "current": 32,
+          "baseline": 56,
+          "changeRatio": -0.4286
         },
         "seekle": {
           "current": 1,
@@ -468,6 +469,17 @@
     "30d": null
   },
   "anomalies": [
+    {
+      "severity": "warning",
+      "code": "private-source-sudden-drop",
+      "message": "검증 편입된 민간 출처가 24시간 기준으로 비정상 급감했습니다.",
+      "evidence": {
+        "source": "cleaneye",
+        "baseline": 20,
+        "current": 10,
+        "changeRatio": -0.5
+      }
+    },
     {
       "severity": "warning",
       "code": "official-source-freshness-stall",
@@ -596,11 +608,11 @@
       "evidence": {
         "source": "seekle",
         "latestRegistered": "2026-09-04",
-        "ageDays": 10
+        "ageDays": 11
       }
     }
   ],
   "criticalCount": 0,
-  "warningCount": 12,
+  "warningCount": 13,
   "policy": "hard integrity failures are critical; every registry-enabled private source is checked independently; isolated degraded private sources are fail-closed by unified validation and are not independently critical; trend drops/stalls are warnings until independently verified"
 }

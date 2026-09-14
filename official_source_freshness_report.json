@@ -1,23 +1,31 @@
 {
-  "generatedAt": "2026-09-14T23:08:48+09:00",
+  "generatedAt": "2026-09-15T00:10:13+09:00",
   "registrySourceCount": 38,
   "observedSourceCount": 38,
   "staleAfterDays": 7,
-  "warningCount": 7,
+  "warningCount": 10,
   "warnings": [
     {
       "code": "official-source-freshness-stall",
       "source": "군포의왕교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 11,
+      "ageDays": 12,
       "stableIdCount": 6,
+      "baselineRequired": false
+    },
+    {
+      "code": "official-source-freshness-stall",
+      "source": "수원교육지원청",
+      "latestRegistered": "2026-09-08",
+      "ageDays": 7,
+      "stableIdCount": 15,
       "baselineRequired": false
     },
     {
       "code": "official-source-freshness-stall",
       "source": "안양과천교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 11,
+      "ageDays": 12,
       "stableIdCount": 9,
       "baselineRequired": false
     },
@@ -25,7 +33,7 @@
       "code": "official-source-freshness-stall",
       "source": "여주교육지원청",
       "latestRegistered": "2026-09-01",
-      "ageDays": 13,
+      "ageDays": 14,
       "stableIdCount": 9,
       "baselineRequired": false
     },
@@ -33,15 +41,23 @@
       "code": "official-source-freshness-stall",
       "source": "이천교육지원청",
       "latestRegistered": "2026-09-02",
-      "ageDays": 12,
+      "ageDays": 13,
       "stableIdCount": 11,
+      "baselineRequired": false
+    },
+    {
+      "code": "official-source-freshness-stall",
+      "source": "동부교육지원청",
+      "latestRegistered": "2026-09-08",
+      "ageDays": 7,
+      "stableIdCount": 0,
       "baselineRequired": false
     },
     {
       "code": "official-source-freshness-stall",
       "source": "서부교육지원청",
       "latestRegistered": "2026-09-03",
-      "ageDays": 11,
+      "ageDays": 12,
       "stableIdCount": 2,
       "baselineRequired": false
     },
@@ -49,7 +65,7 @@
       "code": "official-source-freshness-stall",
       "source": "북부교육지원청",
       "latestRegistered": "2026-09-04",
-      "ageDays": 10,
+      "ageDays": 11,
       "stableIdCount": 0,
       "baselineRequired": false
     },
@@ -57,8 +73,16 @@
       "code": "official-source-freshness-stall",
       "source": "중부교육지원청",
       "latestRegistered": "2026-09-07",
-      "ageDays": 7,
+      "ageDays": 8,
       "stableIdCount": 44,
+      "baselineRequired": false
+    },
+    {
+      "code": "official-source-freshness-stall",
+      "source": "성동광진교육지원청",
+      "latestRegistered": "2026-09-08",
+      "ageDays": 7,
+      "stableIdCount": 0,
       "baselineRequired": false
     }
   ],
