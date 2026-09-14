@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-14T20:08:00+09:00",
+  "generatedAt": "2026-09-14T21:10:19+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-14T20:08:00+09:00",
+    "generatedAt": "2026-09-14T21:10:19+09:00",
     "official": {
-      "datasetCount": 19716,
-      "officialIdCount": 17861,
+      "datasetCount": 19890,
+      "officialIdCount": 17619,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7443,
-      "officialDisplayed": 3064,
-      "privateDisplayed": 4379,
+      "publishedJobs": 7662,
+      "officialDisplayed": 3290,
+      "privateDisplayed": 4372,
       "privateDiscovered": 4384,
-      "officialPrivateAliases": 5,
+      "officialPrivateAliases": 12,
       "healthy": true,
       "missingPrivateIds": 0,
       "nonMetroPrivate": 0,
@@ -39,8 +39,8 @@
     },
     "officialSources": {
       "가평교육지원청": {
-        "count": 98,
-        "latestRegistered": "2026-09-11"
+        "count": 99,
+        "latestRegistered": "2026-09-14"
       },
       "강남서초교육지원청": {
         "count": 100,
@@ -51,12 +51,12 @@
         "latestRegistered": "2026-09-12"
       },
       "강서양천교육지원청": {
-        "count": 198,
+        "count": 132,
         "latestRegistered": "2026-09-11"
       },
       "경기도교육청 통합 구인구직": {
-        "count": 10340,
-        "latestRegistered": "2026-09-12"
+        "count": 10572,
+        "latestRegistered": "2026-09-14"
       },
       "경기도교육청 통합 구인구직 + 가평교육지원청": {
         "count": 1,
@@ -103,15 +103,15 @@
         "latestRegistered": "2026-09-14"
       },
       "광명교육지원청": {
-        "count": 308,
+        "count": 297,
         "latestRegistered": "2026-09-14"
       },
       "광주하남교육지원청": {
-        "count": 342,
+        "count": 344,
         "latestRegistered": "2026-09-14"
       },
       "구리남양주교육지원청": {
-        "count": 595,
+        "count": 596,
         "latestRegistered": "2026-09-14"
       },
       "군포의왕교육지원청": {
@@ -119,11 +119,11 @@
         "latestRegistered": "2026-09-03"
       },
       "김포교육지원청": {
-        "count": 525,
+        "count": 527,
         "latestRegistered": "2026-09-14"
       },
       "남부교육지원청": {
-        "count": 59,
+        "count": 58,
         "latestRegistered": "2026-09-14"
       },
       "동두천양주교육지원청": {
@@ -135,11 +135,11 @@
         "latestRegistered": "2026-09-08"
       },
       "동작관악교육지원청": {
-        "count": 158,
-        "latestRegistered": "2026-09-10"
+        "count": 159,
+        "latestRegistered": "2026-09-14"
       },
       "부천교육지원청": {
-        "count": 744,
+        "count": 713,
         "latestRegistered": "2026-09-14"
       },
       "북부교육지원청": {
@@ -151,8 +151,8 @@
         "latestRegistered": "2026-09-03"
       },
       "서울교육일자리포털": {
-        "count": 1630,
-        "latestRegistered": "2026-09-12"
+        "count": 1739,
+        "latestRegistered": "2026-09-14"
       },
       "서울교육일자리포털 + 강남서초교육지원청": {
         "count": 2,
@@ -167,7 +167,7 @@
         "latestRegistered": "2026-09-09"
       },
       "성남교육지원청": {
-        "count": 976,
+        "count": 978,
         "latestRegistered": "2026-09-14"
       },
       "성동광진교육지원청": {
@@ -183,7 +183,7 @@
         "latestRegistered": "2026-09-08"
       },
       "시흥교육지원청": {
-        "count": 68,
+        "count": 67,
         "latestRegistered": "2026-09-11"
       },
       "안산교육지원청": {
@@ -191,7 +191,7 @@
         "latestRegistered": "2026-09-11"
       },
       "안성교육지원청": {
-        "count": 238,
+        "count": 223,
         "latestRegistered": "2026-09-14"
       },
       "안양과천교육지원청": {
@@ -215,7 +215,7 @@
         "latestRegistered": "2026-09-14"
       },
       "의정부교육지원청": {
-        "count": 354,
+        "count": 355,
         "latestRegistered": "2026-09-14"
       },
       "이천교육지원청": {
@@ -223,19 +223,19 @@
         "latestRegistered": "2026-09-02"
       },
       "중부교육지원청": {
-        "count": 65,
+        "count": 46,
         "latestRegistered": "2026-09-07"
       },
       "파주교육지원청": {
-        "count": 516,
+        "count": 480,
         "latestRegistered": "2026-09-14"
       },
       "평택교육지원청": {
-        "count": 777,
+        "count": 779,
         "latestRegistered": "2026-09-14"
       },
       "포천교육지원청": {
-        "count": 209,
+        "count": 210,
         "latestRegistered": "2026-09-14"
       },
       "화성오산교육지원청": {
@@ -332,27 +332,27 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-13T20:07:21+09:00",
+      "baselineAt": "2026-09-13T21:09:12+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19716,
+          "current": 19890,
           "baseline": 19420,
-          "changeRatio": 0.0152
+          "changeRatio": 0.0242
         },
         "official.officialIdCount": {
-          "current": 17861,
+          "current": 17619,
           "baseline": 17861,
-          "changeRatio": 0.0
+          "changeRatio": -0.0135
         },
         "unified.publishedJobs": {
-          "current": 7443,
+          "current": 7662,
           "baseline": 7365,
-          "changeRatio": 0.0106
+          "changeRatio": 0.0403
         },
         "unified.officialDisplayed": {
-          "current": 3064,
+          "current": 3290,
           "baseline": 2976,
-          "changeRatio": 0.0296
+          "changeRatio": 0.1055
         },
         "unified.privateDiscovered": {
           "current": 4384,
@@ -399,27 +399,27 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-07T20:08:51+09:00",
+      "baselineAt": "2026-09-07T21:11:16+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 19716,
-          "baseline": 19074,
-          "changeRatio": 0.0337
+          "current": 19890,
+          "baseline": 19078,
+          "changeRatio": 0.0426
         },
         "official.officialIdCount": {
-          "current": 17861,
+          "current": 17619,
           "baseline": 17844,
-          "changeRatio": 0.001
+          "changeRatio": -0.0126
         },
         "unified.publishedJobs": {
-          "current": 7443,
-          "baseline": 7729,
-          "changeRatio": -0.037
+          "current": 7662,
+          "baseline": 7733,
+          "changeRatio": -0.0092
         },
         "unified.officialDisplayed": {
-          "current": 3064,
-          "baseline": 3351,
-          "changeRatio": -0.0856
+          "current": 3290,
+          "baseline": 3355,
+          "changeRatio": -0.0194
         },
         "unified.privateDiscovered": {
           "current": 4384,
