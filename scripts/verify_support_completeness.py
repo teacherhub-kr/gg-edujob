@@ -183,6 +183,20 @@ def reconcile_stale_aliases(office, province):
 expected = {"gyeonggi": 25, "seoul": 11}
 province_labels = {"gyeonggi": "경기", "seoul": "서울"}
 later_evidence = same_candidate_reconciliation()
+# Fast candidates have primary statuses but no deep-pass summary. Bootstrap only
+# from actual same-candidate traversal evidence for every configured office. The
+# strict board, count, termination and exact-link checks below still decide health.
+if not comp:
+    configured = load_json(ROOT / "sources.json", {})
+    expected_keys = {(province_labels[p], o.get("name"))
+                     for p in expected for o in configured.get(p, {}).get("supportOffices", [])}
+    actual_keys = {(province_labels[p], o.get("name"))
+                   for p in expected for o in data.get("sources", {}).get(p, {}).get("supportOffices", [])}
+    if (len(expected_keys) == sum(expected.values()) and actual_keys == expected_keys
+            and expected_keys <= later_evidence.keys()):
+        comp = {"lookbackDays": 90}
+        data["supportCompleteness"] = comp
+
 report = {
     "generatedAt": datetime.now(timezone.utc).isoformat(),
     "supportCompleteness": comp,

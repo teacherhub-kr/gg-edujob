@@ -189,6 +189,11 @@ jobs:
           python scripts/stamp_reconciliation_scan.py --central
           python scripts/verify_central_reconciliation_consistency.py
 
+      - name: Verify current support traversal and exact links after reconciliation
+        run: |
+          python scripts/resolve_support_links.py
+          python scripts/verify_support_completeness.py
+
       - name: Final publication guard
         run: |
           python scripts/update_collector_status.py --workflow fast --stage publication-guard --state running
@@ -213,6 +218,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           rm -f verification_failure_report.json
           git add collector_status.json deep_audit_status.json jobs.json job_ledger.json collection_state.json board_cache.json missing_recovery_report.json seoul_office_cms_recovery_report.json date_anomaly_report.json support_link_resolution.json support_period_cache.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py
+          git add support_coverage_report.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json gyeonggi_central_90d_report.json
           if git ls-files --error-unmatch verification_failure_report.json >/dev/null 2>&1; then
             git add -u -- verification_failure_report.json
           fi

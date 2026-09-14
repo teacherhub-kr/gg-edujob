@@ -168,13 +168,6 @@ def crawl_official_ids():
     ))
     all_rows.extend(gg_central)
 
-    se_central = primary.scrape_seoul_central()
-    sources.append(source_status(
-        "서울", primary.SEOUL["central"]["name"], se_central,
-        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
-    ))
-    all_rows.extend(se_central)
-
     for src in cov.SOURCES["gyeonggi"]["supportOffices"]:
         boards = []
         for u in list(src.get("boardUrls", [])) + list(cov.CACHE.get(src["name"], [])):
@@ -208,6 +201,16 @@ def crawl_official_ids():
             boards=[src.get("boardUrl", "")], board_health=[meta],
         ))
         all_rows.extend(rows)
+
+    # Read the live Seoul central board immediately before the workflow's independent
+    # central proof, rather than letting a full support-office traversal separate them.
+    # Keep both the independent scan and its existing bounded-drift gate unchanged.
+    se_central = primary.scrape_seoul_central()
+    sources.insert(1, source_status(
+        "서울", primary.SEOUL["central"]["name"], se_central,
+        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
+    ))
+    all_rows.extend(se_central)
 
     by_id = {}
     for row in all_rows:
