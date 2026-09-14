@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-09-14T19:39:40+09:00",
+  "generatedAt": "2026-09-14T19:54:31+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
-  "canonicalOfficialJobs": 19420,
+  "canonicalOfficialJobs": 19716,
   "canonicalFoundationOfficialJobs": 3,
-  "canonicalPrivateJobs": 4399,
-  "selectedCanonicalOfficialJobs": 2885,
+  "canonicalPrivateJobs": 4162,
+  "selectedCanonicalOfficialJobs": 3147,
   "selectedFoundationOfficialJobs": 3,
-  "selectedOfficialJobs": 2888,
-  "selectedPrivateJobs": 4384,
-  "publishedJobs": 7267,
+  "selectedOfficialJobs": 3150,
+  "selectedPrivateJobs": 4147,
+  "publishedJobs": 7211,
   "perFeed": {
-    "official": 2888,
-    "private": 4379
+    "official": 3064,
+    "private": 4147
   },
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
       "configuredPublicationEnabled": true,
-      "publicationEnabled": true,
-      "degraded": false,
-      "ok": true,
+      "publicationEnabled": false,
+      "degraded": true,
+      "ok": false,
       "candidateCount": 237,
-      "count": 237,
-      "lastVerifiedAt": "2026-09-14T18:51:40+09:00",
+      "count": 0,
+      "lastVerifiedAt": "2026-09-14T19:53:27+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 232
+      "displayedAsPrivate": 0
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -100,17 +100,19 @@
       "ok": true,
       "candidateCount": 2,
       "count": 2,
-      "lastVerifiedAt": "2026-09-14T18:48:06+09:00",
+      "lastVerifiedAt": "2026-09-14T19:48:06+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "displayedAsPrivate": 2
     }
   },
   "protectedOfficialIds": 17861,
-  "explicitOfficialAliasGroupsMerged": 5,
+  "explicitOfficialAliasGroupsMerged": 0,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
-  "degradedPrivateSources": [],
-  "allPublicationEnabledSourcesHealthy": true
+  "degradedPrivateSources": [
+    "lessoninfo"
+  ],
+  "allPublicationEnabledSourcesHealthy": false
 }
