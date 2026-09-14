@@ -34,6 +34,107 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - name: Restore exact support-office traversal before coverage
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import subprocess
+          from pathlib import Path
+
+          parent = '577314551ad18f959f43ec0c04ecfb06c7c23ac9'
+          target = 'scripts/complete_support_coverage.py'
+          parent_sha256 = '78fa7f03fc97360ebbbf13d532533067bac0f2ee85ec6230107831c771c5c040'
+          result_sha256 = '36ba8fa39eb58d41294026c348d590ee8d886eb0b85f01b8a1f3f77d2c3e3ba0'
+
+          raw = subprocess.run(
+              ['git', 'show', f'{parent}:{target}'],
+              check=True,
+              stdout=subprocess.PIPE,
+          ).stdout
+          parent_digest = hashlib.sha256(raw).hexdigest()
+          if parent_digest != parent_sha256:
+              raise SystemExit(f'parent sha256 mismatch: {parent_digest}')
+
+          text = raw.decode('utf-8')
+
+          anchor = 'from bs4 import BeautifulSoup\n'
+          if text.count(anchor) != 1:
+              raise SystemExit('import anchor is not unique')
+          text = text.replace(
+              anchor,
+              anchor + '\nfrom support_population_contract import is_support_population_job\n',
+              1,
+          )
+
+          main_anchor = 'def main():\n'
+          if text.count(main_anchor) != 1:
+              raise SystemExit('main() anchor is not unique')
+          text = text.replace(
+              main_anchor,
+              'def production_filter(rows):\n'
+              '    return [r for r in rows if is_support_population_job(r, as_of=NOW)]\n'
+              '\n'
+              'def main():\n',
+              1,
+          )
+
+          merge_old = '    added = merge(additions)\n'
+          if text.count(merge_old) != 1:
+              raise SystemExit('merge anchor is not unique')
+          text = text.replace(
+              merge_old,
+              '    added = merge(production_filter(additions))\n',
+              1,
+          )
+
+          data = text.encode('utf-8')
+          result_digest = hashlib.sha256(data).hexdigest()
+          if result_digest != result_sha256:
+              raise SystemExit(f'restored content sha256 mismatch: {result_digest}')
+
+          Path(target).write_bytes(data)
+          print(f'restored {target}: {len(text.splitlines())} lines, sha256 {result_digest}')
+          PY
+
+          python -m py_compile scripts/complete_support_coverage.py
+          python scripts/harden_reconciliation_central_lookback.py
+          python scripts/harden_deep_audit.py
+          python scripts/harden_network_retries.py
+          python scripts/harden_central_pagination.py
+          python scripts/harden_fast_pagination.py
+
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+
+          target = Path('scripts/complete_support_coverage.py')
+          expected = '36ba8fa39eb58d41294026c348d590ee8d886eb0b85f01b8a1f3f77d2c3e3ba0'
+          digest = hashlib.sha256(target.read_bytes()).hexdigest()
+          if digest != expected:
+              raise SystemExit(f'hardener changed verified traversal: {digest}')
+          print(f'verified restored traversal sha256: {digest}')
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/complete_support_coverage.py
+          if git diff --cached --quiet; then
+            echo 'support traversal already restored; no restoration commit needed'
+          else
+            git commit -m 'Restore parent support-office traversal with population contract'
+            for i in 1 2 3; do
+              git fetch origin main
+              git rebase --autostash origin/main
+              if git push origin HEAD:main; then
+                break
+              fi
+              if [ "$i" -eq 3 ]; then
+                exit 1
+              fi
+              sleep $((i*5))
+            done
+          fi
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Validate crawler syntax
