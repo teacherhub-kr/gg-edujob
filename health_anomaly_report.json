@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-14T14:07:25+09:00",
+  "generatedAt": "2026-09-14T15:10:38+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-14T14:07:25+09:00",
+    "generatedAt": "2026-09-14T15:10:38+09:00",
     "official": {
       "datasetCount": 19420,
       "officialIdCount": 17861,
@@ -12,10 +12,10 @@
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7250,
+      "publishedJobs": 7249,
       "officialDisplayed": 2888,
-      "privateDisplayed": 4362,
-      "privateDiscovered": 4365,
+      "privateDisplayed": 4361,
+      "privateDiscovered": 4364,
       "officialPrivateAliases": 3,
       "healthy": true,
       "missingPrivateIds": 0,
@@ -272,9 +272,9 @@
         "name": "잡티처",
         "enabled": true,
         "healthy": true,
-        "datasetCount": 4036,
-        "rawCount": 4036,
-        "currentCount": 4036,
+        "datasetCount": 4035,
+        "rawCount": 4035,
+        "currentCount": 4035,
         "missingAfter": 0,
         "detailErrors": 0,
         "traversalComplete": true,
@@ -332,7 +332,7 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-13T14:06:51+09:00",
+      "baselineAt": "2026-09-13T15:12:49+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
@@ -345,9 +345,9 @@
           "changeRatio": 0.0
         },
         "unified.publishedJobs": {
-          "current": 7250,
+          "current": 7249,
           "baseline": 7360,
-          "changeRatio": -0.0149
+          "changeRatio": -0.0151
         },
         "unified.officialDisplayed": {
           "current": 2888,
@@ -355,9 +355,9 @@
           "changeRatio": -0.0292
         },
         "unified.privateDiscovered": {
-          "current": 4365,
+          "current": 4364,
           "baseline": 4388,
-          "changeRatio": -0.0052
+          "changeRatio": -0.0055
         }
       },
       "privateSources": {
@@ -372,9 +372,9 @@
           "changeRatio": 0.0
         },
         "jobteacher": {
-          "current": 4036,
+          "current": 4035,
           "baseline": 4037,
-          "changeRatio": -0.0002
+          "changeRatio": -0.0005
         },
         "artmore": {
           "current": 34,
@@ -399,32 +399,32 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-07T14:08:20+09:00",
+      "baselineAt": "2026-09-07T15:11:56+09:00",
       "metrics": {
         "official.datasetCount": {
           "current": 19420,
-          "baseline": 18880,
-          "changeRatio": 0.0286
+          "baseline": 18957,
+          "changeRatio": 0.0244
         },
         "official.officialIdCount": {
           "current": 17861,
-          "baseline": 17705,
-          "changeRatio": 0.0088
+          "baseline": 17745,
+          "changeRatio": 0.0065
         },
         "unified.publishedJobs": {
-          "current": 7250,
-          "baseline": 7530,
-          "changeRatio": -0.0372
+          "current": 7249,
+          "baseline": 7603,
+          "changeRatio": -0.0466
         },
         "unified.officialDisplayed": {
           "current": 2888,
-          "baseline": 3155,
-          "changeRatio": -0.0846
+          "baseline": 3228,
+          "changeRatio": -0.1053
         },
         "unified.privateDiscovered": {
-          "current": 4365,
+          "current": 4364,
           "baseline": 4386,
-          "changeRatio": -0.0048
+          "changeRatio": -0.005
         }
       },
       "privateSources": {
@@ -439,9 +439,9 @@
           "changeRatio": null
         },
         "jobteacher": {
-          "current": 4036,
+          "current": 4035,
           "baseline": 4036,
-          "changeRatio": 0.0
+          "changeRatio": -0.0002
         },
         "artmore": {
           "current": 34,
