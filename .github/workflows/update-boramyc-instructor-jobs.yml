@@ -58,9 +58,13 @@ jobs:
           assert report.get('traversalComplete') is True
           assert int(report.get('missingAfterCount') or 0) == 0
           assert int(report.get('detailErrorCount') or 0) == 0
+          collected=json.load(open('boramyc_jobs.json',encoding='utf-8'))
+          collected_ids={j.get('sourceIdentity') for j in collected}
+          assert len(collected)==int(report.get('jobCount') or 0), (len(collected), report.get('jobCount'))
           d=json.load(open('unified_jobs.next.json',encoding='utf-8'))
           rows=[j for j in d.get('jobs',[]) if j.get('source')=='시립보라매청소년센터']
-          assert rows and len(rows)==int(report.get('jobCount') or 0), (len(rows), report.get('jobCount'))
+          assert rows and len(rows)<=len(collected), (len(rows), len(collected))
+          assert {j.get('sourceIdentity') for j in rows} <= collected_ids
           assert all(j.get('province')=='서울' and j.get('region')=='동작구' for j in rows)
           assert all('강사' in j.get('searchText','') for j in rows)
           assert all(is_direct_post(j)[0] for j in rows), [is_direct_post(j) for j in rows]
