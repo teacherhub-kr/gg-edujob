@@ -294,7 +294,7 @@ jobs:
           [ ! -f /tmp/deep-publication-transaction.json ] || cp /tmp/deep-publication-transaction.json /tmp/deep-audit-diagnostics/publication_transaction.json
       - name: Upload isolated deep-audit diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: deep-audit-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/deep-audit-diagnostics
@@ -302,7 +302,7 @@ jobs:
           retention-days: 14
       - name: Upload deep-audit publication transaction status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: deep-audit-publication-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/deep-publication-transaction.json

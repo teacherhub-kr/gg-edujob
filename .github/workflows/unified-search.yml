@@ -178,7 +178,7 @@ jobs:
             --message 'Publish verified multi-source recruitment search'
       - name: Upload unified publication transaction status
         if: always() && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: unified-publication-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/unified-publication-transaction.json

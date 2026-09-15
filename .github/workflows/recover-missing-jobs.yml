@@ -222,7 +222,7 @@ jobs:
           [ ! -f /tmp/recovery-publication-transaction.json ] || cp /tmp/recovery-publication-transaction.json /tmp/recovery-diagnostics/publication_transaction.json
       - name: Upload isolated recovery diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: recovery-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/recovery-diagnostics
@@ -230,7 +230,7 @@ jobs:
           retention-days: 14
       - name: Upload recovery publication transaction status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: recovery-publication-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/recovery-publication-transaction.json
