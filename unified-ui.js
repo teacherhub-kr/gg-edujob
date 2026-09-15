@@ -2,14 +2,36 @@
   if(typeof state==='undefined'||typeof filtered!=='function'||typeof card!=='function') return;
   state.sources=state.sources||new Set();
   state.categories=state.categories||new Set();
+  state.subjects=state.subjects||new Set();
+  state.quick=state.quick||'all';
   const SOURCE_VALUES=['공식','민간'];
   const CATEGORY_VALUES=['방과후·늘봄','음악·예체능','문화예술','학원강사','강사·교사','기타 민간구인'];
+  const SUBJECT_VALUES=['국어','영어','수학','과학','사회·역사','음악','미술','체육','특수','보건','상담','사서','영양','정보·컴퓨터','유아'];
+  const SUBJECT_RULES={
+    '국어':/(^|\s)(국어|독서|논술)(\s|$)/,
+    '영어':/(^|\s)(영어|영어회화)(\s|$)/,
+    '수학':/(^|\s)(수학|수리)(\s|$)/,
+    '과학':/(^|\s)(과학|물리|화학|생명과학|생물|지구과학|통합과학)(\s|$)/,
+    '사회·역사':/(^|\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\s|$)/,
+    '음악':/(^|\s)(음악|합창|오케스트라|관현악|밴드)(\s|$)/,
+    '미술':/(^|\s)(미술|디자인)(\s|$)/,
+    '체육':/(^|\s)(체육|스포츠|운동)(\s|$)/,
+    '특수':/(^|\s)(특수|특수교육)(\s|$)/,
+    '보건':/(^|\s)(보건|간호)(\s|$)/,
+    '상담':/(^|\s)(상담|전문상담|위클래스|wee)(\s|$)/,
+    '사서':/(^|\s)(사서|도서관)(\s|$)/,
+    '영양':/(^|\s)(영양|영양교사)(\s|$)/,
+    '정보·컴퓨터':/(^|\s)(정보|컴퓨터|코딩|소프트웨어|ai|인공지능)(\s|$)/,
+    '유아':/(^|\s)(유아|유치원|유치)(\s|$)/,
+  };
   const privateAliases=j=>(j.alsoSeenOn||[]).filter(x=>x&&x.source);
   const hasPrivateAlias=j=>privateAliases(j).length>0;
   const sourceKinds=j=>new Set([...(j.feedKind==='official'?['공식']:['민간']),...(hasPrivateAlias(j)?['민간']:[])]);
   const categorySet=j=>new Set(Array.isArray(j.categories)?j.categories:[]);
   const jobProvincesLocal=j=>{const a=Array.isArray(j.provinces)?j.provinces.filter(Boolean):[];return a.length?[...new Set(a)]:[province(j)]};
   const provinceLabel=j=>jobProvincesLocal(j).join('·')||province(j);
+  const subjectHay=j=>` ${norm([j.subject,j.title,j.schoolLevel,j.type].filter(Boolean).join(' '))} `;
+  const matchesSubject=(j,label)=>SUBJECT_RULES[label]?.test(subjectHay(j))===true;
 
   function addFilterSection(id,title,values,key){
     const panel=document.querySelector('.filter-panel'),selected=document.getElementById('selectedBox');
@@ -22,20 +44,41 @@
   }
   addFilterSection('sourceKindFilters','공고 구분',SOURCE_VALUES,'sources');
   addFilterSection('categoryFilters','구인 분야',CATEGORY_VALUES,'categories');
+  addFilterSection('subjectFilters','과목·담당',SUBJECT_VALUES,'subjects');
 
   const scope=new URLSearchParams(location.search).get('scope');
   if(scope==='official') state.sources=new Set(['공식']);
   if(scope==='private') state.sources=new Set(['민간']);
   document.querySelectorAll('#sourceKindFilters input').forEach(i=>i.checked=state.sources.has(i.value));
 
+  function installQuickFilters(){
+    const toolbarRight=document.querySelector('.toolbar-right');
+    if(!toolbarRight||document.getElementById('quickJobFilters'))return;
+    if(!document.getElementById('benchmarkFacetStyles')){
+      const style=document.createElement('style');
+      style.id='benchmarkFacetStyles';
+      style.textContent='.quick-job-filters{display:flex;gap:4px;align-items:center}.quick-job-filter{border:1px solid #e1e5e8;background:#fff;color:#5f6368;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}.quick-job-filter[aria-pressed="true"]{border-color:#03c75a;background:#effff5;color:#07863c}@media(max-width:650px){.toolbar{flex-wrap:wrap}.toolbar-right{width:100%;justify-content:space-between}.quick-job-filters{overflow-x:auto;max-width:calc(100vw - 170px)}}';
+      document.head.appendChild(style);
+    }
+    const bar=document.createElement('div');bar.id='quickJobFilters';bar.className='quick-job-filters';bar.setAttribute('aria-label','빠른 공고 필터');
+    [['all','전체'],['today','오늘 등록'],['soon3','3일 내 마감']].forEach(([value,label])=>{const btn=document.createElement('button');btn.type='button';btn.className='quick-job-filter';btn.dataset.quick=value;btn.textContent=label;btn.addEventListener('click',()=>{state.quick=value;syncQuickFilters();render()});bar.appendChild(btn)});
+    toolbarRight.insertBefore(bar,toolbarRight.firstChild);
+    syncQuickFilters();
+  }
+  function syncQuickFilters(){document.querySelectorAll('#quickJobFilters .quick-job-filter').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.quick===state.quick)))}
+  installQuickFilters();
+
   const baseFiltered=filtered;
   filtered=function(){return baseFiltered().filter(j=>{
     if(state.sources.size){const kinds=sourceKinds(j);if(![...state.sources].some(k=>kinds.has(k)))return false}
     if(state.categories.size){const cs=categorySet(j);if(![...state.categories].some(c=>cs.has(c)))return false}
+    if(state.subjects.size&&!([...state.subjects].some(s=>matchesSubject(j,s))))return false;
+    if(state.quick==='today'&&!isToday(j.registered))return false;
+    if(state.quick==='soon3'){const d=diffDay(j.applyEnd);if(d===null||d<0||d>3)return false}
     return true;
   })};
 
-  selectionSummary=function(){const parts=[];if(state.provinces.size)parts.push(`시·도 ${[...state.provinces].join(', ')}`);if(state.regions.size)parts.push(`지역 ${state.regions.size}곳`);if(state.schools.size)parts.push(`학교급 ${[...state.schools].join(', ')}`);if(state.types.size)parts.push(`직종 ${[...state.types].join(', ')}`);if(state.sources.size)parts.push(`공고 ${[...state.sources].join('·')}`);if(state.categories.size)parts.push(`분야 ${[...state.categories].join('·')}`);const box=document.getElementById('selectedBox');if(parts.length){box.className='selected-box show';box.innerHTML='<b>선택된 조건</b><br>'+parts.map(esc).join(' · ')}else{box.className='selected-box';box.textContent=''}};
+  selectionSummary=function(){const parts=[];if(state.provinces.size)parts.push(`시·도 ${[...state.provinces].join(', ')}`);if(state.regions.size)parts.push(`지역 ${state.regions.size}곳`);if(state.schools.size)parts.push(`학교급 ${[...state.schools].join(', ')}`);if(state.types.size)parts.push(`직종 ${[...state.types].join(', ')}`);if(state.sources.size)parts.push(`공고 ${[...state.sources].join('·')}`);if(state.categories.size)parts.push(`분야 ${[...state.categories].join('·')}`);if(state.subjects.size)parts.push(`과목·담당 ${[...state.subjects].join('·')}`);if(state.quick==='today')parts.push('오늘 등록');if(state.quick==='soon3')parts.push('3일 내 마감');const box=document.getElementById('selectedBox');if(parts.length){box.className='selected-box show';box.innerHTML='<b>선택된 조건</b><br>'+parts.map(esc).join(' · ')}else{box.className='selected-box';box.textContent=''}};
 
   card=function(j){const d=diffDay(j.applyEnd),today=isToday(j.registered),prov=provinceLabel(j),lvl=schoolLevel(j),typ=jobType(j);const dBadge=d===0?'오늘 마감':d!==null&&d>0&&d<=7?`D-${d}`:'';const regionText=j.location||j.region||((j.regions||[]).join('·'))||prov;const href=postingLink(j),tag=href?'a':'div',linkAttrs=href?` href="${esc(href)}" target="_blank" rel="noopener"`:'';const privateJob=j.feedKind==='private';const trust=privateJob?`민간 · ${esc(j.source||j.sourceSurfaceLabel||'민간 구인')}`:`공식 · ${esc(j.source||'공식 채용 게시판')}`;const trustStyle=privateJob?'background:#fff1dd;color:#9a5a00':'background:#eafaf0;color:#087a42';const surface=privateJob&&j.sourceSurfaceLabel&&j.sourceSurfaceLabel!==j.source?`<span class="badge">${esc(j.sourceSurfaceLabel)}</span>`:'';const aliases=privateAliases(j);const seen=aliases.length?`<span class="badge" style="background:#eef4ff;color:#295e9b">${esc(aliases[0].source)}에서도 확인됨</span>`:'';const cats=(j.categories||[]).slice(0,2).map(c=>`<span class="badge type">${esc(c)}</span>`).join('');const goText=href?'원문 공고 바로가기 ↗':'원문 링크 점검 중';return `<${tag} class="job"${linkAttrs}><div class="jobtop"><div style="min-width:0;flex:1"><div class="badges">${dBadge?`<span class="badge d">${dBadge}</span>`:''}${today?'<span class="badge today">NEW 오늘</span>':''}<span class="badge" style="${trustStyle}">${trust}</span><span class="badge prov ${prov==='서울'?'seoul':''}">${esc(prov)}</span>${surface}${cats}${seen}</div><h2>${esc(j.title||'채용 공고')}</h2><div class="school">${esc(j.school||'기관명 확인')}</div><div class="meta"><div><b>지역</b> ${esc(regionText)}</div><div><b>접수</b> ${periodText(j.applyStart,j.applyEnd)}</div><div><b>채용</b> ${periodText(j.workStart,j.workEnd)}</div><div><b>등록</b> ${fmt(j.registered)}</div></div>${j.subject?`<div class="subject">과목·직무　${esc(j.subject)}</div>`:''}<div class="source">출처 · ${esc(j.source||'채용 게시판')}${privateJob&&j.sourceSurfaceLabel&&j.sourceSurfaceLabel!==j.source?' · '+esc(j.sourceSurfaceLabel):''}${aliases.length?' · 교차확인':''}</div></div><div class="go ${href?'':'pending'}">${goText}</div></div></${tag}>`};
 
@@ -72,6 +115,6 @@
     document.getElementById('sourceGrid').innerHTML=html;renderOverlapNote(data)
   };
 
-  document.getElementById('resetBtn')?.addEventListener('click',()=>{state.sources.clear();state.categories.clear();document.querySelectorAll('#sourceKindFilters input,#categoryFilters input').forEach(i=>i.checked=false);render()});
+  document.getElementById('resetBtn')?.addEventListener('click',()=>{state.sources.clear();state.categories.clear();state.subjects.clear();state.quick='all';document.querySelectorAll('#sourceKindFilters input,#categoryFilters input,#subjectFilters input').forEach(i=>i.checked=false);syncQuickFilters();render()});
   const wait=()=>{if(typeof jobs!=='undefined'&&jobs.length){stats();renderSourceStatus(sourceData);render();return}setTimeout(wait,150)};wait();
 })();
