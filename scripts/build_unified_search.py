@@ -19,6 +19,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
+from stable_source_identity import canonical_source_id
+
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST).date()
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
@@ -71,32 +73,7 @@ def canonical_url(raw):
 
 
 def official_stable_id(job):
-    raw = str(job.get("url") or "")
-    try:
-        p = urlparse(raw)
-        q = parse_qs(p.query)
-    except Exception:
-        p, q = urlparse(""), {}
-    if job.get("sourceType") == "통합게시판":
-        pb = str((q.get("pbancSn") or [""])[0])
-        if pb.isdigit():
-            return f"goe-central:{pb}"
-        rid = str((q.get("q_rcrtSn") or q.get("rcrtSn") or [""])[0])
-        if rid.isdigit():
-            return f"seoul-central:{rid}"
-    province = str(job.get("province") or "")
-    if province == "서울":
-        seq = str((job.get("openParams") or {}).get("job_seq") or (q.get("job_seq") or [""])[0])
-        host = (urlparse(str(job.get("openUrl") or raw)).hostname or "").lower()
-        if host and seq.isdigit():
-            return f"seoul:{host}:{seq}"
-    if province == "경기":
-        host = (p.hostname or "").lower()
-        bbs = str(job.get("bbsId") or (q.get("bbsId") or [""])[0])
-        ntt = str(job.get("nttSn") or (q.get("nttSn") or [""])[0])
-        if host and bbs.isdigit() and ntt.isdigit():
-            return f"mircms:{host}:{bbs}:{ntt}"
-    return ""
+    return canonical_source_id(job)
 
 
 def latest_official_ids(ledger):

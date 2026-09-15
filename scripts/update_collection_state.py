@@ -13,6 +13,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from checkpoint_inventory import seed_configured_boards
+from stable_source_identity import canonical_source_id
 
 ROOT = Path(__file__).resolve().parents[1]
 JOBS = ROOT / "jobs.json"
@@ -103,29 +104,10 @@ def canonical_url(raw):
 
 
 def identity(job):
-    params = job.get("openParams") or {}
-    seq = str(params.get("job_seq") or "")
-    if seq.isdigit():
-        return f"seoul:{urlparse(job.get('openUrl') or job.get('url') or '').netloc}:{seq}"
-    ntt = str(job.get("nttSn") or "")
-    bbs = str(job.get("bbsId") or "")
-    if ntt.isdigit() and bbs.isdigit():
-        return f"mircms:{urlparse(job.get('url') or job.get('boardUrl') or '').netloc}:{bbs}:{ntt}"
+    strong = canonical_source_id(job)
+    if strong:
+        return strong
     raw = job.get("url") or ""
-    try:
-        q = parse_qs(urlparse(raw).query)
-        pb = (q.get("pbancSn") or [""])[0]
-        if pb.isdigit():
-            return f"goe:{pb}"
-        seq2 = (q.get("job_seq") or [""])[0]
-        if seq2.isdigit():
-            return f"seoul:{urlparse(raw).netloc}:{seq2}"
-        ntt2 = (q.get("nttSn") or [""])[0]
-        bbs2 = (q.get("bbsId") or [""])[0]
-        if ntt2.isdigit() and bbs2.isdigit():
-            return f"mircms:{urlparse(raw).netloc}:{bbs2}:{ntt2}"
-    except Exception:
-        pass
     cu = canonical_url(raw)
     if cu:
         return "url:" + cu

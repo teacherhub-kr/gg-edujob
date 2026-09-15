@@ -12,11 +12,11 @@ import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
+from stable_source_identity import canonical_source_id, seoul_cms_detail_id
 from urllib3.util.retry import Retry
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +27,6 @@ OUT_REPORT = ROOT / "seoul_office_cms_recovery_report.json"
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 
-DETAIL_RE = re.compile(r"/CMS/.+/\d+_\d+\.html$", re.I)
 RECRUIT_RE = re.compile(r"채용|구인|모집|기간제|계약제|전문상담사|교육공무직|대체인력|대체직원|근로자", re.I)
 EXCLUDE_RE = re.compile(
     r"합격|응시현황|응시원서\s*접수\s*현황|원서\s*접수\s*현황|접수\s*현황|"
@@ -74,7 +73,8 @@ def guess_type(text):
 def fetch_job(office, item):
     url = item.get("url", "")
     title_hint = clean(item.get("text", ""))
-    if not DETAIL_RE.search(urlparse(url).path):
+    source_identity = seoul_cms_detail_id(url)
+    if not source_identity:
         return None, "not-cms-detail"
     if not RECRUIT_RE.search(title_hint) or EXCLUDE_RE.search(title_hint):
         return None, "title-filter"
@@ -114,6 +114,7 @@ def fetch_job(office, item):
         "applyStart": "", "applyEnd": "", "workStart": "", "workEnd": "",
         "registered": registered, "headcount": "", "source": office,
         "checkedSources": [office], "sourceType": "교육지원청 자체 채용공고",
+        "sourceIdentity": source_identity,
         "url": url, "boardUrl": item.get("boardUrl") or url
     }, "accepted"
 
@@ -123,9 +124,10 @@ def is_recovered_status_notice(job):
     return str(job.get("id", "")).startswith("sen-office-cms-") and bool(EXCLUDE_RE.search(clean(job.get("title", ""))))
 
 
-def should_skip_existing(job, existing_urls):
-    """Only an identical persistent posting URL is sufficient deduplication evidence here."""
-    return bool(job.get("url")) and job["url"] in existing_urls
+def should_skip_existing(job, existing_ids):
+    """Deduplicate only by the canonical strong static-CMS document identity."""
+    identity = canonical_source_id(job)
+    return bool(identity) and identity in existing_ids
 
 
 def load_json(path):
@@ -181,14 +183,18 @@ def discovered_offices():
 
 
 def self_test():
-    existing = {"https://example.sen.go.kr/CMS/recruit/recruit01/1234567_9999.html"}
-    same_url = {"url": next(iter(existing)), "title": "기간제교원 채용", "registered": "2026/09/05"}
+    existing_url = "https://example.sen.go.kr/CMS/recruit/recruit01/1234567_9999.html"
+    existing = {canonical_source_id({"province": "서울", "url": existing_url})}
+    same_url = {"province": "서울", "url": existing_url, "title": "기간제교원 채용", "registered": "2026/09/05"}
+    same_document_http = dict(same_url, url=existing_url.replace("https://", "http://"))
     same_text_different_url = {
+        "province": "서울",
         "url": "https://example.sen.go.kr/CMS/recruit/recruit01/1234568_9999.html",
         "title": "기간제교원 채용",
         "registered": "2026/09/05",
     }
     assert should_skip_existing(same_url, existing)
+    assert should_skip_existing(same_document_http, existing)
     assert not should_skip_existing(same_text_different_url, existing)
     print("Seoul CMS stable-URL dedup self-test passed")
 
@@ -204,7 +210,7 @@ def main():
     original_jobs = payload.get("jobs", [])
     removed = [j for j in original_jobs if is_recovered_status_notice(j)]
     jobs = [j for j in original_jobs if not is_recovered_status_notice(j)]
-    existing_urls = {j.get("url", "") for j in jobs if j.get("url")}
+    existing_ids = {identity for j in jobs if (identity := canonical_source_id(j))}
     accepted, skipped = [], []
     for office_row in office_rows:
         office = office_row.get("name", "")
@@ -213,11 +219,11 @@ def main():
             if not job:
                 skipped.append({"office": office, "url": item.get("url", ""), "reason": reason})
                 continue
-            if should_skip_existing(job, existing_urls):
+            if should_skip_existing(job, existing_ids):
                 skipped.append({"office": office, "url": job["url"], "reason": "already-present-url"})
                 continue
             jobs.append(job); accepted.append(job)
-            existing_urls.add(job["url"])
+            existing_ids.add(canonical_source_id(job))
     if accepted or removed:
         jobs.sort(key=lambda j: (j.get("registered", ""), j.get("applyEnd", "")), reverse=True)
         payload["jobs"] = jobs

@@ -1,0 +1,47 @@
+name: Stable source identity regression
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/stable-source-identity-regression.yml'
+      - 'scripts/stable_source_identity.py'
+      - 'scripts/update_collector_status.py'
+      - 'scripts/reconcile_source_ids.py'
+      - 'scripts/audit_operational_quality.py'
+      - 'scripts/build_unified_search.py'
+      - 'scripts/merge_recovery_snapshot.py'
+      - 'scripts/update_collection_state.py'
+      - 'scripts/recover_seoul_office_cms_jobs.py'
+      - 'tests/test_stable_source_identity.py'
+      - 'tests/fixtures/seoul_cms_parse_failures.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  stable-id:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Compile stable identity consumers
+        run: >-
+          python -m py_compile
+          scripts/stable_source_identity.py
+          scripts/update_collector_status.py
+          scripts/reconcile_source_ids.py
+          scripts/audit_operational_quality.py
+          scripts/build_unified_search.py
+          scripts/merge_recovery_snapshot.py
+          scripts/update_collection_state.py
+          scripts/recover_seoul_office_cms_jobs.py
+      - name: Test canonical strong identities
+        run: python -m unittest tests.test_stable_source_identity -v
+      - name: Keep M0 automatic state changes frozen
+        run: python scripts/audit_m0_maintenance_freeze.py

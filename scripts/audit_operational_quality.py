@@ -17,6 +17,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
+from stable_source_identity import canonical_source_id
+
 ROOT = Path(__file__).resolve().parents[1]
 JOBS_PATH = ROOT / "jobs.json"
 RECON_PATH = ROOT / "source_reconciliation_report.json"
@@ -81,37 +83,7 @@ def canonical_url(raw):
 
 
 def stable_id(job):
-    params = job.get("openParams") or {}
-    seq = str(params.get("job_seq") or "")
-    host = (urlparse(job.get("openUrl") or job.get("url") or "").hostname or "").lower()
-    if seq.isdigit():
-        return f"seoul-support:{host}:{seq}"
-
-    ntt = str(job.get("nttSn") or "")
-    bbs = str(job.get("bbsId") or "")
-    if ntt.isdigit() and bbs.isdigit():
-        return f"mircms:{host}:{bbs}:{ntt}"
-
-    for raw in (job.get("url"), job.get("openUrl")):
-        try:
-            p = urlparse(raw or "")
-            q = parse_qs(p.query)
-            pb = (q.get("pbancSn") or [""])[0]
-            if pb.isdigit():
-                return f"goe-central:{pb}"
-            qr = (q.get("q_rcrtSn") or q.get("rcrtSn") or [""])[0]
-            if str(qr).isdigit():
-                return f"seoul-central:{qr}"
-            ntt2 = (q.get("nttSn") or [""])[0]
-            bbs2 = (q.get("bbsId") or [""])[0]
-            if ntt2.isdigit() and bbs2.isdigit():
-                return f"mircms:{(p.hostname or '').lower()}:{bbs2}:{ntt2}"
-            seq2 = (q.get("job_seq") or [""])[0]
-            if seq2.isdigit():
-                return f"seoul-support:{(p.hostname or '').lower()}:{seq2}"
-        except Exception:
-            pass
-    return ""
+    return canonical_source_id(job)
 
 
 def sample(job):
