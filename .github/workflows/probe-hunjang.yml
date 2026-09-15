@@ -2,16 +2,6 @@ name: Probe Hunjang public recruitment structure
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 * * 1-12 *'
-  push:
-    paths:
-      - 'scripts/probe_hunjang_browser.py'
-      - 'scripts/probe_hunjang_public_bundles.py'
-      - 'scripts/harden_hunjang_probe_gate.py'
-      - 'scripts/summarize_hunjang_probe.py'
-      - '.github/workflows/probe-hunjang.yml'
-
 permissions:
   contents: write
 

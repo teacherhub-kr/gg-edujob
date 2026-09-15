@@ -2,13 +2,6 @@ name: Verify exact support-office posting links
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/resolve_support_links.py'
-      - 'scripts/hotfix_link_resolver_pagination.py'
-      - 'scripts/verify_exact_support_links.py'
-      - '.github/workflows/exact-link-integrity.yml'
-
 permissions:
   contents: write
 

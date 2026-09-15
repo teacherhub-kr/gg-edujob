@@ -1,13 +1,7 @@
 name: Lessoninfo sudden-drop guard
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'lessoninfo_jobs.json'
-      - 'lessoninfo_reconciliation_report.json'
-      - 'lessoninfo_collection_state.json'
-
+  workflow_dispatch:
 permissions:
   contents: write
 

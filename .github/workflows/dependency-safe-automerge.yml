@@ -1,10 +1,7 @@
 name: Safe dependency auto merge
 
 on:
-  workflow_run:
-    workflows: ['Dependency update verification']
-    types: [completed]
-
+  workflow_dispatch:
 permissions:
   contents: write
   pull-requests: write

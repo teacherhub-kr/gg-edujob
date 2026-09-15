@@ -3,19 +3,6 @@ name: Support-office coverage heartbeat
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '37 19 * 1-12 *' # 04:37 KST daily
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/complete_support_coverage.py'
-      - 'scripts/verify_support_completeness.py'
-      - 'scripts/resolve_support_links.py'
-      - 'scripts/update_collector_status.py'
-      - 'sources.json'
-      - 'board_cache.json'
-      - '.github/workflows/support-coverage-heartbeat.yml'
-
 permissions:
   contents: write
 

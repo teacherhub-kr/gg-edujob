@@ -1,10 +1,7 @@
 name: Normalize failed collector status
 
 on:
-  push:
-    paths:
-      - 'collector_status.json'
-
+  workflow_dispatch:
 permissions:
   contents: write
 

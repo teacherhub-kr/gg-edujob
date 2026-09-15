@@ -2,19 +2,6 @@ name: Recover isolated reconciliation candidate
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - 'Reconcile official recruitment source IDs'
-    types:
-      - completed
-  push:
-    branches:
-      - main
-    paths:
-      - 'reconciliation_failure_report.json'
-      - 'source_id_ledger.candidate.json'
-      - '.github/workflows/reconciliation-candidate-recovery.yml'
-
 permissions:
   contents: write
 

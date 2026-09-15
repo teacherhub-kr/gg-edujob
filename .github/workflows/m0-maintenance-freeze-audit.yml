@@ -1,0 +1,23 @@
+name: M0 maintenance freeze audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/audit_m0_maintenance_freeze.py'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify automatic state changes remain frozen
+        run: python scripts/audit_m0_maintenance_freeze.py

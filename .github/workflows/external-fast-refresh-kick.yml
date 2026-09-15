@@ -1,9 +1,6 @@
 name: External fast refresh kick bridge
 
 on:
-  push:
-    paths:
-      - '.github/fast-refresh-kick.txt'
   workflow_dispatch:
 
 permissions:

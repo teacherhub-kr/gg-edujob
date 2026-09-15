@@ -1,10 +1,7 @@
 name: Diagnose fast collector hardening
 
 on:
-  push:
-    paths:
-      - '.github/workflows/debug-collector.yml'
-
+  workflow_dispatch:
 permissions:
   contents: write
 

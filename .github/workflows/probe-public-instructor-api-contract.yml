@@ -2,11 +2,6 @@ name: Probe Public Instructor API contract
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_public_instructor_api_contract.py'
-      - '.github/workflows/probe-public-instructor-api-contract.yml'
-
 permissions:
   contents: write
 

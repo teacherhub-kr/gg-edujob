@@ -1,9 +1,6 @@
 name: Hotfix GOE detail links
 
 on:
-  push:
-    paths:
-      - '.github/workflows/hotfix-goe-links.yml'
   workflow_dispatch:
 
 permissions:

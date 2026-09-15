@@ -1,10 +1,7 @@
 name: Inspect Seoul recruitment pages
 
 on:
-  push:
-    paths:
-      - '.github/workflows/inspect-goe.yml'
-
+  workflow_dispatch:
 permissions:
   contents: write
 

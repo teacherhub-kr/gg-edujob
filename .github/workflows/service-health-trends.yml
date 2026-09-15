@@ -2,15 +2,6 @@ name: Service health trends
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/update_health_trends.py'
-      - 'scripts/update_official_source_trends.py'
-      - 'scripts/check_official_source_freshness.py'
-      - '.github/workflows/service-health-trends.yml'
-  schedule:
-    - cron: '57 * * 1-12 *'
-
 permissions:
   contents: write
 

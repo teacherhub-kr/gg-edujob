@@ -2,24 +2,6 @@ name: Reconcile official recruitment source IDs
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/source-id-reconciliation.yml'
-      - 'scripts/reconcile_source_ids.py'
-      - 'scripts/harden_reconciliation_central_lookback.py'
-      - 'scripts/crawl_gyeonggi_central_recent.py'
-      - 'scripts/verify_gyeonggi_central_90d.py'
-      - 'scripts/verify_central_pagination.py'
-      - 'scripts/verify_central_reconciliation_consistency.py'
-      - 'scripts/validate_reconciliation_policy.py'
-      - 'scripts/scan_identity.py'
-      - 'scripts/stamp_reconciliation_scan.py'
-      - 'scripts/preserve_reconciliation_candidate.py'
-  schedule:
-    - cron: '37 * * 1-12 *' # hourly at :37 UTC; independent 38-source proof every hour
-
 permissions:
   contents: write
 

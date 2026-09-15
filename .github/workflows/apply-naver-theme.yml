@@ -2,12 +2,6 @@ name: Apply Naver-inspired site theme
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'naver-theme.css'
-      - 'mobile-ui.js'
-      - '.github/workflows/apply-naver-theme.yml'
-
 permissions:
   contents: write
 

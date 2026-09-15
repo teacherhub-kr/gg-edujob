@@ -2,14 +2,6 @@ name: Update ArtMore candidate jobs
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/crawl_artmore_browser.py'
-      - 'scripts/crawl_artmore_browser_v2.py'
-      - '.github/workflows/update-artmore-candidate.yml'
-  schedule:
-    - cron: '47 */2 * 1-12 *'
-
 permissions:
   contents: write
 

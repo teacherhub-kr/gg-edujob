@@ -1,9 +1,6 @@
 name: Install source attribution normalization
 
 on:
-  push:
-    paths:
-      - '.github/workflows/install-source-attribution-normalizer.yml'
   workflow_dispatch:
 
 permissions:

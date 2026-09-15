@@ -2,13 +2,6 @@ name: Update Gonggonggangsa jobs
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 * * 1-12 *'
-  push:
-    paths:
-      - 'scripts/crawl_gonggonggangsa_jobs.py'
-      - '.github/workflows/update-gonggonggangsa-jobs.yml'
-
 permissions:
   contents: write
 

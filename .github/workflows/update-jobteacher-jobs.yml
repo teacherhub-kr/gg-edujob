@@ -2,14 +2,6 @@ name: Update JobTeacher recruitment jobs
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/crawl_jobteacher_browser.py'
-      - 'scripts/validate_jobteacher_links.py'
-      - '.github/workflows/update-jobteacher-jobs.yml'
-  schedule:
-    - cron: '43 * * 1-12 *'
-
 permissions:
   contents: write
 

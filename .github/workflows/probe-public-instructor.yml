@@ -2,11 +2,6 @@ name: Probe Public Instructor source
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/probe_public_instructor.py'
-      - '.github/workflows/probe-public-instructor.yml'
-
 permissions:
   contents: write
 
