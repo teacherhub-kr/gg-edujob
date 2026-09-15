@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-15 07:51:33 KST",
+  "generatedAt": "2026-09-15 09:54:50 KST",
   "policy": "diagnostic-first; stable-ID/URL duplicates are strong evidence, semantic duplicates are review-only; source activity uses 1d/7d/30d registration windows",
   "summary": {
-    "publishedJobs": 20077,
-    "officialIds": 17339,
-    "publishedToOfficialRatio": 1.158,
-    "exactStableIdDuplicateGroups": 180,
-    "exactStableIdExtraRecords": 180,
-    "exactUrlDuplicateGroups": 180,
-    "exactUrlExtraRecords": 180,
+    "publishedJobs": 19927,
+    "officialIds": 17364,
+    "publishedToOfficialRatio": 1.148,
+    "exactStableIdDuplicateGroups": 0,
+    "exactStableIdExtraRecords": 0,
+    "exactUrlDuplicateGroups": 0,
+    "exactUrlExtraRecords": 0,
     "semanticDuplicateGroupsReviewOnly": 288,
-    "resultLikeNotices": 1,
+    "resultLikeNotices": 0,
     "staleInactiveOver120Days": 1,
     "missingDetailLinks": 0,
     "reconciledSources": 38,
@@ -19,21 +19,6 @@
     "sourcesWithNoRegistrations7d": 6
   },
   "findings": [
-    {
-      "severity": "warning",
-      "code": "exact-stable-id-duplicates",
-      "count": 180
-    },
-    {
-      "severity": "warning",
-      "code": "exact-detail-url-duplicates",
-      "count": 180
-    },
-    {
-      "severity": "warning",
-      "code": "result-notice-contamination",
-      "count": 1
-    },
     {
       "severity": "warning",
       "code": "stale-inactive-overcollection",
@@ -57,19 +42,19 @@
     {
       "province": "경기",
       "name": "경기도교육청 통합 구인구직",
-      "officialIdCount": 9971,
-      "publishedRecords": 10606,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 233,
-      "registeredLast7d": 721,
-      "registeredLast30d": 3527,
+      "officialIdCount": 9979,
+      "publishedRecords": 10614,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 241,
+      "registeredLast7d": 729,
+      "registeredLast30d": 3535,
       "population1dAgo": 10372,
-      "populationDelta1d": 234,
+      "populationDelta1d": 242,
       "populationRatio1d": 1.023,
       "population7dAgo": 10308,
-      "populationDelta7d": 298,
-      "populationRatio7d": 1.029,
+      "populationDelta7d": 306,
+      "populationRatio7d": 1.03,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -79,19 +64,19 @@
     {
       "province": "서울",
       "name": "서울교육일자리포털",
-      "officialIdCount": 374,
-      "publishedRecords": 1759,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 104,
-      "registeredLast7d": 456,
-      "registeredLast30d": 1705,
+      "officialIdCount": 384,
+      "publishedRecords": 1775,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 119,
+      "registeredLast7d": 472,
+      "registeredLast30d": 1721,
       "population1dAgo": 1646,
-      "populationDelta1d": 113,
-      "populationRatio1d": 1.069,
+      "populationDelta1d": 129,
+      "populationRatio1d": 1.078,
       "population7dAgo": 1315,
-      "populationDelta7d": 444,
-      "populationRatio7d": 1.338,
+      "populationDelta7d": 460,
+      "populationRatio7d": 1.35,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -146,18 +131,18 @@
       "province": "경기",
       "name": "광명교육지원청",
       "officialIdCount": 279,
-      "publishedRecords": 313,
+      "publishedRecords": 301,
       "latestRegistered": "2026-09-14",
       "freshnessDays": 1,
       "registeredLast1d": 4,
       "registeredLast7d": 18,
-      "registeredLast30d": 94,
+      "registeredLast30d": 87,
       "population1dAgo": 294,
-      "populationDelta1d": 19,
-      "populationRatio1d": 1.065,
+      "populationDelta1d": 7,
+      "populationRatio1d": 1.024,
       "population7dAgo": 303,
-      "populationDelta7d": 10,
-      "populationRatio7d": 1.033,
+      "populationDelta7d": -2,
+      "populationRatio7d": 0.993,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -167,19 +152,19 @@
     {
       "province": "경기",
       "name": "광주하남교육지원청",
-      "officialIdCount": 323,
-      "publishedRecords": 349,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 10,
-      "registeredLast7d": 31,
-      "registeredLast30d": 99,
+      "officialIdCount": 324,
+      "publishedRecords": 350,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 11,
+      "registeredLast7d": 32,
+      "registeredLast30d": 100,
       "population1dAgo": 335,
-      "populationDelta1d": 14,
-      "populationRatio1d": 1.042,
+      "populationDelta1d": 15,
+      "populationRatio1d": 1.045,
       "population7dAgo": 337,
-      "populationDelta7d": 12,
-      "populationRatio7d": 1.036,
+      "populationDelta7d": 13,
+      "populationRatio7d": 1.039,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -255,19 +240,19 @@
     {
       "province": "경기",
       "name": "동두천양주교육지원청",
-      "officialIdCount": 471,
-      "publishedRecords": 545,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 11,
-      "registeredLast7d": 44,
-      "registeredLast30d": 201,
+      "officialIdCount": 472,
+      "publishedRecords": 546,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 12,
+      "registeredLast7d": 45,
+      "registeredLast30d": 202,
       "population1dAgo": 519,
-      "populationDelta1d": 26,
-      "populationRatio1d": 1.05,
+      "populationDelta1d": 27,
+      "populationRatio1d": 1.052,
       "population7dAgo": 510,
-      "populationDelta7d": 35,
-      "populationRatio7d": 1.069,
+      "populationDelta7d": 36,
+      "populationRatio7d": 1.071,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -277,19 +262,19 @@
     {
       "province": "경기",
       "name": "부천교육지원청",
-      "officialIdCount": 669,
-      "publishedRecords": 747,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 12,
+      "officialIdCount": 670,
+      "publishedRecords": 718,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 13,
       "registeredLast7d": 39,
-      "registeredLast30d": 197,
+      "registeredLast30d": 188,
       "population1dAgo": 703,
-      "populationDelta1d": 44,
-      "populationRatio1d": 1.063,
+      "populationDelta1d": 15,
+      "populationRatio1d": 1.021,
       "population7dAgo": 718,
-      "populationDelta7d": 29,
-      "populationRatio7d": 1.04,
+      "populationDelta7d": 0,
+      "populationRatio7d": 1.0,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -344,18 +329,18 @@
       "province": "경기",
       "name": "시흥교육지원청",
       "officialIdCount": 64,
-      "publishedRecords": 69,
+      "publishedRecords": 68,
       "latestRegistered": "2026-09-11",
       "freshnessDays": 4,
       "registeredLast1d": 0,
       "registeredLast7d": 5,
-      "registeredLast30d": 22,
+      "registeredLast30d": 21,
       "population1dAgo": 68,
-      "populationDelta1d": 1,
-      "populationRatio1d": 1.015,
+      "populationDelta1d": 0,
+      "populationRatio1d": 1.0,
       "population7dAgo": 66,
-      "populationDelta7d": 3,
-      "populationRatio7d": 1.045,
+      "populationDelta7d": 2,
+      "populationRatio7d": 1.03,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -388,18 +373,18 @@
       "province": "경기",
       "name": "안성교육지원청",
       "officialIdCount": 210,
-      "publishedRecords": 248,
+      "publishedRecords": 233,
       "latestRegistered": "2026-09-14",
       "freshnessDays": 1,
       "registeredLast1d": 4,
-      "registeredLast7d": 17,
-      "registeredLast30d": 71,
+      "registeredLast7d": 15,
+      "registeredLast30d": 67,
       "population1dAgo": 222,
-      "populationDelta1d": 26,
-      "populationRatio1d": 1.117,
+      "populationDelta1d": 11,
+      "populationRatio1d": 1.05,
       "population7dAgo": 215,
-      "populationDelta7d": 33,
-      "populationRatio7d": 1.153,
+      "populationDelta7d": 18,
+      "populationRatio7d": 1.084,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -431,19 +416,19 @@
     {
       "province": "경기",
       "name": "양평교육지원청",
-      "officialIdCount": 154,
-      "publishedRecords": 176,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 1,
-      "registeredLast7d": 6,
-      "registeredLast30d": 45,
+      "officialIdCount": 155,
+      "publishedRecords": 177,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 2,
+      "registeredLast7d": 7,
+      "registeredLast30d": 46,
       "population1dAgo": 175,
-      "populationDelta1d": 1,
-      "populationRatio1d": 1.006,
+      "populationDelta1d": 2,
+      "populationRatio1d": 1.011,
       "population7dAgo": 180,
-      "populationDelta7d": -4,
-      "populationRatio7d": 0.978,
+      "populationDelta7d": -3,
+      "populationRatio7d": 0.983,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -498,18 +483,18 @@
       "province": "경기",
       "name": "용인교육지원청",
       "officialIdCount": 121,
-      "publishedRecords": 133,
+      "publishedRecords": 131,
       "latestRegistered": "2026-09-14",
       "freshnessDays": 1,
-      "registeredLast1d": 5,
-      "registeredLast7d": 7,
-      "registeredLast30d": 33,
+      "registeredLast1d": 4,
+      "registeredLast7d": 6,
+      "registeredLast30d": 31,
       "population1dAgo": 126,
-      "populationDelta1d": 7,
-      "populationRatio1d": 1.056,
+      "populationDelta1d": 5,
+      "populationRatio1d": 1.04,
       "population7dAgo": 134,
-      "populationDelta7d": -1,
-      "populationRatio7d": 0.993,
+      "populationDelta7d": -3,
+      "populationRatio7d": 0.978,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -564,18 +549,18 @@
       "province": "경기",
       "name": "파주교육지원청",
       "officialIdCount": 451,
-      "publishedRecords": 524,
+      "publishedRecords": 485,
       "latestRegistered": "2026-09-14",
       "freshnessDays": 1,
-      "registeredLast1d": 18,
-      "registeredLast7d": 48,
-      "registeredLast30d": 179,
+      "registeredLast1d": 14,
+      "registeredLast7d": 41,
+      "registeredLast30d": 158,
       "population1dAgo": 469,
-      "populationDelta1d": 55,
-      "populationRatio1d": 1.117,
+      "populationDelta1d": 16,
+      "populationRatio1d": 1.034,
       "population7dAgo": 473,
-      "populationDelta7d": 51,
-      "populationRatio7d": 1.108,
+      "populationDelta7d": 12,
+      "populationRatio7d": 1.025,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -585,19 +570,19 @@
     {
       "province": "경기",
       "name": "평택교육지원청",
-      "officialIdCount": 741,
-      "publishedRecords": 788,
-      "latestRegistered": "2026-09-14",
-      "freshnessDays": 1,
-      "registeredLast1d": 15,
-      "registeredLast7d": 45,
-      "registeredLast30d": 252,
+      "officialIdCount": 744,
+      "publishedRecords": 791,
+      "latestRegistered": "2026-09-15",
+      "freshnessDays": 0,
+      "registeredLast1d": 18,
+      "registeredLast7d": 48,
+      "registeredLast30d": 255,
       "population1dAgo": 772,
-      "populationDelta1d": 16,
-      "populationRatio1d": 1.021,
+      "populationDelta1d": 19,
+      "populationRatio1d": 1.025,
       "population7dAgo": 776,
-      "populationDelta7d": 12,
-      "populationRatio7d": 1.015,
+      "populationDelta7d": 15,
+      "populationRatio7d": 1.019,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -740,18 +725,18 @@
       "province": "서울",
       "name": "중부교육지원청",
       "officialIdCount": 44,
-      "publishedRecords": 65,
+      "publishedRecords": 46,
       "latestRegistered": "2026-09-07",
       "freshnessDays": 8,
       "registeredLast1d": 0,
       "registeredLast7d": 0,
-      "registeredLast30d": 15,
+      "registeredLast30d": 10,
       "population1dAgo": 46,
-      "populationDelta1d": 19,
-      "populationRatio1d": 1.413,
+      "populationDelta1d": 0,
+      "populationRatio1d": 1.0,
       "population7dAgo": 52,
-      "populationDelta7d": 13,
-      "populationRatio7d": 1.25,
+      "populationDelta7d": -6,
+      "populationRatio7d": 0.885,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -784,18 +769,18 @@
       "province": "서울",
       "name": "강서양천교육지원청",
       "officialIdCount": 122,
-      "publishedRecords": 197,
+      "publishedRecords": 134,
       "latestRegistered": "2026-09-11",
       "freshnessDays": 4,
       "registeredLast1d": 0,
-      "registeredLast7d": 8,
-      "registeredLast30d": 50,
+      "registeredLast7d": 4,
+      "registeredLast30d": 32,
       "population1dAgo": 133,
-      "populationDelta1d": 64,
-      "populationRatio1d": 1.481,
+      "populationDelta1d": 1,
+      "populationRatio1d": 1.008,
       "population7dAgo": 141,
-      "populationDelta7d": 56,
-      "populationRatio7d": 1.397,
+      "populationDelta7d": -7,
+      "populationRatio7d": 0.95,
       "population30dAgo": null,
       "populationDelta30d": null,
       "populationRatio30d": null,
@@ -892,941 +877,9 @@
     }
   ],
   "examples": {
-    "exactStableIdDuplicates": [
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350573",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "지산초등학교",
-            "title": "[지산초] 보건 시간 강사 채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/18",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350573&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 지산초등학교",
-            "title": "[지산초] 보건 시간 강사 채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/18",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350573&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350689",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(일반사회)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350689&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(일반사회)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350689&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350687",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(영어)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350687&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(영어)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350687&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350569",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "파평중학교",
-            "title": "[파평중] 시간 강사 채용 공고(체육)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350569&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 파평중학교",
-            "title": "[파평중] 시간 강사 채용 공고(체육)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350569&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goeyi.kr:12219:1567013",
-        "records": [
-          {
-            "province": "경기",
-            "source": "용인교육지원청",
-            "school": "문정중학교",
-            "title": "기간제교사(정보)채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1567013&mi=20165"
-          },
-          {
-            "province": "경기",
-            "source": "용인교육지원청",
-            "school": "학교명 문정중학교",
-            "title": "기간제교사(정보)채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "",
-            "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1567013&mi=20165"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350444",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "한가람중학교",
-            "title": "기간제 교원 채용 공고 [국어]",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1350444"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 한가람중학교",
-            "title": "기간제 교원 채용 공고 [국어]",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350444&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1350338",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금신초등학교",
-            "title": "계약제교원(영어 전담) 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/15",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1350338"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금신초등학교",
-            "title": "계약제교원(영어 전담) 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/15",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350338&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goebc.kr:6381:1231852",
-        "records": [
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "부일중학교",
-            "title": "[부일중] 국어 시간강사 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1231852"
-          },
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "기관명 부일중학교",
-            "title": "[부일중] 국어 시간강사 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1231852"
-          }
-        ]
-      },
-      {
-        "stableId": "seoul-support:gsycedu.sen.go.kr:15126",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울경인유치원",
-            "title": "비정규직",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울경인유치원",
-            "title": "특수교사 수업 부담 경감 시간강사",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goean.kr:2801:1103984",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안청중학교",
-            "title": "계약제교원 채용 공고(보건, 2차)",
-            "registered": "2026/09/10",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103984"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안청중학교",
-            "title": "계약제교원 채용 공고(보건, 2차)",
-            "registered": "2026/09/10",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103984&mi=4565"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goean.kr:2801:1103944",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안성여자고등학교",
-            "title": "시간강사(기술) 채용 공고",
-            "registered": "2026/09/10",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103944"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안성여자고등학교",
-            "title": "시간강사(기술) 채용 공고",
-            "registered": "2026/09/10",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103944&mi=4565"
-          }
-        ]
-      },
-      {
-        "stableId": "seoul-support:gsycedu.sen.go.kr:15125",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울강신초등학교병설유치원",
-            "title": "기간제",
-            "registered": "2026/09/09",
-            "applyEnd": "2026/10/12",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울강신초등학교병설유치원",
-            "title": "육아시간 대체강사",
-            "registered": "2026/09/09",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1349559",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "동패고등학교",
-            "title": "[동패고] 시간강사(체육) 채용 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1349559"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 동패고등학교",
-            "title": "[동패고] 시간강사(체육) 채용 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349559&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "seoul-support:gsycedu.sen.go.kr:15124",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "학교통합지원과",
-            "title": "비정규직",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "학교통합지원과",
-            "title": "[서울특별시강서양천교육지원청] 관내 월촌중학교 지방공무원(시설관리) 대체직원 채용계획 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124"
-          }
-        ]
-      },
-      {
-        "stableId": "seoul-support:gsycedu.sen.go.kr:15123",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울금낭화유치원",
-            "title": "기간제",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울금낭화유치원",
-            "title": "대체조리원",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goepj.kr:7202:1349458",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "교하중학교",
-            "title": "[교하중] 과학 강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1349458"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 교하중학교",
-            "title": "[교하중] 과학 강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349458&mi=10838"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goean.kr:2801:1103562",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안청중학교",
-            "title": "계약제교원 시간강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103562"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안청중학교",
-            "title": "계약제교원 시간강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103562&mi=4565"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goebc.kr:6381:1230852",
-        "records": [
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "부천부곡중학교",
-            "title": "시간강사 채용(체육)",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1230852"
-          },
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "기관명 부천부곡중학교",
-            "title": "시간강사 채용(체육)",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1230852"
-          }
-        ]
-      },
-      {
-        "stableId": "seoul-support:jbedu.sen.go.kr:3440",
-        "records": [
-          {
-            "province": "서울",
-            "source": "중부교육지원청",
-            "school": "서울혜화초등학교병설유치원",
-            "title": "시간제",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440"
-          },
-          {
-            "province": "서울",
-            "source": "중부교육지원청",
-            "school": "서울혜화초등학교병설유치원",
-            "title": "방과후 과정 에듀케어 운영 및 돌봄",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440"
-          }
-        ]
-      },
-      {
-        "stableId": "mircms:www.goegm.kr:4225:1259400",
-        "records": [
-          {
-            "province": "경기",
-            "source": "광명교육지원청",
-            "school": "광문고등학교",
-            "title": "[광문고] 영어 시간강사 공고",
-            "registered": "2026/09/04",
-            "applyEnd": "2026/09/07",
-            "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1259400"
-          },
-          {
-            "province": "경기",
-            "source": "광명교육지원청",
-            "school": "기관명 광문고등학교",
-            "title": "[광문고] 영어 시간강사 공고",
-            "registered": "2026/09/04",
-            "applyEnd": "",
-            "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&nttSn=1259400&mi=5826"
-          }
-        ]
-      }
-    ],
-    "exactUrlDuplicates": [
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350573",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "지산초등학교",
-            "title": "[지산초] 보건 시간 강사 채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/18",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350573&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 지산초등학교",
-            "title": "[지산초] 보건 시간 강사 채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/18",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350573&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350689",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(일반사회)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350689&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(일반사회)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350689&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350687",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(영어)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350687&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금촌고등학교",
-            "title": "[금촌고] 시간 강사 채용(영어)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350687&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350569",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "파평중학교",
-            "title": "[파평중] 시간 강사 채용 공고(체육)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350569&mi=10838"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 파평중학교",
-            "title": "[파평중] 시간 강사 채용 공고(체육)",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350569&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1567013",
-        "records": [
-          {
-            "province": "경기",
-            "source": "용인교육지원청",
-            "school": "문정중학교",
-            "title": "기간제교사(정보)채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "2026/09/17",
-            "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1567013&mi=20165"
-          },
-          {
-            "province": "경기",
-            "source": "용인교육지원청",
-            "school": "학교명 문정중학교",
-            "title": "기간제교사(정보)채용 공고",
-            "registered": "2026/09/14",
-            "applyEnd": "",
-            "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&nttSn=1567013&mi=20165"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350444",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "한가람중학교",
-            "title": "기간제 교원 채용 공고 [국어]",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1350444"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 한가람중학교",
-            "title": "기간제 교원 채용 공고 [국어]",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350444&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350338",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "금신초등학교",
-            "title": "계약제교원(영어 전담) 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/15",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1350338"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 금신초등학교",
-            "title": "계약제교원(영어 전담) 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/15",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1350338&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1231852",
-        "records": [
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "부일중학교",
-            "title": "[부일중] 국어 시간강사 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1231852"
-          },
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "기관명 부일중학교",
-            "title": "[부일중] 국어 시간강사 채용 공고",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1231852"
-          }
-        ]
-      },
-      {
-        "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울경인유치원",
-            "title": "비정규직",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울경인유치원",
-            "title": "특수교사 수업 부담 경감 시간강사",
-            "registered": "2026/09/11",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103984",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안청중학교",
-            "title": "계약제교원 채용 공고(보건, 2차)",
-            "registered": "2026/09/10",
-            "applyEnd": "2026/09/16",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103984"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안청중학교",
-            "title": "계약제교원 채용 공고(보건, 2차)",
-            "registered": "2026/09/10",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103984&mi=4565"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103944",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안성여자고등학교",
-            "title": "시간강사(기술) 채용 공고",
-            "registered": "2026/09/10",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103944"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안성여자고등학교",
-            "title": "시간강사(기술) 채용 공고",
-            "registered": "2026/09/10",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103944&mi=4565"
-          }
-        ]
-      },
-      {
-        "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울강신초등학교병설유치원",
-            "title": "기간제",
-            "registered": "2026/09/09",
-            "applyEnd": "2026/10/12",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울강신초등학교병설유치원",
-            "title": "육아시간 대체강사",
-            "registered": "2026/09/09",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15125"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349559",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "동패고등학교",
-            "title": "[동패고] 시간강사(체육) 채용 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1349559"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 동패고등학교",
-            "title": "[동패고] 시간강사(체육) 채용 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "2026/09/11",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349559&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "학교통합지원과",
-            "title": "비정규직",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "학교통합지원과",
-            "title": "[서울특별시강서양천교육지원청] 관내 월촌중학교 지방공무원(시설관리) 대체직원 채용계획 공고",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124"
-          }
-        ]
-      },
-      {
-        "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123",
-        "records": [
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울금낭화유치원",
-            "title": "기간제",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123"
-          },
-          {
-            "province": "서울",
-            "source": "강서양천교육지원청",
-            "school": "서울금낭화유치원",
-            "title": "대체조리원",
-            "registered": "2026/09/08",
-            "applyEnd": "",
-            "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349458",
-        "records": [
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "교하중학교",
-            "title": "[교하중] 과학 강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1349458"
-          },
-          {
-            "province": "경기",
-            "source": "파주교육지원청",
-            "school": "학교명 교하중학교",
-            "title": "[교하중] 과학 강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&nttSn=1349458&mi=10838"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103562",
-        "records": [
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "안청중학교",
-            "title": "계약제교원 시간강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "2026/09/10",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1103562"
-          },
-          {
-            "province": "경기",
-            "source": "안성교육지원청",
-            "school": "학교명 안청중학교",
-            "title": "계약제교원 시간강사 채용 공고",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&nttSn=1103562&mi=4565"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1230852",
-        "records": [
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "부천부곡중학교",
-            "title": "시간강사 채용(체육)",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1230852"
-          },
-          {
-            "province": "경기",
-            "source": "부천교육지원청",
-            "school": "기관명 부천부곡중학교",
-            "title": "시간강사 채용(체육)",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1230852"
-          }
-        ]
-      },
-      {
-        "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440",
-        "records": [
-          {
-            "province": "서울",
-            "source": "중부교육지원청",
-            "school": "서울혜화초등학교병설유치원",
-            "title": "시간제",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440"
-          },
-          {
-            "province": "서울",
-            "source": "중부교육지원청",
-            "school": "서울혜화초등학교병설유치원",
-            "title": "방과후 과정 에듀케어 운영 및 돌봄",
-            "registered": "2026/09/07",
-            "applyEnd": "",
-            "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440"
-          }
-        ]
-      },
-      {
-        "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&nttSn=1259400",
-        "records": [
-          {
-            "province": "경기",
-            "source": "광명교육지원청",
-            "school": "광문고등학교",
-            "title": "[광문고] 영어 시간강사 공고",
-            "registered": "2026/09/04",
-            "applyEnd": "2026/09/07",
-            "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1259400"
-          },
-          {
-            "province": "경기",
-            "source": "광명교육지원청",
-            "school": "기관명 광문고등학교",
-            "title": "[광문고] 영어 시간강사 공고",
-            "registered": "2026/09/04",
-            "applyEnd": "",
-            "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&nttSn=1259400&mi=5826"
-          }
-        ]
-      }
-    ],
-    "resultLikeNotices": [
-      {
-        "province": "경기",
-        "source": "시흥교육지원청",
-        "school": "초등학교",
-        "title": "2026.9.1.자 시흥 교육공무원(초등학교 신규 교사)인사 발령 안내",
-        "registered": "2026/08/18",
-        "applyEnd": "",
-        "url": "https://www.goesh.kr/goesh/na/ntt/selectNttInfo.do?bbsId=5511&nttSn=527414&mi=9003"
-      }
-    ],
+    "exactStableIdDuplicates": [],
+    "exactUrlDuplicates": [],
+    "resultLikeNotices": [],
     "staleInactive": [
       {
         "province": "서울",
