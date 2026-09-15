@@ -140,47 +140,17 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-          # Generated datasets are snapshots, not generally mergeable. A concurrent quality audit,
-          # however, only changes its two diagnostic artifacts and must not invalidate an otherwise
-          # verified recovery candidate. Replay the candidate on top of that diagnostic-only commit;
-          # any other concurrent change still wins and causes this candidate to be discarded.
-          git fetch origin main
-          base_sha="$(cat /tmp/recovery_base_sha)"
-          remote_sha="$(git rev-parse origin/main)"
-          if [ "$remote_sha" != "$base_sha" ]; then
-            changed_paths="$(git diff --name-only "$base_sha" "$remote_sha")"
-            unsafe_paths="$(printf '%s\n' "$changed_paths" | grep -Ev '^(operational_quality_report\.json|operational_quality_history\.json)$' || true)"
-            if [ -n "$unsafe_paths" ]; then
-              echo "Recovery candidate superseded by newer data/code on main: baseline=$base_sha origin/main=$remote_sha"
-              printf '%s\n' "$unsafe_paths"
-              git reset --hard origin/main
-              exit 0
-            fi
-            echo "Only diagnostic quality artifacts advanced main; replaying verified recovery candidate"
-            git stash push -u -m recovery-candidate >/dev/null
-            git reset --hard origin/main
-            if ! git stash pop; then
-              echo "Recovery candidate could not be replayed cleanly; preserving newer main"
-              git reset --hard origin/main
-              git stash drop >/dev/null 2>&1 || true
-              exit 0
-            fi
-          fi
-
           rm -f recovery_failure_report.json
           git add jobs.json job_ledger.json source_id_ledger.json collection_state.json collector_status.json deep_audit_status.json board_cache.json missing_recovery_report.json source_reconciliation_report.json central_pagination_report.json date_anomaly_report.json support_coverage_report.json support_link_resolution.json support_period_cache.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/harden_central_pagination.py scripts/verify_support_completeness.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/harden_deep_audit.py
           git ls-files --error-unmatch recovery_failure_report.json >/dev/null 2>&1 && git add -u -- recovery_failure_report.json || true
           git diff --cached --quiet && exit 0
-          git commit -m 'Recover and reconcile official recruitment posting IDs'
-
-          # Close the tiny fetch-to-push race without force-pushing. A newer verified publication
-          # wins, and the next recovery will start from it.
-          if ! git push origin HEAD:main; then
-            git fetch origin main
-            echo "Recovery publish lost race to newer main; discarding superseded candidate"
-            git reset --hard origin/main
-            exit 0
-          fi
+          python scripts/publication_transaction.py publish \
+            --baseline-file /tmp/recovery_base_sha \
+            --status-file /tmp/recovery-publication-transaction.json \
+            --message 'Recover and reconcile official recruitment posting IDs' \
+            --allow-concurrent-path operational_quality_report.json \
+            --allow-concurrent-path operational_quality_history.json \
+            --revalidate-command 'python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json && python scripts/validate_reconciliation_policy.py && python scripts/verify_central_reconciliation_consistency.py'
 
       - name: Preserve failed recovery diagnostics without publishing unverified data
         if: failure()
@@ -247,9 +217,22 @@ jobs:
           PY
 
           python scripts/update_collector_status.py --workflow recovery --stage recovery --state failed
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add collector_status.json recovery_failure_report.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Record failed official-ID recovery candidate separately'
-          git push origin HEAD:main || true
+          cp collector_status.json /tmp/recovery-diagnostics/collector_status.json
+          cp recovery_failure_report.json /tmp/recovery-diagnostics/recovery_failure_report.json
+          [ ! -f /tmp/recovery-publication-transaction.json ] || cp /tmp/recovery-publication-transaction.json /tmp/recovery-diagnostics/publication_transaction.json
+      - name: Upload isolated recovery diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/recovery-diagnostics
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload recovery publication transaction status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/recovery-publication-transaction.json
+          if-no-files-found: warn
+          retention-days: 14

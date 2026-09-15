@@ -10,7 +10,9 @@ on:
       - 'scripts/stamp_reconciliation_scan.py'
       - 'scripts/preserve_reconciliation_candidate.py'
       - 'scripts/restore_reconciled_ids.py'
+      - 'scripts/publication_transaction.py'
       - 'scripts/validate_reconciliation_policy.py'
+      - 'tests/test_publication_transaction.py'
       - 'tests/test_scan_identity_binding.py'
   push:
     branches:
@@ -23,7 +25,9 @@ on:
       - 'scripts/stamp_reconciliation_scan.py'
       - 'scripts/preserve_reconciliation_candidate.py'
       - 'scripts/restore_reconciled_ids.py'
+      - 'scripts/publication_transaction.py'
       - 'scripts/validate_reconciliation_policy.py'
+      - 'tests/test_publication_transaction.py'
       - 'tests/test_scan_identity_binding.py'
 
 permissions:
@@ -61,13 +65,20 @@ jobs:
           assert 'git merge-base --is-ancestor HEAD origin/main' in restore, 'restore publication must verify reachability'
 
           recon=Path('.github/workflows/source-id-reconciliation.yml').read_text(encoding='utf-8')
+          publication=Path('scripts/publication_transaction.py').read_text(encoding='utf-8')
+          failure_tail=recon.split('Preserve reconciliation diagnostics on failure',1)[1]
           assert 'RECONCILE_SCAN_ID=' in recon, 'workflow must mint one scan ID'
           assert 'source_id_ledger.candidate.json' in recon, 'failure path must persist candidate ledger'
-          assert 'git checkout -B main origin/main' in recon.split('Preserve reconciliation diagnostics on failure',1)[1]
+          assert 'reconciliation_publication_base_sha' in recon, 'publication must retain its immutable main baseline'
+          assert 'publication_transaction.py publish' in recon, 'reconciliation must use the shared publication transaction'
+          assert 'actions/upload-artifact@v4' in failure_tail, 'failure diagnostics must be isolated as run artifacts'
+          write_markers=('git '+'push','git '+'commit')
+          assert not any(marker in failure_tail for marker in write_markers), 'failure diagnostics must not compete for main'
           assert 'group: metro-edujob-reconciliation' in recon, 'long reconciliation must not share the general writer pending slot'
           assert 'group: metro-edujob-data' not in recon, 'shared writer queue can starve hourly reconciliation before jobs start'
           assert 'cancel-in-progress: false' in recon, 'a newer reconciliation must not cancel an in-progress scan'
-          assert 'for attempt in 1 2 3' in recon, 'reconciliation publication must retry after concurrent main updates'
-          assert 'git merge-base --is-ancestor HEAD origin/main' in recon, 'reconciliation publication must verify reachability after push'
-          assert 'git fetch origin main' in recon and 'git checkout -B main origin/main' in recon, 'reconciliation must synchronize latest main before scanning/preserving failures'
+          assert 'max_attempts: int = 3' in publication, 'shared transaction must bound non-force retries'
+          assert '_push_head' in publication and '"HEAD:main"' in publication, 'shared transaction must publish without force'
+          assert 'merge-base", "--is-ancestor"' in publication, 'shared transaction must verify own-commit reachability'
+          assert 'origin/main changed after validation' in publication, 'shared transaction must mark stale candidates superseded'
           PY

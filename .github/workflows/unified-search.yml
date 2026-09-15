@@ -17,6 +17,11 @@ on:
       - 'scripts/apply_unified_frontend.py'
       - 'scripts/crawl_seekle_instructor_jobs.py'
       - 'scripts/crawl_boramyc_instructor_jobs.py'
+      - 'scripts/publication_transaction.py'
+      - 'tests/test_boramyc_historical_fixture.py'
+      - 'tests/fixtures/boramyc_25441.html'
+      - 'tests/test_seekle_historical_fixture.py'
+      - 'tests/fixtures/seekle_21827.html'
       - 'verified_foundation_official_sources.json'
       - 'official_foundation_jobs.json'
       - 'official_foundation_report.json'
@@ -54,6 +59,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - name: Capture immutable publication baseline
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        run: python scripts/publication_transaction.py capture --output /tmp/unified_publication_base_sha
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Syntax check unified multi-source pipeline and UI
@@ -75,6 +83,8 @@ jobs:
           assert set(private) >= {'lessoninfo','cleaneye','jobteacher','artmore','gonggonggangsa','seekle','boramyc'}
           print('registry check', official, private)
           PY
+      - name: Historical private-source parser and direct-link regressions
+        run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture
       - name: Build disposable multi-source unified candidate
         id: build_candidate
         continue-on-error: true
@@ -95,6 +105,7 @@ jobs:
         continue-on-error: true
         run: python scripts/crosscheck_private_official.py
       - name: Publish only verified unified dataset
+        id: prepare_publication
         if: steps.build_candidate.outcome == 'success' && steps.link_audit.outcome == 'success' && steps.validate_candidate.outcome == 'success'
         run: |
           mv unified_jobs.next.json unified_jobs.json
@@ -143,15 +154,6 @@ jobs:
               assert j.get('foundationRegistryId') and is_direct_post(j)[0]
           lesson_culture=[j for j in d['jobs'] if j.get('source')=='레슨인포' and j.get('sourceSurface')=='culture-arts']
           assert all(j.get('sourceRole')=='discovery-only' for j in lesson_culture)
-          seekle=[j for j in d['jobs'] if j.get('sourceIdentity')=='seekle:21827']
-          assert len(seekle)==1 and seekle[0].get('applyEnd')=='2026-09-18'
-          assert '강사' in seekle[0].get('searchText','') and '문화예술' in seekle[0].get('searchText','') and is_direct_post(seekle[0])[0]
-          if 'boramyc' in enabled:
-              boramyc=[j for j in d['jobs'] if j.get('sourceIdentity')=='boramyc:25441']
-              assert len(boramyc)==1
-              assert boramyc[0].get('applyEnd')=='2026-09-10'
-              assert '강사' in boramyc[0].get('searchText','') and '당구' in boramyc[0].get('searchText','') and '체육' in boramyc[0].get('searchText','')
-              assert is_direct_post(boramyc[0])[0]
           print('verified publication-gated multi-source unified publication',len(d['jobs']),official_count,sorted(enabled),len(foundation_official))
           PY
       - name: Reconcile cultural foundation signals against published search
@@ -159,23 +161,29 @@ jobs:
         if: steps.build_candidate.outcome == 'success' && steps.link_audit.outcome == 'success' && steps.validate_candidate.outcome == 'success'
         continue-on-error: true
         run: python scripts/reconcile_cultural_foundation_coverage.py
-      - name: Commit verified search projection or diagnostics
-        if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_run' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+      - name: Publish verified search transaction
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && steps.prepare_publication.outcome == 'success' && steps.foundation_reconcile.outcome == 'success' && steps.crosscheck.outcome == 'success'
+        shell: bash
         run: |
+          set -euo pipefail
           rm -f unified_jobs.next.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add unified_search_report.json unified_validation_report.json unified_crosscheck_report.json direct_post_link_report.json cultural_foundation_coverage_report.json 2>/dev/null || true
-          if [ "${{ steps.build_candidate.outcome }}" = success ] && [ "${{ steps.link_audit.outcome }}" = success ] && [ "${{ steps.validate_candidate.outcome }}" = success ] && [ "${{ steps.foundation_reconcile.outcome }}" = success ]; then
-            git add unified_jobs.json index.html
-          fi
+          git add unified_jobs.json index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Publish verified multi-source recruitment search'
-          git restore --worktree -- .
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && break
-            sleep $((i*4))
-          done
+          python scripts/publication_transaction.py publish \
+            --baseline-file /tmp/unified_publication_base_sha \
+            --status-file /tmp/unified-publication-transaction.json \
+            --message 'Publish verified multi-source recruitment search'
+      - name: Upload unified publication transaction status
+        if: always() && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/unified-publication-transaction.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Clean branch/PR test artifacts
         if: always() && !(github.event_name == 'schedule' || github.event_name == 'workflow_run' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
         run: rm -f unified_jobs.next.json
