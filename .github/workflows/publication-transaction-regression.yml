@@ -1,0 +1,40 @@
+name: Publication transaction regression
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/daily-deep-audit.yml'
+      - '.github/workflows/recover-missing-jobs.yml'
+      - '.github/workflows/source-id-reconciliation.yml'
+      - '.github/workflows/unified-search.yml'
+      - '.github/workflows/update-boramyc-instructor-jobs.yml'
+      - '.github/workflows/publication-transaction-regression.yml'
+      - 'scripts/publication_transaction.py'
+      - 'scripts/crawl_boramyc_instructor_jobs.py'
+      - 'tests/test_publication_transaction.py'
+      - 'tests/test_boramyc_historical_fixture.py'
+      - 'tests/fixtures/boramyc_25441.html'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Compile publication and Boramae code
+        run: python -m py_compile scripts/publication_transaction.py scripts/crawl_boramyc_instructor_jobs.py
+      - name: Test publication race handling
+        run: python -m unittest tests.test_publication_transaction -v
+      - name: Test historical Boramae parser and direct-link contract
+        run: python -m unittest tests.test_boramyc_historical_fixture -v
+      - name: Keep M0 automatic state changes frozen
+        run: python scripts/audit_m0_maintenance_freeze.py

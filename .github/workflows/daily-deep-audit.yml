@@ -28,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "RECONCILE_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          git rev-parse HEAD >/tmp/deep_publication_base_sha
           SCAN_ID="$(date -u +%Y%m%dT%H%M%SZ)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           echo "RECONCILE_SCAN_ID=${SCAN_ID}" >> "$GITHUB_ENV"
           echo "Deep-audit reconciliation scan: ${SCAN_ID}"
@@ -261,17 +262,19 @@ jobs:
           python scripts/verify_central_reconciliation_consistency.py
           python scripts/update_deep_audit_status.py complete success
       - name: Commit only verified deep-audit recovery
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           test -s gyeonggi_central_90d_report.json
           git add jobs.json job_ledger.json source_id_ledger.json collection_state.json deep_audit_status.json board_cache.json support_coverage_report.json source_reconciliation_report.json central_pagination_report.json support_link_resolution.json support_period_cache.json daily_missing_recovery_report.json date_anomaly_report.json board_discovery_report.json operational_quality_report.json operational_quality_history.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/resolve_support_links.py scripts/discover_recruitment_boards.py scripts/harden_deep_audit.py
           git add -f gyeonggi_central_90d_report.json
           git diff --cached --quiet && exit 0
-          git commit -m 'Daily deep audit reconciled official recruitment IDs'
-          git reset --hard HEAD
-          git pull --rebase
-          git push
+          python scripts/publication_transaction.py publish \
+            --baseline-file /tmp/deep_publication_base_sha \
+            --status-file /tmp/deep-publication-transaction.json \
+            --message 'Daily deep audit reconciled official recruitment IDs'
       - name: Record failed deep-audit stage without publishing unverified data
         if: failure()
         shell: bash
@@ -287,14 +290,21 @@ jobs:
           git reset --hard HEAD
           git clean -fd
           python scripts/update_deep_audit_status.py "$stage" failed
-
-          # Failure diagnostics must never overwrite canonical reconciliation proofs.
-          # Preserve only the deep-audit status; scan-bound candidate proof files stay isolated in the failed run logs.
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add deep_audit_status.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Record failed deep audit status: $stage"
-          git reset --hard HEAD
-          git pull --rebase
-          git push
+          cp deep_audit_status.json /tmp/deep-audit-diagnostics/deep_audit_status.json
+          [ ! -f /tmp/deep-publication-transaction.json ] || cp /tmp/deep-publication-transaction.json /tmp/deep-audit-diagnostics/publication_transaction.json
+      - name: Upload isolated deep-audit diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-audit-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/deep-audit-diagnostics
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload deep-audit publication transaction status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deep-audit-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/deep-publication-transaction.json
+          if-no-files-found: warn
+          retention-days: 14

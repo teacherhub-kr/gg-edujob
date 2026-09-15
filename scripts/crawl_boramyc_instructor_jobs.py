@@ -129,10 +129,6 @@ def main():
     for row in candidates:
         try: jobs.append(detail(session, row))
         except Exception as exc: errors.append(f"{row['idx']}: {exc}")
-    target = next((j for j in jobs if j["sourceIdentity"] == "boramyc:25441"), None)
-    if not target: errors.append("current live instructor posting boramyc:25441 missing")
-    elif target.get("applyEnd") != "2026-09-10" or "당구" not in target.get("subject", ""):
-        errors.append("boramyc:25441 content/deadline mismatch")
     stale_year_errors = [
         j["sourceIdentity"] for j in jobs
         if str(j.get("registered") or "").startswith("2025-") and str(j.get("applyEnd") or "").startswith("2026-")

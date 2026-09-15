@@ -28,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "RECONCILE_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          git rev-parse HEAD >/tmp/reconciliation_publication_base_sha
           SCAN_ID="$(date -u +%Y%m%dT%H%M%SZ)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           echo "RECONCILE_SCAN_ID=${SCAN_ID}" >> "$GITHUB_ENV"
           echo "Reconciliation scan: ${SCAN_ID}"
@@ -181,89 +182,28 @@ jobs:
           PY
           )"
 
-          if [ "$publish_mode" = "proof-only" ]; then
-            mkdir -p /tmp/reconciliation-proof
-            for f in source_id_ledger.json source_reconciliation_report.json central_pagination_report.json gyeonggi_central_90d_report.json official_id_restore_report.json; do
-              cp "$f" "/tmp/reconciliation-proof/$f"
-            done
-
-            pushed=0
-            for attempt in 1 2 3; do
-              git fetch origin main
-              git checkout -B main origin/main
-              git reset --hard origin/main
-              git clean -fd
-              cp /tmp/reconciliation-proof/* .
-
-              # Re-check the latest published dataset against this scan before publishing
-              # proof. If another writer lost an official ID, fail closed instead of
-              # turning stale proof into the canonical state.
-              python scripts/restore_reconciled_ids.py
-              python - <<'PY'
-          import json
-          from pathlib import Path
-          s=json.loads(Path('official_id_restore_report.json').read_text(encoding='utf-8')).get('summary',{})
-          if any(int(s.get(k) or 0) for k in ('missingBefore','recoveredNow','missingAfter')):
-              raise SystemExit(f'Latest main changed official-ID population during proof-only publish: {s}')
-          PY
-              python scripts/validate_reconciliation_policy.py
-              python scripts/update_collector_status.py --workflow reconciliation --stage complete --state success
-
-              if git ls-files --error-unmatch reconciliation_failure_report.json >/dev/null 2>&1; then
-                git rm -f reconciliation_failure_report.json
-              fi
-              if git ls-files --error-unmatch source_id_ledger.candidate.json >/dev/null 2>&1; then
-                git rm -f source_id_ledger.candidate.json
-              fi
-              git add source_id_ledger.json source_reconciliation_report.json central_pagination_report.json official_id_restore_report.json collector_status.json
-              git add -f gyeonggi_central_90d_report.json
-              git diff --cached --quiet && { pushed=1; break; }
-              git commit -m 'Publish verified reconciliation proof without replacing newer data'
-              if git push origin HEAD:main; then
-                pushed=1
-                break
-              fi
-              sleep $((attempt * 5))
-            done
-            [ "$pushed" = "1" ] || { echo '::error::proof-only reconciliation push failed after 3 attempts'; exit 1; }
-            git fetch origin main
-            git merge-base --is-ancestor HEAD origin/main || {
-              echo '::error::proof-only reconciliation commit is not reachable from origin/main after push'
-              exit 1
-            }
-            exit 0
-          fi
-
           if git ls-files --error-unmatch reconciliation_failure_report.json >/dev/null 2>&1; then
             git rm -f reconciliation_failure_report.json
           fi
           if git ls-files --error-unmatch source_id_ledger.candidate.json >/dev/null 2>&1; then
             git rm -f source_id_ledger.candidate.json
           fi
-          git add jobs.json source_id_ledger.json source_reconciliation_report.json central_pagination_report.json official_id_restore_report.json job_ledger.json collection_state.json support_link_resolution.json support_period_cache.json date_anomaly_report.json collector_status.json deep_audit_status.json scripts/scrape_jobs.py scripts/reconcile_source_ids.py scripts/verify_gyeonggi_central_90d.py scripts/verify_central_reconciliation_consistency.py scripts/harden_reconciliation_central_lookback.py scripts/crawl_gyeonggi_central_recent.py scripts/validate_reconciliation_policy.py
+          if [ "$publish_mode" = "proof-only" ]; then
+            git add source_id_ledger.json source_reconciliation_report.json central_pagination_report.json official_id_restore_report.json collector_status.json
+          else
+            git add jobs.json source_id_ledger.json source_reconciliation_report.json central_pagination_report.json official_id_restore_report.json job_ledger.json collection_state.json support_link_resolution.json support_period_cache.json date_anomaly_report.json collector_status.json deep_audit_status.json scripts/scrape_jobs.py scripts/reconcile_source_ids.py scripts/verify_gyeonggi_central_90d.py scripts/verify_central_reconciliation_consistency.py scripts/harden_reconciliation_central_lookback.py scripts/crawl_gyeonggi_central_recent.py scripts/validate_reconciliation_policy.py
+          fi
           git add -f gyeonggi_central_90d_report.json
           git diff --cached --quiet && exit 0
-          git commit -m 'Reconcile official recruitment source IDs'
-
-          pushed=0
-          for attempt in 1 2 3; do
-            if ! git pull --rebase origin main; then
-              git rebase --abort || true
-              sleep $((attempt * 5))
-              continue
-            fi
-            if git push origin HEAD:main; then
-              pushed=1
-              break
-            fi
-            sleep $((attempt * 5))
-          done
-          [ "$pushed" = "1" ] || { echo '::error::reconciliation push failed after 3 attempts'; exit 1; }
-          git fetch origin main
-          git merge-base --is-ancestor HEAD origin/main || {
-            echo '::error::reconciliation commit is not reachable from origin/main after push'
-            exit 1
-          }
+          if [ "$publish_mode" = "proof-only" ]; then
+            message='Publish verified reconciliation proof without replacing newer data'
+          else
+            message='Reconcile official recruitment source IDs'
+          fi
+          python scripts/publication_transaction.py publish \
+            --baseline-file /tmp/reconciliation_publication_base_sha \
+            --status-file /tmp/reconciliation-publication-transaction.json \
+            --message "$message"
       - name: Preserve reconciliation diagnostics on failure
         if: failure()
         shell: bash
@@ -283,26 +223,23 @@ jobs:
 
           python scripts/preserve_reconciliation_candidate.py --diagnostics-dir /tmp/source-id-diagnostics
           python scripts/update_collector_status.py --workflow reconciliation --stage source-id-reconciliation --state failed
-          git config user.name 'github-actions[bot]'
-          git config user.email '4189822+github-actions[bot]@users.noreply.github.com'
-          git add collector_status.json reconciliation_failure_report.json
-          [ ! -f source_id_ledger.candidate.json ] || git add -f source_id_ledger.candidate.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Record isolated official source-ID reconciliation failure'
-
-          pushed=0
-          for attempt in 1 2 3; do
-            if ! git pull --rebase origin main; then
-              git rebase --abort || true
-              sleep $((attempt * 5))
-              continue
-            fi
-            if git push origin HEAD:main; then
-              pushed=1
-              break
-            fi
-            sleep $((attempt * 5))
-          done
-          [ "$pushed" = "1" ] || { echo '::error::failed to publish isolated reconciliation diagnostics'; exit 1; }
-          git fetch origin main
-          git merge-base --is-ancestor HEAD origin/main || exit 1
+          cp collector_status.json /tmp/source-id-diagnostics/collector_status.json
+          cp reconciliation_failure_report.json /tmp/source-id-diagnostics/reconciliation_failure_report.json
+          [ ! -f source_id_ledger.candidate.json ] || cp source_id_ledger.candidate.json /tmp/source-id-diagnostics/source_id_ledger.candidate.json
+          [ ! -f /tmp/reconciliation-publication-transaction.json ] || cp /tmp/reconciliation-publication-transaction.json /tmp/source-id-diagnostics/publication_transaction.json
+      - name: Upload isolated reconciliation diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reconciliation-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/source-id-diagnostics
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload reconciliation publication transaction status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reconciliation-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/reconciliation-publication-transaction.json
+          if-no-files-found: warn
+          retention-days: 14
