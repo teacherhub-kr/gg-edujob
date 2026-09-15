@@ -20,6 +20,7 @@ from urllib.parse import parse_qs, urlparse
 import complete_support_coverage as cov
 import scrape_jobs as primary
 import crawl_gyeonggi_central_recent as central_recent
+from stable_source_identity import canonical_source_id
 
 ROOT = Path(__file__).resolve().parents[1]
 JOBS_PATH = ROOT / "jobs.json"
@@ -45,38 +46,7 @@ def is_recruitment_row(job):
 
 
 def source_id(job):
-    raw = job.get("url") or ""
-    try:
-        q = parse_qs(urlparse(raw).query)
-    except Exception:
-        q = {}
-
-    if job.get("sourceType") == "통합게시판":
-        pb = str((q.get("pbancSn") or [""])[0])
-        if pb.isdigit():
-            return f"goe-central:{pb}"
-        rid = str((q.get("q_rcrtSn") or [""])[0])
-        if rid.isdigit():
-            return f"seoul-central:{rid}"
-
-    province = str(job.get("province") or "")
-    if province == "서울":
-        seq = str((job.get("openParams") or {}).get("job_seq") or "")
-        host = (urlparse(job.get("openUrl") or raw).hostname or "").lower()
-        if not seq.isdigit():
-            seq = str((q.get("job_seq") or [""])[0])
-        return f"seoul:{host}:{seq}" if host and seq.isdigit() else ""
-
-    if province == "경기":
-        try:
-            u = urlparse(raw)
-            bbs = str(job.get("bbsId") or (q.get("bbsId") or [""])[0])
-            ntt = str(job.get("nttSn") or (q.get("nttSn") or [""])[0])
-            host = (u.hostname or "").lower()
-            return f"mircms:{host}:{bbs}:{ntt}" if host and bbs.isdigit() and ntt.isdigit() else ""
-        except Exception:
-            return ""
-    return ""
+    return canonical_source_id(job)
 
 
 def physical_board_identity(url):
