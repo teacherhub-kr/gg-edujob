@@ -23,6 +23,10 @@ def gyeonggi(ntt, *, title="공고", end="2026-09-30"):
     return {"province": "경기", "source": "수원교육지원청", "title": title, "applyEnd": end, "url": f"https://www.goesw.kr/board/view.do?bbsId=1234&nttSn={ntt}"}
 
 
+def mircms(ntt, *, end=""):
+    return {"province": "경기", "source": "수원교육지원청", "title": "공고", "applyEnd": end, "url": f"https://www.goesw.kr/na/ntt/selectNttInfo.do?bbsId=1234&nttSn={ntt}"}
+
+
 def ok(url="https://official.example/detail"):
     return {"status": "ok", "http": 200, "finalUrl": url, "body": "채용 공고 상세"}
 
@@ -59,6 +63,16 @@ class SupportDiffAuditTest(unittest.TestCase):
         report = audit.audit_report([old], [], as_of=AS_OF, probe=lambda _: ok(old["url"]))
         self.assertFalse(report["healthy"])
         self.assertEqual(len(report["unverifiable"]), 1)
+
+    def test_official_page_deadline_replaces_missing_apply_end(self):
+        old = mircms("201")
+        expired_html = '<form id="nttViewForm"><div class="bbsV_cont">원서 접수 가. 기간: 2026. 6. 11. ~ 6. 17.</div></form>'
+        active_html = '<form id="nttViewForm"><div class="bbsV_cont">원서 접수 가. 기간: 2026. 9. 15. ~ 9. 30.</div></form>'
+        no_attachment = lambda *_: (_ for _ in ()).throw(AssertionError("no attachment expected"))
+        expired = audit.classify(old, {}, as_of=AS_OF, probe=lambda _: {**ok(old["url"]), "body": expired_html}, attachment_loader=no_attachment)
+        active = audit.classify(old, {}, as_of=AS_OF, probe=lambda _: {**ok(old["url"]), "body": active_html}, attachment_loader=no_attachment)
+        self.assertEqual(expired["classification"], audit.EXPIRED)
+        self.assertEqual(active["classification"], audit.ACTUAL_MISSING)
 
     def test_parse_failure_and_collision_are_fail_closed(self):
         malformed = {"province": "서울", "source": "강서양천교육지원청", "title": "목록", "url": "https://sbedu.sen.go.kr/search"}

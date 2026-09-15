@@ -5,10 +5,15 @@ on:
   pull_request:
     paths:
       - 'scripts/audit_support_71_diff.py'
+      - 'scripts/support_page_evidence.py'
+      - 'scripts/support_reviewed_binary_evidence.py'
       - 'scripts/stable_source_identity.py'
       - 'scripts/support_population_contract.py'
       - 'tests/test_audit_support_diff.py'
+      - 'tests/test_support_page_evidence.py'
+      - 'tests/fixtures/support_evidence/**'
       - 'tests/test_stable_source_identity.py'
+      - 'requirements.txt'
       - '.github/workflows/audit-support-71-diff.yml'
 permissions:
   contents: read
@@ -24,8 +29,10 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - name: Install audit parser dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Run identity and classification regressions
-        run: python -m unittest tests.test_audit_support_diff -v
+        run: python -m unittest tests.test_audit_support_diff tests.test_support_page_evidence -v
       - name: Keep M0 automatic state changes frozen
         run: python scripts/audit_m0_maintenance_freeze.py
       - name: Audit current historical/current identity diff

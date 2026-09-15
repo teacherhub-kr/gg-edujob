@@ -13,6 +13,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from stable_source_identity import canonical_source_id
+from support_page_evidence import official_page_evidence
 from support_population_contract import contract_metadata, is_support_population_job
 
 HIST = "432aaa232106e206d92ec6b971fd5dec979ab363"
@@ -90,6 +91,12 @@ def fetch(url_):
         return {"status": "error", "probe": f"error:{type(exc).__name__}"}
 
 
+def fetch_attachment(url_, referer):
+    request = Request(url_, headers={"User-Agent": UA, "Referer": referer})
+    with urlopen(request, timeout=30) as response:
+        return response.read(10_000_000)
+
+
 def build(rows):
     by_id = {}
     collisions = 0
@@ -107,7 +114,16 @@ def build(rows):
 
 
 def row(old, classification, **evidence):
-    result = {"oldId": identity(old), "classification": classification, "title": title(old), "url": url(old)}
+    old_id = identity(old)
+    result = {
+        "oldId": old_id,
+        "identityType": old_id.split(":", 1)[0] if old_id else "",
+        "source": str(old.get("source") or ""),
+        "historicalApplyEnd": str(old.get("applyEnd") or old.get("deadline") or ""),
+        "classification": classification,
+        "title": title(old),
+        "url": url(old),
+    }
     result.update(evidence)
     return result
 
@@ -120,7 +136,7 @@ def redirected_identity(old, final_url):
     return identity(candidate)
 
 
-def classify(old, current, *, as_of, probe=fetch):
+def classify(old, current, *, as_of, probe=fetch, attachment_loader=fetch_attachment):
     """Classify with strong identity and official-page evidence only."""
     oid = identity(old)
     if not oid:
@@ -141,26 +157,43 @@ def classify(old, current, *, as_of, probe=fetch):
     http = int(evidence.get("http") or 0)
     body = str(evidence.get("body") or "")
     final_url = str(evidence.get("finalUrl") or url(old))
+    probe_evidence = {"http": http, "finalUrl": final_url, "redirected": final_url != url(old)}
     if http in (404, 410) or any(marker in body for marker in DELETION_MARKERS):
-        return row(old, OFFICIAL_ENDED, http=http, finalUrl=final_url)
+        return row(old, OFFICIAL_ENDED, **probe_evidence)
 
     final_id = redirected_identity(old, final_url)
     if final_id and final_id != oid and final_id in current:
         moved = current[final_id]
-        return row(old, CANONICAL_URL_MOVE, newId=final_id, newUrl=url(moved), newTitle=title(moved), http=http, finalUrl=final_url, evidence="official redirect resolves to current canonical detail identity")
+        return row(old, CANONICAL_URL_MOVE, newId=final_id, newUrl=url(moved), newTitle=title(moved), evidence="official redirect resolves to current canonical detail identity", **probe_evidence)
+
+    page_evidence = official_page_evidence(
+        body,
+        oid,
+        final_url,
+        as_of=as_of,
+        attachment_loader=attachment_loader,
+    )
+    if page_evidence and page_evidence["kind"] == "ended":
+        return row(old, OFFICIAL_ENDED, officialEvidence=page_evidence, **probe_evidence)
+    if page_evidence and page_evidence["kind"] == "deadline":
+        official_end = parse_date(page_evidence.get("date"))
+        if official_end is not None and official_end < as_of:
+            return row(old, EXPIRED, applyEnd=official_end.isoformat(), officialEvidence=page_evidence, **probe_evidence)
+        if official_end is not None and official_end >= as_of:
+            return row(old, ACTUAL_MISSING, applyEnd=official_end.isoformat(), officialEvidence=page_evidence, **probe_evidence)
 
     if 200 <= http < 400 and end is not None and end >= as_of:
-        return row(old, ACTUAL_MISSING, http=http, finalUrl=final_url, applyEnd=end.isoformat(), evidence="official detail is reachable before its deadline")
+        return row(old, ACTUAL_MISSING, applyEnd=end.isoformat(), evidence="official detail is reachable before its deadline", **probe_evidence)
 
     reason = "reachable page has no valid active deadline" if 200 <= http < 400 else "ambiguous official response"
-    return row(old, UNVERIFIABLE, http=http, finalUrl=final_url, reason=reason)
+    return row(old, UNVERIFIABLE, reason=reason, **probe_evidence)
 
 
 def failure_row(job, snapshot):
     return row(job, UNVERIFIABLE, snapshot=snapshot, reason="strong identity parse failure")
 
 
-def audit_report(old_raw, cur_raw, *, as_of, probe=fetch, workers=12):
+def audit_report(old_raw, cur_raw, *, as_of, probe=fetch, attachment_loader=fetch_attachment, workers=12):
     old, old_collisions, old_failures = build(old_raw)
     cur, cur_collisions, cur_failures = build(cur_raw)
     old_ids, cur_ids = set(old), set(cur)
@@ -175,9 +208,9 @@ def audit_report(old_raw, cur_raw, *, as_of, probe=fetch, workers=12):
     missing_jobs = [old[sid] for sid in sorted(old_only)]
     if workers > 1 and len(missing_jobs) > 1:
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            rows.extend(pool.map(lambda job: classify(job, cur, as_of=as_of, probe=probe), missing_jobs))
+            rows.extend(pool.map(lambda job: classify(job, cur, as_of=as_of, probe=probe, attachment_loader=attachment_loader), missing_jobs))
     else:
-        rows.extend(classify(job, cur, as_of=as_of, probe=probe) for job in missing_jobs)
+        rows.extend(classify(job, cur, as_of=as_of, probe=probe, attachment_loader=attachment_loader) for job in missing_jobs)
     rows.extend(failure_row(job, "historical") for job in old_failures)
     rows.extend(failure_row(job, "current") for job in cur_failures)
 
