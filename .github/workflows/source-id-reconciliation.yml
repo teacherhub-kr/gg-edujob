@@ -229,7 +229,7 @@ jobs:
           [ ! -f /tmp/reconciliation-publication-transaction.json ] || cp /tmp/reconciliation-publication-transaction.json /tmp/source-id-diagnostics/publication_transaction.json
       - name: Upload isolated reconciliation diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reconciliation-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/source-id-diagnostics
@@ -237,7 +237,7 @@ jobs:
           retention-days: 14
       - name: Upload reconciliation publication transaction status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reconciliation-publication-${{ github.run_id }}-${{ github.run_attempt }}
           path: /tmp/reconciliation-publication-transaction.json

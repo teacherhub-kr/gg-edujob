@@ -40,7 +40,7 @@ jobs:
         run: python scripts/audit_support_71_diff.py --output "$RUNNER_TEMP/support_diff_audit.json"
       - name: Upload manual audit evidence
         if: always() && github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: support-diff-audit
           path: ${{ runner.temp }}/support_diff_audit.json
