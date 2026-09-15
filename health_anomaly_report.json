@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-15T08:07:13+09:00",
+  "generatedAt": "2026-09-15T09:10:05+09:00",
   "status": "degraded",
   "healthy": true,
   "snapshot": {
-    "generatedAt": "2026-09-15T08:07:13+09:00",
+    "generatedAt": "2026-09-15T09:10:05+09:00",
     "official": {
-      "datasetCount": 20077,
-      "officialIdCount": 17339,
+      "datasetCount": 19899,
+      "officialIdCount": 17337,
       "missingAfter": 0,
       "reconciledSources": 38,
       "totalSources": 38
     },
     "unified": {
-      "publishedJobs": 7373,
-      "officialDisplayed": 3026,
+      "publishedJobs": 7315,
+      "officialDisplayed": 2968,
       "privateDisplayed": 4347,
       "privateDiscovered": 4359,
       "officialPrivateAliases": 12,
@@ -51,7 +51,7 @@
         "latestRegistered": "2026-09-12"
       },
       "강서양천교육지원청": {
-        "count": 195,
+        "count": 132,
         "latestRegistered": "2026-09-11"
       },
       "경기도교육청 통합 구인구직": {
@@ -103,7 +103,7 @@
         "latestRegistered": "2026-09-14"
       },
       "광명교육지원청": {
-        "count": 309,
+        "count": 297,
         "latestRegistered": "2026-09-14"
       },
       "광주하남교육지원청": {
@@ -139,7 +139,7 @@
         "latestRegistered": "2026-09-14"
       },
       "부천교육지원청": {
-        "count": 743,
+        "count": 713,
         "latestRegistered": "2026-09-14"
       },
       "북부교육지원청": {
@@ -151,8 +151,8 @@
         "latestRegistered": "2026-09-03"
       },
       "서울교육일자리포털": {
-        "count": 1743,
-        "latestRegistered": "2026-09-14"
+        "count": 1746,
+        "latestRegistered": "2026-09-15"
       },
       "서울교육일자리포털 + 강남서초교육지원청": {
         "count": 2,
@@ -183,7 +183,7 @@
         "latestRegistered": "2026-09-08"
       },
       "시흥교육지원청": {
-        "count": 68,
+        "count": 67,
         "latestRegistered": "2026-09-11"
       },
       "안산교육지원청": {
@@ -191,7 +191,7 @@
         "latestRegistered": "2026-09-11"
       },
       "안성교육지원청": {
-        "count": 238,
+        "count": 223,
         "latestRegistered": "2026-09-14"
       },
       "안양과천교육지원청": {
@@ -211,7 +211,7 @@
         "latestRegistered": "2026-09-14"
       },
       "용인교육지원청": {
-        "count": 132,
+        "count": 130,
         "latestRegistered": "2026-09-14"
       },
       "의정부교육지원청": {
@@ -223,11 +223,11 @@
         "latestRegistered": "2026-09-02"
       },
       "중부교육지원청": {
-        "count": 65,
+        "count": 46,
         "latestRegistered": "2026-09-07"
       },
       "파주교육지원청": {
-        "count": 519,
+        "count": 480,
         "latestRegistered": "2026-09-14"
       },
       "평택교육지원청": {
@@ -332,27 +332,27 @@
   },
   "comparisons": {
     "1d": {
-      "baselineAt": "2026-09-14T08:07:02+09:00",
+      "baselineAt": "2026-09-14T09:11:11+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 20077,
+          "current": 19899,
           "baseline": 19420,
-          "changeRatio": 0.0338
+          "changeRatio": 0.0247
         },
         "official.officialIdCount": {
-          "current": 17339,
+          "current": 17337,
           "baseline": 17861,
-          "changeRatio": -0.0292
+          "changeRatio": -0.0293
         },
         "unified.publishedJobs": {
-          "current": 7373,
+          "current": 7315,
           "baseline": 7250,
-          "changeRatio": 0.017
+          "changeRatio": 0.009
         },
         "unified.officialDisplayed": {
-          "current": 3026,
+          "current": 2968,
           "baseline": 2888,
-          "changeRatio": 0.0478
+          "changeRatio": 0.0277
         },
         "unified.privateDiscovered": {
           "current": 4359,
@@ -399,27 +399,27 @@
       }
     },
     "7d": {
-      "baselineAt": "2026-09-08T08:09:01+09:00",
+      "baselineAt": "2026-09-08T09:13:39+09:00",
       "metrics": {
         "official.datasetCount": {
-          "current": 20077,
-          "baseline": 18816,
-          "changeRatio": 0.067
+          "current": 19899,
+          "baseline": 18817,
+          "changeRatio": 0.0575
         },
         "official.officialIdCount": {
-          "current": 17339,
+          "current": 17337,
           "baseline": 17576,
-          "changeRatio": -0.0135
+          "changeRatio": -0.0136
         },
         "unified.publishedJobs": {
-          "current": 7373,
-          "baseline": 7360,
-          "changeRatio": 0.0018
+          "current": 7315,
+          "baseline": 7361,
+          "changeRatio": -0.0062
         },
         "unified.officialDisplayed": {
-          "current": 3026,
-          "baseline": 2958,
-          "changeRatio": 0.023
+          "current": 2968,
+          "baseline": 2959,
+          "changeRatio": 0.003
         },
         "unified.privateDiscovered": {
           "current": 4359,
@@ -486,8 +486,8 @@
       "evidence": {
         "source": "경기도교육청 통합 구인구직 + 가평교육지원청",
         "latestRegistered": "2026-07-29",
-        "globalLatest": "2026-09-14",
-        "ageDays": 47
+        "globalLatest": "2026-09-15",
+        "ageDays": 48
       }
     },
     {
@@ -497,8 +497,8 @@
       "evidence": {
         "source": "경기도교육청 통합 구인구직 + 고양교육지원청",
         "latestRegistered": "2026-09-07",
-        "globalLatest": "2026-09-14",
-        "ageDays": 7
+        "globalLatest": "2026-09-15",
+        "ageDays": 8
       }
     },
     {
@@ -508,8 +508,8 @@
       "evidence": {
         "source": "군포의왕교육지원청",
         "latestRegistered": "2026-09-03",
-        "globalLatest": "2026-09-14",
-        "ageDays": 11
+        "globalLatest": "2026-09-15",
+        "ageDays": 12
       }
     },
     {
@@ -519,8 +519,8 @@
       "evidence": {
         "source": "북부교육지원청",
         "latestRegistered": "2026-09-04",
-        "globalLatest": "2026-09-14",
-        "ageDays": 10
+        "globalLatest": "2026-09-15",
+        "ageDays": 11
       }
     },
     {
@@ -530,8 +530,8 @@
       "evidence": {
         "source": "서부교육지원청",
         "latestRegistered": "2026-09-03",
-        "globalLatest": "2026-09-14",
-        "ageDays": 11
+        "globalLatest": "2026-09-15",
+        "ageDays": 12
       }
     },
     {
@@ -541,8 +541,8 @@
       "evidence": {
         "source": "서울교육일자리포털 + 강남서초교육지원청",
         "latestRegistered": "2026-09-02",
-        "globalLatest": "2026-09-14",
-        "ageDays": 12
+        "globalLatest": "2026-09-15",
+        "ageDays": 13
       }
     },
     {
@@ -552,8 +552,8 @@
       "evidence": {
         "source": "서울교육일자리포털 + 남부교육지원청",
         "latestRegistered": "2026-08-24",
-        "globalLatest": "2026-09-14",
-        "ageDays": 21
+        "globalLatest": "2026-09-15",
+        "ageDays": 22
       }
     },
     {
@@ -563,8 +563,8 @@
       "evidence": {
         "source": "안양과천교육지원청",
         "latestRegistered": "2026-09-03",
-        "globalLatest": "2026-09-14",
-        "ageDays": 11
+        "globalLatest": "2026-09-15",
+        "ageDays": 12
       }
     },
     {
@@ -574,8 +574,8 @@
       "evidence": {
         "source": "여주교육지원청",
         "latestRegistered": "2026-09-01",
-        "globalLatest": "2026-09-14",
-        "ageDays": 13
+        "globalLatest": "2026-09-15",
+        "ageDays": 14
       }
     },
     {
@@ -585,8 +585,8 @@
       "evidence": {
         "source": "이천교육지원청",
         "latestRegistered": "2026-09-02",
-        "globalLatest": "2026-09-14",
-        "ageDays": 12
+        "globalLatest": "2026-09-15",
+        "ageDays": 13
       }
     },
     {
@@ -596,8 +596,8 @@
       "evidence": {
         "source": "중부교육지원청",
         "latestRegistered": "2026-09-07",
-        "globalLatest": "2026-09-14",
-        "ageDays": 7
+        "globalLatest": "2026-09-15",
+        "ageDays": 8
       }
     },
     {
