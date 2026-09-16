@@ -63,9 +63,10 @@ jobs:
           # The first Fast after merge may materialize the reviewed Incheon registry migration.
           assert 'python scripts/ensure_incheon_registry.py' in fast
           assert 'sources.json' in fast
-          assert "grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py" in fast
-          assert "grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py" in fast
+          # Keep stable contract checks; implementation-detail pagination/age greps are intentionally absent.
           assert "grep -q 'RETRY_POLICY = Retry' scripts/scrape_jobs.py" in fast
+          assert "grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py" not in fast
+          assert "grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py" not in fast
           print('Fast/recovery transition safety ok')
           PY
       - name: Materialize three-region registry in the test checkout
