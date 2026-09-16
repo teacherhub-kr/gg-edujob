@@ -1,7 +1,7 @@
 {
   "fast": {
     "state": "failed",
-    "updatedAt": "2026-09-17T01:33:32+09:00",
+    "updatedAt": "2026-09-17T01:59:03+09:00",
     "jobsCount": 19408,
     "artifacts": {
       "jobLedger": true,
@@ -15,7 +15,7 @@
       "incheonOfficialReport": false
     },
     "stage": "hardening",
-    "lastFailureAt": "2026-09-17T01:33:32+09:00",
+    "lastFailureAt": "2026-09-17T01:59:03+09:00",
     "lastSuccessAt": "2026-09-16T22:47:27+09:00",
     "artifactGeneratedAt": {
       "coverageReport": "2026-09-16T13:47:24.311907+00:00",
@@ -29,7 +29,7 @@
     },
     "coverageEvidence": {
       "generatedAt": "2026-09-16T13:47:24.311907+00:00",
-      "ageHours": 2.77,
+      "ageHours": 3.19,
       "freshWithinHours": 30,
       "fresh": true,
       "gyeonggiComplete": 25,
@@ -47,7 +47,7 @@
       "proof": "support-coverage+38-source-reconciliation",
       "supportCoverage": {
         "generatedAt": "2026-09-16T13:47:24.311907+00:00",
-        "ageHours": 2.77,
+        "ageHours": 3.19,
         "freshWithinHours": 30,
         "fresh": true,
         "gyeonggiComplete": 25,
@@ -65,7 +65,7 @@
       },
       "sourceReconciliation": {
         "generatedAt": "2026-09-16 22:23:53 KST",
-        "ageHours": 3.16,
+        "ageHours": 3.59,
         "freshWithinHours": 30,
         "fresh": true,
         "expectedSources": 38,
@@ -74,10 +74,10 @@
         "missingAfter": 0,
         "centralPaginationComplete": true,
         "centralGeneratedAt": "2026-09-16 22:47:23 KST",
-        "centralAgeHours": 2.77,
+        "centralAgeHours": 3.19,
         "ledgerPresent": true,
         "ledgerGeneratedAt": "2026-09-16 22:23:53 KST",
-        "ledgerAgeHours": 3.16,
+        "ledgerAgeHours": 3.59,
         "sameScanWindow": true,
         "reportLedgerSkewHours": 0.0,
         "reportCentralSkewHours": 0.392,
