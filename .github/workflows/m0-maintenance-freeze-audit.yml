@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/**'
       - 'scripts/audit_m0_maintenance_freeze.py'
+      - 'scripts/production_supervisor.py'
+      - 'tests/test_production_supervisor.py'
 
 permissions:
   contents: read
@@ -21,3 +23,5 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify unattended supervisor safety logic
+        run: python -m unittest tests.test_production_supervisor
