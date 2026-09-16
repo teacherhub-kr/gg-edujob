@@ -5,6 +5,7 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from source_registry import official_source_count
 from stable_source_identity import canonical_source_id
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -148,23 +149,25 @@ def reconciliation_evidence():
     report_central_skew = timestamp_skew_hours(generated, central_generated)
     same_scan_window = bool(report_ledger_skew is not None and report_ledger_skew <= 0.05 and report_central_skew is not None and report_central_skew <= RECONCILIATION_SCAN_SKEW_HOURS)
     reconciled, total, missing_after = int(summary.get("reconciledSources") or 0), int(summary.get("totalSources") or 0), int(summary.get("missingAfter") or 0)
+    expected_sources = official_source_count()
     exact_links = bool(isinstance(exact, dict) and exact.get("total") is not None and int(exact.get("unresolved") or 0) == 0 and int(exact.get("resolved") or 0) == int(exact.get("total") or 0))
     entries = ledger.get("entries", {}) if isinstance(ledger, dict) else {}
     required_ids = {sid for sid, entry in entries.items() if isinstance(entry, dict) and entry.get("presentInLatestOfficialScan") is True}
     current_ids = current_stable_ids(payload)
     missing_from_current = sorted(required_ids - current_ids)
     dataset_bound = bool(required_ids and not missing_from_current)
-    complete = bool(total == 38 and reconciled == 38 and missing_after == 0 and central.get("complete") is True and required_ids and exact_links and same_scan_window and dataset_bound)
+    complete = bool(total == expected_sources and reconciled == expected_sources and missing_after == 0 and central.get("complete") is True and required_ids and exact_links and same_scan_window and dataset_bound)
     current = bool(complete and report_fresh and ledger_fresh and central_fresh)
-    return {"generatedAt": generated, "ageHours": report_age, "freshWithinHours": EVIDENCE_FRESH_HOURS, "fresh": report_fresh, "reconciledSources": reconciled, "totalSources": total, "missingAfter": missing_after, "centralPaginationComplete": central.get("complete") is True, "centralGeneratedAt": central_generated, "centralAgeHours": central_age, "ledgerPresent": bool(required_ids), "ledgerGeneratedAt": ledger_generated, "ledgerAgeHours": ledger_age, "sameScanWindow": same_scan_window, "reportLedgerSkewHours": round(report_ledger_skew, 3) if report_ledger_skew is not None else None, "reportCentralSkewHours": round(report_central_skew, 3) if report_central_skew is not None else None, "requiredOfficialIds": len(required_ids), "currentMatchedOfficialIds": len(required_ids & current_ids), "missingOfficialIdsFromCurrentDataset": len(missing_from_current), "missingOfficialIdExamples": missing_from_current[:20], "datasetBound": dataset_bound, "exactLinks": exact_links, "complete": complete, "currentComplete": current}
+    return {"generatedAt": generated, "ageHours": report_age, "freshWithinHours": EVIDENCE_FRESH_HOURS, "fresh": report_fresh, "expectedSources": expected_sources, "reconciledSources": reconciled, "totalSources": total, "missingAfter": missing_after, "centralPaginationComplete": central.get("complete") is True, "centralGeneratedAt": central_generated, "centralAgeHours": central_age, "ledgerPresent": bool(required_ids), "ledgerGeneratedAt": ledger_generated, "ledgerAgeHours": ledger_age, "sameScanWindow": same_scan_window, "reportLedgerSkewHours": round(report_ledger_skew, 3) if report_ledger_skew is not None else None, "reportCentralSkewHours": round(report_central_skew, 3) if report_central_skew is not None else None, "requiredOfficialIds": len(required_ids), "currentMatchedOfficialIds": len(required_ids & current_ids), "missingOfficialIdsFromCurrentDataset": len(missing_from_current), "missingOfficialIdExamples": missing_from_current[:20], "datasetBound": dataset_bound, "exactLinks": exact_links, "complete": complete, "currentComplete": current}
 
 
 def coverage_evidence():
     support = support_coverage_evidence()
     reconciliation = reconciliation_evidence()
-    # Do not let fresh 38-source ID reconciliation mask stale/incomplete 25+11 support-office coverage.
+    # Gyeonggi/Seoul support-office proof is combined with all registered official-source ID proof.
     current = bool(support.get("currentComplete") and reconciliation.get("currentComplete"))
-    proof = "support-coverage+38-source-reconciliation" if current else "none"
+    expected_sources = int(reconciliation.get("expectedSources") or 0)
+    proof = f"support-coverage+{expected_sources}-source-reconciliation" if current else "none"
     return {**support, "currentComplete": current, "proof": proof, "supportCoverage": support, "sourceReconciliation": reconciliation}
 
 
@@ -181,7 +184,7 @@ def main():
     evidence = coverage_evidence()
     now = datetime.now(KST).isoformat(timespec="seconds")
     entry = dict(old)
-    entry.update({"state": args.state, "updatedAt": now, "jobsCount": jobs_count(), "artifacts": {"jobLedger": (ROOT / "job_ledger.json").exists(), "sourceIdLedger": (ROOT / "source_id_ledger.json").exists(), "collectionState": (ROOT / "collection_state.json").exists(), "coverageReport": (ROOT / "support_coverage_report.json").exists(), "sourceReconciliationReport": (ROOT / "source_reconciliation_report.json").exists(), "centralPaginationReport": (ROOT / "central_pagination_report.json").exists(), "missingRecoveryReport": (ROOT / "missing_recovery_report.json").exists(), "boardDiscoveryReport": (ROOT / "board_discovery_report.json").exists()}, "artifactGeneratedAt": {"coverageReport": generated_at(ROOT / "support_coverage_report.json"), "sourceReconciliationReport": generated_at(ROOT / "source_reconciliation_report.json"), "sourceIdLedger": generated_at(ROOT / "source_id_ledger.json"), "centralPaginationReport": generated_at(ROOT / "central_pagination_report.json"), "missingRecoveryReport": generated_at(ROOT / "missing_recovery_report.json"), "boardDiscoveryReport": generated_at(ROOT / "board_discovery_report.json"), "collectionState": generated_at(ROOT / "collection_state.json")}, "coverageEvidence": evidence})
+    entry.update({"state": args.state, "updatedAt": now, "jobsCount": jobs_count(), "artifacts": {"jobLedger": (ROOT / "job_ledger.json").exists(), "sourceIdLedger": (ROOT / "source_id_ledger.json").exists(), "collectionState": (ROOT / "collection_state.json").exists(), "coverageReport": (ROOT / "support_coverage_report.json").exists(), "sourceReconciliationReport": (ROOT / "source_reconciliation_report.json").exists(), "centralPaginationReport": (ROOT / "central_pagination_report.json").exists(), "missingRecoveryReport": (ROOT / "missing_recovery_report.json").exists(), "boardDiscoveryReport": (ROOT / "board_discovery_report.json").exists(), "incheonOfficialReport": (ROOT / "incheon_official_report.json").exists()}, "artifactGeneratedAt": {"coverageReport": generated_at(ROOT / "support_coverage_report.json"), "sourceReconciliationReport": generated_at(ROOT / "source_reconciliation_report.json"), "sourceIdLedger": generated_at(ROOT / "source_id_ledger.json"), "centralPaginationReport": generated_at(ROOT / "central_pagination_report.json"), "missingRecoveryReport": generated_at(ROOT / "missing_recovery_report.json"), "boardDiscoveryReport": generated_at(ROOT / "board_discovery_report.json"), "incheonOfficialReport": generated_at(ROOT / "incheon_official_report.json"), "collectionState": generated_at(ROOT / "collection_state.json")}, "coverageEvidence": evidence})
     if args.stage: entry["stage"] = args.stage
     if args.state == "success": entry["lastSuccessAt"] = now
     elif args.state == "failed": entry["lastFailureAt"] = now
@@ -189,7 +192,7 @@ def main():
     STATUS.write_text(json.dumps(all_status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"collector status: {args.workflow} {args.state} stage={entry.get('stage','')}")
     if args.workflow == "fast" and args.stage == "publication-guard" and args.state == "running" and not evidence.get("currentComplete"):
-        raise SystemExit("Refusing fast publication: no fresh support-office coverage proof and 38-source reconciliation proof bound to the current dataset")
+        raise SystemExit("Refusing fast publication: no fresh support-office coverage proof and all-registry reconciliation proof bound to the current dataset")
 
 
 if __name__ == "__main__":
