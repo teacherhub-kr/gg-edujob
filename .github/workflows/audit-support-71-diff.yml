@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'scripts/audit_support_71_diff.py'
+      - 'scripts/audit_m0_maintenance_freeze.py'
       - 'scripts/support_page_evidence.py'
       - 'scripts/support_reviewed_binary_evidence.py'
       - 'scripts/stable_source_identity.py'
@@ -36,11 +37,12 @@ jobs:
       - name: Keep M0 automatic state changes frozen
         run: python scripts/audit_m0_maintenance_freeze.py
       - name: Audit current historical/current identity diff
-        if: github.event_name == 'workflow_dispatch'
         run: python scripts/audit_support_71_diff.py --output "$RUNNER_TEMP/support_diff_audit.json"
-      - name: Upload manual audit evidence
-        if: always() && github.event_name == 'workflow_dispatch'
+      - name: Upload read-only audit evidence
+        if: always()
         uses: actions/upload-artifact@v6
         with:
           name: support-diff-audit
           path: ${{ runner.temp }}/support_diff_audit.json
+          if-no-files-found: warn
+          retention-days: 14
