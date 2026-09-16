@@ -50,6 +50,19 @@ jobs:
           assert canonical_source_id(job) == 'ice-central:3384652'
           print('registry/identity ok')
           PY
+      - name: Show live Incheon row structure
+        run: |
+          python - <<'PY'
+          import requests
+          from bs4 import BeautifulSoup
+          url='https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997'
+          r=requests.get(url,timeout=20,headers={'User-Agent':'Mozilla/5.0','Accept-Language':'ko-KR,ko;q=0.9'})
+          r.raise_for_status()
+          soup=BeautifulSoup(r.text,'html.parser')
+          print('final_url=',r.url,'status=',r.status_code,'tables=',len(soup.find_all('table')),'trs=',len(soup.find_all('tr')))
+          for i,tr in enumerate(soup.find_all('tr')[:8]):
+              print('ROW',i,str(tr)[:6000])
+          PY
       - name: Probe the live official Incheon board
         env:
           PYTHONPATH: scripts
