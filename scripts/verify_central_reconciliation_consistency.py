@@ -19,12 +19,11 @@ import math
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from source_registry import official_source_count
-
 ROOT = Path(__file__).resolve().parents[1]
 CENTRAL = ROOT / "central_pagination_report.json"
 RECON = ROOT / "source_reconciliation_report.json"
 GG90 = ROOT / "gyeonggi_central_90d_report.json"
+SOURCES = ROOT / "sources.json"
 KST = timezone(timedelta(hours=9))
 MAX_SKEW_MINUTES = 45
 MAX_DRIFT_RATIO = 0.01
@@ -34,6 +33,27 @@ MIN_DRIFT_ABSOLUTE = 3
 
 def load(path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def official_source_count() -> int:
+    """Count the live canonical registry without relying on script-directory import state."""
+    registry = load(SOURCES)
+    if not isinstance(registry, dict) or not registry:
+        raise SystemExit("Official source registry is empty or malformed")
+    total = 0
+    for key, group in registry.items():
+        if not isinstance(group, dict):
+            raise SystemExit(f"Malformed official source group: {key}")
+        central = group.get("central")
+        support = group.get("supportOffices") or []
+        if central is not None and not isinstance(central, dict):
+            raise SystemExit(f"Malformed central source: {key}")
+        if not isinstance(support, list):
+            raise SystemExit(f"Malformed support-office registry: {key}")
+        total += (1 if central else 0) + len(support)
+    if total <= 0:
+        raise SystemExit("Official source registry resolved to zero sources")
+    return total
 
 
 def parse_kst(value):
