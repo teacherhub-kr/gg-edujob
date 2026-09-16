@@ -7,11 +7,12 @@ import json
 import subprocess
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+import scrape_jobs as production_scrape
 from stable_source_identity import canonical_source_id
 from support_page_evidence import official_page_evidence
 from support_population_contract import contract_metadata, is_support_population_job
@@ -20,6 +21,7 @@ HIST = "432aaa232106e206d92ec6b971fd5dec979ab363"
 OUT = Path("support_71_diff_audit.json")
 UA = "gg-edujob/support-diff-audit"
 KST = timezone(timedelta(hours=9))
+LOOKBACK_DAYS = 90
 
 STRONG_ID_MOVE = "strong-ID 이동"
 CANONICAL_URL_MOVE = "canonical URL 이동"
@@ -74,6 +76,56 @@ def parse_date(value):
         return date.fromisoformat(token)
     except ValueError:
         return None
+
+
+def parse_snapshot_time(value, *, fallback_date):
+    raw = str(value or "").strip()
+    if raw:
+        for fmt in ("%Y-%m-%d %H:%M:%S KST", "%Y-%m-%d %H:%M KST"):
+            try:
+                return datetime.strptime(raw, fmt).replace(tzinfo=KST)
+            except ValueError:
+                pass
+        try:
+            parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=KST)
+            return parsed.astimezone(KST)
+        except ValueError:
+            pass
+    return datetime.combine(fallback_date, time.min, tzinfo=KST)
+
+
+def temporal_cutoff(historical_updated_at, current_updated_at, *, as_of):
+    historical = parse_snapshot_time(historical_updated_at, fallback_date=as_of)
+    current = parse_snapshot_time(current_updated_at, fallback_date=as_of)
+    anchor = max(historical, current)
+    return anchor - timedelta(days=LOOKBACK_DAYS), historical, current
+
+
+def registered_value(job):
+    return str(job.get("registered") or job.get("registeredAt") or "")
+
+
+def align_to_cutoff(rows, cutoff):
+    """Apply the production recent_enough predicate at a shared synthetic snapshot time.
+
+    production `recent_enough` intentionally keeps blank/unparseable dates. Reusing it here keeps
+    the audit's temporal semantics identical to the published 90-day collector while moving both
+    snapshots onto one common lower bound.
+    """
+    anchor = cutoff + timedelta(days=LOOKBACK_DAYS)
+    original_now = production_scrape.NOW
+    production_scrape.NOW = anchor
+    try:
+        return [
+            job for job in rows
+            if production_scrape.recent_enough(
+                production_scrape.date_norm(registered_value(job)), days=LOOKBACK_DAYS
+            )
+        ]
+    finally:
+        production_scrape.NOW = original_now
 
 
 def fetch(url_):
@@ -193,9 +245,31 @@ def failure_row(job, snapshot):
     return row(job, UNVERIFIABLE, snapshot=snapshot, reason="strong identity parse failure")
 
 
-def audit_report(old_raw, cur_raw, *, as_of, probe=fetch, attachment_loader=fetch_attachment, workers=12):
-    old, old_collisions, old_failures = build(old_raw)
-    cur, cur_collisions, cur_failures = build(cur_raw)
+def audit_report(
+    old_raw,
+    cur_raw,
+    *,
+    as_of,
+    historical_updated_at=None,
+    current_updated_at=None,
+    probe=fetch,
+    attachment_loader=fetch_attachment,
+    workers=12,
+):
+    cutoff, historical_time, current_time = temporal_cutoff(
+        historical_updated_at, current_updated_at, as_of=as_of
+    )
+
+    raw_old, raw_old_collisions, raw_old_failures = build(old_raw)
+    raw_cur, raw_cur_collisions, raw_cur_failures = build(cur_raw)
+    raw_old_ids, raw_cur_ids = set(raw_old), set(raw_cur)
+    raw_old_only = raw_old_ids - raw_cur_ids
+    raw_current_only = raw_cur_ids - raw_old_ids
+
+    old_aligned_raw = align_to_cutoff(old_raw, cutoff)
+    cur_aligned_raw = align_to_cutoff(cur_raw, cutoff)
+    old, old_collisions, old_failures = build(old_aligned_raw)
+    cur, cur_collisions, cur_failures = build(cur_aligned_raw)
     old_ids, cur_ids = set(old), set(cur)
     intersection = old_ids & cur_ids
     old_only = old_ids - cur_ids
@@ -219,30 +293,69 @@ def audit_report(old_raw, cur_raw, *, as_of, probe=fetch, attachment_loader=fetc
     unverifiable = [item for item in rows if item["classification"] == UNVERIFIABLE]
     collision_counts = {"historical": old_collisions, "current": cur_collisions}
     parse_failure_counts = {"historical": len(old_failures), "current": len(cur_failures)}
-    reference_matches = len(old) == 7424 and len(cur) == 7353 and len(old_only) == 71
-    healthy = not any(collision_counts.values()) and not any(parse_failure_counts.values()) and not actual_missing and not unverifiable
+    raw_collision_counts = {"historical": raw_old_collisions, "current": raw_cur_collisions}
+    raw_parse_failure_counts = {"historical": len(raw_old_failures), "current": len(raw_cur_failures)}
+    reference_matches = len(raw_old) == 7424 and len(raw_cur) == 7353 and len(raw_old_only) == 71
+    temporal_alignment_applied = cutoff is not None
+    healthy = (
+        temporal_alignment_applied
+        and not any(collision_counts.values())
+        and not any(parse_failure_counts.values())
+        and not actual_missing
+        and not unverifiable
+    )
 
     return {
         "generatedAt": datetime.now(KST).isoformat(),
         "auditDate": as_of.isoformat(),
         "historicalCommit": HIST,
         "populationContract": contract_metadata(as_of=as_of),
-        "rawHistoricalSupportCount": len(old_raw), "rawCurrentSupportCount": len(cur_raw),
-        "historicalSupportCount": len(old), "currentSupportCount": len(cur),
-        "intersectionCount": len(intersection), "oldOnlyCount": len(old_only), "currentOnlyCount": len(current_only),
-        "normalizedCollisionCount": collision_counts, "identityParseFailureCount": parse_failure_counts,
+        "temporalAlignment": {
+            "applied": temporal_alignment_applied,
+            "lookbackDays": LOOKBACK_DAYS,
+            "historicalUpdatedAt": historical_time.isoformat(),
+            "currentUpdatedAt": current_time.isoformat(),
+            "appliedCutoff": cutoff.isoformat(),
+            "policy": "both snapshots use the production recent_enough predicate against the same lower bound; blank/unparseable registration dates remain included",
+        },
+        "appliedCutoff": cutoff.isoformat(),
+        "rawHistoricalSupportCount": len(raw_old),
+        "rawCurrentSupportCount": len(raw_cur),
+        "historicalSupportCount": len(old),
+        "currentSupportCount": len(cur),
+        "rawOldOnly": len(raw_old_only),
+        "alignedOldOnly": len(old_only),
+        "rawCurrentOnly": len(raw_current_only),
+        "alignedCurrentOnly": len(current_only),
+        "intersectionCount": len(intersection),
+        "oldOnlyCount": len(old_only),
+        "currentOnlyCount": len(current_only),
+        "normalizedCollisionCount": collision_counts,
+        "identityParseFailureCount": parse_failure_counts,
+        "rawNormalizedCollisionCount": raw_collision_counts,
+        "rawIdentityParseFailureCount": raw_parse_failure_counts,
         "identityParseFailureExamples": {
             "historical": [failure_row(job, "historical") for job in old_failures[:50]],
             "current": [failure_row(job, "current") for job in cur_failures[:50]],
         },
-        "historicalMinusCurrent": len(old_only), "counts": counts,
-        "actualMissing": actual_missing, "unverifiable": unverifiable,
+        "historicalMinusCurrent": len(old_only),
+        "counts": counts,
+        "actualMissing": actual_missing,
+        "unverifiable": unverifiable,
         "historicalReference": {"historical": 7424, "current": 7353, "difference": 71},
         "historicalReferenceMatches": reference_matches,
         "targetPopulation": {"historical": 7424, "current": 7353, "difference": 71},
         "targetPopulationMatches": reference_matches,
-        "healthCriteria": {"identityParseFailures": 0, "identityCollisions": 0, "actualMissing": 0, "unverifiable": 0, "historicalReferenceCountsAffectHealth": False},
-        "healthy": healthy, "rows": rows,
+        "healthCriteria": {
+            "temporalAlignmentApplied": True,
+            "identityParseFailures": 0,
+            "identityCollisions": 0,
+            "actualMissing": 0,
+            "unverifiable": 0,
+            "historicalReferenceCountsAffectHealth": False,
+        },
+        "healthy": healthy,
+        "rows": rows,
     }
 
 
@@ -255,11 +368,26 @@ def parse_args():
 
 def main():
     args = parse_args()
-    old_raw = [j for j in as_jobs(git_json(HIST, "jobs.json")) if is_support(j, args.as_of)]
-    cur_raw = [j for j in as_jobs(json.loads(Path("jobs.json").read_text(encoding="utf-8"))) if is_support(j, args.as_of)]
-    report = audit_report(old_raw, cur_raw, as_of=args.as_of)
+    historical_payload = git_json(HIST, "jobs.json")
+    current_payload = json.loads(Path("jobs.json").read_text(encoding="utf-8"))
+    old_raw = [j for j in as_jobs(historical_payload) if is_support(j, args.as_of)]
+    cur_raw = [j for j in as_jobs(current_payload) if is_support(j, args.as_of)]
+    report = audit_report(
+        old_raw,
+        cur_raw,
+        as_of=args.as_of,
+        historical_updated_at=(historical_payload.get("updatedAt") if isinstance(historical_payload, dict) else None),
+        current_updated_at=(current_payload.get("updatedAt") if isinstance(current_payload, dict) else None),
+    )
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    summary_keys = ("rawHistoricalSupportCount", "rawCurrentSupportCount", "historicalSupportCount", "currentSupportCount", "intersectionCount", "oldOnlyCount", "currentOnlyCount", "normalizedCollisionCount", "identityParseFailureCount", "historicalMinusCurrent", "counts", "historicalReferenceMatches", "healthy")
+    summary_keys = (
+        "rawHistoricalSupportCount", "rawCurrentSupportCount",
+        "historicalSupportCount", "currentSupportCount",
+        "rawOldOnly", "alignedOldOnly", "rawCurrentOnly", "alignedCurrentOnly",
+        "appliedCutoff", "intersectionCount", "oldOnlyCount", "currentOnlyCount",
+        "normalizedCollisionCount", "identityParseFailureCount", "historicalMinusCurrent",
+        "counts", "historicalReferenceMatches", "healthy",
+    )
     print(json.dumps({key: report[key] for key in summary_keys}, ensure_ascii=False, indent=2))
     raise SystemExit(0 if report["healthy"] else 2)
 
