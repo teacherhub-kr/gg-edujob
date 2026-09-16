@@ -84,7 +84,6 @@ jobs:
           # not by brittle source-text grep contracts that drift during refactors.
           python scripts/ensure_incheon_registry.py
           python -m py_compile scripts/scrape_jobs.py scripts/merge_incheon_official.py scripts/verify_required_regions.py scripts/ensure_incheon_registry.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/recover_seoul_office_cms_jobs.py scripts/verify_jobs.py scripts/merge_recovery_snapshot.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sanitize_job_dates.py scripts/validate_reconciliation_policy.py scripts/validate_reconciliation_policy_v3.py scripts/sync_effective_audit_status.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/stable_source_identity.py scripts/verify_support_completeness.py
-          grep -q 'official_source_count' scripts/reconcile_source_ids.py
           git diff --exit-code -- scripts
 
       - name: Fast crawl of central portals and support-office current pages
@@ -217,68 +216,15 @@ jobs:
           git pull --rebase
           git push
 
-      - name: Record fast refresh failure without publishing dirty data
+      - name: Preserve last-known-good on fast refresh failure
         if: failure()
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
+          # GitHub Actions run history is the authoritative failure state. Do not create
+          # status-only commits: they churn main and can themselves retrigger stale decisions.
           if [ -f verification_failure_report.json ]; then
-            cp verification_failure_report.json /tmp/verification_failure_report.json
+            echo 'Fast verification diagnostics were generated in this failed run; publication remains unchanged.'
           fi
-
-          head_success="$(git show HEAD:collector_status.json 2>/dev/null | python -c "import json,sys; e=json.load(sys.stdin).get('fast',{}); print(e.get('lastSuccessAt','') if e.get('state')=='success' and e.get('stage')=='complete' else '')" 2>/dev/null || true)"
-          if [ -n "$head_success" ] && [ "$(git log -1 --pretty=%s)" = 'Fast refresh verified recruitment postings' ]; then
-            echo 'Verified success commit exists locally; cleaning runtime edits and retrying sync.'
-            git reset --hard HEAD
-            if git pull --rebase && git push; then
-              echo 'Recovered verified publication sync without false failure status.'
-              exit 0
-            fi
-          fi
-
-          git fetch origin main
-          local_success="$(python - <<'PY'
-          import json
-          from pathlib import Path
-          try:
-              e=json.loads(Path('collector_status.json').read_text(encoding='utf-8')).get('fast',{})
-              print(e.get('lastSuccessAt','') if e.get('state')=='success' and e.get('stage')=='complete' else '')
-          except Exception:
-              print('')
-          PY
-          )"
-          origin_success="$(git show origin/main:collector_status.json 2>/dev/null | python -c "import json,sys; e=json.load(sys.stdin).get('fast',{}); print(e.get('lastSuccessAt','') if e.get('state')=='success' and e.get('stage')=='complete' else '')" 2>/dev/null || true)"
-          if [ -n "$local_success" ] && [ "$local_success" = "$origin_success" ]; then
-            echo 'Verified publication already exists on origin/main; preserving success status.'
-            exit 0
-          fi
-
-          failed_stage="$(python - <<'PY'
-          import json
-          from pathlib import Path
-          try:
-              e=json.loads(Path('collector_status.json').read_text(encoding='utf-8')).get('fast',{})
-              print(e.get('stage',''))
-          except Exception:
-              print('')
-          PY
-          )"
           git reset --hard HEAD
-          if [ -f /tmp/verification_failure_report.json ]; then
-            cp /tmp/verification_failure_report.json verification_failure_report.json
-          fi
-          if [ -n "$failed_stage" ]; then
-            python scripts/update_collector_status.py --workflow fast --stage "$failed_stage" --state failed
-          else
-            python scripts/update_collector_status.py --workflow fast --state failed
-          fi
-          git add collector_status.json
-          [ ! -f verification_failure_report.json ] || git add verification_failure_report.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Record fast collector failure stage'
-          git reset --hard HEAD
-          git pull --rebase
-          git push
+          echo 'Fast refresh failed; preserved last-known-good publication without mutating main.'
