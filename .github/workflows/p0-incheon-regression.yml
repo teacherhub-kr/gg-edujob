@@ -38,35 +38,26 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           recovery=Path('.github/workflows/recover-missing-jobs.yml').read_text(encoding='utf-8')
           fast=Path('.github/workflows/update-jobs.yml').read_text(encoding='utf-8')
-
           assert 'from source_registry import official_source_count' in recovery
           assert 'total != 38' not in recovery
           assert 'Not all 38 official sources' not in recovery
           assert 'python scripts/merge_incheon_official.py --lookback-days 90' in recovery
-
-          forbidden=(
-              'hotfix_sources.py', 'hotfix_repair_links.py', 'harden_fast_pagination.py',
-              'harden_deep_audit.py', 'harden_network_retries.py',
-              'harden_central_pagination.py', 'harden_gyeonggi_central_retention.py',
-          )
-          for name, text in (('recovery', recovery), ('fast', fast)):
+          forbidden=('hotfix_sources.py','hotfix_repair_links.py','harden_fast_pagination.py','harden_deep_audit.py','harden_network_retries.py','harden_central_pagination.py','harden_gyeonggi_central_retention.py')
+          for name,text in (('recovery',recovery),('fast',fast)):
               for hardener in forbidden:
-                  assert f'python scripts/{hardener}' not in text, (name, hardener)
+                  assert f'python scripts/{hardener}' not in text,(name,hardener)
               for line in text.splitlines():
                   stripped=line.strip()
                   if stripped.startswith('git add '):
-                      assert 'scripts/' not in stripped, (name, stripped)
-
-          # The first Fast after merge may materialize the reviewed Incheon registry migration.
+                      assert 'scripts/' not in stripped,(name,stripped)
           assert 'python scripts/ensure_incheon_registry.py' in fast
           assert 'sources.json' in fast
-          # Validate stable operational contracts, not implementation-detail source strings.
           assert "grep -q 'RETRY_POLICY = Retry' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py" not in fast
+          assert "grep -q 'official_source_count' scripts/reconcile_source_ids.py" not in fast
           print('Fast/recovery transition safety ok')
           PY
       - name: Materialize three-region registry in the test checkout
@@ -81,50 +72,33 @@ jobs:
           from source_registry import official_source_count
           from stable_source_identity import canonical_source_id
           data=json.loads(Path('sources.json').read_text(encoding='utf-8'))
-          assert {'gyeonggi','seoul','incheon'} <= set(data), data.keys()
-          assert official_source_count() == 39, official_source_count()
+          assert {'gyeonggi','seoul','incheon'} <= set(data),data.keys()
+          assert official_source_count() == 39,official_source_count()
           boards=(data['incheon']['central'].get('requiredBoards') or [])
-          by_bbs={str(x.get('bbsId')): str(x.get('url')) for x in boards}
-          assert by_bbs == {
-              '1981':'https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997',
-              '1534':'https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571',
-          }, by_bbs
+          by_bbs={str(x.get('bbsId')):str(x.get('url')) for x in boards}
+          assert by_bbs == {'1981':'https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997','1534':'https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571'},by_bbs
           central={'province':'인천','sourceType':'통합게시판','bbsId':'1981','nttSn':'3384652','url':'https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3384652'}
           afterschool={'province':'인천','sourceType':'늘봄지원센터','bbsId':'1534','nttSn':'3384314','url':'https://www.ice.go.kr/afterschool/na/ntt/selectNttInfo.do?bbsId=1534&mi=10571&nttSn=3384314'}
           assert canonical_source_id(central) == 'ice-central:3384652'
           assert canonical_source_id(afterschool) == 'ice-afterschool:3384314'
-          print('registry/identity ok', by_bbs)
-          PY
-      - name: Show live Incheon row structures
-        run: |
-          python - <<'PY'
-          import requests
-          from bs4 import BeautifulSoup
-          urls=[
-            'https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997',
-            'https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571',
-          ]
-          for url in urls:
-              r=requests.get(url,timeout=20,headers={'User-Agent':'Mozilla/5.0','Accept-Language':'ko-KR,ko;q=0.9'})
-              r.raise_for_status()
-              soup=BeautifulSoup(r.text,'html.parser')
-              ids=[str(a.get('data-id')) for a in soup.select('a.nttInfoBtn[data-id]') if str(a.get('data-id','')).isdigit()]
-              print('url=',url,'final_url=',r.url,'status=',r.status_code,'tables=',len(soup.find_all('table')),'trs=',len(soup.find_all('tr')),'stableIds=',ids[:5])
-              assert ids, url
+          print('registry/identity ok',by_bbs)
           PY
       - name: Probe both live official Incheon boards
         env:
           PYTHONPATH: scripts
         run: |
+          # Use the production collector path as the live contract. A raw HTML/CSS
+          # diagnostic probe is intentionally not a merge gate because official sites
+          # can vary markup or bot handling while the collector remains healthy.
           python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
           python - <<'PY'
           import json
           from pathlib import Path
           report=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
           health=report.get('boardHealth') or []
-          assert report.get('coverageComplete') is True, report
-          assert len(health) == 2, health
-          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'}, health
-          assert all(int(x.get('count') or 0) > 0 for x in health), health
-          print('two-board live probe ok', [(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
+          assert report.get('coverageComplete') is True,report
+          assert len(health) == 2,health
+          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
+          assert all(int(x.get('count') or 0) > 0 for x in health),health
+          print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY
