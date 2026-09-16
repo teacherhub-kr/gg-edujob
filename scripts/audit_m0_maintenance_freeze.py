@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Read-only audit for the M0 GitHub Actions maintenance freeze."""
+"""Read-only audit for the maintenance freeze with one explicit P0 recovery exception.
+
+Automatic state-changing workflows remain frozen except the dedicated Fast freshness watchdog,
+which may run on ``schedule`` and dispatch the already-guarded Fast workflow only when the
+repository's existing stale/active checks allow it.
+"""
 
 from __future__ import annotations
 
@@ -13,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
 
 FORBIDDEN_AUTOMATIC_EVENTS = {"schedule", "workflow_run", "repository_dispatch"}
+ALLOWED_AUTOMATIC_EVENTS = {
+    "fast-refresh-watchdog.yml": {"schedule"},
+}
 WRITE_MARKERS = (
     "contents: write",
     "actions: write",
@@ -89,6 +97,10 @@ def excludes_pull_request(step: list[str]) -> bool:
     return any(guard in condition for guard in guards)
 
 
+def automatic_exception(path: Path, event: str) -> bool:
+    return event in ALLOWED_AUTOMATIC_EVENTS.get(path.name, set())
+
+
 def main() -> int:
     failures: list[str] = []
     totals: Counter[str] = Counter()
@@ -105,7 +117,10 @@ def main() -> int:
         configured = events(raw_block)
         totals.update(configured.keys())
 
-        forbidden = sorted(FORBIDDEN_AUTOMATIC_EVENTS.intersection(configured))
+        forbidden = sorted(
+            event for event in FORBIDDEN_AUTOMATIC_EVENTS.intersection(configured)
+            if not automatic_exception(path, event)
+        )
         if forbidden:
             failures.append(f"{path.name}: forbidden automatic trigger(s): {', '.join(forbidden)}")
 
@@ -114,7 +129,10 @@ def main() -> int:
             failures.append(f"{path.name}: state-changing push can run on main")
 
         dispatch_or_merge = any(marker in lowered for marker in DISPATCH_OR_MERGE_MARKERS)
-        automatic_events = set(configured) - {"workflow_dispatch", "pull_request"}
+        automatic_events = {
+            event for event in set(configured) - {"workflow_dispatch", "pull_request"}
+            if not automatic_exception(path, event)
+        }
         if dispatch_or_merge and automatic_events:
             failures.append(
                 f"{path.name}: dispatch/merge logic exposed to automatic trigger(s): "
@@ -132,12 +150,13 @@ def main() -> int:
     print(f"Audited {len(workflow_files)} workflow files")
     print("Triggers: " + ", ".join(f"{key}={totals[key]}" for key in sorted(totals) if key != "read_only_pull_request_workflows"))
     print(f"Read-only pull_request workflows: {totals['read_only_pull_request_workflows']}")
+    print("Allowed automatic exception: fast-refresh-watchdog.yml schedule")
     if failures:
-        print("M0 maintenance freeze audit FAILED", file=sys.stderr)
+        print("Maintenance freeze audit FAILED", file=sys.stderr)
         for failure in failures:
             print(f"- {failure}", file=sys.stderr)
         return 1
-    print("M0 maintenance freeze audit PASSED")
+    print("Maintenance freeze audit PASSED")
     return 0
 
 

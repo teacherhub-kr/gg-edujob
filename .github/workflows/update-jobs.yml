@@ -27,11 +27,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # The workflow YAML is frozen at this run's head SHA, but the sync step above moves
-          # scripts/ to the latest main. That skew is why a pushed workflow fix can look like it
-          # "did not work": the run simply predates it. Surface it loudly instead of guessing.
-          # This is diagnostic only - it must never block a crawl, because refusing to collect
-          # is worse for posting coverage than running a slightly older orchestration.
           RUNNING="$(git show "${GITHUB_SHA}:.github/workflows/update-jobs.yml" | sha256sum | cut -d' ' -f1)"
           LATEST="$(git show "origin/main:.github/workflows/update-jobs.yml" | sha256sum | cut -d' ' -f1)"
           echo "workflow definition SHA in use: ${GITHUB_SHA}"
@@ -79,30 +74,33 @@ jobs:
             cp /tmp/jobs_previous.json jobs.json
           fi
 
-      - name: Prepare resilient fast collectors
+      - name: Verify fast collectors and materialize Incheon registry migration
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/update_collector_status.py --workflow fast --stage hardening --state running
-          python scripts/hotfix_sources.py
-          python scripts/hotfix_repair_links.py
-          python scripts/harden_fast_pagination.py
-          python scripts/harden_gyeonggi_central_retention.py
-          python scripts/harden_network_retries.py
-          python -m py_compile scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/recover_seoul_office_cms_jobs.py scripts/verify_jobs.py scripts/merge_recovery_snapshot.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sanitize_job_dates.py scripts/validate_reconciliation_policy.py scripts/sync_effective_audit_status.py scripts/harden_gyeonggi_central_retention.py
+          # The one-time registry migration is configuration materialization, not source patching.
+          # All collector code must already satisfy its production invariants before this run.
+          python scripts/ensure_incheon_registry.py
+          python -m py_compile scripts/scrape_jobs.py scripts/merge_incheon_official.py scripts/verify_required_regions.py scripts/ensure_incheon_registry.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/recover_seoul_office_cms_jobs.py scripts/verify_jobs.py scripts/merge_recovery_snapshot.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sanitize_job_dates.py scripts/validate_reconciliation_policy.py scripts/validate_reconciliation_policy_v3.py scripts/sync_effective_audit_status.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/stable_source_identity.py scripts/verify_support_completeness.py
           grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py
           grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py
           grep -q 'RETRY_POLICY = Retry' scripts/scrape_jobs.py
+          grep -q 'official_source_count' scripts/reconcile_source_ids.py
+          git diff --exit-code -- scripts
 
       - name: Fast crawl of central portals and support-office current pages
-        timeout-minutes: 50
+        timeout-minutes: 55
         run: |
           python scripts/update_collector_status.py --workflow fast --stage fast-crawl --state running
           python scripts/scrape_jobs.py
+          python scripts/merge_incheon_official.py --lookback-days 90
+          python scripts/verify_required_regions.py
 
       - name: Fast re-check of Gyeonggi support-office boards
         timeout-minutes: 25
         run: |
           python scripts/update_collector_status.py --workflow fast --stage gyeonggi-recheck --state running
-          # Fail closed on request/termination errors, but do not truncate busy offices at an arbitrary page count.
           python scripts/repair_gyeonggi_support.py --lookback-days 21
 
       - name: Sanitize impossible registration dates
@@ -158,7 +156,7 @@ jobs:
           python scripts/update_collection_state.py
 
       - name: Refresh official reconciliation evidence for current fast dataset
-        timeout-minutes: 55
+        timeout-minutes: 60
         shell: bash
         run: |
           set -euo pipefail
@@ -170,18 +168,11 @@ jobs:
           echo "Fast publication reconciliation scan: ${RECONCILE_SCAN_ID}"
           python scripts/verify_central_pagination.py
           python scripts/stamp_reconciliation_scan.py --central
-          # The independent Gyeonggi 90-day proof must belong to THIS scan. Without it the
-          # consistency verifier compares a fresh reconciliation against an old 90-day proof
-          # and fails the 45-minute audit-window check. Regenerate it, never widen the window.
           python scripts/verify_gyeonggi_central_90d.py
           python scripts/reconcile_source_ids.py
           python scripts/stamp_reconciliation_scan.py --reconciliation
-          # A targeted-restore report belongs to the ledger scan that produced it. It is not
-          # evidence for the newly minted scan until this run performs restoration.
           rm -f official_id_restore_report.json
-          python scripts/validate_reconciliation_policy.py
-          # Re-prove central IDs inside the same scan so the pagination proof and the
-          # reconciliation report stay inside one audit window.
+          python scripts/validate_reconciliation_policy_v3.py
           python scripts/verify_central_pagination.py
           python scripts/stamp_reconciliation_scan.py --central
           python scripts/verify_central_reconciliation_consistency.py
@@ -194,7 +185,8 @@ jobs:
       - name: Final publication guard
         run: |
           python scripts/update_collector_status.py --workflow fast --stage publication-guard --state running
-          python scripts/validate_reconciliation_policy.py
+          python scripts/validate_reconciliation_policy_v3.py
+          python scripts/verify_required_regions.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -214,7 +206,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           rm -f verification_failure_report.json
-          git add collector_status.json deep_audit_status.json jobs.json job_ledger.json collection_state.json board_cache.json missing_recovery_report.json seoul_office_cms_recovery_report.json date_anomaly_report.json support_link_resolution.json support_period_cache.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py
+          # Fast publication may materialize the one-time Incheon registry entry, but it must not
+          # commit collector source code. Source changes belong in reviewed PRs only.
+          git add collector_status.json deep_audit_status.json jobs.json job_ledger.json collection_state.json board_cache.json missing_recovery_report.json seoul_office_cms_recovery_report.json date_anomaly_report.json support_link_resolution.json support_period_cache.json sources.json incheon_official_report.json
           git add support_coverage_report.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json gyeonggi_central_90d_report.json
           if git ls-files --error-unmatch verification_failure_report.json >/dev/null 2>&1; then
             git add -u -- verification_failure_report.json

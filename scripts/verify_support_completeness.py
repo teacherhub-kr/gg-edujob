@@ -8,19 +8,23 @@ physical board was traversed completely.
 
 A recovery/deep-audit run may see a transient support-board access failure during its early
 coverage pass and then successfully re-traverse that exact source during the later independent
-38-source stable-ID reconciliation. When (and only when) that reconciliation belongs to the same
-candidate jobs.json, reconciles all 38 sources, has zero missing IDs, and supplies complete
-board-level traversal evidence, the later evidence supersedes the earlier transient status. This
-keeps the gate fail-closed while avoiding false failures after a proven retry recovery.
+registry-wide stable-ID reconciliation. When (and only when) that reconciliation belongs to the
+same candidate jobs.json, reconciles every currently registered official source, has zero missing
+IDs, and supplies complete board-level traversal evidence, the later evidence supersedes the
+earlier transient status. This keeps the gate fail-closed while avoiding false failures after a
+proven retry recovery.
 """
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from source_registry import official_source_count
+
 ROOT = Path(__file__).resolve().parents[1]
 JOBS_PATH = ROOT / "jobs.json"
 RECON_PATH = ROOT / "source_reconciliation_report.json"
+EXPECTED_OFFICIAL_SOURCES = official_source_count()
 data = json.loads(JOBS_PATH.read_text(encoding="utf-8"))
 comp = data.get("supportCompleteness") or {}
 problems = []
@@ -66,7 +70,9 @@ def same_candidate_reconciliation():
     # Matching generatedAt prevents a stale successful report from blessing a newer candidate.
     if str(summary.get("generatedAt") or "") != str(embedded.get("generatedAt") or ""):
         return {}
-    if int(summary.get("reconciledSources") or 0) != 38 or int(summary.get("totalSources") or 0) != 38:
+    reconciled = int(summary.get("reconciledSources") or 0)
+    total = int(summary.get("totalSources") or 0)
+    if reconciled != EXPECTED_OFFICIAL_SOURCES or total != EXPECTED_OFFICIAL_SOURCES:
         return {}
     if int(summary.get("missingAfter") or 0) != 0:
         return {}
@@ -115,10 +121,10 @@ def apply_later_reconciliation_evidence(statuses, province_label, evidence):
         office["ok"] = True
         office["state"] = "complete"
         office["message"] = "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인"
-        office["coverageEvidenceSource"] = "same-candidate-38-source-reconciliation"
+        office["coverageEvidenceSource"] = f"same-candidate-{EXPECTED_OFFICIAL_SOURCES}-source-reconciliation"
         notes.append(
             f"{province_label}/{office.get('name')}: earlier transient coverage failure superseded "
-            "by later same-candidate 38-source traversal proof"
+            f"by later same-candidate {EXPECTED_OFFICIAL_SOURCES}-source traversal proof"
         )
 
 
@@ -203,6 +209,7 @@ report = {
     "supportLinkResolution": data.get("supportLinkResolution") or {},
     "provinces": {},
     "laterReconciliationEvidenceUsed": bool(later_evidence),
+    "expectedOfficialSources": EXPECTED_OFFICIAL_SOURCES,
 }
 
 complete_counts = {"gyeonggi": 0, "seoul": 0}

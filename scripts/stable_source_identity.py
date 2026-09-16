@@ -39,9 +39,7 @@ def seoul_cms_detail_id(raw) -> str:
     segments = {segment.lower() for segment in parsed.path.split("/") if segment}
     if segments.intersection(NON_DETAIL_SEGMENTS):
         return ""
-    return (
-        f"seoul-cms:{_host(parsed)}:{match.group('board')}:{match.group('article')}"
-    )
+    return f"seoul-cms:{_host(parsed)}:{match.group('board')}:{match.group('article')}"
 
 
 def canonical_source_id(job) -> str:
@@ -56,6 +54,26 @@ def canonical_source_id(job) -> str:
             urls.append(raw)
     parsed_urls = [(raw, parsed) for raw in urls if (parsed := _parsed(raw)) is not None]
 
+    province = str(job.get("province") or "")
+    if province == "인천":
+        field_bbs = str(job.get("bbsId") or "")
+        field_ntt = str(job.get("nttSn") or "")
+        for _raw, parsed in parsed_urls:
+            query = parse_qs(parsed.query)
+            bbs = field_bbs or str((query.get("bbsId") or [""])[0])
+            ntt = field_ntt or str((query.get("nttSn") or [""])[0])
+            if (
+                bbs.isdigit()
+                and ntt.isdigit()
+                and _host(parsed).endswith("ice.go.kr")
+                and parsed.path.endswith("/selectNttInfo.do")
+            ):
+                if bbs == "1981":
+                    return f"ice-central:{ntt}"
+                if bbs == "1534":
+                    return f"ice-afterschool:{ntt}"
+                return f"ice-mircms:{bbs}:{ntt}"
+
     if job.get("sourceType") == "통합게시판":
         for _raw, parsed in parsed_urls:
             query = parse_qs(parsed.query)
@@ -66,7 +84,6 @@ def canonical_source_id(job) -> str:
             if recruit.isdigit():
                 return f"seoul-central:{recruit}"
 
-    province = str(job.get("province") or "")
     if province == "서울":
         seq = str((job.get("openParams") or {}).get("job_seq") or "")
         if seq.isdigit():
