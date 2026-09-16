@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Ensure the required Incheon official recruitment source exists in sources.json.
+"""Ensure the required Incheon official recruitment network exists in sources.json.
 
-This is an idempotent migration helper. The first verified Fast run after deployment writes the
-source into the canonical registry; later runs only validate/normalize the same entry.
+Incheon uses one logical regional source backed by two mandatory official boards:
+1) the general education-office recruitment board; and
+2) the Neulbom Support Center individual-contractor/external-instructor board.
+The central board itself explicitly redirects after-school postings to the second board, so both
+must be present before Incheon registry completeness can be claimed.
 """
 from __future__ import annotations
 
@@ -12,11 +15,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "sources.json"
 
+CENTRAL_URL = "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
+AFTERSCHOOL_URL = "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
+
 INCHOEON = {
     "name": "인천",
     "central": {
         "name": "인천광역시교육청 채용공고",
-        "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
+        "url": CENTRAL_URL,
+        "requiredBoards": [
+            {
+                "name": "인천광역시교육청 채용공고",
+                "url": CENTRAL_URL,
+                "bbsId": "1981",
+            },
+            {
+                "name": "인천광역시교육청 늘봄지원센터 개인위탁공고(외부강사)",
+                "url": AFTERSCHOOL_URL,
+                "bbsId": "1534",
+            },
+        ],
     },
     "supportOffices": [],
 }
