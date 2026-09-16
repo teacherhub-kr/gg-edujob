@@ -15,16 +15,16 @@ from stable_source_identity import canonical_source_id
 AS_OF = date(2026, 9, 15)
 
 
-def seoul(seq, *, title="공고", url_host="sbedu.sen.go.kr", end="2026-09-30"):
-    return {"province": "서울", "source": "강서양천교육지원청", "title": title, "applyEnd": end, "url": f"https://{url_host}/FUS/JO/JOV11.do?job_seq={seq}"}
+def seoul(seq, *, title="공고", url_host="sbedu.sen.go.kr", end="2026-09-30", registered=""):
+    return {"province": "서울", "source": "강서양천교육지원청", "title": title, "applyEnd": end, "registered": registered, "url": f"https://{url_host}/FUS/JO/JOV11.do?job_seq={seq}"}
 
 
-def gyeonggi(ntt, *, title="공고", end="2026-09-30"):
-    return {"province": "경기", "source": "수원교육지원청", "title": title, "applyEnd": end, "url": f"https://www.goesw.kr/board/view.do?bbsId=1234&nttSn={ntt}"}
+def gyeonggi(ntt, *, title="공고", end="2026-09-30", registered=""):
+    return {"province": "경기", "source": "수원교육지원청", "title": title, "applyEnd": end, "registered": registered, "url": f"https://www.goesw.kr/board/view.do?bbsId=1234&nttSn={ntt}"}
 
 
-def mircms(ntt, *, end=""):
-    return {"province": "경기", "source": "수원교육지원청", "title": "공고", "applyEnd": end, "url": f"https://www.goesw.kr/na/ntt/selectNttInfo.do?bbsId=1234&nttSn={ntt}"}
+def mircms(ntt, *, end="", registered=""):
+    return {"province": "경기", "source": "수원교육지원청", "title": "공고", "applyEnd": end, "registered": registered, "url": f"https://www.goesw.kr/na/ntt/selectNttInfo.do?bbsId=1234&nttSn={ntt}"}
 
 
 def ok(url="https://official.example/detail"):
@@ -37,6 +37,53 @@ class SupportDiffAuditTest(unittest.TestCase):
         report = audit.audit_report(jobs, list(jobs), as_of=AS_OF, probe=lambda _: ok())
         self.assertTrue(report["healthy"])
         self.assertFalse(report["historicalReferenceMatches"])
+        self.assertTrue(report["temporalAlignment"]["applied"])
+
+    def test_shared_cutoff_removes_natural_rollout_from_missing_population(self):
+        old_rollout = seoul("101", registered="2026/06/10")
+        current = seoul("102", registered="2026/09/16")
+        report = audit.audit_report(
+            [old_rollout],
+            [current],
+            as_of=date(2026, 9, 16),
+            historical_updated_at="2026-09-06 06:29 KST",
+            current_updated_at="2026-09-16 17:05 KST",
+            probe=lambda _: (_ for _ in ()).throw(AssertionError("rolled-out row must not be probed")),
+        )
+        self.assertEqual(report["rawOldOnly"], 1)
+        self.assertEqual(report["alignedOldOnly"], 0)
+        self.assertEqual(report["rawCurrentOnly"], 1)
+        self.assertEqual(report["alignedCurrentOnly"], 1)
+        self.assertTrue(report["healthy"])
+        self.assertTrue(report["appliedCutoff"].startswith("2026-06-18T17:05:00"))
+
+    def test_row_inside_shared_window_still_requires_official_verification(self):
+        old = seoul("101", registered="2026/06/20", end="2026-09-30")
+        report = audit.audit_report(
+            [old],
+            [],
+            as_of=date(2026, 9, 16),
+            historical_updated_at="2026-09-06 06:29 KST",
+            current_updated_at="2026-09-16 17:05 KST",
+            probe=lambda _: ok(old["url"]),
+        )
+        self.assertEqual(report["rawOldOnly"], 1)
+        self.assertEqual(report["alignedOldOnly"], 1)
+        self.assertFalse(report["healthy"])
+        self.assertEqual(len(report["actualMissing"]), 1)
+
+    def test_blank_registration_date_remains_included_like_production(self):
+        old = seoul("101", registered="", end="2026-09-30")
+        report = audit.audit_report(
+            [old],
+            [],
+            as_of=date(2026, 9, 16),
+            historical_updated_at="2026-09-06 06:29 KST",
+            current_updated_at="2026-09-16 17:05 KST",
+            probe=lambda _: ok(old["url"]),
+        )
+        self.assertEqual(report["alignedOldOnly"], 1)
+        self.assertFalse(report["healthy"])
 
     def test_same_strong_id_url_move_is_normal(self):
         old = seoul("101", url_host="SBEDU.SEN.GO.KR")
