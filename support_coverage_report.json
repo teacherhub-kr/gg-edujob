@@ -1,19 +1,18 @@
 {
-  "generatedAt": "2026-09-14T20:17:53.212879+00:00",
+  "generatedAt": "2026-09-16T09:05:02.317606+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
-    "newlyRecoveredJobs": 0,
-    "gyeonggiComplete": 25,
-    "seoulComplete": 11,
     "gyeonggiTotal": 25,
     "seoulTotal": 11,
+    "gyeonggiComplete": 25,
+    "seoulComplete": 11,
     "warnings": []
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 7073,
-    "gyeonggiTotal": 7073,
-    "seoulExact": 593,
-    "seoulTotal": 593
+    "gyeonggiExact": 6777,
+    "gyeonggiTotal": 6777,
+    "seoulExact": 495,
+    "seoulTotal": 495
   },
   "provinces": {
     "gyeonggi": {
@@ -30,13 +29,12 @@
             "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
             "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
           ],
-          "count": 93,
+          "count": 91,
           "rawRows": 210,
-          "pagesScanned": 21,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
@@ -66,7 +64,7 @@
               "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
               "pagesScanned": 6,
               "rawRows": 60,
-              "recentRows": 35,
+              "recentRows": 33,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -98,7 +96,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 21,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "고양교육지원청",
@@ -108,13 +109,12 @@
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
           ],
-          "count": 220,
-          "rawRows": 280,
-          "pagesScanned": 28,
+          "count": 213,
+          "rawRows": 290,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=8731&mi=15413",
@@ -142,9 +142,9 @@
             },
             {
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
-              "pagesScanned": 22,
-              "rawRows": 220,
-              "recentRows": 206,
+              "pagesScanned": 23,
+              "rawRows": 230,
+              "recentRows": 210,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -152,7 +152,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 29,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "광명교육지원청",
@@ -162,18 +165,17 @@
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
           ],
           "count": 279,
-          "rawRows": 320,
-          "pagesScanned": 32,
+          "rawRows": 310,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
               "pagesScanned": 28,
               "rawRows": 280,
-              "recentRows": 259,
+              "recentRows": 261,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -183,9 +185,9 @@
             },
             {
               "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879",
-              "pagesScanned": 4,
-              "rawRows": 40,
-              "recentRows": 20,
+              "pagesScanned": 3,
+              "rawRows": 30,
+              "recentRows": 18,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -193,7 +195,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 31,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "광주하남교육지원청",
@@ -204,19 +209,18 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 323,
-          "rawRows": 452,
-          "pagesScanned": 45,
+          "count": 333,
+          "rawRows": 462,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
-              "pagesScanned": 33,
-              "rawRows": 332,
-              "recentRows": 308,
+              "pagesScanned": 34,
+              "rawRows": 342,
+              "recentRows": 318,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -260,7 +264,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 46,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "구리남양주교육지원청",
@@ -275,19 +282,18 @@
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
           ],
-          "count": 576,
-          "rawRows": 730,
-          "pagesScanned": 75,
+          "count": 591,
+          "rawRows": 750,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 중복/옛 메뉴 별칭 제외",
-          "coverageComplete": true,
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
-              "pagesScanned": 49,
-              "rawRows": 490,
-              "recentRows": 479,
+              "pagesScanned": 51,
+              "rawRows": 510,
+              "recentRows": 493,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -311,7 +317,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 78,
+              "recentRows": 79,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -330,8 +336,11 @@
               "crossedLookback": false,
               "naturalEnd": false,
               "coverageComplete": false,
-              "ignoredAsStaleAlias": true,
-              "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003"
+              "ignoredAsDuplicateMenuAlias": true,
+              "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
+              "aliasStableIdCount": 0,
+              "representativeStableIdCount": 493,
+              "ignoredAsStaleAlias": true
             },
             {
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084",
@@ -344,8 +353,11 @@
               "crossedLookback": false,
               "naturalEnd": false,
               "coverageComplete": false,
-              "ignoredAsStaleAlias": true,
-              "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003"
+              "ignoredAsDuplicateMenuAlias": true,
+              "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
+              "aliasStableIdCount": 0,
+              "representativeStableIdCount": 493,
+              "ignoredAsStaleAlias": true
             },
             {
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13581&bbsId=8403",
@@ -383,7 +395,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 75,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "군포의왕교육지원청",
@@ -393,11 +408,10 @@
           ],
           "count": 6,
           "rawRows": 60,
-          "pagesScanned": 6,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110",
@@ -411,7 +425,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 6,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "김포교육지원청",
@@ -421,19 +438,18 @@
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
           ],
-          "count": 486,
+          "count": 491,
           "rawRows": 560,
-          "pagesScanned": 56,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
               "pagesScanned": 47,
               "rawRows": 470,
-              "recentRows": 445,
+              "recentRows": 450,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -465,7 +481,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 56,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "동두천양주교육지원청",
@@ -475,13 +494,12 @@
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=11748&bbsId=11037",
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228"
           ],
-          "count": 471,
+          "count": 473,
           "rawRows": 533,
-          "pagesScanned": 55,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?bbsId=11025&mi=11726",
@@ -511,7 +529,7 @@
               "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
               "pagesScanned": 49,
               "rawRows": 491,
-              "recentRows": 469,
+              "recentRows": 471,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -519,7 +537,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 55,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "부천교육지원청",
@@ -529,19 +550,18 @@
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
           ],
-          "count": 1249,
-          "rawRows": 1310,
-          "pagesScanned": 131,
+          "count": 661,
+          "rawRows": 1300,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
               "pagesScanned": 60,
               "rawRows": 600,
-              "recentRows": 580,
+              "recentRows": 575,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -551,9 +571,9 @@
             },
             {
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
-              "pagesScanned": 11,
-              "rawRows": 110,
-              "recentRows": 89,
+              "pagesScanned": 10,
+              "rawRows": 100,
+              "recentRows": 86,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -565,7 +585,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381",
               "pagesScanned": 60,
               "rawRows": 600,
-              "recentRows": 580,
+              "recentRows": 575,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -573,7 +593,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 130,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "성남교육지원청",
@@ -582,19 +605,18 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 934,
+          "count": 932,
           "rawRows": 980,
-          "pagesScanned": 98,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
               "pagesScanned": 90,
               "rawRows": 900,
-              "recentRows": 872,
+              "recentRows": 870,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -614,7 +636,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 98,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "수원교육지원청",
@@ -624,11 +649,10 @@
           ],
           "count": 15,
           "rawRows": 90,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851",
@@ -642,7 +666,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "시흥교육지원청",
@@ -651,19 +678,18 @@
             "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5518&mi=9018",
             "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5511&mi=9003"
           ],
-          "count": 65,
+          "count": 62,
           "rawRows": 123,
-          "pagesScanned": 11,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5518&mi=9018",
               "pagesScanned": 8,
               "rawRows": 80,
-              "recentRows": 62,
+              "recentRows": 60,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -683,7 +709,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 11,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "안산교육지원청",
@@ -694,19 +723,18 @@
             "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=13663&bbsId=6933",
             "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=11382&bbsId=6532"
           ],
-          "count": 75,
+          "count": 73,
           "rawRows": 139,
-          "pagesScanned": 16,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?bbsId=5918&mi=11390",
               "pagesScanned": 8,
               "rawRows": 80,
-              "recentRows": 66,
+              "recentRows": 64,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -750,7 +778,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 16,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "안성교육지원청",
@@ -761,17 +792,16 @@
           ],
           "count": 210,
           "rawRows": 240,
-          "pagesScanned": 24,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
               "pagesScanned": 20,
               "rawRows": 200,
-              "recentRows": 184,
+              "recentRows": 182,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -783,7 +813,7 @@
               "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?mi=4464&bbsId=2727",
               "pagesScanned": 4,
               "rawRows": 40,
-              "recentRows": 26,
+              "recentRows": 28,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -791,7 +821,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 24,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "안양과천교육지원청",
@@ -804,11 +837,10 @@
           ],
           "count": 9,
           "rawRows": 54,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?bbsId=5137&mi=10158",
@@ -858,7 +890,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "양평교육지원청",
@@ -869,11 +904,10 @@
           ],
           "count": 154,
           "rawRows": 185,
-          "pagesScanned": 20,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
@@ -899,7 +933,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 20,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "여주교육지원청",
@@ -909,19 +946,18 @@
             "https://www.goeyj.kr/goeyj/na/ntt/selectNttList.do?mi=10103&bbsId=10082",
             "https://www.goeyj.kr/goeyj/na/ntt/selectNttList.do?mi=10323&bbsId=10178"
           ],
-          "count": 9,
+          "count": 8,
           "rawRows": 77,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyj.kr/goeyj/na/ntt/selectNttList.do?bbsId=10075&mi=10090",
               "pagesScanned": 4,
               "rawRows": 40,
-              "recentRows": 9,
+              "recentRows": 8,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -953,7 +989,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "연천교육지원청",
@@ -965,11 +1004,10 @@
           ],
           "count": 94,
           "rawRows": 155,
-          "pagesScanned": 17,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
@@ -1007,7 +1045,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 17,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "용인교육지원청",
@@ -1018,13 +1059,12 @@
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
           ],
-          "count": 121,
-          "rawRows": 201,
-          "pagesScanned": 23,
+          "count": 122,
+          "rawRows": 211,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12229&mi=20180",
@@ -1040,9 +1080,9 @@
             },
             {
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
-              "pagesScanned": 11,
-              "rawRows": 110,
-              "recentRows": 97,
+              "pagesScanned": 12,
+              "rawRows": 120,
+              "recentRows": 98,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1074,7 +1114,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 24,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "의정부교육지원청",
@@ -1084,19 +1127,18 @@
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
           ],
-          "count": 328,
+          "count": 331,
           "rawRows": 380,
-          "pagesScanned": 39,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?bbsId=4119&mi=7023",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 64,
+              "recentRows": 65,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1120,7 +1162,7 @@
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
               "pagesScanned": 28,
               "rawRows": 280,
-              "recentRows": 264,
+              "recentRows": 266,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1128,7 +1170,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 39,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "이천교육지원청",
@@ -1138,11 +1183,10 @@
           ],
           "count": 11,
           "rawRows": 50,
-          "pagesScanned": 5,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeic.kr/goeic/na/ntt/selectNttList.do?bbsId=3723&mi=5593",
@@ -1156,7 +1200,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 5,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "파주교육지원청",
@@ -1167,19 +1214,18 @@
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10788&bbsId=7179"
           ],
-          "count": 451,
+          "count": 454,
           "rawRows": 531,
-          "pagesScanned": 54,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
-              "pagesScanned": 12,
-              "rawRows": 120,
-              "recentRows": 98,
+              "pagesScanned": 11,
+              "rawRows": 110,
+              "recentRows": 96,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1189,9 +1235,9 @@
             },
             {
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
-              "pagesScanned": 36,
-              "rawRows": 360,
-              "recentRows": 341,
+              "pagesScanned": 37,
+              "rawRows": 370,
+              "recentRows": 347,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1203,7 +1249,7 @@
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
               "pagesScanned": 3,
               "rawRows": 39,
-              "recentRows": 12,
+              "recentRows": 11,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1223,7 +1269,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 54,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "평택교육지원청",
@@ -1233,19 +1282,18 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 741,
-          "rawRows": 831,
-          "pagesScanned": 83,
+          "count": 754,
+          "rawRows": 841,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
               "pagesScanned": 12,
               "rawRows": 120,
-              "recentRows": 104,
+              "recentRows": 106,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1257,7 +1305,7 @@
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
               "pagesScanned": 6,
               "rawRows": 60,
-              "recentRows": 12,
+              "recentRows": 13,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1267,9 +1315,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 65,
-              "rawRows": 651,
-              "recentRows": 625,
+              "pagesScanned": 66,
+              "rawRows": 661,
+              "recentRows": 635,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1277,7 +1325,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 84,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "포천교육지원청",
@@ -1287,19 +1338,18 @@
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116"
           ],
-          "count": 191,
+          "count": 197,
           "rawRows": 242,
-          "pagesScanned": 24,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
               "pagesScanned": 5,
               "rawRows": 51,
-              "recentRows": 32,
+              "recentRows": 33,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1311,7 +1361,7 @@
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
               "pagesScanned": 12,
               "rawRows": 121,
-              "recentRows": 105,
+              "recentRows": 109,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1323,7 +1373,7 @@
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116",
               "pagesScanned": 7,
               "rawRows": 70,
-              "recentRows": 54,
+              "recentRows": 55,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1331,7 +1381,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 24,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "화성오산교육지원청",
@@ -1340,19 +1393,18 @@
             "https://www.goehs.kr/goehs/na/ntt/selectNttList.do?bbsId=9826&mi=17846",
             "https://www.goehs.kr/goehs/na/ntt/selectNttList.do?bbsId=9838&mi=17866"
           ],
-          "count": 47,
+          "count": 48,
           "rawRows": 124,
-          "pagesScanned": 14,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goehs.kr/goehs/na/ntt/selectNttList.do?bbsId=9826&mi=17846",
               "pagesScanned": 12,
               "rawRows": 120,
-              "recentRows": 47,
+              "recentRows": 48,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1372,7 +1424,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 14,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         }
       ]
     },
@@ -1388,11 +1443,10 @@
           ],
           "count": 0,
           "rawRows": 0,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
-          "state": "empty",
-          "message": "공식 게시판 정상 · 최근 공고 0건",
-          "coverageComplete": true,
+          "state": "complete",
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://dbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1408,7 +1462,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "서부교육지원청",
@@ -1418,11 +1475,10 @@
           ],
           "count": 2,
           "rawRows": 2,
-          "pagesScanned": 2,
+          "seoulOfficeParseIncomplete": 2,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1438,7 +1494,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 2,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "남부교육지원청",
@@ -1446,19 +1505,18 @@
           "boards": [
             "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 19,
-          "rawRows": 20,
-          "pagesScanned": 3,
+          "count": 11,
+          "rawRows": 12,
+          "seoulOfficeParseIncomplete": 11,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 3,
-              "rawRows": 20,
-              "recentRows": 19,
+              "rawRows": 12,
+              "recentRows": 11,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1468,7 +1526,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 3,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "북부교육지원청",
@@ -1478,11 +1539,10 @@
           ],
           "count": 0,
           "rawRows": 0,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
-          "state": "empty",
-          "message": "공식 게시판 정상 · 최근 공고 0건",
-          "coverageComplete": true,
+          "state": "complete",
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://bbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1498,7 +1558,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "중부교육지원청",
@@ -1508,11 +1571,10 @@
           ],
           "count": 44,
           "rawRows": 70,
-          "pagesScanned": 7,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1528,7 +1590,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 7,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "강동송파교육지원청",
@@ -1536,19 +1601,18 @@
           "boards": [
             "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 8,
-          "rawRows": 11,
-          "pagesScanned": 3,
+          "count": 9,
+          "rawRows": 12,
+          "seoulOfficeParseIncomplete": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 3,
-              "rawRows": 11,
-              "recentRows": 8,
+              "rawRows": 12,
+              "recentRows": 9,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1558,7 +1622,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 3,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "강서양천교육지원청",
@@ -1568,11 +1635,10 @@
           ],
           "count": 122,
           "rawRows": 150,
-          "pagesScanned": 15,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1588,7 +1654,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 15,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "강남서초교육지원청",
@@ -1596,19 +1665,18 @@
           "boards": [
             "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 83,
+          "count": 81,
           "rawRows": 110,
-          "pagesScanned": 11,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 11,
               "rawRows": 110,
-              "recentRows": 83,
+              "recentRows": 81,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1618,7 +1686,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 11,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "동작관악교육지원청",
@@ -1626,19 +1697,18 @@
           "boards": [
             "https://dgedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 148,
+          "count": 149,
           "rawRows": 170,
-          "pagesScanned": 17,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 17,
               "rawRows": 170,
-              "recentRows": 148,
+              "recentRows": 149,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1648,7 +1718,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 17,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "성동광진교육지원청",
@@ -1658,11 +1731,10 @@
           ],
           "count": 0,
           "rawRows": 0,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
-          "state": "empty",
-          "message": "공식 게시판 정상 · 최근 공고 0건",
-          "coverageComplete": true,
+          "state": "complete",
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sdgjedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1678,7 +1750,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         },
         {
           "name": "성북강북교육지원청",
@@ -1688,11 +1763,10 @@
           ],
           "count": 2,
           "rawRows": 2,
-          "pagesScanned": 2,
+          "seoulOfficeParseIncomplete": 2,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sbgbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1708,16 +1782,45 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 2,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-38-source-reconciliation"
         }
       ]
     }
   },
-  "laterReconciliationEvidenceUsed": false,
+  "laterReconciliationEvidenceUsed": true,
   "notes": [
-    "gyeonggi/구리남양주교육지원청: ignored zero-row stale menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14162 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
-    "gyeonggi/구리남양주교육지원청: ignored zero-row stale menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
+    "경기/가평교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/고양교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/광명교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/광주하남교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/구리남양주교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/군포의왕교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/김포교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/동두천양주교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/부천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/성남교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/수원교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/시흥교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/안산교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/안성교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/안양과천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/양평교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/여주교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/연천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/용인교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/의정부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/이천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/파주교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/평택교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/포천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "경기/화성오산교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "gyeonggi/구리남양주교육지원청: ignored stable-ID-proven duplicate menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14162 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
+    "gyeonggi/구리남양주교육지원청: ignored stable-ID-proven duplicate menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
     "gyeonggi/구리남양주교육지원청: round rawRows=90, but traversal has explicit completion evidence",
+    "gyeonggi/부천교육지원청: round rawRows=100, but traversal has explicit completion evidence",
     "gyeonggi/성남교육지원청: round rawRows=80, but traversal has explicit completion evidence",
     "gyeonggi/수원교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "gyeonggi/시흥교육지원청: round rawRows=80, but traversal has explicit completion evidence",
@@ -1725,6 +1828,17 @@
     "gyeonggi/용인교육지원청: round rawRows=80, but traversal has explicit completion evidence",
     "gyeonggi/의정부교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "gyeonggi/포천교육지원청: round rawRows=70, but traversal has explicit completion evidence",
+    "서울/동부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/서부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/남부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/북부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/중부교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/강동송파교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/강서양천교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/강남서초교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/동작관악교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/성동광진교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
+    "서울/성북강북교육지원청: earlier transient coverage failure superseded by later same-candidate 38-source traversal proof",
     "seoul/중부교육지원청: round rawRows=70, but traversal has explicit completion evidence"
   ],
   "problems": [],
