@@ -1,0 +1,101 @@
+name: Official completeness deep audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: official-completeness-deep-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install collector dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Preserve the published candidate for omission accounting
+        run: cp jobs.json /tmp/production_jobs.json
+      - name: Require all mandatory regional registries and runtime regions
+        run: python scripts/verify_required_regions.py
+      - name: Independently prove central pagination and Gyeonggi 90-day traversal
+        run: |
+          python scripts/verify_central_pagination.py
+          python scripts/verify_gyeonggi_central_90d.py
+      - name: Independently prove both mandatory Incheon official boards
+        run: python scripts/merge_incheon_official.py --check-only --lookback-days 90
+      - name: Reconcile the current official registry without publishing
+        run: python scripts/reconcile_source_ids.py
+      - name: Fail if the published production dataset omitted a current official ID
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from source_registry import official_source_count
+
+          report=json.loads(Path('source_reconciliation_report.json').read_text(encoding='utf-8'))
+          summary=report.get('summary') or {}
+          expected=official_source_count()
+          total=int(summary.get('totalSources') or 0)
+          reconciled=int(summary.get('reconciledSources') or 0)
+          missing_before=int(summary.get('missingBefore') or 0)
+          missing_after=int(summary.get('missingAfter') or 0)
+          incomplete=report.get('incompleteSources') or []
+
+          if total != expected or reconciled != total or incomplete:
+              raise SystemExit(
+                  f'Registry reconciliation incomplete: expected={expected}, total={total}, '
+                  f'reconciled={reconciled}, incomplete={incomplete}'
+              )
+          if missing_after != 0:
+              raise SystemExit(f'Reconciliation itself still has missing official IDs: {missing_after}')
+          if missing_before != 0:
+              raise SystemExit(
+                  f'Published production omitted {missing_before} official IDs before local read-only recovery'
+              )
+          print(json.dumps({
+              'state':'complete',
+              'registeredOfficialSources': expected,
+              'officialIdCount': summary.get('officialIdCount'),
+              'missingBefore': missing_before,
+              'missingAfter': missing_after,
+          }, ensure_ascii=False))
+          PY
+      - name: Require independent central/reconciliation agreement
+        run: python scripts/verify_central_reconciliation_consistency.py
+      - name: Require both Incheon boards to remain complete
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
+          health=r.get('boardHealth') or []
+          complete={str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True}
+          if r.get('coverageComplete') is not True or complete != {'1981','1534'}:
+              raise SystemExit(f'Incheon mandatory-board proof incomplete: {r}')
+          print('Incheon two-board completeness proof passed')
+          PY
+      - name: Upload independent completeness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-completeness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source_reconciliation_report.json
+            central_pagination_report.json
+            gyeonggi_central_90d_report.json
+            incheon_official_report.json
+          if-no-files-found: warn
+          retention-days: 14
