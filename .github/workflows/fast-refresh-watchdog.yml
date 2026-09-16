@@ -2,6 +2,11 @@ name: Fast refresh schedule watchdog
 
 on:
   workflow_dispatch:
+  schedule:
+    # Run away from the top of the hour to reduce GitHub schedule delay. The
+    # watchdog itself is read/decision-only unless the existing stale gate
+    # decides a fast refresh is needed.
+    - cron: '17,47 * * * *'
 permissions:
   contents: read
   actions: write
