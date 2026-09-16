@@ -1,0 +1,56 @@
+name: P0 Incheon official source regression
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/merge_incheon_official.py'
+      - 'scripts/ensure_incheon_registry.py'
+      - 'scripts/verify_required_regions.py'
+      - 'scripts/stable_source_identity.py'
+      - 'scripts/reconcile_source_ids.py'
+      - 'scripts/update_collector_status.py'
+      - 'scripts/verify_central_reconciliation_consistency.py'
+      - 'scripts/validate_reconciliation_policy_v3.py'
+      - '.github/workflows/update-jobs.yml'
+      - '.github/workflows/p0-incheon-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-incheon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install collector dependencies
+        run: pip install -r requirements.txt
+      - name: Static compile
+        run: |
+          python -m py_compile scripts/merge_incheon_official.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/validate_reconciliation_policy_v3.py
+      - name: Materialize three-region registry in the test checkout
+        run: python scripts/ensure_incheon_registry.py
+      - name: Verify registry count and strong identity
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from source_registry import official_source_count
+          from stable_source_identity import canonical_source_id
+          data=json.loads(Path('sources.json').read_text(encoding='utf-8'))
+          assert {'gyeonggi','seoul','incheon'} <= set(data), data.keys()
+          assert official_source_count() == 39, official_source_count()
+          job={'province':'인천','sourceType':'통합게시판','url':'https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3384652'}
+          assert canonical_source_id(job) == 'ice-central:3384652'
+          print('registry/identity ok')
+          PY
+      - name: Probe the live official Incheon board
+        env:
+          PYTHONPATH: scripts
+        run: python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
