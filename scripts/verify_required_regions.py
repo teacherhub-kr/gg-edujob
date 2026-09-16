@@ -14,6 +14,10 @@ REQUIRED = {
     "seoul": "서울",
     "incheon": "인천",
 }
+INCHOEN_REQUIRED_BOARDS = {
+    "1981": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
+    "1534": "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571",
+}
 
 
 def load(name):
@@ -42,8 +46,22 @@ def main() -> None:
         if runtime.get("ok") is not True or count <= 0:
             unhealthy.append(f"{label}:count={count},ok={runtime.get('ok')}")
 
+    incheon_group = registry.get("incheon") if isinstance(registry, dict) else None
+    incheon_central = incheon_group.get("central") if isinstance(incheon_group, dict) else None
+    registered_boards = {
+        str(item.get("bbsId") or ""): str(item.get("url") or "")
+        for item in ((incheon_central or {}).get("requiredBoards") or [])
+        if isinstance(item, dict)
+    }
+    missing_incheon_boards = [
+        bbs for bbs, url in INCHOEN_REQUIRED_BOARDS.items()
+        if registered_boards.get(bbs) != url
+    ]
+    if missing_incheon_boards:
+        missing_registry.append("인천 필수게시판:" + ",".join(missing_incheon_boards))
+
     if missing_registry:
-        raise SystemExit("Required official region absent from registry: " + ", ".join(missing_registry))
+        raise SystemExit("Required official region/source absent from registry: " + ", ".join(missing_registry))
     if unhealthy:
         raise SystemExit("Required official central source is not healthy: " + "; ".join(unhealthy))
 
@@ -61,17 +79,39 @@ def main() -> None:
     if not incheon:
         raise SystemExit("Incheon official source is registered but no Incheon jobs are present in jobs.json")
 
+    present_bbs = {str(job.get("bbsId") or "") for job in incheon}
+    missing_published_boards = sorted(set(INCHOEN_REQUIRED_BOARDS) - present_bbs)
+    if missing_published_boards:
+        raise SystemExit(
+            "Incheon required official board has no published jobs: " + ", ".join(missing_published_boards)
+        )
+
+    runtime_incheon = ((status.get("incheon") or {}).get("central") or {}) if isinstance(status, dict) else {}
+    health = runtime_incheon.get("boardHealth") or []
+    healthy_bbs = {
+        str(item.get("bbsId") or "")
+        for item in health
+        if isinstance(item, dict) and item.get("coverageComplete") is True
+    }
+    missing_runtime_proof = sorted(set(INCHOEN_REQUIRED_BOARDS) - healthy_bbs)
+    if missing_runtime_proof:
+        raise SystemExit(
+            "Incheon required board lacks complete runtime traversal evidence: " + ", ".join(missing_runtime_proof)
+        )
+
     malformed = []
-    for job in incheon[:100]:
+    for job in incheon[:200]:
         raw = str(job.get("url") or "")
         parsed = urlparse(raw)
         query = parse_qs(parsed.query)
         ntt = str((query.get("nttSn") or [""])[0])
+        bbs = str(job.get("bbsId") or (query.get("bbsId") or [""])[0])
         if (
             parsed.scheme != "https"
             or not (parsed.hostname or "").endswith("ice.go.kr")
             or not parsed.path.endswith("/selectNttInfo.do")
             or not ntt.isdigit()
+            or bbs not in INCHOEN_REQUIRED_BOARDS
         ):
             malformed.append(raw)
             if len(malformed) >= 5:
@@ -84,6 +124,8 @@ def main() -> None:
         "registryOfficialSources": expected_sources,
         "runtimeCentralCounts": counts,
         "incheonPublishedJobs": len(incheon),
+        "incheonRequiredBoards": sorted(INCHOEN_REQUIRED_BOARDS),
+        "incheonPublishedBoards": sorted(present_bbs & set(INCHOEN_REQUIRED_BOARDS)),
         "state": "ok",
     }, ensure_ascii=False))
 
