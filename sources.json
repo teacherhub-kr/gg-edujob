@@ -411,5 +411,25 @@
         ]
       }
     ]
+  },
+  "incheon": {
+    "name": "인천",
+    "central": {
+      "name": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
+      "requiredBoards": [
+        {
+          "name": "인천광역시교육청 채용공고",
+          "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
+          "bbsId": "1981"
+        },
+        {
+          "name": "인천광역시교육청 늘봄지원센터 개인위탁공고(외부강사)",
+          "url": "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571",
+          "bbsId": "1534"
+        }
+      ]
+    },
+    "supportOffices": []
   }
 }

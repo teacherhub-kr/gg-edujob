@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16 22:18:02 KST",
-  "datasetUpdatedAt": "2026-09-16 21:40 KST",
+  "generatedAt": "2026-09-17 07:41:10 KST",
+  "datasetUpdatedAt": "2026-09-17 06:57 KST",
   "boards": {
     "서울교육일자리포털": {
       "source": "서울교육일자리포털",
@@ -8,10 +8,10 @@
       "boardUrl": "",
       "latestNumericId": null,
       "latestRegistered": "2026/09/16",
-      "observedJobs": 1897,
+      "observedJobs": 1899,
       "presentInLatest": true,
-      "lastObservedJobs": 1893,
-      "maxObservedJobs": 1897
+      "lastObservedJobs": 1897,
+      "maxObservedJobs": 1899
     },
     "경기도교육청 통합 구인구직": {
       "source": "경기도교육청 통합 구인구직",
@@ -19,7 +19,7 @@
       "boardUrl": "",
       "latestNumericId": 60370,
       "latestRegistered": "2026/09/16",
-      "observedJobs": 10226,
+      "observedJobs": 10237,
       "presentInLatest": true,
       "lastObservedJobs": 47172,
       "maxObservedJobs": 47172
@@ -35,6 +35,16 @@
       "lastObservedJobs": 387,
       "maxObservedJobs": 387,
       "configuredOfficialBoard": true
+    },
+    "인천광역시교육청 채용공고": {
+      "source": "인천광역시교육청 채용공고",
+      "province": "인천",
+      "boardUrl": "",
+      "latestNumericId": 3384754,
+      "latestRegistered": "2026/09/16",
+      "observedJobs": 2549,
+      "presentInLatest": true,
+      "maxObservedJobs": 2549
     },
     "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003": {
       "source": "구리남양주교육지원청",
@@ -164,7 +174,7 @@
       "latestRegistered": "2026/09/16",
       "observedJobs": 21,
       "presentInLatest": true,
-      "lastObservedJobs": 20,
+      "lastObservedJobs": 21,
       "maxObservedJobs": 21,
       "configuredOfficialBoard": true
     },
@@ -264,13 +274,25 @@
       "maxObservedJobs": 667,
       "configuredOfficialBoard": true
     },
+    "https://dgedu.sen.go.kr/FUS/JO/JOL11.do": {
+      "source": "동작관악교육지원청",
+      "province": "서울",
+      "boardUrl": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
+      "latestNumericId": 10260,
+      "latestRegistered": "2026/09/16",
+      "observedJobs": 150,
+      "presentInLatest": true,
+      "lastObservedJobs": 166,
+      "maxObservedJobs": 166,
+      "configuredOfficialBoard": true
+    },
     "https://nbedu.sen.go.kr/FUS/JO/JOL11.do": {
       "source": "남부교육지원청",
       "province": "서울",
       "boardUrl": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
       "latestNumericId": 11394,
       "latestRegistered": "2026/09/16",
-      "observedJobs": 53,
+      "observedJobs": 46,
       "presentInLatest": true,
       "lastObservedJobs": 53,
       "maxObservedJobs": 53,
@@ -358,18 +380,6 @@
       "presentInLatest": true,
       "lastObservedJobs": 106,
       "maxObservedJobs": 106,
-      "configuredOfficialBoard": true
-    },
-    "https://dgedu.sen.go.kr/FUS/JO/JOL11.do": {
-      "source": "동작관악교육지원청",
-      "province": "서울",
-      "boardUrl": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
-      "latestNumericId": 10259,
-      "latestRegistered": "2026/09/15",
-      "observedJobs": 149,
-      "presentInLatest": true,
-      "lastObservedJobs": 166,
-      "maxObservedJobs": 166,
       "configuredOfficialBoard": true
     },
     "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?bbsId=4119&mi=7023": {
@@ -967,7 +977,7 @@
       "boardUrl": "https://dbedu.sen.go.kr/CMS/school/school04/school0409/school040903/index.html",
       "latestNumericId": null,
       "latestRegistered": "2026/08/12",
-      "observedJobs": 8,
+      "observedJobs": 7,
       "presentInLatest": true,
       "lastObservedJobs": 10,
       "maxObservedJobs": 10
