@@ -65,6 +65,13 @@ def canonical_source_id(job) -> str:
             recruit = str((query.get("q_rcrtSn") or query.get("rcrtSn") or [""])[0])
             if recruit.isdigit():
                 return f"seoul-central:{recruit}"
+            ntt = str((query.get("nttSn") or [""])[0])
+            if (
+                ntt.isdigit()
+                and _host(parsed).endswith("ice.go.kr")
+                and parsed.path.endswith("/selectNttInfo.do")
+            ):
+                return f"ice-central:{ntt}"
 
     province = str(job.get("province") or "")
     if province == "서울":
