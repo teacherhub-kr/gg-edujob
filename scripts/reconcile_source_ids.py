@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Independent stable-ID reconciliation for all 38 official recruitment sources.
+"""Independent stable-ID reconciliation for all registered official recruitment sources.
 
 Support offices are re-traversed through the completeness crawler and central portals are
 re-read through their source-native IDs. The source ID, not title similarity, is the evidence
 unit: Gyeonggi support bbsId+nttSn, Seoul support host+job_seq, Gyeonggi central pbancSn,
-and Seoul central q_rcrtSn. Missing source occurrences are restored before publication.
+Seoul central q_rcrtSn, and Incheon central nttSn. Missing source occurrences are restored before
+publication.
 
 MirCMS can expose one physical board through several menu ids (mi). A menu alias is ignored only
 when a completely traversed representative of the same physical board proves that every stable ID
@@ -20,6 +21,7 @@ from urllib.parse import parse_qs, urlparse
 import complete_support_coverage as cov
 import scrape_jobs as primary
 import crawl_gyeonggi_central_recent as central_recent
+import merge_incheon_official as incheon
 from stable_source_identity import canonical_source_id
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,7 +31,7 @@ REPORT_PATH = ROOT / "source_reconciliation_report.json"
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 NOW_S = NOW.strftime("%Y-%m-%d %H:%M:%S KST")
-RECONCILIATION_POLICY = "stable-id-38-v2-gyeonggi-central-90d"
+RECONCILIATION_POLICY = "stable-id-39-v3-metro-central-90d"
 
 
 def load(path, default):
@@ -182,6 +184,18 @@ def crawl_official_ids():
     ))
     all_rows.extend(se_central)
 
+    # Incheon publishes a single citywide official recruitment board. Traverse the same 90-day
+    # window independently during reconciliation so registry presence alone can never satisfy P0.
+    incheon_rows, incheon_meta = incheon.scrape_incheon_central(lookback_days=cov.LOOKBACK_DAYS)
+    sources.insert(2, source_status(
+        "인천", incheon.SOURCE_NAME, incheon_rows,
+        coverage_complete=bool(incheon_meta.get("coverageComplete")),
+        pages_scanned=int(incheon_meta.get("pagesScanned") or 0),
+        access_errors=1 if incheon_meta.get("accessError") else 0,
+        boards=[incheon.LIST_URL], board_health=[incheon_meta],
+    ))
+    all_rows.extend(incheon_rows)
+
     by_id = {}
     for row in all_rows:
         if not is_recruitment_row(row):
@@ -287,7 +301,7 @@ def main():
     LEDGER_PATH.write_text(json.dumps({
         "generatedAt": NOW_S,
         "populationPolicy": RECONCILIATION_POLICY,
-        "policy": "append-only stable official recruitment posting IDs across all 38 sources; result/selection notices are excluded by title policy; title similarity never deletes source evidence",
+        "policy": "append-only stable official recruitment posting IDs across every registered official source; result/selection notices are excluded by title policy; title similarity never deletes source evidence",
         "officialIdCount": len(current_official),
         "knownOfficialIdCount": len(entries), "entries": entries,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
