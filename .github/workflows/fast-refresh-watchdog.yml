@@ -1,18 +1,18 @@
-name: Fast refresh schedule watchdog
+name: Production operations watchdog
 
 on:
   workflow_dispatch:
   schedule:
-    # Run away from the top of the hour to reduce GitHub schedule delay. The
-    # watchdog itself is read/decision-only unless the existing stale gate
-    # decides a fast refresh is needed.
+    # One scheduler owns automatic dispatch decisions. Writer workflows themselves stay
+    # dispatch-only, which prevents overlapping cron writers and keeps M0 fail-closed.
     - cron: '17,47 * * * *'
+
 permissions:
   contents: read
   actions: write
 
 concurrency:
-  group: fast-refresh-watchdog
+  group: production-operations-watchdog
   cancel-in-progress: true
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Decide whether fast refresh needs a fallback dispatch
+      - name: Select exactly one safe production action
         id: gate
         shell: bash
         env:
@@ -40,49 +40,90 @@ jobs:
 
           KST = timezone(timedelta(hours=9))
           now = datetime.now(KST)
+          repo = os.environ['GITHUB_REPOSITORY']
+          active_states = {'queued','in_progress','waiting','requested','pending'}
+          targets = {
+              'fast': 'update-jobs.yml',
+              'recovery': 'recover-missing-jobs.yml',
+              'completeness': 'official-completeness-audit.yml',
+              'unified': 'unified-search.yml',
+          }
 
-          try:
-              root = json.loads(Path('collector_status.json').read_text(encoding='utf-8'))
-              fast = root.get('fast', {}) if isinstance(root, dict) else {}
-          except Exception:
-              fast = {}
+          def load_json(path, default):
+              try:
+                  data=json.loads(Path(path).read_text(encoding='utf-8'))
+                  return data
+              except Exception:
+                  return default
+
+          def api_runs(filename):
+              proc=subprocess.run(
+                  ['gh','api',f'/repos/{repo}/actions/workflows/{filename}/runs?per_page=20'],
+                  text=True,capture_output=True,
+              )
+              if proc.returncode != 0:
+                  print(f'warning: cannot read workflow runs for {filename}: {proc.stderr.strip()}')
+                  return []
+              try:
+                  return (json.loads(proc.stdout) or {}).get('workflow_runs',[]) or []
+              except Exception:
+                  return []
+
+          def api_time(value):
+              if not value:
+                  return None
+              try:
+                  return datetime.fromisoformat(str(value).replace('Z','+00:00')).astimezone(KST)
+              except Exception:
+                  return None
+
+          def completed_at(run):
+              return api_time(run.get('updated_at') or run.get('run_started_at') or run.get('created_at'))
+
+          def latest_completed(runs):
+              return next((r for r in runs if r.get('status') == 'completed'), None)
+
+          def latest_success(runs):
+              return next((r for r in runs if r.get('status') == 'completed' and r.get('conclusion') == 'success'), None)
+
+          def git_commit_time(path):
+              proc=subprocess.run(['git','log','-1','--format=%ct','--',path],text=True,capture_output=True)
+              try:
+                  return datetime.fromtimestamp(int(proc.stdout.strip()), tz=timezone.utc).astimezone(KST)
+              except Exception:
+                  return None
+
+          all_runs={key: api_runs(name) for key,name in targets.items()}
+          active=[]
+          for key,runs in all_runs.items():
+              if any(r.get('status') in active_states for r in runs):
+                  active.append(key)
+
+          root=load_json('collector_status.json',{})
+          fast=root.get('fast',{}) if isinstance(root,dict) else {}
 
           def parse_kst(value):
               if not value:
                   return None
               try:
-                  dt = datetime.fromisoformat(str(value))
+                  dt=datetime.fromisoformat(str(value))
                   if dt.tzinfo is None:
-                      dt = dt.replace(tzinfo=KST)
+                      dt=dt.replace(tzinfo=KST)
                   return dt.astimezone(KST)
               except Exception:
                   return None
 
-          success_at = parse_kst(fast.get('lastSuccessAt'))
-          updated_at = parse_kst(fast.get('updatedAt'))
-          state = str(fast.get('state') or '')
-          success_age = (now - success_at) if success_at else None
-          running_age = (now - updated_at) if updated_at else None
+          success_at=parse_kst(fast.get('lastSuccessAt'))
+          updated_at=parse_kst(fast.get('updatedAt'))
+          success_age=(now-success_at) if success_at else None
+          running_age=(now-updated_at) if updated_at else None
+          state=str(fast.get('state') or '')
 
-          # Do not race an update that GitHub already has queued/running, even if the
-          # repository status file has not yet been updated by that run.
-          api = f"/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?per_page=100"
-          proc = subprocess.run(
-              ['gh', 'api', api, '--jq',
-               '[.workflow_runs[] | select(.path==".github/workflows/update-jobs.yml" and (.status=="queued" or .status=="in_progress" or .status=="waiting" or .status=="requested" or .status=="pending"))] | length'],
-              text=True, capture_output=True,
-          )
-          try:
-              active_runs = int((proc.stdout or '0').strip()) if proc.returncode == 0 else 0
-          except Exception:
-              active_runs = 0
+          registry=load_json('sources.json',{})
+          required_registry={'gyeonggi','seoul','incheon'} <= set(registry) if isinstance(registry,dict) else False
 
-          # A successful fast run is not evidence for collector/verification code that
-          # changed afterwards. Detect those changes independently of the age threshold
-          # so a safety fix is exercised promptly rather than waiting several hours.
-          validation_paths = [
+          validation_paths=[
               '.github/workflows/update-jobs.yml',
-              'scripts/hotfix_sources.py',
               'scripts/scrape_jobs.py',
               'scripts/repair_gyeonggi_support.py',
               'scripts/resolve_support_links.py',
@@ -92,55 +133,135 @@ jobs:
               'scripts/verify_jobs.py',
               'scripts/merge_recovery_snapshot.py',
               'scripts/validate_reconciliation_policy.py',
-              'scripts/harden_fast_pagination.py',
-              'scripts/harden_gyeonggi_central_retention.py',
-              'scripts/harden_network_retries.py',
+              'scripts/validate_reconciliation_policy_v3.py',
+              'scripts/reconcile_source_ids.py',
+              'scripts/verify_required_regions.py',
+              'scripts/merge_incheon_official.py',
+              'scripts/ensure_incheon_registry.py',
+              'scripts/stable_source_identity.py',
+              'scripts/source_registry.py',
           ]
-          collector_changes_after_success = 0
+          collector_changes_after_success=0
           if success_at is not None:
-              since = success_at.astimezone(timezone.utc).isoformat()
-              changed = subprocess.run(
-                  ['git', 'log', '--format=%H', f'--since={since}', '--', *validation_paths],
-                  text=True, capture_output=True,
+              since=success_at.astimezone(timezone.utc).isoformat()
+              changed=subprocess.run(
+                  ['git','log','--format=%H',f'--since={since}','--',*validation_paths],
+                  text=True,capture_output=True,
               )
               if changed.returncode == 0:
-                  collector_changes_after_success = len([
-                      line for line in changed.stdout.splitlines() if line.strip()
-                  ])
+                  collector_changes_after_success=len([x for x in changed.stdout.splitlines() if x.strip()])
 
-          if active_runs > 0:
-              decision = 'skip-active-run'
-          elif state == 'running' and running_age is not None and running_age <= timedelta(minutes=90):
-              decision = 'skip-status-running'
-          elif collector_changes_after_success > 0:
-              decision = 'dispatch'
-          elif success_age is not None and success_age <= timedelta(hours=3, minutes=15):
-              decision = 'skip-fresh'
+          action='skip-healthy'
+          reason='all production contracts current'
+
+          if active:
+              action='skip-active-run'
+              reason='active workflows: ' + ','.join(active)
           else:
-              decision = 'dispatch'
+              fast_needed=(
+                  not required_registry
+                  or success_at is None
+                  or success_age > timedelta(hours=3, minutes=15)
+                  or collector_changes_after_success > 0
+              )
+              fast_status_running=(state == 'running' and running_age is not None and running_age <= timedelta(minutes=90))
+              if fast_needed and not fast_status_running:
+                  action='fast'
+                  reason=(
+                      f'registryComplete={required_registry}, '
+                      f'successAgeHours={round(success_age.total_seconds()/3600,2) if success_age else None}, '
+                      f'collectorChangesAfterSuccess={collector_changes_after_success}'
+                  )
+              elif fast_status_running:
+                  action='skip-status-running'
+                  reason='collector_status reports a recent running Fast job'
+              else:
+                  audit_runs=all_runs['completeness']
+                  recovery_runs=all_runs['recovery']
+                  unified_runs=all_runs['unified']
+                  latest_audit=latest_completed(audit_runs)
+                  latest_audit_success=latest_success(audit_runs)
+                  latest_recovery=latest_completed(recovery_runs)
+                  latest_recovery_success=latest_success(recovery_runs)
+                  latest_unified=latest_completed(unified_runs)
 
-          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as fh:
-              fh.write(f'decision={decision}\n')
+                  jobs_time=git_commit_time('jobs.json')
+                  unified_time=git_commit_time('unified_jobs.json')
+                  audit_success_time=completed_at(latest_audit_success) if latest_audit_success else None
+                  audit_current=bool(
+                      audit_success_time
+                      and audit_success_time.date() == now.date()
+                      and (jobs_time is None or audit_success_time >= jobs_time)
+                  )
+
+                  audit_failed=bool(latest_audit and latest_audit.get('conclusion') == 'failure')
+                  audit_failure_time=completed_at(latest_audit) if audit_failed else None
+                  recovery_success_time=completed_at(latest_recovery_success) if latest_recovery_success else None
+                  recovery_latest_time=completed_at(latest_recovery) if latest_recovery else None
+
+                  if audit_failed:
+                      if recovery_success_time and audit_failure_time and recovery_success_time > audit_failure_time:
+                          action='completeness'
+                          reason='successful recovery occurred after failed completeness audit; re-prove production'
+                      elif (
+                          latest_recovery and latest_recovery.get('conclusion') == 'failure'
+                          and recovery_latest_time and audit_failure_time
+                          and recovery_latest_time > audit_failure_time
+                          and now - recovery_latest_time < timedelta(hours=3)
+                      ):
+                          action='skip-recovery-backoff'
+                          reason='recovery failed recently; three-hour backoff active'
+                      else:
+                          action='recovery'
+                          reason='latest official completeness audit failed without a newer successful recovery'
+                  elif not audit_current and now.hour >= 2:
+                      action='completeness'
+                      reason='no current successful daily official completeness proof'
+                  elif jobs_time and (unified_time is None or jobs_time > unified_time):
+                      latest_unified_time=completed_at(latest_unified) if latest_unified else None
+                      if (
+                          latest_unified and latest_unified.get('conclusion') == 'failure'
+                          and latest_unified_time and now - latest_unified_time < timedelta(hours=1)
+                      ):
+                          action='skip-unified-backoff'
+                          reason='unified search failed within the last hour'
+                      else:
+                          action='unified'
+                          reason=f'jobs.json is newer than unified_jobs.json: jobs={jobs_time}, unified={unified_time}'
+
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as fh:
+              fh.write(f'action={action}\n')
+
           print(json.dumps({
-              'decision': decision,
+              'action': action,
+              'reason': reason,
               'nowKST': now.isoformat(),
+              'requiredRegistryComplete': required_registry,
               'fastState': state,
               'fastLastSuccessAt': fast.get('lastSuccessAt'),
-              'fastUpdatedAt': fast.get('updatedAt'),
-              'successAgeHours': round(success_age.total_seconds()/3600, 2) if success_age else None,
-              'activeUpdateRuns': active_runs,
+              'fastSuccessAgeHours': round(success_age.total_seconds()/3600,2) if success_age else None,
               'collectorChangesAfterSuccess': collector_changes_after_success,
+              'activeTargets': active,
+              'priority': ['fast','recovery','completeness','unified'],
           }, ensure_ascii=False))
           PY
-      - name: Dispatch fallback fast refresh
-        if: steps.gate.outputs.decision == 'dispatch'
+      - name: Dispatch the selected production action
+        if: steps.gate.outputs.action == 'fast' || steps.gate.outputs.action == 'recovery' || steps.gate.outputs.action == 'completeness' || steps.gate.outputs.action == 'unified'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          ACTION: ${{ steps.gate.outputs.action }}
         run: |
           set -euo pipefail
+          case "$ACTION" in
+            fast) workflow='update-jobs.yml' ;;
+            recovery) workflow='recover-missing-jobs.yml' ;;
+            completeness) workflow='official-completeness-audit.yml' ;;
+            unified) workflow='unified-search.yml' ;;
+            *) echo "Unknown action: $ACTION" >&2; exit 2 ;;
+          esac
           gh api --method POST \
             -H 'Accept: application/vnd.github+json' \
-            "/repos/${GITHUB_REPOSITORY}/actions/workflows/update-jobs.yml/dispatches" \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/dispatches" \
             -f ref=main
-          echo 'Fallback fast refresh dispatched.'
+          echo "Dispatched ${workflow} for action=${ACTION}."
