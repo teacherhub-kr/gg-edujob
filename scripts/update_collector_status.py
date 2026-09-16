@@ -84,6 +84,27 @@ def current_stable_ids(payload):
 
 
 def current_support_link_evidence(payload):
+    # resolve_support_links.py runs again immediately before the final support gate and can
+    # legitimately change the support posting total after verify_jobs.py stamped
+    # verification.supportExactLinks. Prefer the current, same-candidate resolution metadata;
+    # fall back to the earlier verification snapshot only when that metadata is unavailable.
+    current = payload.get("supportLinkResolution", {}) if isinstance(payload, dict) else {}
+    if isinstance(current, dict):
+        gg_total = int(current.get("gyeonggiTotal") or 0)
+        gg_exact = int(current.get("gyeonggiExact") or 0)
+        se_total = int(current.get("seoulTotal") or 0)
+        se_exact = int(current.get("seoulExact") or 0)
+        total = gg_total + se_total
+        resolved = gg_exact + se_exact
+        if total > 0:
+            unresolved = max(0, total - resolved)
+            return {
+                "total": total,
+                "resolved": resolved,
+                "unresolved": unresolved,
+                "exact": unresolved == 0 and resolved == total,
+            }
+
     verification = payload.get("verification", {}) if isinstance(payload, dict) else {}
     exact = verification.get("supportExactLinks", {}) if isinstance(verification, dict) else {}
     total = int(exact.get("total") or 0) if isinstance(exact, dict) else 0
