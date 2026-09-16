@@ -2,35 +2,30 @@
 """Fail closed when central-source completeness proofs are logically inconsistent.
 
 There are deliberately three proofs:
-1) `central_pagination_report.json` independently proves the current central list endpoints parse
-   and paginate correctly (active-oriented Gyeonggi UI + Seoul central list).
-2) `source_reconciliation_report.json` defines the authoritative recent 90-day population used for
-   recovery.
+1) `central_pagination_report.json` independently proves the current Gyeonggi and Seoul central
+   list endpoints parse and paginate correctly.
+2) `source_reconciliation_report.json` defines the authoritative recent population across every
+   registered official source, including Incheon.
 3) `gyeonggi_central_90d_report.json` is produced by an explicit independent traversal before this
-   verifier runs. This verifier is read-only: it must not regenerate that proof, because repeated
-   regeneration later in a long reconciliation run moves the proof timestamp forward and can make
-   an otherwise valid single audit window fail its own bounded-skew policy.
+   verifier runs. This verifier is read-only.
 
 The public boards are live during an audit that can take tens of minutes, so exact count equality
-between two complete scans is not a valid invariant: newly posted or boundary-expiring rows can
-legitimately change the population while the audit is running. We therefore allow only small,
-bounded temporal drift between independently complete scans. Large drift, stale audit windows,
-incomplete traversal, or an active Gyeonggi population larger than the 90-day population still
-fail closed.
+between two complete scans is not a valid invariant. We allow only small bounded temporal drift
+between the independent Gyeonggi/Seoul scans; Incheon completeness is enforced by its per-source
+reconciliation evidence and the required-region guard.
 """
 import json
 import math
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from source_registry import official_source_count
+
 ROOT = Path(__file__).resolve().parents[1]
 CENTRAL = ROOT / "central_pagination_report.json"
 RECON = ROOT / "source_reconciliation_report.json"
 GG90 = ROOT / "gyeonggi_central_90d_report.json"
 KST = timezone(timedelta(hours=9))
-# Keep the window bounded to one audit chain. The independent 90-day proof is generated once by
-# the workflow and then reused by this read-only consistency verifier; repeated verifier calls do
-# not move its timestamp forward anymore.
 MAX_SKEW_MINUTES = 45
 MAX_DRIFT_RATIO = 0.01
 MAX_DRIFT_ABSOLUTE = 25
@@ -63,10 +58,16 @@ def main():
     recon = load(RECON)
     if not central.get("complete"):
         raise SystemExit("Central pagination report is not complete")
-    if int((recon.get("summary") or {}).get("reconciledSources") or 0) != 38:
-        raise SystemExit("38-source reconciliation is not complete")
+    expected_sources = official_source_count()
+    reconciled_sources = int((recon.get("summary") or {}).get("reconciledSources") or 0)
+    total_sources = int((recon.get("summary") or {}).get("totalSources") or 0)
+    if reconciled_sources != expected_sources or total_sources != expected_sources:
+        raise SystemExit(
+            f"Registry reconciliation is not complete: registry={expected_sources}, "
+            f"reconciled={reconciled_sources}, total={total_sources}"
+        )
     if int((recon.get("summary") or {}).get("missingAfter") or 0) != 0:
-        raise SystemExit("38-source reconciliation still has missing IDs")
+        raise SystemExit("Registry reconciliation still has missing IDs")
 
     if not GG90.exists() or GG90.stat().st_size < 100:
         raise SystemExit("Independent Gyeonggi 90-day proof artifact missing")
@@ -92,20 +93,27 @@ def main():
     central_sources = source_map(central)
     gg_name = "경기도교육청 통합 구인구직"
     se_name = "서울교육일자리포털"
+    ice_name = "인천광역시교육청 채용공고"
     gg_recon = recon_sources.get(gg_name)
     se_recon = recon_sources.get(se_name)
+    ice_recon = recon_sources.get(ice_name)
     gg_active = central_sources.get(gg_name)
     se_central = central_sources.get(se_name)
-    if not all((gg_recon, se_recon, gg_active, se_central)):
-        raise SystemExit("Missing one or more central source records from verification reports")
+    if not all((gg_recon, se_recon, ice_recon, gg_active, se_central)):
+        raise SystemExit("Missing one or more required central source records from verification reports")
+    if ice_recon.get("coverageComplete") is not True or ice_recon.get("reconciled") is not True:
+        raise SystemExit("Incheon official central reconciliation is incomplete")
 
     gg_recent_count = int(gg_recon.get("officialIdCount") or 0)
     gg_independent_count = int(gg90.get("stableIdCount") or 0)
     gg_active_count = int(gg_active.get("stableIdCount") or 0)
     se_recon_count = int(se_recon.get("officialIdCount") or 0)
     se_independent_count = int(se_central.get("stableIdCount") or 0)
+    ice_recon_count = int(ice_recon.get("officialIdCount") or 0)
 
     errors = []
+    if ice_recon_count <= 0:
+        errors.append({"source": ice_name, "reason": "zero-official-ids"})
     if not within_live_drift(gg_independent_count, gg_recent_count):
         errors.append({
             "source": gg_name,
@@ -139,6 +147,7 @@ def main():
     print(json.dumps({
         "state": "ok",
         "policy": "complete independent scans may differ only by bounded live-source drift",
+        "registrySources": expected_sources,
         "timestampSkewMinutes": {
             "centralVsReconciliation": round(skew_cr, 2),
             "gyeonggi90dVsReconciliation": round(skew_gr, 2),
@@ -158,6 +167,11 @@ def main():
                 "independentStableIds": se_independent_count,
                 "difference": abs(se_independent_count - se_recon_count),
                 "allowedDifference": drift_limit(se_independent_count, se_recon_count),
+            },
+            {
+                "name": ice_name,
+                "reconciliation90dStableIds": ice_recon_count,
+                "coverageComplete": True,
             },
         ],
     }, ensure_ascii=False))
