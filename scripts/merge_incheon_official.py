@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Collect the Incheon Metropolitan Office of Education recruitment board and merge it into jobs.json.
+"""Collect the Incheon Metropolitan Office of Education recruitment board.
 
-The official board is the single citywide recruitment board at bbsId=1981/mi=10997. We traverse
-until the requested lookback window is proven exhausted; an arbitrary page ceiling is only an
-emergency fail-closed guard, never a normal successful stop condition.
+The official board exposes each recruitment row through ``a.nttInfoBtn[data-id]``.  That native
+``data-id`` is the board's nttSn and is therefore the stable identity used by this collector.
+Production traversal is fail-closed: a network error, repeated page, malformed row population, or
+emergency page ceiling never counts as complete evidence.
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ import re
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -37,7 +38,10 @@ BBS_ID = "1981"
 MI = "10997"
 UA = "Mozilla/5.0 (compatible; metro-edujob/3.1; public recruitment aggregator)"
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
-EXCLUDE_WORDS = re.compile(r"최종\s*합격|합격자|서류\s*심사|서류전형|면접\s*대상|선정\s*결과|채용\s*결과|전형\s*결과|합격\s*공고|인사\s*발령")
+EXCLUDE_WORDS = re.compile(
+    r"최종\s*합격|합격자|서류\s*심사|서류전형|면접\s*대상|선정\s*결과|"
+    r"채용\s*결과|전형\s*결과|합격\s*공고|인사\s*발령"
+)
 
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.6"})
@@ -86,7 +90,9 @@ def with_page(url: str, page: int) -> str:
     parsed = urlparse(url)
     query = parse_qs(parsed.query, keep_blank_values=True)
     query["currPage"] = [str(page)]
-    return urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, urlencode(query, doseq=True), parsed.fragment))
+    return urlunparse(
+        (parsed.scheme, parsed.netloc, parsed.path, parsed.params, urlencode(query, doseq=True), parsed.fragment)
+    )
 
 
 def fetch(url: str):
@@ -107,21 +113,19 @@ def table_headers(table):
 
 
 def detail_ntt_sn(anchor) -> str:
-    raw = " ".join((anchor.get("href", "") or "", anchor.get("onclick", "") or "", str(anchor.get("data-id", "") or "")))
-    parsed = urlparse(urljoin(LIST_URL, anchor.get("href", "") or ""))
+    """Return the source-native nttSn from an Incheon recruitment detail control."""
+    data_id = clean(anchor.get("data-id", ""))
+    if data_id.isdigit():
+        return data_id
+
+    raw = " ".join((anchor.get("href", "") or "", anchor.get("onclick", "") or ""))
+    parsed = urlparse(raw if raw.startswith(("http://", "https://")) else LIST_URL)
     query = parse_qs(parsed.query)
     value = str((query.get("nttSn") or [""])[0])
     if value.isdigit():
         return value
-    for pattern in (
-        r"nttSn\s*[=:,'\"() ]+\s*(\d{4,})",
-        r"selectNttInfo\.do[^\n]*?(\d{4,})",
-        r"(?:fn|go|view|detail)[A-Za-z_]*\s*\([^)]*?(\d{4,})",
-    ):
-        match = re.search(pattern, raw, re.IGNORECASE)
-        if match:
-            return match.group(1)
-    return ""
+    match = re.search(r"nttSn\s*[=:,'\"() ]+\s*(\d{4,})", raw, re.IGNORECASE)
+    return match.group(1) if match else ""
 
 
 def detail_url(ntt_sn: str) -> str:
@@ -151,7 +155,7 @@ def guess_type(raw: str, title: str) -> str:
         return "시간강사/강사"
     if "교육공무직" in text or "근로자" in text or "조리" in text or "돌봄" in text:
         return "교육공무직/기간제근로자"
-    if "자원봉사" in text or "봉사자" in text:
+    if "자원봉사" in text or "봉사자" in text or "배움터지킴이" in text:
         return "자원봉사"
     if "신규교사" in text or "정규" in text:
         return "정규채용"
@@ -172,45 +176,39 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
     raw_rows = 0
     dated_rows = 0
     page_dates = []
+    page_ids = []
 
     for table in soup.find_all("table"):
         headers = table_headers(table)
+        if "등록일" not in headers or "제목" not in headers:
+            continue
         for tr in table.find_all("tr"):
-            cells = tr.find_all("td")
+            cells = tr.find_all("td", recursive=False)
             if not cells:
                 continue
-            selected = None
-            ntt_sn = ""
-            for anchor in tr.find_all("a"):
-                candidate = detail_ntt_sn(anchor)
-                if candidate:
-                    selected = anchor
-                    ntt_sn = candidate
-                    break
-            if not selected or not ntt_sn:
+            anchor = tr.select_one("a.nttInfoBtn[data-id]")
+            if anchor is None:
+                continue
+            ntt_sn = detail_ntt_sn(anchor)
+            if not ntt_sn:
                 continue
 
             raw_rows += 1
-            values = {}
-            for index, cell in enumerate(cells):
-                if index < len(headers) and headers[index]:
-                    values[headers[index]] = clean(cell.get_text(" ", strip=True))
-
-            row_text = clean(tr.get_text(" ", strip=True))
+            page_ids.append(ntt_sn)
+            values = {
+                headers[index]: clean(cell.get_text(" ", strip=True))
+                for index, cell in enumerate(cells)
+                if index < len(headers) and headers[index]
+            }
             registered = date_norm(pick(values, "등록일"))
-            if not registered:
-                dates = [date_norm(match.group(0)) for match in DATE_RE.finditer(row_text)]
-                registered = next((value for value in dates if value), "")
             if registered:
                 dated_rows += 1
                 page_dates.append(registered)
             if registered and not recent_enough(registered, lookback_days):
                 continue
 
-            title = clean(selected.get_text(" ", strip=True)).replace("새로운 글", "").strip()
-            if len(title) < 2:
-                title = pick(values, "제목")
-            title = re.sub(r"^N\s+", "", title).strip()
+            title = clean(anchor.get("title") or anchor.find("em").get_text(" ", strip=True) if anchor.find("em") else anchor.get_text(" ", strip=True))
+            title = re.sub(r"^N\s*", "", title).strip()
             if not title or EXCLUDE_WORDS.search(title):
                 continue
 
@@ -250,6 +248,7 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
         "rawRows": raw_rows,
         "datedRows": dated_rows,
         "pageDates": page_dates,
+        "pageIds": page_ids,
         "pageText": clean(soup.get_text(" ", strip=True))[:5000],
         "pageUrl": page_url,
     }
@@ -273,27 +272,17 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
 
         pages_scanned += 1
         rows, meta = parse_table_rows(response.text, response.url, lookback_days)
-        raw_ids = []
-        for row in rows:
-            sid = row.get("id", "")
-            if sid:
-                raw_ids.append(sid)
-                if sid not in seen_ids:
-                    seen_ids.add(sid)
-                    all_rows.append(row)
-
-        # Use all anchors, not only recent rows, for repeated-page detection.
-        soup = BeautifulSoup(response.text, "html.parser")
-        page_ids = []
-        for anchor in soup.find_all("a"):
-            candidate = detail_ntt_sn(anchor)
-            if candidate and candidate not in page_ids:
-                page_ids.append(candidate)
-        signature = tuple(page_ids)
+        signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
             stop_reason = "repeated-page"
             break
         previous_signature = signature or previous_signature
+
+        for row in rows:
+            sid = row.get("id", "")
+            if sid and sid not in seen_ids:
+                seen_ids.add(sid)
+                all_rows.append(row)
 
         if meta["rawRows"] == 0:
             stop_reason = "empty-page"
@@ -359,8 +348,9 @@ def merge_into_jobs(rows, meta) -> dict:
         if sid in seen:
             continue
         seen.add(sid)
-        if canonical_source_id(job):
-            job["sourceIdentity"] = canonical_source_id(job)
+        strong_id = canonical_source_id(job)
+        if strong_id:
+            job["sourceIdentity"] = strong_id
         deduped.append(job)
 
     payload["jobs"] = deduped
