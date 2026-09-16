@@ -48,14 +48,15 @@ jobs:
           PY
           cp jobs.json /tmp/jobs_recovery_base.json
 
-      - name: Prepare resilient deep audit collectors
+      - name: Verify collectors are already hardened and immutable
+        shell: bash
         run: |
-          python scripts/hotfix_sources.py
-          python scripts/hotfix_repair_links.py
-          python scripts/harden_deep_audit.py
-          python scripts/harden_network_retries.py
-          python scripts/harden_central_pagination.py
-          python -m py_compile scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/harden_central_pagination.py scripts/merge_recovery_snapshot.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/verify_support_completeness.py scripts/verify_jobs.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sync_effective_audit_status.py scripts/sanitize_job_dates.py scripts/harden_deep_audit.py
+          set -euo pipefail
+          # Hardener entry points are tested against isolated copies only. Recovery must never
+          # patch production source code as a side effect of collecting data.
+          python -m unittest tests/test_fast_hardening.py
+          python -m py_compile scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/merge_recovery_snapshot.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/verify_support_completeness.py scripts/verify_jobs.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sync_effective_audit_status.py scripts/sanitize_job_dates.py scripts/merge_incheon_official.py scripts/verify_required_regions.py
+          git diff --exit-code -- scripts
 
       - name: Prove central portal pagination independently
         run: python scripts/verify_central_pagination.py
@@ -73,6 +74,9 @@ jobs:
         run: |
           sleep 12
           python scripts/complete_support_coverage.py
+
+      - name: Collect complete Incheon official network
+        run: python scripts/merge_incheon_official.py --lookback-days 90
 
       - name: Reconcile official posting IDs and recover exact missing source occurrences
         run: python scripts/reconcile_source_ids.py
@@ -97,6 +101,9 @@ jobs:
       - name: Require proven support-office traversal and exact links
         run: python scripts/verify_support_completeness.py
 
+      - name: Require all three official regions in the candidate dataset
+        run: python scripts/verify_required_regions.py
+
       - name: Validate recovered dataset against published baseline
         run: python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json
 
@@ -107,12 +114,17 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import sys
           from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from source_registry import official_source_count
+
           before=json.loads(Path('/tmp/jobs_recovery_base.json').read_text(encoding='utf-8')).get('jobs',[])
           after=json.loads(Path('jobs.json').read_text(encoding='utf-8')).get('jobs',[])
           rec=json.loads(Path('source_reconciliation_report.json').read_text(encoding='utf-8'))
           summary=rec.get('summary',{})
           central=json.loads(Path('central_pagination_report.json').read_text(encoding='utf-8'))
+          expected_sources=official_source_count()
           if len(after)<100: raise SystemExit(f'Recovery output too small: {len(after)}')
           if len(before)>=100 and len(after)<len(before)*0.70:
               raise SystemExit(f'Recovery unexpectedly lost >30%: {len(before)} -> {len(after)}')
@@ -120,20 +132,23 @@ jobs:
               raise SystemExit(f'Official ID reconciliation still missing {summary.get("missingAfter")} postings')
           reconciled=int(summary.get('reconciledSources') or 0)
           total=int(summary.get('totalSources') or 0)
-          if total != 38 or reconciled != total:
-              raise SystemExit(f'Not all 38 official sources reconciled: {summary}')
+          if total != expected_sources or reconciled != total:
+              raise SystemExit(
+                  f'Not all registered official sources reconciled: expected={expected_sources}, summary={summary}'
+              )
           if not central.get('complete'):
               raise SystemExit(f'Central pagination proof incomplete: {central}')
           sources=central.get('sources') or []
           if len(sources) != 2 or any(not s.get('complete') for s in sources):
-              raise SystemExit(f'Both central sources must independently prove pagination: {sources}')
-          print(f'Recovery guard passed: {len(before)} -> {len(after)}; official IDs={summary.get("officialIdCount")}, recovered={summary.get("recoveredNow")}; central pagination complete')
+              raise SystemExit(f'Gyeonggi/Seoul central sources must independently prove pagination: {sources}')
+          print(f'Recovery guard passed: {len(before)} -> {len(after)}; registry sources={expected_sources}; official IDs={summary.get("officialIdCount")}, recovered={summary.get("recoveredNow")}; central pagination complete')
           PY
           python scripts/verify_central_reconciliation_consistency.py
+          python scripts/verify_required_regions.py
           python scripts/update_collector_status.py --workflow recovery --stage complete --state success
           python scripts/sync_effective_audit_status.py
 
-      - name: Commit only verified recovered postings
+      - name: Commit only verified recovered data
         shell: bash
         run: |
           set -euo pipefail
@@ -141,7 +156,9 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
           rm -f recovery_failure_report.json
-          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json collector_status.json deep_audit_status.json board_cache.json missing_recovery_report.json source_reconciliation_report.json central_pagination_report.json date_anomaly_report.json support_coverage_report.json support_link_resolution.json support_period_cache.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/harden_central_pagination.py scripts/verify_support_completeness.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/harden_deep_audit.py
+          # Recovery is a data workflow. Source/config files are deliberately excluded: any
+          # collector hardening or registry change must arrive through a reviewed code change.
+          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json collector_status.json deep_audit_status.json board_cache.json missing_recovery_report.json source_reconciliation_report.json central_pagination_report.json date_anomaly_report.json support_coverage_report.json support_link_resolution.json support_period_cache.json incheon_official_report.json
           git ls-files --error-unmatch recovery_failure_report.json >/dev/null 2>&1 && git add -u -- recovery_failure_report.json || true
           git diff --cached --quiet && exit 0
           python scripts/publication_transaction.py publish \
@@ -150,7 +167,7 @@ jobs:
             --message 'Recover and reconcile official recruitment posting IDs' \
             --allow-concurrent-path operational_quality_report.json \
             --allow-concurrent-path operational_quality_history.json \
-            --revalidate-command 'python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json && python scripts/validate_reconciliation_policy.py && python scripts/verify_central_reconciliation_consistency.py'
+            --revalidate-command 'python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json && python scripts/validate_reconciliation_policy.py && python scripts/verify_central_reconciliation_consistency.py && python scripts/verify_required_regions.py'
 
       - name: Preserve failed recovery diagnostics without publishing unverified data
         if: failure()
@@ -158,7 +175,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/recovery-diagnostics
-          for f in support_coverage_report.json support_link_resolution.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json missing_recovery_report.json date_anomaly_report.json; do
+          for f in support_coverage_report.json support_link_resolution.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json missing_recovery_report.json date_anomaly_report.json incheon_official_report.json; do
             if [ -f "$f" ]; then cp "$f" "/tmp/recovery-diagnostics/$f"; fi
           done
 
@@ -190,6 +207,7 @@ jobs:
           links = load('support_link_resolution.json')
           missing = load('missing_recovery_report.json')
           dates = load('date_anomaly_report.json')
+          incheon = load('incheon_official_report.json')
 
           report = {
               'generatedAt': datetime.now(timezone(timedelta(hours=9))).strftime('%Y-%m-%d %H:%M:%S KST'),
@@ -204,6 +222,11 @@ jobs:
                   'complete': (central or {}).get('complete'),
                   'sources': (central or {}).get('sources'),
               } if isinstance(central, dict) else None,
+              'incheonOfficial': {
+                  'generatedAt': (incheon or {}).get('generatedAt'),
+                  'coverageComplete': (incheon or {}).get('coverageComplete'),
+                  'boardHealth': (incheon or {}).get('boardHealth'),
+              } if isinstance(incheon, dict) else None,
               'supportCoverageSummary': (coverage or {}).get('summary') if isinstance(coverage, dict) else None,
               'supportCompleteness': (coverage or {}).get('supportCompleteness') if isinstance(coverage, dict) else None,
               'supportLinkResolution': {
