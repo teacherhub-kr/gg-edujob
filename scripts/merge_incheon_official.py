@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Collect the Incheon Metropolitan Office of Education recruitment board.
+"""Collect the complete Incheon official recruitment network.
 
-The official board exposes each recruitment row through ``a.nttInfoBtn[data-id]``.  That native
-``data-id`` is the board's nttSn and is therefore the stable identity used by this collector.
-Production traversal is fail-closed: a network error, repeated page, malformed row population, or
-emergency page ceiling never counts as complete evidence.
+Incheon uses two mandatory official NTT boards for the project population:
+- the general Incheon Metropolitan Office of Education recruitment board; and
+- the Neulbom Support Center individual-contractor/external-instructor board.
+
+The general board explicitly redirects after-school postings to the Neulbom board, so production
+is fail-closed unless both boards are traversed to the requested lookback boundary. Each row keeps
+its source-native bbsId+nttSn identity; a network error, repeated page, malformed row population,
+or emergency page ceiling never counts as complete evidence.
 """
 from __future__ import annotations
 
@@ -36,7 +40,36 @@ LIST_URL = "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=1099
 DETAIL_PATH = "/ice/na/ntt/selectNttInfo.do"
 BBS_ID = "1981"
 MI = "10997"
-UA = "Mozilla/5.0 (compatible; metro-edujob/3.1; public recruitment aggregator)"
+AFTERSCHOOL_NAME = "인천광역시교육청 늘봄지원센터 개인위탁공고(외부강사)"
+AFTERSCHOOL_LIST_URL = "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
+AFTERSCHOOL_DETAIL_PATH = "/afterschool/na/ntt/selectNttInfo.do"
+AFTERSCHOOL_BBS_ID = "1534"
+AFTERSCHOOL_MI = "10571"
+
+REQUIRED_BOARDS = (
+    {
+        "key": "central",
+        "name": SOURCE_NAME,
+        "url": LIST_URL,
+        "detailPath": DETAIL_PATH,
+        "bbsId": BBS_ID,
+        "mi": MI,
+        "idPrefix": "ice-central",
+        "sourceType": "통합게시판",
+    },
+    {
+        "key": "afterschool",
+        "name": AFTERSCHOOL_NAME,
+        "url": AFTERSCHOOL_LIST_URL,
+        "detailPath": AFTERSCHOOL_DETAIL_PATH,
+        "bbsId": AFTERSCHOOL_BBS_ID,
+        "mi": AFTERSCHOOL_MI,
+        "idPrefix": "ice-afterschool",
+        "sourceType": "늘봄지원센터",
+    },
+)
+
+UA = "Mozilla/5.0 (compatible; metro-edujob/3.2; public recruitment aggregator)"
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 EXCLUDE_WORDS = re.compile(
     r"최종\s*합격|합격자|서류\s*심사|서류전형|면접\s*대상|선정\s*결과|"
@@ -103,6 +136,18 @@ def fetch(url: str):
     return response
 
 
+def fetch_with_one_explicit_retry(url: str):
+    last_error = None
+    for attempt in range(2):
+        try:
+            return fetch(url)
+        except Exception as exc:
+            last_error = exc
+            if attempt == 0:
+                time.sleep(0.8)
+    raise last_error
+
+
 def table_headers(table):
     best = []
     for row in table.find_all("tr"):
@@ -112,14 +157,13 @@ def table_headers(table):
     return best
 
 
-def detail_ntt_sn(anchor) -> str:
-    """Return the source-native nttSn from an Incheon recruitment detail control."""
+def detail_ntt_sn(anchor, fallback_url: str) -> str:
     data_id = clean(anchor.get("data-id", ""))
     if data_id.isdigit():
         return data_id
 
     raw = " ".join((anchor.get("href", "") or "", anchor.get("onclick", "") or ""))
-    parsed = urlparse(raw if raw.startswith(("http://", "https://")) else LIST_URL)
+    parsed = urlparse(raw if raw.startswith(("http://", "https://")) else fallback_url)
     query = parse_qs(parsed.query)
     value = str((query.get("nttSn") or [""])[0])
     if value.isdigit():
@@ -128,8 +172,11 @@ def detail_ntt_sn(anchor) -> str:
     return match.group(1) if match else ""
 
 
-def detail_url(ntt_sn: str) -> str:
-    return f"https://www.ice.go.kr{DETAIL_PATH}?bbsId={BBS_ID}&mi={MI}&nttSn={ntt_sn}"
+def detail_url(board: dict, ntt_sn: str) -> str:
+    return (
+        f"https://www.ice.go.kr{board['detailPath']}?"
+        f"bbsId={board['bbsId']}&mi={board['mi']}&nttSn={ntt_sn}"
+    )
 
 
 def guess_level(school: str, title: str) -> str:
@@ -170,7 +217,7 @@ def pick(values: dict, *names: str) -> str:
     return ""
 
 
-def parse_table_rows(html: str, page_url: str, lookback_days: int):
+def parse_table_rows(html: str, page_url: str, lookback_days: int, board: dict):
     soup = BeautifulSoup(html, "html.parser")
     rows = []
     raw_rows = 0
@@ -189,7 +236,7 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
             anchor = tr.select_one("a.nttInfoBtn[data-id]")
             if anchor is None:
                 continue
-            ntt_sn = detail_ntt_sn(anchor)
+            ntt_sn = detail_ntt_sn(anchor, board["url"])
             if not ntt_sn:
                 continue
 
@@ -207,7 +254,8 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
             if registered and not recent_enough(registered, lookback_days):
                 continue
 
-            title = clean(anchor.get("title") or anchor.find("em").get_text(" ", strip=True) if anchor.find("em") else anchor.get_text(" ", strip=True))
+            em = anchor.find("em")
+            title = clean(anchor.get("title") or (em.get_text(" ", strip=True) if em else anchor.get_text(" ", strip=True)))
             title = re.sub(r"^N\s*", "", title).strip()
             if not title or EXCLUDE_WORDS.search(title):
                 continue
@@ -218,9 +266,9 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
             work_start = date_norm(pick(values, "채용시작일"))
             work_end = date_norm(pick(values, "채용종료일"))
             status = pick(values, "모집상태")
-            url = detail_url(ntt_sn)
+            url = detail_url(board, ntt_sn)
             rows.append({
-                "id": f"ice-{ntt_sn}",
+                "id": f"{board['idPrefix']}-{ntt_sn}",
                 "province": "인천",
                 "school": school or "인천광역시교육청",
                 "title": title,
@@ -236,12 +284,13 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
                 "registered": registered,
                 "headcount": "",
                 "source": SOURCE_NAME,
-                "checkedSources": [SOURCE_NAME],
-                "sourceType": "통합게시판",
+                "sourceBoard": board["name"],
+                "checkedSources": [SOURCE_NAME, board["name"]],
+                "sourceType": board["sourceType"],
                 "recruitmentStatus": status,
                 "url": url,
                 "nttSn": ntt_sn,
-                "bbsId": BBS_ID,
+                "bbsId": board["bbsId"],
             })
 
     return rows, {
@@ -254,7 +303,7 @@ def parse_table_rows(html: str, page_url: str, lookback_days: int):
     }
 
 
-def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check_only: bool = False):
+def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bool):
     all_rows = []
     seen_ids = set()
     previous_signature = None
@@ -263,15 +312,15 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
     access_error = ""
 
     for page in range(1, max_pages + 1):
-        page_url = with_page(LIST_URL, page)
+        page_url = with_page(board["url"], page)
         try:
-            response = fetch(page_url)
+            response = fetch_with_one_explicit_retry(page_url)
         except Exception as exc:
             access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
             break
 
         pages_scanned += 1
-        rows, meta = parse_table_rows(response.text, response.url, lookback_days)
+        rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
             stop_reason = "repeated-page"
@@ -279,7 +328,7 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
         previous_signature = signature or previous_signature
 
         for row in rows:
-            sid = row.get("id", "")
+            sid = canonical_source_id(row) or row.get("id", "")
             if sid and sid not in seen_ids:
                 seen_ids.add(sid)
                 all_rows.append(row)
@@ -311,9 +360,11 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
     if not check_only and stop_reason == "check-page-limit":
         coverage_complete = False
 
-    meta = {
-        "name": SOURCE_NAME,
-        "url": LIST_URL,
+    return all_rows, {
+        "key": board["key"],
+        "name": board["name"],
+        "url": board["url"],
+        "bbsId": board["bbsId"],
         "lookbackDays": lookback_days,
         "pagesScanned": pages_scanned,
         "count": len(all_rows),
@@ -322,7 +373,43 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
         "paginationRepeated": stop_reason == "repeated-page",
         "stopReason": stop_reason,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
-        "sampleIds": [job.get("id", "") for job in all_rows[:5]],
+        "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
+    }
+
+
+def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check_only: bool = False):
+    all_rows = []
+    board_health = []
+    seen = set()
+
+    for board in REQUIRED_BOARDS:
+        rows, meta = scrape_board(board, lookback_days, max_pages, check_only)
+        board_health.append(meta)
+        for row in rows:
+            sid = canonical_source_id(row) or row.get("id", "")
+            if sid and sid not in seen:
+                seen.add(sid)
+                all_rows.append(row)
+
+    all_rows.sort(key=lambda job: (job.get("registered", ""), job.get("applyEnd", "")), reverse=True)
+    access_errors = [f"{x['name']}: {x['accessError']}" for x in board_health if x.get("accessError")]
+    incomplete = [x["name"] for x in board_health if not x.get("coverageComplete")]
+    meta = {
+        "name": SOURCE_NAME,
+        "url": LIST_URL,
+        "boards": [board["url"] for board in REQUIRED_BOARDS],
+        "requiredBoardCount": len(REQUIRED_BOARDS),
+        "lookbackDays": lookback_days,
+        "pagesScanned": sum(int(x.get("pagesScanned") or 0) for x in board_health),
+        "count": len(all_rows),
+        "coverageComplete": bool(board_health and not incomplete and all_rows),
+        "accessError": "; ".join(access_errors),
+        "paginationRepeated": any(x.get("paginationRepeated") for x in board_health),
+        "stopReason": "all-required-boards-complete" if not incomplete else "incomplete-required-board",
+        "incompleteBoards": incomplete,
+        "boardHealth": board_health,
+        "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
+        "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
     }
     return all_rows, meta
 
@@ -359,11 +446,14 @@ def merge_into_jobs(rows, meta) -> dict:
         "central": {
             "name": SOURCE_NAME,
             "url": LIST_URL,
+            "boards": meta.get("boards") or [],
+            "requiredBoardCount": meta.get("requiredBoardCount"),
             "count": len(rows),
             "ok": True,
             "state": "ok",
             "coverageComplete": True,
             "pagesScanned": meta.get("pagesScanned"),
+            "boardHealth": meta.get("boardHealth") or [],
         },
         "supportOffices": [],
     }
@@ -379,16 +469,35 @@ def write_report(meta, rows, merged: bool) -> None:
         "merged": bool(merged),
         "officialSample": [
             {
-                "id": row.get("id"),
+                "id": canonical_source_id(row) or row.get("id"),
                 "school": row.get("school"),
                 "title": row.get("title"),
                 "registered": row.get("registered"),
+                "sourceBoard": row.get("sourceBoard"),
                 "url": row.get("url"),
             }
-            for row in rows[:3]
+            for row in rows[:6]
         ],
     }
     REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def registry_is_complete(sources: dict) -> bool:
+    group = sources.get("incheon") if isinstance(sources, dict) else None
+    central = group.get("central") if isinstance(group, dict) else None
+    if not isinstance(central, dict):
+        return False
+    if central.get("url") != LIST_URL or central.get("name") != SOURCE_NAME:
+        return False
+    boards = central.get("requiredBoards") or []
+    if not isinstance(boards, list):
+        return False
+    registered = {
+        (str(item.get("bbsId") or ""), str(item.get("url") or ""))
+        for item in boards if isinstance(item, dict)
+    }
+    expected = {(board["bbsId"], board["url"]) for board in REQUIRED_BOARDS}
+    return registered == expected
 
 
 def main() -> int:
@@ -399,9 +508,8 @@ def main() -> int:
     args = parser.parse_args()
 
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
-    central = ((sources.get("incheon") or {}).get("central") or {}) if isinstance(sources, dict) else {}
-    if central.get("url") != LIST_URL or central.get("name") != SOURCE_NAME:
-        raise SystemExit("Incheon official source is absent or differs from the canonical registry entry")
+    if not registry_is_complete(sources):
+        raise SystemExit("Incheon required official boards are absent or differ from the canonical registry")
 
     rows, meta = scrape_incheon_central(
         lookback_days=args.lookback_days,
