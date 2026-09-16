@@ -10,8 +10,11 @@ on:
       - 'scripts/reconcile_source_ids.py'
       - 'scripts/update_collector_status.py'
       - 'scripts/verify_central_reconciliation_consistency.py'
+      - 'scripts/verify_support_completeness.py'
       - 'scripts/validate_reconciliation_policy_v3.py'
+      - 'tests/test_fast_hardening.py'
       - '.github/workflows/update-jobs.yml'
+      - '.github/workflows/recover-missing-jobs.yml'
       - '.github/workflows/p0-incheon-regression.yml'
   workflow_dispatch:
 
@@ -21,7 +24,7 @@ permissions:
 jobs:
   verify-incheon:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -31,7 +34,30 @@ jobs:
         run: pip install -r requirements.txt
       - name: Static compile
         run: |
-          python -m py_compile scripts/merge_incheon_official.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/validate_reconciliation_policy_v3.py
+          python -m py_compile scripts/merge_incheon_official.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py
+      - name: Verify hardeners fail closed without patching production sources
+        run: python -m unittest tests/test_fast_hardening.py
+      - name: Verify recovery is registry-aware and data-only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text=Path('.github/workflows/recover-missing-jobs.yml').read_text(encoding='utf-8')
+          assert 'from source_registry import official_source_count' in text
+          assert 'total != 38' not in text
+          assert 'Not all 38 official sources' not in text
+          assert 'python scripts/merge_incheon_official.py --lookback-days 90' in text
+          for line in text.splitlines():
+              stripped=line.strip()
+              if stripped.startswith('git add '):
+                  assert 'scripts/' not in stripped, stripped
+                  assert 'sources.json' not in stripped, stripped
+          for hardener in (
+              'hotfix_sources.py', 'hotfix_repair_links.py', 'harden_deep_audit.py',
+              'harden_network_retries.py', 'harden_central_pagination.py',
+          ):
+              assert f'python scripts/{hardener}' not in text, hardener
+          print('recovery transition safety ok')
+          PY
       - name: Materialize three-region registry in the test checkout
         run: python scripts/ensure_incheon_registry.py
       - name: Verify registry coverage and strong identities
