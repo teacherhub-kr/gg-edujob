@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared registry helpers for the official Seoul/Gyeonggi collection network.
+"""Shared registry helpers for the official Seoul/Gyeonggi/Incheon collection network.
 
 `sources.json` is the source of truth for the official network only. Private
 sources are intentionally managed separately in `private_source_registry.py`.
