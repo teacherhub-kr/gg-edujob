@@ -210,6 +210,11 @@ def git_change_count_after(since: datetime | None, paths: list[str]) -> int:
     return len([line for line in raw.splitlines() if line.strip()])
 
 
+def change_after_failure(change_at: datetime | None, failure_at: datetime | None) -> bool:
+    """Allow a controlled probe only when the recovery contract changed after its last real failure."""
+    return bool(change_at and failure_at and change_at > failure_at)
+
+
 def previous_reconciliation_report() -> dict[str, Any] | None:
     commits = [
         x.strip()
@@ -286,6 +291,12 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             "consecutiveRealFailures": failures,
             "latestRealFailureAt": latest_failure.isoformat() if latest_failure else None,
         }
+
+    recovery_workflow_time = git_commit_time(".github/workflows/recover-missing-jobs.yml")
+    _, recovery_failure_time = consecutive_real_failures(all_runs["recovery"])
+    recovery_contract_changed_after_failure = change_after_failure(
+        recovery_workflow_time, recovery_failure_time
+    )
 
     action = "skip-healthy"
     reason = "all production contracts current"
@@ -374,14 +385,18 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                         )
                 else:
                     blocked, failures, _ = circuit_blocked(
-                        "recovery", recovery_runs, now
+                        "recovery",
+                        recovery_runs,
+                        now,
+                        allow_probe_after_change=recovery_contract_changed_after_failure,
                     )
                     if blocked:
                         action = "skip-recovery-circuit-open"
                         circuit = "recovery"
                         reason = f"Recovery circuit open after {failures} real failures"
                     elif (
-                        latest_recovery
+                        not recovery_contract_changed_after_failure
+                        and latest_recovery
                         and latest_recovery.get("conclusion") in REAL_FAILURES
                         and recovery_latest_time
                         and audit_failure_time
@@ -392,10 +407,16 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                         reason = "recovery failed recently; three-hour backoff active"
                     else:
                         action = "recovery"
-                        reason = (
-                            "latest official completeness audit failed without a newer "
-                            "successful recovery"
-                        )
+                        if recovery_contract_changed_after_failure:
+                            reason = (
+                                "recovery contract changed after the latest real failure; "
+                                "allow one controlled probe"
+                            )
+                        else:
+                            reason = (
+                                "latest official completeness audit failed without a newer "
+                                "successful recovery"
+                            )
             elif not audit_current and now.hour >= 2:
                 blocked, failures, _ = circuit_blocked(
                     "completeness", audit_runs, now
@@ -455,6 +476,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "fastLastSuccessAt": fast.get("lastSuccessAt"),
         "fastSuccessAgeHours": stale_hours,
         "collectorChangesAfterSuccess": collector_changes_after_success,
+        "recoveryWorkflowCommitAt": recovery_workflow_time.isoformat() if recovery_workflow_time else None,
+        "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
         "activeTargets": active,
         "circuit": circuit,
         "failureState": failure_state,
