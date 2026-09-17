@@ -32,6 +32,7 @@ on:
       - 'boramyc_jobs.json'
       - 'boramyc_reconciliation_report.json'
       - 'unified-ui.js'
+      - 'metro-ui.js'
       - 'mobile-ui.js'
       - 'direct-link-guard.js'
       - '.github/workflows/unified-search.yml'
@@ -68,6 +69,7 @@ jobs:
         run: |
           python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py
           node --check unified-ui.js
+          node --check metro-ui.js
           node --check mobile-ui.js
           node --check direct-link-guard.js
       - name: Verify source registries resolve independently
@@ -112,6 +114,7 @@ jobs:
           python scripts/apply_unified_frontend.py
           grep -q "fetch('unified_jobs.json',{cache:'no-cache'})" index.html
           grep -q 'unified-ui.js' index.html
+          grep -q 'metro-ui.js' index.html
           grep -q 'direct-link-guard.js' index.html
           python - <<'PY'
           import json,sys
