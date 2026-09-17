@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.production_supervisor import (
     KST,
+    change_after_failure,
     circuit_blocked,
     consecutive_real_failures,
     detect_source_anomalies,
@@ -42,6 +43,23 @@ class ProductionSupervisorTests(unittest.TestCase):
         runs = [run("failure", 0), run("failure", 1), run("failure", 2)]
         blocked, _, _ = circuit_blocked("fast", runs, now, allow_probe_after_change=True)
         self.assertFalse(blocked)
+
+    def test_recovery_change_after_failure_allows_only_new_contract(self):
+        failure_at = datetime(2026, 9, 18, 0, 59, tzinfo=KST)
+        newer_contract = datetime(2026, 9, 18, 7, 42, tzinfo=KST)
+        older_contract = datetime(2026, 9, 17, 23, 0, tzinfo=KST)
+        self.assertTrue(change_after_failure(newer_contract, failure_at))
+        self.assertFalse(change_after_failure(older_contract, failure_at))
+        self.assertFalse(change_after_failure(None, failure_at))
+
+    def test_recovery_circuit_allows_controlled_probe_after_change(self):
+        now = datetime(2026, 9, 16, 21, 0, tzinfo=KST)
+        runs = [run("failure", 0), run("failure", 1), run("failure", 2)]
+        blocked, failures, _ = circuit_blocked(
+            "recovery", runs, now, allow_probe_after_change=True
+        )
+        self.assertFalse(blocked)
+        self.assertEqual(failures, 3)
 
     def test_source_drop_is_conservative(self):
         previous = {
