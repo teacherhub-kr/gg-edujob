@@ -1,13 +1,64 @@
 #!/usr/bin/env python3
 """Idempotently point the existing fast UI at the isolated unified search projection."""
 from pathlib import Path
+import json
 import re
+
+from source_registry import official_source_count
 
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
+
+
+def replace_any(candidates,new,label):
+    global s
+    changed=False
+    for old in candidates:
+        if old in s:
+            s=s.replace(old,new)
+            changed=True
+    if not changed and new not in s:
+        raise SystemExit(f'required frontend signature missing: {label}')
+
+
+replace_any(
+    [
+        '<title>수도권에듀잡 | 서울·경기 교육 채용정보</title>',
+        '<title>수도권에듀잡 | 서울·경기 교육계 구인 통합검색</title>',
+    ],
+    '<title>수도권에듀잡 | 서울·경기·인천 교육계 구인 통합검색</title>',
+    'title',
+)
+replace_any(
+    [
+        '서울·경기 교육청과 교육지원청 채용공고를 지역·학교급·직종별로 여러 개 선택해 한 번에 찾는 비공식 편의 서비스',
+        '서울·경기 학교·교육청 공식 채용과 검증된 민간 교육·문화예술 구인공고를 한 번에 찾는 통합검색 서비스',
+    ],
+    '서울·경기·인천 학교·교육청 공식 채용과 검증된 민간 교육·문화예술 구인공고를 한 번에 찾는 통합검색 서비스',
+    'description',
+)
+replace_any(
+    ['서울·경기 교육 채용공고를<br><b>한 번에 골라서 찾기</b></h1>'],
+    '서울·경기·인천 교육 채용공고를<br><b>한 번에 골라서 찾기</b></h1>',
+    'hero title',
+)
+replace_any(
+    ['경기도교육청 + 경기 25개 교육지원청 · 서울교육일자리포털 + 서울 11개 교육지원청'],
+    '경기·서울·인천 공식 교육채용 공고와 검증된 민간 교육·문화예술 구인을 통합 검색합니다.',
+    'coverage copy',
+)
+replace_any(
+    ["const PROVINCES=['경기','서울'];"],
+    "const PROVINCES=['경기','서울','인천'];",
+    'province filters',
+)
+replace_any(
+    ['본 사이트는 서울특별시교육청·경기도교육청 공식 서비스가 아닌 비공식 편의 서비스입니다.'],
+    '본 사이트는 서울특별시교육청·경기도교육청·인천광역시교육청 공식 서비스가 아닌 비공식 편의 서비스입니다.',
+    'footer disclaimer',
+)
+
 repls={
-    '<title>수도권에듀잡 | 서울·경기 교육 채용정보</title>':'<title>수도권에듀잡 | 서울·경기 교육계 구인 통합검색</title>',
-    '서울·경기 교육청과 교육지원청 채용공고를 지역·학교급·직종별로 여러 개 선택해 한 번에 찾는 비공식 편의 서비스':'서울·경기 학교·교육청 공식 채용과 검증된 민간 교육·문화예술 구인공고를 한 번에 찾는 통합검색 서비스',
     'placeholder="학교명, 과목, 공고명 검색"':'placeholder="학교·기관·학원·과목·직종·공고명 통합검색"',
     '<div class="t">공식 수집 출처</div>':'<div class="t">수집 출처</div>',
     "fetch('jobs.json',{cache:'no-cache'})":"fetch('unified_jobs.json',{cache:'no-cache'})",
@@ -26,7 +77,7 @@ if old_hay in s:
 elif new_hay not in s:
     raise SystemExit('searchHay signature changed; refusing unsafe unified search patch')
 
-# Some private postings explicitly cover both Seoul and Gyeonggi. Preserve an array of
+# Some private postings explicitly cover more than one province. Preserve an array of
 # provinces and filter by intersection rather than collapsing a posting to one scalar value.
 old_province="function province(j){return j.province||((j.region||'').endsWith('구')?'서울':'경기')}function jobRegions(j){"
 new_province="function province(j){return j.province||((j.region||'').endsWith('구')?'서울':'경기')}function jobProvinces(j){const a=Array.isArray(j.provinces)?j.provinces.filter(Boolean):[];return a.length?[...new Set(a)]:[province(j)]}function jobRegions(j){"
@@ -72,6 +123,7 @@ elif new_sort not in s or "function deadlineSortKey(j)" not in s:
 DIRECT_LINK_GUARD_ASSET_VERSION='20260907c'
 MOBILE_UI_ASSET_VERSION='20260907d'
 UNIFIED_UI_ASSET_VERSION='20260904a'
+METRO_UI_ASSET_VERSION='20260918a'
 
 mobile_tags=list(re.finditer(r'<script src="mobile-ui\.js\?v=[A-Za-z0-9._-]+" defer></script>\s*',s))
 if not mobile_tags:
@@ -100,7 +152,55 @@ else:
     s,n=re.subn(r'unified-ui\.js\?v=[A-Za-z0-9._-]+',f'unified-ui.js?v={UNIFIED_UI_ASSET_VERSION}',s,count=1)
     if n!=1: raise SystemExit('unified-ui asset reference changed')
 
+# Metro UI is a small compatibility layer loaded after unified-ui. It adds Incheon to the
+# province filter and source-status panel without duplicating the broader unified UI bundle.
+s=re.sub(r'<script src="metro-ui\.js\?v=[A-Za-z0-9._-]+" defer></script>\s*','',s)
+unified_marker=f'<script src="unified-ui.js?v={UNIFIED_UI_ASSET_VERSION}" defer></script>'
+i=s.find(unified_marker)
+if i<0:
+    raise SystemExit('unified-ui script marker missing before metro UI insertion')
+i+=len(unified_marker)
+s=s[:i]+f'\n<script src="metro-ui.js?v={METRO_UI_ASSET_VERSION}" defer></script>'+s[i:]
+if len(re.findall(r'<script src="metro-ui\.js\?v=',s))!=1:
+    raise SystemExit('metro-ui normalization failed')
+if not Path('metro-ui.js').exists():
+    raise SystemExit('metro-ui.js asset missing')
+
 # Keep the data loader compatible with both old and new metadata names.
 s=s.replace("if(data.officialSourceCount)$('#countSources').textContent=data.officialSourceCount;","if(data.totalSourceCount||data.officialSourceCount)$('#countSources').textContent=data.totalSourceCount||data.officialSourceCount;")
+
+# Fail closed if the user-facing unified candidate does not represent all three mandatory
+# official metro regions. Registry reconciliation and user-facing publication are separate gates.
+required_registry={'gyeonggi','seoul','incheon'}
+required_provinces={'경기','서울','인천'}
+registry=json.loads(Path('sources.json').read_text(encoding='utf-8'))
+missing_registry=required_registry-set(registry)
+if missing_registry:
+    raise SystemExit(f'mandatory official registry groups missing: {sorted(missing_registry)}')
+
+unified=json.loads(Path('unified_jobs.json').read_text(encoding='utf-8'))
+expected_sources=official_source_count()
+if int(unified.get('officialSourceCount') or 0)!=expected_sources:
+    raise SystemExit(f'unified officialSourceCount={unified.get("officialSourceCount")} expected={expected_sources}')
+source_meta=unified.get('sources') or {}
+missing_source_meta=required_registry-set(source_meta)
+if missing_source_meta:
+    raise SystemExit(f'unified source-status metadata missing mandatory groups: {sorted(missing_source_meta)}')
+
+def provinces(row):
+    explicit={str(x) for x in (row.get('provinces') or []) if str(x)}
+    if explicit:
+        return explicit
+    scalar=str(row.get('province') or '')
+    return {scalar} if scalar else set()
+
+official_rows=[j for j in (unified.get('jobs') or []) if j.get('feedKind')=='official']
+published=set()
+for row in official_rows:
+    published.update(provinces(row))
+missing_published=required_provinces-published
+if missing_published:
+    raise SystemExit(f'unified official publication missing mandatory provinces: {sorted(missing_published)}')
+
 p.write_text(s,encoding='utf-8')
-print('unified frontend patch applied: exact culture gate, deduplicated mobile UI, refreshed policy assets')
+print('unified frontend patch applied: Seoul/Gyeonggi/Incheon coverage gate, metro UI, exact culture gate, refreshed policy assets')
