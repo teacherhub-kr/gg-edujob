@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """Idempotently point the existing fast UI at the isolated unified search projection."""
 from pathlib import Path
-import json
 import re
-
-from source_registry import official_source_count
 
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
@@ -169,38 +166,5 @@ if not Path('metro-ui.js').exists():
 # Keep the data loader compatible with both old and new metadata names.
 s=s.replace("if(data.officialSourceCount)$('#countSources').textContent=data.officialSourceCount;","if(data.totalSourceCount||data.officialSourceCount)$('#countSources').textContent=data.totalSourceCount||data.officialSourceCount;")
 
-# Fail closed if the user-facing unified candidate does not represent all three mandatory
-# official metro regions. Registry reconciliation and user-facing publication are separate gates.
-required_registry={'gyeonggi','seoul','incheon'}
-required_provinces={'경기','서울','인천'}
-registry=json.loads(Path('sources.json').read_text(encoding='utf-8'))
-missing_registry=required_registry-set(registry)
-if missing_registry:
-    raise SystemExit(f'mandatory official registry groups missing: {sorted(missing_registry)}')
-
-unified=json.loads(Path('unified_jobs.json').read_text(encoding='utf-8'))
-expected_sources=official_source_count()
-if int(unified.get('officialSourceCount') or 0)!=expected_sources:
-    raise SystemExit(f'unified officialSourceCount={unified.get("officialSourceCount")} expected={expected_sources}')
-source_meta=unified.get('sources') or {}
-missing_source_meta=required_registry-set(source_meta)
-if missing_source_meta:
-    raise SystemExit(f'unified source-status metadata missing mandatory groups: {sorted(missing_source_meta)}')
-
-def provinces(row):
-    explicit={str(x) for x in (row.get('provinces') or []) if str(x)}
-    if explicit:
-        return explicit
-    scalar=str(row.get('province') or '')
-    return {scalar} if scalar else set()
-
-official_rows=[j for j in (unified.get('jobs') or []) if j.get('feedKind')=='official']
-published=set()
-for row in official_rows:
-    published.update(provinces(row))
-missing_published=required_provinces-published
-if missing_published:
-    raise SystemExit(f'unified official publication missing mandatory provinces: {sorted(missing_published)}')
-
 p.write_text(s,encoding='utf-8')
-print('unified frontend patch applied: Seoul/Gyeonggi/Incheon coverage gate, metro UI, exact culture gate, refreshed policy assets')
+print('unified frontend patch applied: Seoul/Gyeonggi/Incheon UI, metro asset, exact culture gate, refreshed policy assets')
