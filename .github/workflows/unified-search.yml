@@ -8,6 +8,7 @@ on:
       - 'scripts/build_unified_search_multi.py'
       - 'scripts/validate_unified_search.py'
       - 'scripts/validate_unified_search_multi.py'
+      - 'scripts/validate_required_metro_publication.py'
       - 'scripts/crosscheck_private_official.py'
       - 'scripts/reconcile_cultural_foundation_coverage.py'
       - 'scripts/source_registry.py'
@@ -67,7 +68,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Syntax check unified multi-source pipeline and UI
         run: |
-          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py
+          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py
           node --check unified-ui.js
           node --check metro-ui.js
           node --check mobile-ui.js
@@ -111,6 +112,7 @@ jobs:
         if: steps.build_candidate.outcome == 'success' && steps.link_audit.outcome == 'success' && steps.validate_candidate.outcome == 'success'
         run: |
           mv unified_jobs.next.json unified_jobs.json
+          python scripts/validate_required_metro_publication.py
           python scripts/apply_unified_frontend.py
           grep -q "fetch('unified_jobs.json',{cache:'no-cache'})" index.html
           grep -q 'unified-ui.js' index.html
