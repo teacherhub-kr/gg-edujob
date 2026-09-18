@@ -4,7 +4,8 @@
   const KEYS={
     profile:'edujob.jobRadar.profile.v1',
     snapshot:'edujob.jobRadar.snapshot.v1',
-    favorites:'edujob.jobRadar.favorites.v1'
+    favorites:'edujob.jobRadar.favorites.v1',
+    alerts:'edujob.alerts.v1'
   };
 
   const parse=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
@@ -28,14 +29,15 @@
   };
 
   let accountAdapter=null;
+  const emit=kind=>{try{window.dispatchEvent(new CustomEvent('edujob:user-state-changed',{detail:{kind}}))}catch(e){}};
 
   const api={
     version:1,
     storageMode:()=>accountAdapter?'hybrid':'local',
     profile:{
       get:()=>local.get(KEYS.profile),
-      set:value=>{local.set(KEYS.profile,value);api.syncAccountSoon()},
-      remove:()=>{local.remove(KEYS.profile);api.syncAccountSoon()}
+      set:value=>{local.set(KEYS.profile,value);emit('profile');api.syncAccountSoon()},
+      remove:()=>{local.remove(KEYS.profile);emit('profile');api.syncAccountSoon()}
     },
     snapshot:{
       get:()=>local.get(KEYS.snapshot),
@@ -44,13 +46,18 @@
     },
     favorites:{
       get:()=>local.get(KEYS.favorites,[]),
-      set:value=>{local.set(KEYS.favorites,Array.isArray(value)?value:[]);api.syncAccountSoon()}
+      set:value=>{local.set(KEYS.favorites,Array.isArray(value)?value:[]);emit('favorites');api.syncAccountSoon()}
+    },
+    alerts:{
+      get:()=>local.get(KEYS.alerts,{enabled:false}),
+      set:value=>{local.set(KEYS.alerts,value&&typeof value==='object'?value:{enabled:false});emit('alerts');api.syncAccountSoon()}
     },
     exportState:()=>({
       version:1,
       profile:local.get(KEYS.profile),
       snapshot:local.get(KEYS.snapshot),
-      favorites:local.get(KEYS.favorites,[])
+      favorites:local.get(KEYS.favorites,[]),
+      alerts:local.get(KEYS.alerts,{enabled:false})
     }),
     importState:(state,{overwrite=true}={})=>{
       if(!state||typeof state!=='object')return;
@@ -58,6 +65,7 @@
       if(overwrite||!current.profile){if(state.profile)local.set(KEYS.profile,state.profile)}
       if(overwrite||!current.snapshot){if(state.snapshot)local.set(KEYS.snapshot,state.snapshot)}
       if(overwrite||!current.favorites?.length){if(Array.isArray(state.favorites))local.set(KEYS.favorites,state.favorites)}
+      if(overwrite||!current.alerts?.enabled){if(state.alerts&&typeof state.alerts==='object')local.set(KEYS.alerts,state.alerts)}
     },
     setAccountAdapter:adapter=>{
       if(adapter!==null&&(!adapter||typeof adapter.pull!=='function'||typeof adapter.push!=='function')){
