@@ -331,6 +331,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     pages_scanned = 0
     stop_reason = ""
     access_error = ""
+    empty_page_evidence = {}
 
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
@@ -355,6 +356,12 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 all_rows.append(row)
 
         if meta["rawRows"] == 0:
+            empty_page_evidence = {
+                "finalUrl": str(response.url or ""),
+                "contentLength": len(response.content or b""),
+                "contentType": str(response.headers.get("content-type") or ""),
+                "pageTextSample": clean(meta.get("pageText") or "")[:600],
+            }
             stop_reason = "empty-page"
             break
 
@@ -393,6 +400,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "accessError": access_error,
         "paginationRepeated": stop_reason == "repeated-page",
         "stopReason": stop_reason,
+        "emptyPageEvidence": empty_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
         "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
     }
