@@ -2,18 +2,16 @@
   if(window.__edujobJobRadarLoaded)return;
   window.__edujobJobRadarLoaded=true;
 
-  const PROFILE_KEY='edujob.jobRadar.profile.v1';
-  const SNAPSHOT_KEY='edujob.jobRadar.snapshot.v1';
-  const FAVORITES_KEY='edujob.jobRadar.favorites.v1';
+  const userStore=window.EduJobUserStore;
+  if(!userStore)return;
   const PROFILE_FIELDS=['provinces','regions','schools','types','categories','subjects'];
   let newOnly=false;
   let favoriteOnly=false;
   let currentNewKeys=new Set();
   let currentMatchKeys=[];
 
-  const safeJson=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
-  const readProfile=()=>safeJson(localStorage.getItem(PROFILE_KEY));
-  const readSnapshot=()=>safeJson(localStorage.getItem(SNAPSHOT_KEY));
+  const readProfile=()=>userStore.profile.get();
+  const readSnapshot=()=>userStore.snapshot.get();
   const arr=v=>Array.isArray(v)?v.filter(Boolean):[];
   const setValues=key=>state?.[key] instanceof Set?[...state[key]]:[];
 
@@ -46,8 +44,8 @@
     [j?.source,j?.school,j?.title,j?.registered].filter(Boolean).join('|')
   );
 
-  const readFavorites=()=>new Set(arr(safeJson(localStorage.getItem(FAVORITES_KEY),[])));
-  const writeFavorites=set=>localStorage.setItem(FAVORITES_KEY,JSON.stringify([...set].slice(0,1000)));
+  const readFavorites=()=>new Set(arr(userStore.favorites.get()));
+  const writeFavorites=set=>userStore.favorites.set([...set].slice(0,1000));
   const isFavorite=j=>readFavorites().has(jobKey(j));
   const toggleFavorite=j=>{
     const key=jobKey(j);if(!key)return false;
@@ -130,19 +128,19 @@
 
   const matchingKeys=p=>(Array.isArray(jobs)?jobs:[]).filter(j=>matchesProfile(j,p)).map(jobKey).filter(Boolean);
 
-  const writeSnapshot=(p,keys)=>localStorage.setItem(SNAPSHOT_KEY,JSON.stringify({
+  const writeSnapshot=(p,keys)=>userStore.snapshot.set({
     version:1,
     fingerprint:fingerprint(p),
     keys:[...new Set(keys)].slice(0,3000),
     checkedAt:new Date().toISOString()
-  }));
+  });
 
   function installStyles(){
     if(document.getElementById('jobRadarStyles'))return;
     const style=document.createElement('style');
     style.id='jobRadarStyles';
     style.textContent=`
-      .job-radar{margin:0 2px 10px;padding:12px 14px;border:1px solid #dbe6f4;background:linear-gradient(135deg,#f8fbff,#f3f8ff);border-radius:14px;transition:.15s ease}.job-radar.has-new{border-color:#8fd0aa;background:linear-gradient(135deg,#f4fff8,#eefbf3);box-shadow:0 6px 18px rgba(15,159,110,.08)}
+      .job-radar{flex:0 0 auto;margin:10px 0 0;padding:14px 16px;border:1px solid #dbe6f4;background:linear-gradient(135deg,#f8fbff,#f3f8ff);border-radius:15px;transition:.15s ease}.job-radar.has-new{border-color:#8fd0aa;background:linear-gradient(135deg,#f4fff8,#eefbf3);box-shadow:0 6px 18px rgba(15,159,110,.08)}
       .job-radar-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
       .job-radar-title{font-size:13px;font-weight:900;color:#20324d}
       .job-radar-copy{margin-top:4px;font-size:11px;line-height:1.5;color:#66758a}
@@ -151,8 +149,8 @@
       .job-radar-btn.primary{border-color:#93b8ef;background:#edf5ff;color:#1758b3}
       .job-radar-btn.new{border-color:#9ed9b6;background:#effcf4;color:#087a42}
       .job-radar-btn[disabled]{opacity:.45;cursor:not-allowed}
-      .job-radar-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#e5484d;color:#fff;font-size:10px;font-weight:900;margin-left:5px}.job-card-wrap{position:relative}.job-card-wrap>.job{padding-right:54px}.job-favorite-btn{position:absolute;z-index:3;top:12px;right:12px;width:34px;height:34px;border:1px solid #dce4ee;border-radius:10px;background:#fff;color:#7b8797;font-size:19px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(22,32,51,.06)}.job-favorite-btn[aria-pressed="true"]{border-color:#f0c36d;background:#fff9e9;color:#d99400}.badge.radar-new{background:#eaf9f0;color:#087a42;border:1px solid #bfe7cf}.job-card-wrap.is-radar-new>.job{border-color:#bfe7cf;box-shadow:0 4px 14px rgba(15,159,110,.07)}
-      @media(max-width:650px){.job-radar-head{align-items:flex-start;flex-direction:column}.job-radar-actions{justify-content:flex-start;width:100%}.job-radar-btn{flex:1}}
+      .job-radar-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#e5484d;color:#fff;font-size:10px;font-weight:900;margin-left:5px}.job-radar-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:11px}.job-radar-metric{background:rgba(255,255,255,.82);border:1px solid #e0e8f2;border-radius:10px;padding:8px 10px}.job-radar-metric b{display:block;font-size:17px;line-height:1.1;color:#1d3557}.job-radar-metric span{display:block;margin-top:3px;font-size:9px;color:#7a8798}.job-radar-profile{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.job-radar-chip{font-size:9px;font-weight:750;padding:5px 7px;border-radius:999px;background:#fff;border:1px solid #e0e7f0;color:#5b697b}.job-radar-preview{display:grid;gap:6px;margin-top:9px}.job-radar-preview-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #dce9e2}.job-radar-preview-main{min-width:0}.job-radar-preview-title{font-size:11px;font-weight:850;color:#26384f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.job-radar-preview-meta{margin-top:2px;font-size:9px;color:#788596;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.job-radar-preview-go{flex:0 0 auto;font-size:9px;font-weight:850;color:#087a42}.job-card-wrap{position:relative}.job-card-wrap>.job{padding-right:54px}.job-favorite-btn{position:absolute;z-index:3;top:12px;right:12px;width:34px;height:34px;border:1px solid #dce4ee;border-radius:10px;background:#fff;color:#7b8797;font-size:19px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(22,32,51,.06)}.job-favorite-btn[aria-pressed="true"]{border-color:#f0c36d;background:#fff9e9;color:#d99400}.badge.radar-new{background:#eaf9f0;color:#087a42;border:1px solid #bfe7cf}.job-card-wrap.is-radar-new>.job{border-color:#bfe7cf;box-shadow:0 4px 14px rgba(15,159,110,.07)}
+      @media(max-width:650px){.job-radar{margin-top:8px;padding:12px}.job-radar-head{align-items:flex-start;flex-direction:column}.job-radar-actions{justify-content:flex-start;width:100%}.job-radar-btn{flex:1}.job-radar-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.job-radar-metric{padding:7px}.job-radar-metric b{font-size:15px}}
     `;
     document.head.appendChild(style);
   }
@@ -176,13 +174,19 @@
           <button type="button" class="job-radar-btn" id="jobRadarFavorites">♡ 관심공고</button>
           <button type="button" class="job-radar-btn" id="jobRadarDelete">삭제</button>
         </div>
-      </div>`;
-    toolbar.parentElement.insertBefore(box,toolbar);
+      </div>
+      <div class="job-radar-overview" id="jobRadarOverview"></div>
+      <div class="job-radar-profile" id="jobRadarProfile"></div>
+      <div class="job-radar-preview" id="jobRadarPreview"></div>`;
+    const main=document.querySelector('main.wrap');
+    const stats=main?.querySelector('.stats');
+    if(main&&stats)main.insertBefore(box,stats);
+    else toolbar.parentElement.insertBefore(box,toolbar);
 
     document.getElementById('jobRadarSave').addEventListener('click',()=>{
       const p=currentProfile();
       if(!hasConditions(p)){document.getElementById('jobRadarCopy').textContent='지역·학교급·직종·과목 또는 검색어를 하나 이상 선택한 뒤 저장해 주세요.';return}
-      localStorage.setItem(PROFILE_KEY,JSON.stringify(p));
+      userStore.profile.set(p);
       const keys=matchingKeys(p);writeSnapshot(p,keys);
       currentNewKeys=new Set();currentMatchKeys=keys;newOnly=false;
       updatePanel('saved');
@@ -212,21 +216,77 @@
 
 
     document.getElementById('jobRadarDelete').addEventListener('click',()=>{
-      localStorage.removeItem(PROFILE_KEY);localStorage.removeItem(SNAPSHOT_KEY);
+      userStore.profile.remove();userStore.snapshot.remove();
       currentNewKeys=new Set();currentMatchKeys=[];newOnly=false;favoriteOnly=false;
       updatePanel('deleted');
       if(typeof render==='function')render();
     });
   }
 
+  function activeFavoriteCount(){
+    const favs=readFavorites();
+    return (Array.isArray(jobs)?jobs:[]).filter(j=>{
+      if(!favs.has(jobKey(j)))return false;
+      const d=diffDay(j?.applyEnd);
+      return d===null||d>=0;
+    }).length;
+  }
+
+  function profileChips(p){
+    if(!p)return [];
+    const chips=[];
+    const push=(label,values,max=2)=>{
+      const xs=arr(values);if(!xs.length)return;
+      const shown=xs.slice(0,max).join('·');
+      chips.push(`${label} ${shown}${xs.length>max?` +${xs.length-max}`:''}`);
+    };
+    push('지역',p.regions);
+    push('학교급',p.schools);
+    push('직종',p.types);
+    push('과목',p.subjects);
+    if(String(p.q||'').trim())chips.push(`검색 “${String(p.q).trim()}”`);
+    return chips.slice(0,5);
+  }
+
+  function newPreviewJobs(){
+    const rows=(Array.isArray(jobs)?jobs:[]).filter(j=>currentNewKeys.has(jobKey(j)));
+    rows.sort((x,y)=>compareDeadline(x,y));
+    return rows.slice(0,3);
+  }
+
+  function renderDashboard(p){
+    const overview=document.getElementById('jobRadarOverview');
+    const profile=document.getElementById('jobRadarProfile');
+    const preview=document.getElementById('jobRadarPreview');
+    if(!overview||!profile||!preview)return;
+    if(!p){
+      overview.innerHTML='<div class="job-radar-metric"><b>-</b><span>내 신규</span></div><div class="job-radar-metric"><b>-</b><span>관심공고</span></div><div class="job-radar-metric"><b>-</b><span>조건 일치</span></div>';
+      profile.innerHTML='';
+      preview.innerHTML='';
+      return;
+    }
+    const favCount=activeFavoriteCount();
+    overview.innerHTML=`<div class="job-radar-metric"><b>${currentNewKeys.size.toLocaleString()}</b><span>지난 방문 이후 신규</span></div><div class="job-radar-metric"><b>${favCount.toLocaleString()}</b><span>모집 중 관심공고</span></div><div class="job-radar-metric"><b>${currentMatchKeys.length.toLocaleString()}</b><span>현재 조건 일치</span></div>`;
+    profile.innerHTML=profileChips(p).map(x=>`<span class="job-radar-chip">${esc(x)}</span>`).join('');
+    preview.innerHTML=newPreviewJobs().map(j=>{
+      const href=postingLink(j);
+      const tag=href?'a':'div';
+      const attrs=href?` href="${esc(href)}" target="_blank" rel="noopener"`:'';
+      const d=diffDay(j.applyEnd);
+      const deadline=d===0?'오늘 마감':d!==null&&d>0?`D-${d}`:'마감 원문확인';
+      const region=(j.location||j.region||(Array.isArray(j.regions)?j.regions.join('·'):'')||province(j));
+      return `<${tag} class="job-radar-preview-row"${attrs}><div class="job-radar-preview-main"><div class="job-radar-preview-title">${esc(j.title||'채용 공고')}</div><div class="job-radar-preview-meta">${esc(j.school||'기관명 확인')} · ${esc(region)} · ${esc(deadline)}</div></div><div class="job-radar-preview-go">${href?'원문 ↗':'링크 점검 중'}</div></${tag}>`;
+    }).join('');
+  }
   function updatePanel(mode=''){
     const p=readProfile(),box=document.getElementById('jobRadar'),copy=document.getElementById('jobRadarCopy'),count=document.getElementById('jobRadarNewCount'),apply=document.getElementById('jobRadarApply'),newBtn=document.getElementById('jobRadarNewOnly'),favBtn=document.getElementById('jobRadarFavorites');
     if(!copy||!count)return;
     apply.disabled=!p;newBtn.disabled=!p||currentNewKeys.size===0;
     if(box)box.classList.toggle('has-new',Boolean(p&&currentNewKeys.size));
     newBtn.textContent=newOnly?'전체 결과로':currentNewKeys.size?`새 공고 ${currentNewKeys.size.toLocaleString()}건 보기`:'새 공고만';
-    if(favBtn){const favs=readFavorites();const favCount=(Array.isArray(jobs)?jobs:[]).filter(j=>{if(!favs.has(jobKey(j)))return false;const d=diffDay(j?.applyEnd);return d===null||d>=0}).length;favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
+    if(favBtn){const favCount=activeFavoriteCount();favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
     count.innerHTML=currentNewKeys.size?`<span class="job-radar-count">${currentNewKeys.size}</span>`:'';
+    renderDashboard(p);
     if(mode==='saved'){copy.textContent=`현재 조건을 저장했습니다. 지금 보이는 ${currentMatchKeys.length.toLocaleString()}건을 기준으로 다음 방문부터 새 공고를 알려드립니다.`;return}
     if(mode==='missing'){copy.textContent='저장된 내 조건이 없습니다. 원하는 필터를 선택한 뒤 현재 조건 저장을 눌러 주세요.';return}
     if(mode==='deleted'){copy.textContent='저장된 내 조건과 방문 기준을 삭제했습니다.';return}

@@ -6,9 +6,13 @@ on:
       - 'index.html'
       - 'mobile-ui.js'
       - 'job-radar.js'
-      - 'naver-theme.css'
+      - 'edujob-theme.css'
+      - 'user-store.js'
       - 'tests/test_mobile_filter_idempotence.py'
       - 'tests/test_job_radar_personalization.py'
+      - 'tests/test_job_radar_first_screen.py'
+      - 'tests/test_user_store_contract.py'
+      - 'tests/test_edujob_brand_contract.py'
       - '.github/workflows/mobile-filter-regression.yml'
   workflow_dispatch:
 
@@ -25,7 +29,15 @@ jobs:
           python-version: '3.12'
       - name: Verify mobile filter toggle binding
         run: python tests/test_mobile_filter_idempotence.py
-      - name: Verify job radar syntax
-        run: node --check job-radar.js
+      - name: Verify personalization script syntax
+        run: |
+          node --check user-store.js
+          node --check job-radar.js
       - name: Verify job radar personalization contract
         run: python tests/test_job_radar_personalization.py
+      - name: Verify first-screen radar contract
+        run: python tests/test_job_radar_first_screen.py
+      - name: Verify account-ready user store
+        run: python tests/test_user_store_contract.py
+      - name: Verify independent Edujob brand
+        run: python tests/test_edujob_brand_contract.py
