@@ -25,7 +25,7 @@ const adminClient=()=>{
 export default {
   fetch: async (req:Request)=>{
     const origin=req.headers.get('origin')||'';
-    if(origin&&origin!==PUBLIC_ORIGIN)return json({error:'origin'},403);
+    if(origin!==PUBLIC_ORIGIN)return json({error:'origin'},403);
     if(req.method==='OPTIONS')return json({ok:true});
     if(req.method!=='POST')return json({error:'method'},405);
 
