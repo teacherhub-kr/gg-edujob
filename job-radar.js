@@ -198,6 +198,7 @@
     document.getElementById('jobRadarNewOnly').addEventListener('click',()=>{
       if(!currentNewKeys.size)return;
       newOnly=!newOnly;
+      if(newOnly)favoriteOnly=false;
       updatePanel();
       if(typeof render==='function')render();
     });
@@ -287,8 +288,19 @@
 
     const originalFiltered=filtered;
     filtered=function(){
+      if(favoriteOnly){
+        const favs=readFavorites();
+        const rows=(Array.isArray(jobs)?jobs:[]).filter(j=>{
+          if(!favs.has(jobKey(j)))return false;
+          const d=diffDay(j?.applyEnd);
+          return d===null||d>=0;
+        });
+        rows.sort((x,y)=>state.sort==='newest'
+          ?(parseDate(y.registered)||0)-(parseDate(x.registered)||0)
+          :compareDeadline(x,y));
+        return rows;
+      }
       let rows=originalFiltered();
-      if(favoriteOnly){const favs=readFavorites();rows=rows.filter(j=>favs.has(jobKey(j)))}
       if(newOnly)rows=rows.filter(j=>currentNewKeys.has(jobKey(j)));
       return rows;
     };
