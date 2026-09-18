@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#03c75a" />
+<meta name="theme-color" content="#17324d" />
 <title>수도권에듀잡 | 서울·경기 교육계 구인 통합검색</title>
 <meta name="description" content="서울·경기 학교·교육청 공식 채용과 검증된 민간 교육·문화예술 구인공고를 한 번에 찾는 통합검색 서비스" />
 <style>
@@ -20,6 +20,8 @@
 @media(max-width:900px) and (hover:none){.layout{grid-template-columns:1fr}.filter-panel{position:static}.region-checks{grid-template-columns:repeat(4,minmax(0,1fr))}.hero p,.coverage{display:none}}
 @media(max-width:650px){.wrap{padding:0 12px}.hero{padding:10px 0 12px}.hero h1{font-size:17px;margin-top:8px}.brand{font-size:16px}.logo{width:30px;height:30px}.official-links{display:none}.searchbox{margin-top:8px}.stats{grid-template-columns:repeat(2,1fr)}.stat{padding:10px 12px}.layout{gap:12px;margin-top:10px}.panel{padding:13px}.region-checks{grid-template-columns:repeat(3,minmax(0,1fr))}.job{padding:14px}.meta{grid-template-columns:1fr}.go{display:none}.searchbox button{padding:0 14px}.source-grid{grid-template-columns:1fr}.toolbar{align-items:flex-end}}
 </style>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="edujob-icon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="edujob-theme.css?v=20260918a">
 </head>
 <body>
@@ -42,7 +44,9 @@ $('#searchBtn').addEventListener('click',()=>{state.q=$('#q').value;render()});$
 <script src="unified-ui.js?v=20260904a" defer></script>
 <script src="direct-link-guard.js?v=20260907a" defer></script>
 <script src="mobile-ui.js?v=20260907d" defer></script>
-<script src="user-store.js?v=20260918a" defer></script>
+<script src="user-store.js?v=20260918b" defer></script>
 <script src="job-radar.js?v=20260918b" defer></script>
+<script src="alert-config.js?v=20260918a" defer></script>
+<script src="alert-client.js?v=20260918a" defer></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+name: Job alert dispatch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edujob-job-alert-dispatch
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      ALERT_ENDPOINT: ${{ secrets.EDUJOB_ALERT_DISPATCH_ENDPOINT }}
+      ALERT_SECRET: ${{ secrets.EDUJOB_ALERT_DISPATCH_SECRET }}
+    steps:
+      - name: Check alert backend configuration
+        id: config
+        shell: bash
+        run: |
+          if [[ -z "$ALERT_ENDPOINT" || -z "$ALERT_SECRET" ]]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "Alert backend is not configured; skipping without affecting recruitment publication."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Dispatch matched new-job notifications
+        if: steps.config.outputs.configured == 'true'
+        shell: bash
+        run: |
+          curl --fail --silent --show-error             --retry 2 --retry-all-errors             --max-time 90             -X POST "$ALERT_ENDPOINT"             -H "x-edujob-alert-secret: $ALERT_SECRET"             -H "content-type: application/json"             -d '{}'

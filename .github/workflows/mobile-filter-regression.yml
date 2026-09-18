@@ -8,6 +8,16 @@ on:
       - 'job-radar.js'
       - 'edujob-theme.css'
       - 'user-store.js'
+      - '.github/workflows/job-alerts.yml'
+      - 'tests/test_push_alert_contract.py'
+      - 'manifest.webmanifest'
+      - 'sw.js'
+      - 'alert-client.js'
+      - 'alert-config.js'
+      - 'supabase/migrations/20260918_create_push_subscriptions.sql'
+      - 'supabase/functions/push-dispatch/index.ts'
+      - 'supabase/functions/push-subscription/index.ts'
+      - 'supabase/functions/_shared/alerts.ts'
       - 'tests/test_mobile_filter_idempotence.py'
       - 'tests/test_job_radar_personalization.py'
       - 'tests/test_job_radar_first_screen.py'
@@ -33,6 +43,11 @@ jobs:
         run: |
           node --check user-store.js
           node --check job-radar.js
+      - name: Verify push alert client syntax
+        run: |
+          node --check alert-config.js
+          node --check alert-client.js
+          node --check sw.js
       - name: Verify job radar personalization contract
         run: python tests/test_job_radar_personalization.py
       - name: Verify first-screen radar contract
@@ -41,3 +56,5 @@ jobs:
         run: python tests/test_user_store_contract.py
       - name: Verify independent Edujob brand
         run: python tests/test_edujob_brand_contract.py
+      - name: Verify Web Push alert contract
+        run: python tests/test_push_alert_contract.py

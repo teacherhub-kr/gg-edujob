@@ -1,0 +1,19 @@
+{
+  "name": "수도권에듀잡",
+  "short_name": "에듀잡",
+  "description": "서울·경기·인천 교육 채용공고와 내 조건 맞춤 새 공고 알림",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#17324d",
+  "icons": [
+    {
+      "src": "edujob-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
