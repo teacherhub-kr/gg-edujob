@@ -7,8 +7,8 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919a",
-    "edujob-refresh.js?v=20260919a",
+    "edujob-refresh.css?v=20260919b",
+    "edujob-refresh.js?v=20260919b",
 ]
 for needle in required_index:
     if needle not in index:
