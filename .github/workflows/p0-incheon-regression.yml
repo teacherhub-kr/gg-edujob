@@ -49,7 +49,9 @@ jobs:
           assert 'from source_registry import official_source_count' in recovery
           assert 'total != 38' not in recovery
           assert 'Not all 38 official sources' not in recovery
-          assert 'python scripts/merge_incheon_official.py --lookback-days 90' in recovery
+          expected_incheon_retry='python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15'
+          assert expected_incheon_retry in recovery
+          assert expected_incheon_retry in fast
           forbidden=('hotfix_sources.py','hotfix_repair_links.py','harden_fast_pagination.py','harden_deep_audit.py','harden_network_retries.py','harden_central_pagination.py','harden_gyeonggi_central_retention.py')
           for name,text in (('recovery',recovery),('fast',fast)):
               for hardener in forbidden:

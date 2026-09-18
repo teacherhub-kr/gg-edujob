@@ -91,7 +91,7 @@ jobs:
         run: |
           python scripts/update_collector_status.py --workflow fast --stage fast-crawl --state running
           python scripts/scrape_jobs.py
-          python scripts/merge_incheon_official.py --lookback-days 90
+          python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
           python scripts/verify_required_regions.py
 
       - name: Fast re-check of Gyeonggi support-office boards

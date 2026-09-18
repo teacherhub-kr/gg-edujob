@@ -77,7 +77,7 @@ jobs:
           python scripts/complete_support_coverage.py
 
       - name: Collect complete Incheon official network
-        run: python scripts/merge_incheon_official.py --lookback-days 90
+        run: python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
 
       - name: Refresh independent Gyeonggi 90-day proof in current audit window
         run: python scripts/verify_gyeonggi_central_90d.py

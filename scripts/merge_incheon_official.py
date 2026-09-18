@@ -76,8 +76,6 @@ EXCLUDE_WORDS = re.compile(
     r"채용\s*결과|전형\s*결과|합격\s*공고|인사\s*발령"
 )
 
-SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.6"})
 RETRY = Retry(
     total=3,
     connect=3,
@@ -89,8 +87,31 @@ RETRY = Retry(
     respect_retry_after_header=True,
     raise_on_status=False,
 )
-SESSION.mount("https://", HTTPAdapter(max_retries=RETRY))
-SESSION.mount("http://", HTTPAdapter(max_retries=RETRY))
+
+
+def build_session() -> requests.Session:
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": UA,
+        "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.6",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+    })
+    session.mount("https://", HTTPAdapter(max_retries=RETRY))
+    session.mount("http://", HTTPAdapter(max_retries=RETRY))
+    return session
+
+
+SESSION = build_session()
+
+
+def reset_session() -> None:
+    """Drop cookies and pooled connections before a bounded transient retry."""
+    global SESSION
+    try:
+        SESSION.close()
+    finally:
+        SESSION = build_session()
 
 
 def clean(value) -> str:
@@ -310,6 +331,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     pages_scanned = 0
     stop_reason = ""
     access_error = ""
+    empty_page_evidence = {}
 
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
@@ -334,6 +356,12 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 all_rows.append(row)
 
         if meta["rawRows"] == 0:
+            empty_page_evidence = {
+                "finalUrl": str(response.url or ""),
+                "contentLength": len(response.content or b""),
+                "contentType": str(response.headers.get("content-type") or ""),
+                "pageTextSample": clean(meta.get("pageText") or "")[:600],
+            }
             stop_reason = "empty-page"
             break
 
@@ -372,6 +400,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "accessError": access_error,
         "paginationRepeated": stop_reason == "repeated-page",
         "stopReason": stop_reason,
+        "emptyPageEvidence": empty_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
         "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
     }
@@ -436,11 +465,14 @@ def scrape_incheon_with_transient_retry(
     transient_retries: int = 2,
     retry_delay_seconds: float = 15.0,
 ):
-    """Retry only the narrow all-empty official-board response; keep every other failure fail-closed."""
-    rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
-    if not check_only:
-        return rows, meta
+    """Retry only the narrow all-empty official-board response; keep every other failure fail-closed.
 
+    The same bounded contract is used by read-only completeness probes and production collection.
+    A retry always starts from a fresh HTTP session so a stale cookie/connection state cannot make
+    every attempt repeat the same empty response. Exhausted retries still return the failed evidence
+    and the caller fails closed.
+    """
+    rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
     retries = max(0, int(transient_retries))
     for attempt in range(retries):
         if not is_transient_all_empty(meta, rows):
@@ -448,6 +480,7 @@ def scrape_incheon_with_transient_retry(
         delay = max(0.0, float(retry_delay_seconds)) * (attempt + 1)
         if delay:
             time.sleep(delay)
+        reset_session()
         rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
     return rows, meta
 
