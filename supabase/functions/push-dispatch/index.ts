@@ -7,24 +7,42 @@ const response=(body:unknown,status=200)=>new Response(JSON.stringify(body),{
   headers:{'content-type':'application/json'}
 });
 
+const safeEqual=(a:string,b:string)=>{
+  if(a.length!==b.length)return false;
+  let out=0;
+  for(let i=0;i<a.length;i++)out|=a.charCodeAt(i)^b.charCodeAt(i);
+  return out===0;
+};
+
+const adminClient=()=>{
+  const url=Deno.env.get('SUPABASE_URL')||'';
+  const modern=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
+  const key=modern.default||Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||'';
+  if(!url||!key)return null;
+  return createClient(url,key,{auth:{persistSession:false}});
+};
+
 export default {
   fetch: async (req:Request)=>{
     if(req.method!=='POST')return response({error:'method'},405);
-    const secret=Deno.env.get('EDUJOB_ALERT_DISPATCH_SECRET')||'';
+    const db=adminClient();
+    if(!db)return response({error:'server-config'},503);
+
+    const {data:config,error:configError}=await db.from('edujob_alert_config')
+      .select('vapid_public_key,vapid_private_key,vapid_subject,dispatch_secret,public_url')
+      .eq('id',1).maybeSingle();
+    if(configError||!config)return response({error:'server-config'},503);
+
     const supplied=req.headers.get('x-edujob-alert-secret')||'';
-    if(!secret||supplied!==secret)return response({error:'unauthorized'},401);
+    if(!safeEqual(String(config.dispatch_secret||''),supplied))return response({error:'unauthorized'},401);
 
-    const url=Deno.env.get('SUPABASE_URL');
-    const serviceRole=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-    const publicKey=Deno.env.get('VAPID_PUBLIC_KEY');
-    const privateKey=Deno.env.get('VAPID_PRIVATE_KEY');
-    const subject=Deno.env.get('VAPID_SUBJECT');
-    const publicUrl=Deno.env.get('EDUJOB_PUBLIC_URL')||'./';
-    if(!url||!serviceRole||!publicKey||!privateKey||!subject)return response({error:'server-config'},503);
+    webpush.setVapidDetails(
+      String(config.vapid_subject),
+      String(config.vapid_public_key),
+      String(config.vapid_private_key)
+    );
 
-    webpush.setVapidDetails(subject,publicKey,privateKey);
     const jobs=await fetchCurrentJobs();
-    const db=createClient(url,serviceRole,{auth:{persistSession:false}});
     const {data:rows,error}=await db.from('edujob_push_subscriptions')
       .select('id,endpoint,p256dh,auth,profile,seen_ids').eq('enabled',true).limit(1000);
     if(error)return response({error:'db'},500);
@@ -47,7 +65,7 @@ export default {
       try{
         await webpush.sendNotification(
           {endpoint:String(row.endpoint),keys:{p256dh:String(row.p256dh),auth:String(row.auth)}},
-          JSON.stringify({title,body,tag:'edujob-new-jobs',url:publicUrl}),
+          JSON.stringify({title,body,tag:'edujob-new-jobs',url:String(config.public_url)}),
           {TTL:3600}
         );
         await db.from('edujob_push_subscriptions').update({
