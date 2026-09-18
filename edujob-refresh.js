@@ -45,6 +45,8 @@
   function installScopeChips(){
     const search=qs('.searchbox');
     if(!search)return;
+    const legacyTabs=qs('#edujobTabs');
+    if(legacyTabs)legacyTabs.remove();
     qsa('.scope-chips').forEach(el=>{if(el.id!=='scopeChips')el.remove()});
     const existing=qs('#scopeChips');
     if(existing){
