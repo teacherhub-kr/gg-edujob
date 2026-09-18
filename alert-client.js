@@ -45,6 +45,8 @@
     const hasConditions=profile&&(['provinces','regions','schools','types','categories','subjects'].some(k=>Array.isArray(profile[k])&&profile[k].length)||String(profile.q||'').trim());
     if(!hasConditions)throw new Error('profile-required');
     if(isIOS()&&!isStandalone())throw new Error('ios-home-screen-required');
+    const currentProfile=store.profile.get();
+    if(!currentProfile)throw new Error('profile-required');
     const permission=await Notification.requestPermission();
     if(permission!=='granted')throw new Error('permission-denied');
 
@@ -87,7 +89,7 @@
     await post({
       action:'subscribe',
       subscription:sub.toJSON(),
-      profile:store.profile.get(),
+      profile:currentProfile,
       clientToken:prev.clientToken
     });
   }
