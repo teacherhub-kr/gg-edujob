@@ -1,5 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="수도권에듀잡">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17324d"/><stop offset="1" stop-color="#2f66d7"/></linearGradient></defs>
-  <rect width="512" height="512" rx="128" fill="url(#g)"/>
-  <path d="M151 139h226v58H216v59h142v56H216v63h167v58H151z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">수도권에듀잡 앱 아이콘</title>
+  <desc id="desc">학사모를 쓴 파란색 E 로고</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5fbff"/><stop offset="1" stop-color="#dceeff"/></linearGradient>
+    <linearGradient id="e" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#58beff"/><stop offset=".55" stop-color="#1674f5"/><stop offset="1" stop-color="#0d52cf"/></linearGradient>
+    <linearGradient id="cap" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173f8b"/><stop offset="1" stop-color="#071c4e"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="132" fill="url(#bg)"/>
+  <path fill="url(#e)" d="M118 166c0-31 25-56 56-56h190c25 0 45 20 45 45s-20 45-45 45H215v48h119c25 0 45 20 45 45s-20 45-45 45H215v51h154c25 0 45 20 45 45s-20 45-45 45H174c-31 0-56-25-56-56V166z"/>
+  <path fill="url(#cap)" d="m87 126 164-68 177 64-171 75z"/>
+  <path fill="#0b2864" d="M146 149v48c0 29 49 54 109 54s109-25 109-54v-44l-108 47z"/>
+  <path d="M422 126v73" stroke="#f4b51d" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="422" cy="214" r="15" fill="#f4b51d"/>
 </svg>
