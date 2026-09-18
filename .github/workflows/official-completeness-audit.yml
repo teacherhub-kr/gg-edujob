@@ -33,7 +33,7 @@ jobs:
           python scripts/verify_central_pagination.py
           python scripts/verify_gyeonggi_central_90d.py
       - name: Independently prove both mandatory Incheon official boards
-        run: python scripts/merge_incheon_official.py --check-only --lookback-days 90
+        run: python scripts/merge_incheon_official.py --check-only --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
       - name: Reconcile the current official registry without publishing
         run: python scripts/reconcile_source_ids.py
       - name: Fail if the published production dataset omitted a current official ID
