@@ -1,5 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2.116.0';
-import {sendPushNotification} from 'npm:@mmmike/web-push@1.0.1/send';
+import webpush from 'npm:web-push@3.6.7';
 import {fetchCurrentJobs,jobKey,matchesProfile,type Job,type Profile} from '../_shared/alerts.ts';
 
 const response=(body:unknown,status=200)=>new Response(JSON.stringify(body),{
@@ -22,6 +22,7 @@ export default {
     const publicUrl=Deno.env.get('EDUJOB_PUBLIC_URL')||'./';
     if(!url||!serviceRole||!publicKey||!privateKey||!subject)return response({error:'server-config'},503);
 
+    webpush.setVapidDetails(subject,publicKey,privateKey);
     const jobs=await fetchCurrentJobs();
     const db=createClient(url,serviceRole,{auth:{persistSession:false}});
     const {data:rows,error}=await db.from('edujob_push_subscriptions')
@@ -44,10 +45,10 @@ export default {
       const body=fresh.length===1?`${school} · ${jobTitle}`:`${school} · ${jobTitle} 외 ${fresh.length-1}건`;
 
       try{
-        await sendPushNotification(
+        await webpush.sendNotification(
           {endpoint:String(row.endpoint),keys:{p256dh:String(row.p256dh),auth:String(row.auth)}},
-          {title,body,tag:'edujob-new-jobs',data:{url:publicUrl}},
-          {publicKey,privateKey,subject}
+          JSON.stringify({title,body,tag:'edujob-new-jobs',url:publicUrl}),
+          {TTL:3600}
         );
         await db.from('edujob_push_subscriptions').update({
           seen_ids:currentIds,
