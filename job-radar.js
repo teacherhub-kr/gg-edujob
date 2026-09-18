@@ -225,7 +225,7 @@
     apply.disabled=!p;newBtn.disabled=!p||currentNewKeys.size===0;
     if(box)box.classList.toggle('has-new',Boolean(p&&currentNewKeys.size));
     newBtn.textContent=newOnly?'전체 결과로':currentNewKeys.size?`새 공고 ${currentNewKeys.size.toLocaleString()}건 보기`:'새 공고만';
-    if(favBtn){const favCount=readFavorites().size;favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
+    if(favBtn){const favs=readFavorites();const favCount=(Array.isArray(jobs)?jobs:[]).filter(j=>{if(!favs.has(jobKey(j)))return false;const d=diffDay(j?.applyEnd);return d===null||d>=0}).length;favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
     count.innerHTML=currentNewKeys.size?`<span class="job-radar-count">${currentNewKeys.size}</span>`:'';
     if(mode==='saved'){copy.textContent=`현재 조건을 저장했습니다. 지금 보이는 ${currentMatchKeys.length.toLocaleString()}건을 기준으로 다음 방문부터 새 공고를 알려드립니다.`;return}
     if(mode==='missing'){copy.textContent='저장된 내 조건이 없습니다. 원하는 필터를 선택한 뒤 현재 조건 저장을 눌러 주세요.';return}
