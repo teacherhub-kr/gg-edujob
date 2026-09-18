@@ -23,7 +23,7 @@
     types:setValues('types'),
     categories:setValues('categories'),
     subjects:setValues('subjects'),
-    q:String(state?.q||document.getElementById('q')?.value||'').trim(),
+    q:String(document.getElementById('q')?.value??state?.q??'').trim(),
     savedAt:new Date().toISOString()
   });
 
@@ -246,7 +246,7 @@
       if(!profile||!Array.isArray(jobs)||!jobs.length)return;
       writeSnapshot(profile,matchingKeys(profile));
     };
-    window.addEventListener('pagehide',persistVisit,{capture:true});
+    window.addEventListener('pagehide',persistVisit,{capture:true});\n    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistVisit()},{passive:true});
   };
 
   waitForApp();
