@@ -24,8 +24,12 @@ missing = [name for name, needle in required_client.items() if needle not in cli
 if missing:
     raise SystemExit("push client contract missing: " + ", ".join(missing))
 
-if "enabled:false" not in config:
-    raise SystemExit("push must remain disabled until backend configuration is provisioned")
+if "enabled:true" not in config:
+    raise SystemExit("push must be enabled after backend provisioning")
+if "ahghkusvbfwrdmrhkgwe.supabase.co/functions/v1/push-subscription" not in config:
+    raise SystemExit("live push subscription endpoint missing")
+if "BIzLo7Ri325DU7t4-FUQ3T1TMRgRGn7iI8mw875ZpEHIHniQXOoUMRGHtoBCNknlcFUdFEx9i6mTlul8KVpBh1U" not in config:
+    raise SystemExit("live VAPID public key missing")
 
 positions = [index.find(x) for x in ["user-store.js", "job-radar.js", "alert-config.js", "alert-client.js"]]
 if any(x < 0 for x in positions) or positions != sorted(positions):
