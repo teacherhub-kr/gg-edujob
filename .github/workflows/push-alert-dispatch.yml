@@ -1,0 +1,33 @@
+name: Push alert dispatch
+
+on:
+  workflow_run:
+    workflows: ["Update 수도권 education jobs"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edujob-push-alerts
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch only when alert backend is configured
+        env:
+          ALERT_URL: ${{ secrets.EDUJOB_ALERT_DISPATCH_URL }}
+          ALERT_KEY: ${{ secrets.EDUJOB_ALERT_DISPATCH_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${ALERT_URL}" ] || [ -z "${ALERT_KEY}" ]; then
+            echo "Push backend is not configured; skipping without affecting recruitment publication."
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error             --retry 2 --retry-all-errors --max-time 60             -X POST "${ALERT_URL}"             -H "content-type: application/json"             -H "x-edujob-alert-key: ${ALERT_KEY}"             --data '{"action":"dispatch"}'
