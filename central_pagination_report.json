@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-18 21:51:36 KST",
+  "generatedAt": "2026-09-19 02:09:23 KST",
   "policy": "central sources fail closed structurally on every semantic detail row/card; parsedStableIdCount proves traversal, while stableIdCount mirrors the primary collector's actual-recruitment population by excluding result/selection notices with the shared EXCLUDE_WORDS policy; repeated full pages remain failures",
   "sources": [
     {
       "name": "경기도교육청 통합 구인구직",
       "province": "경기",
-      "parsedStableIdCount": 797,
-      "stableIdCount": 796,
+      "parsedStableIdCount": 667,
+      "stableIdCount": 666,
       "excludedNonRecruitmentCount": 1,
       "complete": true,
       "categories": [
         {
           "code": "A",
           "name": "기간제/사립교원",
-          "pagesScanned": 7,
-          "rawRows": 267,
-          "parsedStableIdCount": 266,
-          "stableIdCount": 266,
+          "pagesScanned": 6,
+          "rawRows": 209,
+          "parsedStableIdCount": 208,
+          "stableIdCount": 208,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -30,10 +30,10 @@
         {
           "code": "B",
           "name": "초중등시간강사",
-          "pagesScanned": 8,
-          "rawRows": 335,
-          "parsedStableIdCount": 334,
-          "stableIdCount": 334,
+          "pagesScanned": 7,
+          "rawRows": 271,
+          "parsedStableIdCount": 270,
+          "stableIdCount": 270,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -48,9 +48,9 @@
           "code": "C",
           "name": "교육공무직원",
           "pagesScanned": 3,
-          "rawRows": 61,
-          "parsedStableIdCount": 60,
-          "stableIdCount": 60,
+          "rawRows": 58,
+          "parsedStableIdCount": 57,
+          "stableIdCount": 57,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -99,9 +99,9 @@
           "code": "F",
           "name": "자원봉사자",
           "pagesScanned": 3,
-          "rawRows": 63,
-          "parsedStableIdCount": 62,
-          "stableIdCount": 62,
+          "rawRows": 58,
+          "parsedStableIdCount": 57,
+          "stableIdCount": 57,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -117,11 +117,11 @@
     {
       "name": "서울교육일자리포털",
       "province": "서울",
-      "parsedStableIdCount": 391,
-      "stableIdCount": 391,
+      "parsedStableIdCount": 388,
+      "stableIdCount": 388,
       "excludedNonRecruitmentCount": 0,
       "pagesScanned": 9,
-      "rawRows": 391,
+      "rawRows": 388,
       "terminalEvidence": "empty-page",
       "accessError": false,
       "parseError": false,
@@ -132,6 +132,5 @@
       "complete": true
     }
   ],
-  "complete": true,
-  "scanId": "20260918T121458Z-35339898553-1"
+  "complete": true
 }
