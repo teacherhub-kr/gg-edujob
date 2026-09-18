@@ -414,6 +414,44 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
     return all_rows, meta
 
 
+def is_transient_all_empty(meta: dict, rows: list) -> bool:
+    """Return True only for the narrow two-board empty-page signature seen in transient ICE responses."""
+    if rows or meta.get("accessError") or meta.get("paginationRepeated"):
+        return False
+    health = meta.get("boardHealth") or []
+    if len(health) != len(REQUIRED_BOARDS):
+        return False
+    return all(
+        int(item.get("count") or 0) == 0
+        and item.get("stopReason") == "empty-page"
+        and not item.get("accessError")
+        for item in health
+    )
+
+
+def scrape_incheon_with_transient_retry(
+    lookback_days: int,
+    max_pages: int,
+    check_only: bool,
+    transient_retries: int = 2,
+    retry_delay_seconds: float = 15.0,
+):
+    """Retry only the narrow all-empty official-board response; keep every other failure fail-closed."""
+    rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
+    if not check_only:
+        return rows, meta
+
+    retries = max(0, int(transient_retries))
+    for attempt in range(retries):
+        if not is_transient_all_empty(meta, rows):
+            break
+        delay = max(0.0, float(retry_delay_seconds)) * (attempt + 1)
+        if delay:
+            time.sleep(delay)
+        rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
+    return rows, meta
+
+
 def merge_into_jobs(rows, meta) -> dict:
     payload = json.loads(JOBS_PATH.read_text(encoding="utf-8"))
     if not isinstance(payload, dict) or not isinstance(payload.get("jobs"), list):
@@ -505,16 +543,20 @@ def main() -> int:
     parser.add_argument("--lookback-days", type=int, default=90)
     parser.add_argument("--max-pages", type=int, default=1000)
     parser.add_argument("--check-only", action="store_true")
+    parser.add_argument("--transient-retries", type=int, default=2)
+    parser.add_argument("--retry-delay-seconds", type=float, default=15.0)
     args = parser.parse_args()
 
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
     if not registry_is_complete(sources):
         raise SystemExit("Incheon required official boards are absent or differ from the canonical registry")
 
-    rows, meta = scrape_incheon_central(
+    rows, meta = scrape_incheon_with_transient_retry(
         lookback_days=args.lookback_days,
         max_pages=args.max_pages,
         check_only=args.check_only,
+        transient_retries=args.transient_retries,
+        retry_delay_seconds=args.retry_delay_seconds,
     )
     if not rows:
         raise SystemExit(f"No Incheon official recruitment rows parsed: {meta}")
