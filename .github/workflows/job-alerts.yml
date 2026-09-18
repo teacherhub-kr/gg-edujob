@@ -1,8 +1,6 @@
 name: Job alert dispatch
 
 on:
-  schedule:
-    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
