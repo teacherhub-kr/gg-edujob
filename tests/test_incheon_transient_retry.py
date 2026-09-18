@@ -38,9 +38,10 @@ class IncheonTransientRetryTests(unittest.TestCase):
         self.assertFalse(ice.is_transient_all_empty(meta_for(access_error="timeout"), []))
         self.assertFalse(ice.is_transient_all_empty(meta_for(count=1), [{"id": "x"}]))
 
+    @patch.object(ice, "reset_session")
     @patch.object(ice.time, "sleep")
     @patch.object(ice, "scrape_incheon_central")
-    def test_check_only_retries_empty_then_accepts_success(self, scrape, sleep):
+    def test_check_only_retries_empty_then_accepts_success(self, scrape, sleep, reset):
         scrape.side_effect = [
             ([], meta_for()),
             ([{"id": "ok"}], meta_for(count=1)),
@@ -56,20 +57,46 @@ class IncheonTransientRetryTests(unittest.TestCase):
         self.assertTrue(meta["coverageComplete"])
         self.assertEqual(scrape.call_count, 2)
         sleep.assert_called_once_with(15.0)
+        reset.assert_called_once_with()
 
+    @patch.object(ice, "reset_session")
     @patch.object(ice.time, "sleep")
     @patch.object(ice, "scrape_incheon_central")
-    def test_non_check_only_never_adds_transient_retry(self, scrape, sleep):
-        scrape.return_value = ([], meta_for())
-        ice.scrape_incheon_with_transient_retry(
+    def test_non_check_only_retries_all_empty_with_fresh_session(self, scrape, sleep, reset):
+        scrape.side_effect = [
+            ([], meta_for()),
+            ([{"id": "ok"}], meta_for(count=1)),
+        ]
+        rows, meta = ice.scrape_incheon_with_transient_retry(
             lookback_days=90,
             max_pages=1000,
             check_only=False,
             transient_retries=2,
             retry_delay_seconds=15,
         )
-        self.assertEqual(scrape.call_count, 1)
-        sleep.assert_not_called()
+        self.assertEqual(rows, [{"id": "ok"}])
+        self.assertTrue(meta["coverageComplete"])
+        self.assertEqual(scrape.call_count, 2)
+        sleep.assert_called_once_with(15.0)
+        reset.assert_called_once_with()
+
+    @patch.object(ice, "reset_session")
+    @patch.object(ice.time, "sleep")
+    @patch.object(ice, "scrape_incheon_central")
+    def test_exhausted_all_empty_retries_stay_failed(self, scrape, sleep, reset):
+        scrape.return_value = ([], meta_for())
+        rows, meta = ice.scrape_incheon_with_transient_retry(
+            lookback_days=90,
+            max_pages=1000,
+            check_only=False,
+            transient_retries=2,
+            retry_delay_seconds=15,
+        )
+        self.assertEqual(rows, [])
+        self.assertFalse(meta["coverageComplete"])
+        self.assertEqual(scrape.call_count, 3)
+        self.assertEqual(reset.call_count, 2)
+        self.assertEqual(sleep.call_count, 2)
 
 
 if __name__ == "__main__":
