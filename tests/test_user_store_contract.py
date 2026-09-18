@@ -13,6 +13,7 @@ required = {
     "account adapter": "setAccountAdapter",
     "remote hydrate": "hydrateAccount",
     "remote sync": "syncAccount",
+    "local-to-account migration": "migrateLocalToAccount",
     "local mode": "storageMode",
 }
 missing = [label for label, needle in required.items() if needle not in store]
@@ -21,6 +22,9 @@ if missing:
 
 if "localStorage" in radar:
     raise SystemExit("job-radar.js must remain storage-provider agnostic")
+
+if "const memory=new Map()" not in store:
+    raise SystemExit("user store must keep an in-memory fallback when browser storage is unavailable")
 
 store_pos = index.find('user-store.js')
 radar_pos = index.find('job-radar.js')
