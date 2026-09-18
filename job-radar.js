@@ -165,14 +165,14 @@
       <div class="job-radar-head">
         <div>
           <div class="job-radar-title">🎯 내 채용 레이더 <span id="jobRadarNewCount"></span></div>
-          <div class="job-radar-copy" id="jobRadarCopy">필터와 검색어를 정한 뒤 현재 조건을 저장하면 다음 방문부터 새 공고를 구분해 드립니다.</div>
+          <div class="job-radar-copy" id="jobRadarCopy"><span class="radar-copy-line">원하는 조건을 고른 뒤 저장해 주세요.</span><span class="radar-copy-line">다음 방문부터 새 공고를 구분합니다.</span></div>
         </div>
         <div class="job-radar-actions">
-          <button type="button" class="job-radar-btn primary" id="jobRadarSave">현재 조건 저장</button>
-          <button type="button" class="job-radar-btn" id="jobRadarApply">내 조건 불러오기</button>
-          <button type="button" class="job-radar-btn new" id="jobRadarNewOnly">새 공고만</button>
-          <button type="button" class="job-radar-btn" id="jobRadarFavorites">♡ 관심공고</button>
-          <button type="button" class="job-radar-btn" id="jobRadarDelete">삭제</button>
+          <button type="button" class="job-radar-btn primary" id="jobRadarSave" aria-label="현재 조건 저장"><span class="radar-action-label">현재<br>조건<br>저장</span></button>
+          <button type="button" class="job-radar-btn" id="jobRadarApply" aria-label="내 조건 불러오기"><span class="radar-action-label">내 조건<br>불러<br>오기</span></button>
+          <button type="button" class="job-radar-btn new" id="jobRadarNewOnly" aria-label="새 공고"><span class="radar-action-label">새<br>공고</span></button>
+          <button type="button" class="job-radar-btn" id="jobRadarFavorites" aria-label="관심공고"><span class="radar-action-label">♡<br>관심<br>공고</span></button>
+          <button type="button" class="job-radar-btn" id="jobRadarDelete" aria-label="삭제"><span class="radar-action-label">삭제</span></button>
         </div>
       </div>
       <div class="job-radar-overview" id="jobRadarOverview"></div>
@@ -281,18 +281,20 @@
   function updatePanel(mode=''){
     const p=readProfile(),box=document.getElementById('jobRadar'),copy=document.getElementById('jobRadarCopy'),count=document.getElementById('jobRadarNewCount'),apply=document.getElementById('jobRadarApply'),newBtn=document.getElementById('jobRadarNewOnly'),favBtn=document.getElementById('jobRadarFavorites');
     if(!copy||!count)return;
+    const actionLabel=(button,html,aria)=>{if(!button)return;button.innerHTML=`<span class="radar-action-label">${html}</span>`;button.setAttribute('aria-label',aria)};
+    const copyLines=(...lines)=>{copy.innerHTML=lines.map(line=>`<span class="radar-copy-line">${line}</span>`).join('')};
     apply.disabled=!p;newBtn.disabled=!p||currentNewKeys.size===0;
     if(box)box.classList.toggle('has-new',Boolean(p&&currentNewKeys.size));
-    newBtn.textContent=newOnly?'전체 결과로':currentNewKeys.size?`새 공고 ${currentNewKeys.size.toLocaleString()}건 보기`:'새 공고만';
-    if(favBtn){const favCount=activeFavoriteCount();favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
+    actionLabel(newBtn,newOnly?'전체<br>공고':'새<br>공고',newOnly?'전체 공고':'새 공고');
+    if(favBtn){actionLabel(favBtn,favoriteOnly?'전체<br>공고':'♡<br>관심<br>공고',favoriteOnly?'전체 공고':'관심공고');favBtn.classList.toggle('primary',favoriteOnly)}
     count.innerHTML=currentNewKeys.size?`<span class="job-radar-count">${currentNewKeys.size}</span>`:'';
     renderDashboard(p);
-    if(mode==='saved'){copy.textContent=`현재 조건을 저장했습니다. 지금 보이는 ${currentMatchKeys.length.toLocaleString()}건을 기준으로 다음 방문부터 새 공고를 알려드립니다.`;return}
-    if(mode==='missing'){copy.textContent='저장된 내 조건이 없습니다. 원하는 필터를 선택한 뒤 현재 조건 저장을 눌러 주세요.';return}
-    if(mode==='deleted'){copy.textContent='저장된 내 조건과 방문 기준을 삭제했습니다.';return}
-    if(!p){copy.textContent='필터와 검색어를 정한 뒤 현재 조건을 저장하면 다음 방문부터 새 공고를 구분해 드립니다.';return}
-    if(currentNewKeys.size){copy.textContent=`지난 방문 이후 내 조건에 맞는 새 공고가 ${currentNewKeys.size.toLocaleString()}건 있습니다. 현재 조건 일치 공고는 ${currentMatchKeys.length.toLocaleString()}건입니다.`}
-    else copy.textContent=`내 조건을 적용했습니다. 지난 방문 이후 새로 확인된 일치 공고는 없습니다. 현재 ${currentMatchKeys.length.toLocaleString()}건이 조건에 맞습니다.`;
+    if(mode==='saved'){copyLines('조건을 저장했습니다.',`현재 조건 일치 ${currentMatchKeys.length.toLocaleString()}건`);return}
+    if(mode==='missing'){copyLines('저장된 내 조건이 없습니다.','원하는 조건을 고른 뒤 저장해 주세요.');return}
+    if(mode==='deleted'){copyLines('저장 조건을 삭제했습니다.','필터를 다시 선택해 저장할 수 있습니다.');return}
+    if(!p){copyLines('원하는 조건을 고른 뒤 저장해 주세요.','다음 방문부터 새 공고를 구분합니다.');return}
+    if(currentNewKeys.size)copyLines(`지난 방문 이후 새 공고 ${currentNewKeys.size.toLocaleString()}건`,`현재 조건 일치 ${currentMatchKeys.length.toLocaleString()}건`);
+    else copyLines('지난 방문 이후 신규 공고 0건',`현재 조건 일치 ${currentMatchKeys.length.toLocaleString()}건`);
   }
 
   function decorateCards(){
