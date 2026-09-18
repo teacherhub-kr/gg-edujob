@@ -9,6 +9,7 @@ on:
       - 'naver-theme.css'
       - 'tests/test_mobile_filter_idempotence.py'
       - 'tests/test_job_radar_personalization.py'
+      - 'tests/test_job_radar_first_screen.py'
       - '.github/workflows/mobile-filter-regression.yml'
   workflow_dispatch:
 
@@ -29,3 +30,5 @@ jobs:
         run: node --check job-radar.js
       - name: Verify job radar personalization contract
         run: python tests/test_job_radar_personalization.py
+      - name: Verify first-screen radar contract
+        run: python tests/test_job_radar_first_screen.py
