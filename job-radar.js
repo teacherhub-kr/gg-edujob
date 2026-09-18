@@ -2,18 +2,16 @@
   if(window.__edujobJobRadarLoaded)return;
   window.__edujobJobRadarLoaded=true;
 
-  const PROFILE_KEY='edujob.jobRadar.profile.v1';
-  const SNAPSHOT_KEY='edujob.jobRadar.snapshot.v1';
-  const FAVORITES_KEY='edujob.jobRadar.favorites.v1';
+  const userStore=window.EduJobUserStore;
+  if(!userStore)return;
   const PROFILE_FIELDS=['provinces','regions','schools','types','categories','subjects'];
   let newOnly=false;
   let favoriteOnly=false;
   let currentNewKeys=new Set();
   let currentMatchKeys=[];
 
-  const safeJson=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
-  const readProfile=()=>safeJson(localStorage.getItem(PROFILE_KEY));
-  const readSnapshot=()=>safeJson(localStorage.getItem(SNAPSHOT_KEY));
+  const readProfile=()=>userStore.profile.get();
+  const readSnapshot=()=>userStore.snapshot.get();
   const arr=v=>Array.isArray(v)?v.filter(Boolean):[];
   const setValues=key=>state?.[key] instanceof Set?[...state[key]]:[];
 
@@ -46,8 +44,8 @@
     [j?.source,j?.school,j?.title,j?.registered].filter(Boolean).join('|')
   );
 
-  const readFavorites=()=>new Set(arr(safeJson(localStorage.getItem(FAVORITES_KEY),[])));
-  const writeFavorites=set=>localStorage.setItem(FAVORITES_KEY,JSON.stringify([...set].slice(0,1000)));
+  const readFavorites=()=>new Set(arr(userStore.favorites.get()));
+  const writeFavorites=set=>userStore.favorites.set([...set].slice(0,1000));
   const isFavorite=j=>readFavorites().has(jobKey(j));
   const toggleFavorite=j=>{
     const key=jobKey(j);if(!key)return false;
@@ -130,12 +128,12 @@
 
   const matchingKeys=p=>(Array.isArray(jobs)?jobs:[]).filter(j=>matchesProfile(j,p)).map(jobKey).filter(Boolean);
 
-  const writeSnapshot=(p,keys)=>localStorage.setItem(SNAPSHOT_KEY,JSON.stringify({
+  const writeSnapshot=(p,keys)=>userStore.snapshot.set({
     version:1,
     fingerprint:fingerprint(p),
     keys:[...new Set(keys)].slice(0,3000),
     checkedAt:new Date().toISOString()
-  }));
+  });
 
   function installStyles(){
     if(document.getElementById('jobRadarStyles'))return;
@@ -188,7 +186,7 @@
     document.getElementById('jobRadarSave').addEventListener('click',()=>{
       const p=currentProfile();
       if(!hasConditions(p)){document.getElementById('jobRadarCopy').textContent='지역·학교급·직종·과목 또는 검색어를 하나 이상 선택한 뒤 저장해 주세요.';return}
-      localStorage.setItem(PROFILE_KEY,JSON.stringify(p));
+      userStore.profile.set(p);
       const keys=matchingKeys(p);writeSnapshot(p,keys);
       currentNewKeys=new Set();currentMatchKeys=keys;newOnly=false;
       updatePanel('saved');
@@ -218,7 +216,7 @@
 
 
     document.getElementById('jobRadarDelete').addEventListener('click',()=>{
-      localStorage.removeItem(PROFILE_KEY);localStorage.removeItem(SNAPSHOT_KEY);
+      userStore.profile.remove();userStore.snapshot.remove();
       currentNewKeys=new Set();currentMatchKeys=[];newOnly=false;favoriteOnly=false;
       updatePanel('deleted');
       if(typeof render==='function')render();
