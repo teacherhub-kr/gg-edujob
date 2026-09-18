@@ -176,8 +176,14 @@
           <button type="button" class="job-radar-btn" id="jobRadarFavorites">♡ 관심공고</button>
           <button type="button" class="job-radar-btn" id="jobRadarDelete">삭제</button>
         </div>
-      </div>`;
-    toolbar.parentElement.insertBefore(box,toolbar);
+      </div>
+      <div class="job-radar-overview" id="jobRadarOverview"></div>
+      <div class="job-radar-profile" id="jobRadarProfile"></div>
+      <div class="job-radar-preview" id="jobRadarPreview"></div>`;
+    const main=document.querySelector('main.wrap');
+    const stats=main?.querySelector('.stats');
+    if(main&&stats)main.insertBefore(box,stats);
+    else toolbar.parentElement.insertBefore(box,toolbar);
 
     document.getElementById('jobRadarSave').addEventListener('click',()=>{
       const p=currentProfile();
