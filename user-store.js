@@ -8,10 +8,23 @@
   };
 
   const parse=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
+  const memory=new Map();
   const local={
-    get:(key,fallback=null)=>parse(localStorage.getItem(key),fallback),
-    set:(key,value)=>localStorage.setItem(key,JSON.stringify(value)),
-    remove:key=>localStorage.removeItem(key)
+    get:(key,fallback=null)=>{
+      try{
+        const raw=localStorage.getItem(key);
+        if(raw!==null)return parse(raw,fallback);
+      }catch(e){}
+      return memory.has(key)?memory.get(key):fallback;
+    },
+    set:(key,value)=>{
+      memory.set(key,value);
+      try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}
+    },
+    remove:key=>{
+      memory.delete(key);
+      try{localStorage.removeItem(key)}catch(e){}
+    }
   };
 
   let accountAdapter=null;
@@ -64,6 +77,12 @@
       const state=api.exportState();
       await accountAdapter.push(state);
       return state;
+    },
+    migrateLocalToAccount:async()=>{
+      if(!accountAdapter)return null;
+      const localState=api.exportState();
+      await accountAdapter.push(localState);
+      return localState;
     },
     syncAccountSoon:()=>{
       if(!accountAdapter)return;
