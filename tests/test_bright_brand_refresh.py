@@ -7,8 +7,8 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919b",
-    "edujob-refresh.js?v=20260919b",
+    "edujob-refresh.css?v=20260919c",
+    "edujob-refresh.js?v=20260919c",
 ]
 for needle in required_index:
     if needle not in index:
@@ -57,3 +57,20 @@ combined = Path("job-radar.js").read_text(encoding="utf-8") + "\n" + css
 for label, needle in mobile_polish.items():
     if needle not in combined:
         raise SystemExit(f"mobile polish contract missing: {label}")
+
+
+mobile = Path("mobile-ui.js").read_text(encoding="utf-8")
+
+if "\\n<link" in index or "</script>\\n<script" in index:
+    raise SystemExit("literal backslash-n artifact must never render in the page")
+
+if "nav.id='edujobTabs'" in mobile or 'nav.id="edujobTabs"' in mobile:
+    raise SystemExit("legacy top scope tabs must not be recreated")
+
+if "mobile-ui.js?v=20260919a" not in index:
+    raise SystemExit("mobile cleanup must bust the legacy mobile-ui cache")
+
+if "min-height:59px!important" not in css:
+    raise SystemExit("mobile radar metric cards must stay compact")
+
+print("mobile cleanup v3 contract verified")

@@ -363,3 +363,45 @@ body{
   .edujob-mobile-nav button svg{width:18px!important;height:18px!important}
   .footer{padding-bottom:62px!important}
 }
+
+
+/* 2026-09-19 mobile cleanup v3: reclaim first-screen space */
+@media(max-width:650px){
+  .job-radar{
+    padding:13px 65px 11px 12px!important;
+    border-radius:19px!important;
+  }
+  .job-radar-title{font-size:16px!important}
+  .job-radar-copy{font-size:9px!important;line-height:1.4!important;margin-top:5px!important}
+  .radar-mascot-wrap{right:1px!important;top:3px!important;width:62px!important;height:77px!important}
+  .radar-mascot{width:50px!important}
+  .job-radar-actions{
+    width:calc(100% + 53px)!important;
+    margin-right:-53px!important;
+    margin-top:7px!important;
+    gap:4px!important;
+  }
+  .job-radar-btn{
+    min-height:49px!important;
+    padding:4px 2px!important;
+    border-radius:10px!important;
+    font-size:9px!important;
+  }
+  .job-radar-overview{
+    margin-right:-53px!important;
+    margin-top:8px!important;
+    gap:6px!important;
+  }
+  .job-radar-metric,.radar-alert-card{
+    min-height:59px!important;
+    padding:7px 9px!important;
+    border-radius:13px!important;
+  }
+  .job-radar-metric b{font-size:18px!important}
+  .job-radar-metric span{font-size:8.5px!important;margin-top:4px!important;line-height:1.25!important}
+  .radar-alert-card .alert-icon{font-size:17px!important}
+  .radar-alert-card strong{font-size:11.5px!important;margin-top:3px!important}
+  .radar-alert-card span{font-size:8px!important;margin-top:2px!important;line-height:1.2!important}
+  .job-radar-profile{margin-right:-53px!important;margin-top:7px!important;gap:5px!important}
+  .job-radar-chip{font-size:8px!important;padding:4px 7px!important}
+}
