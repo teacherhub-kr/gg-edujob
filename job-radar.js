@@ -246,7 +246,8 @@
       if(!profile||!Array.isArray(jobs)||!jobs.length)return;
       writeSnapshot(profile,matchingKeys(profile));
     };
-    window.addEventListener('pagehide',persistVisit,{capture:true});\n    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistVisit()},{passive:true});
+    window.addEventListener('pagehide',persistVisit,{capture:true});
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistVisit()},{passive:true});
   };
 
   waitForApp();
