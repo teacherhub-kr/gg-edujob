@@ -18,6 +18,7 @@ required_client = {
     "saved profile sync": "edujob:user-state-changed",
     "iOS home-screen guard": "ios-home-screen-required",
     "unsubscribe support": "action:'unsubscribe'",
+    "saved-profile requirement": "profile-required",
 }
 missing = [name for name, needle in required_client.items() if needle not in client]
 if missing:
@@ -44,8 +45,10 @@ for needle in ["enable row level security", "revoke all", "client_token_hash", "
         raise SystemExit("push subscription privacy contract missing: " + needle)
 if "baseline-unavailable" not in subscribe or "matchingKeys(jobs,profile)" not in subscribe:
     raise SystemExit("subscribe endpoint must fail closed if current-job baseline cannot be established")
-if "x-edujob-alert-secret" not in dispatch or "sendPushNotification" not in dispatch:
+if "x-edujob-alert-secret" not in dispatch or "webpush.sendNotification" not in dispatch:
     raise SystemExit("dispatch endpoint must require secret and use Web Push sender")
+if "web-push@3.6.7" not in dispatch:
+    raise SystemExit("Web Push sender dependency must stay pinned")
 if "contents: read" not in workflow or "ALERT_ENDPOINT" not in workflow:
     raise SystemExit("isolated alert workflow contract missing")
 if "push" in workflow.lower() and "git push" in workflow.lower():
