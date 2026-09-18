@@ -4,29 +4,10 @@
   if(window.__edujobMobileUiLoaded)return;
   window.__edujobMobileUiLoaded=true;
 
-  const top=document.querySelector('.top');
-  const brand=document.querySelector('.brand');
-  if(top&&brand&&!document.getElementById('edujobTabs')){
-    const nav=document.createElement('nav');
-    nav.id='edujobTabs';
-    nav.setAttribute('aria-label','구인공고 범위');
-    nav.style.cssText='display:flex;gap:6px;align-items:center;margin-left:auto;margin-right:8px';
-    const scope=new URLSearchParams(location.search).get('scope')||'all';
-    const mk=(href,text,key)=>{
-      const on=scope===key;
-      const a=document.createElement('a');a.href=href;a.textContent=text;
-      a.style.cssText=`font-size:11px;font-weight:850;padding:7px 10px;border-radius:9px;border:1px solid ${on?'#8ed9ad':'#dfe3e6'};background:${on?'#eafff2':'#fff'};color:${on?'#07863c':'#555'};white-space:nowrap`;
-      return a;
-    };
-    nav.append(
-      mk('./?scope=all','전체 구인','all'),
-      mk('./?scope=official','학교·교육청','official'),
-      mk('./?scope=private','학원·민간','private')
-    );
-    const official=top.querySelector('.official-links');top.insertBefore(nav,official||null);
-    const fitNav=()=>{if(window.matchMedia('(max-width:650px)').matches){nav.style.order='3';nav.style.width='100%';nav.style.margin='4px 0 0';nav.querySelectorAll('a').forEach(a=>{a.style.flex='1';a.style.textAlign='center';a.style.padding='7px 5px'})}else{nav.style.order='';nav.style.width='';nav.style.marginLeft='auto';nav.style.marginRight='8px';nav.style.marginTop='';nav.querySelectorAll('a').forEach(a=>{a.style.flex='';a.style.textAlign='';a.style.padding='7px 10px'})}};
-    window.addEventListener('resize',fitNav,{passive:true});fitNav();
-  }
+  // Range selection now lives below the search box in edujob-refresh.js.
+  // Remove any legacy top tabs left in the DOM by an older cached bundle.
+  const legacyTabs=document.getElementById('edujobTabs');
+  if(legacyTabs)legacyTabs.remove();
 
   // Search results must open the exact posting, not a source's generic list page.
   // Reconstruct known private-source detail URLs from stable identities when needed,
