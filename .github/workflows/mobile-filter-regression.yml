@@ -7,6 +7,12 @@ on:
       - 'mobile-ui.js'
       - 'job-radar.js'
       - 'edujob-theme.css'
+      - 'edujob-refresh.css'
+      - 'edujob-refresh.js'
+      - 'edujob-logo.svg'
+      - 'edujob-mascot.svg'
+      - 'edujob-icon.svg'
+      - 'tests/test_bright_brand_refresh.py'
       - 'user-store.js'
       - '.github/workflows/job-alerts.yml'
       - 'tests/test_push_alert_contract.py'
@@ -56,5 +62,9 @@ jobs:
         run: python tests/test_user_store_contract.py
       - name: Verify independent Edujob brand
         run: python tests/test_edujob_brand_contract.py
+      - name: Verify bright brand refresh
+        run: |
+          node --check edujob-refresh.js
+          python tests/test_bright_brand_refresh.py
       - name: Verify Web Push alert contract
         run: python tests/test_push_alert_contract.py
