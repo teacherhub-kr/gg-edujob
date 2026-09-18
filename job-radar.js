@@ -225,14 +225,70 @@
     });
   }
 
+  function activeFavoriteCount(){
+    const favs=readFavorites();
+    return (Array.isArray(jobs)?jobs:[]).filter(j=>{
+      if(!favs.has(jobKey(j)))return false;
+      const d=diffDay(j?.applyEnd);
+      return d===null||d>=0;
+    }).length;
+  }
+
+  function profileChips(p){
+    if(!p)return [];
+    const chips=[];
+    const push=(label,values,max=2)=>{
+      const xs=arr(values);if(!xs.length)return;
+      const shown=xs.slice(0,max).join('·');
+      chips.push(`${label} ${shown}${xs.length>max?` +${xs.length-max}`:''}`);
+    };
+    push('지역',p.regions);
+    push('학교급',p.schools);
+    push('직종',p.types);
+    push('과목',p.subjects);
+    if(String(p.q||'').trim())chips.push(`검색 “${String(p.q).trim()}”`);
+    return chips.slice(0,5);
+  }
+
+  function newPreviewJobs(){
+    const rows=(Array.isArray(jobs)?jobs:[]).filter(j=>currentNewKeys.has(jobKey(j)));
+    rows.sort((x,y)=>compareDeadline(x,y));
+    return rows.slice(0,3);
+  }
+
+  function renderDashboard(p){
+    const overview=document.getElementById('jobRadarOverview');
+    const profile=document.getElementById('jobRadarProfile');
+    const preview=document.getElementById('jobRadarPreview');
+    if(!overview||!profile||!preview)return;
+    if(!p){
+      overview.innerHTML='<div class="job-radar-metric"><b>-</b><span>내 신규</span></div><div class="job-radar-metric"><b>-</b><span>관심공고</span></div><div class="job-radar-metric"><b>-</b><span>조건 일치</span></div>';
+      profile.innerHTML='';
+      preview.innerHTML='';
+      return;
+    }
+    const favCount=activeFavoriteCount();
+    overview.innerHTML=`<div class="job-radar-metric"><b>${currentNewKeys.size.toLocaleString()}</b><span>지난 방문 이후 신규</span></div><div class="job-radar-metric"><b>${favCount.toLocaleString()}</b><span>모집 중 관심공고</span></div><div class="job-radar-metric"><b>${currentMatchKeys.length.toLocaleString()}</b><span>현재 조건 일치</span></div>`;
+    profile.innerHTML=profileChips(p).map(x=>`<span class="job-radar-chip">${esc(x)}</span>`).join('');
+    preview.innerHTML=newPreviewJobs().map(j=>{
+      const href=postingLink(j);
+      const tag=href?'a':'div';
+      const attrs=href?` href="${esc(href)}" target="_blank" rel="noopener"`:'';
+      const d=diffDay(j.applyEnd);
+      const deadline=d===0?'오늘 마감':d!==null&&d>0?`D-${d}`:'마감 원문확인';
+      const region=(j.location||j.region||(Array.isArray(j.regions)?j.regions.join('·'):'')||province(j));
+      return `<${tag} class="job-radar-preview-row"${attrs}><div class="job-radar-preview-main"><div class="job-radar-preview-title">${esc(j.title||'채용 공고')}</div><div class="job-radar-preview-meta">${esc(j.school||'기관명 확인')} · ${esc(region)} · ${esc(deadline)}</div></div><div class="job-radar-preview-go">${href?'원문 ↗':'링크 점검 중'}</div></${tag}>`;
+    }).join('');
+  }
   function updatePanel(mode=''){
     const p=readProfile(),box=document.getElementById('jobRadar'),copy=document.getElementById('jobRadarCopy'),count=document.getElementById('jobRadarNewCount'),apply=document.getElementById('jobRadarApply'),newBtn=document.getElementById('jobRadarNewOnly'),favBtn=document.getElementById('jobRadarFavorites');
     if(!copy||!count)return;
     apply.disabled=!p;newBtn.disabled=!p||currentNewKeys.size===0;
     if(box)box.classList.toggle('has-new',Boolean(p&&currentNewKeys.size));
     newBtn.textContent=newOnly?'전체 결과로':currentNewKeys.size?`새 공고 ${currentNewKeys.size.toLocaleString()}건 보기`:'새 공고만';
-    if(favBtn){const favs=readFavorites();const favCount=(Array.isArray(jobs)?jobs:[]).filter(j=>{if(!favs.has(jobKey(j)))return false;const d=diffDay(j?.applyEnd);return d===null||d>=0}).length;favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
+    if(favBtn){const favCount=activeFavoriteCount();favBtn.textContent=favoriteOnly?'전체 공고로':`♡ 관심공고${favCount?` ${favCount.toLocaleString()}`:''}`;favBtn.classList.toggle('primary',favoriteOnly)}
     count.innerHTML=currentNewKeys.size?`<span class="job-radar-count">${currentNewKeys.size}</span>`:'';
+    renderDashboard(p);
     if(mode==='saved'){copy.textContent=`현재 조건을 저장했습니다. 지금 보이는 ${currentMatchKeys.length.toLocaleString()}건을 기준으로 다음 방문부터 새 공고를 알려드립니다.`;return}
     if(mode==='missing'){copy.textContent='저장된 내 조건이 없습니다. 원하는 필터를 선택한 뒤 현재 조건 저장을 눌러 주세요.';return}
     if(mode==='deleted'){copy.textContent='저장된 내 조건과 방문 기준을 삭제했습니다.';return}
