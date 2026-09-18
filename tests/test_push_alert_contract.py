@@ -51,6 +51,9 @@ if "web-push@3.6.7" not in dispatch:
     raise SystemExit("Web Push sender dependency must stay pinned")
 if "contents: read" not in workflow or "ALERT_ENDPOINT" not in workflow:
     raise SystemExit("isolated alert workflow contract missing")
+for forbidden in ("schedule:", "workflow_run:", "repository_dispatch:"):
+    if forbidden in workflow:
+        raise SystemExit("push dispatch must remain manual while M0 maintenance freeze is active: " + forbidden)
 if "push" in workflow.lower() and "git push" in workflow.lower():
     raise SystemExit("alert workflow must never write to the repository")
 
