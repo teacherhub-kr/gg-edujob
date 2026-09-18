@@ -1,15 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
   <title id="title">수도권에듀잡 학사모 E 로고</title>
-  <desc id="desc">파란색 E 글자 위에 남색 학사모가 올라간 교육 채용 서비스 로고</desc>
+  <desc id="desc">파란색 E 글자 위에 작은 남색 학사모가 자연스럽게 얹힌 교육 채용 서비스 로고</desc>
   <defs>
     <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#52b7ff"/>
-      <stop offset=".55" stop-color="#1674f5"/>
-      <stop offset="1" stop-color="#0d52cf"/>
+      <stop stop-color="#52b7ff"/><stop offset=".55" stop-color="#1674f5"/><stop offset="1" stop-color="#0d52cf"/>
     </linearGradient>
     <linearGradient id="cap" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#163b84"/>
-      <stop offset="1" stop-color="#071c4e"/>
+      <stop stop-color="#163b84"/><stop offset="1" stop-color="#071c4e"/>
     </linearGradient>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
       <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1559b7" flood-opacity=".18"/>
@@ -17,9 +14,9 @@
   </defs>
   <g filter="url(#shadow)">
     <path fill="url(#body)" d="M43 53c0-11 9-20 20-20h66c9 0 16 7 16 16s-7 16-16 16H78v17h42c9 0 16 7 16 16s-7 16-16 16H78v18h52c9 0 16 7 16 16s-7 16-16 16H63c-11 0-20-9-20-20V53z"/>
-    <path fill="url(#cap)" d="M29 34 88 9l64 23-62 27z"/>
-    <path fill="#0a245d" d="M49 39v19c0 12 18 22 40 22s40-10 40-22V41L90 58z"/>
-    <path d="M150 34v27" stroke="#f2b423" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="150" cy="66" r="6" fill="#f2b423"/>
+    <path fill="url(#cap)" d="M50 46 89 29l43 15-42 19z"/>
+    <path fill="#0a245d" d="M61 52v10c0 8 13 14 29 14s29-6 29-14V53L90 65z"/>
+    <path d="M131 45v21" stroke="#f2b423" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="131" cy="70" r="5" fill="#f2b423"/>
   </g>
 </svg>

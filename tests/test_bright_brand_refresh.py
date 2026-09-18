@@ -7,8 +7,8 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919a",
-    "edujob-refresh.js?v=20260919a",
+    "edujob-refresh.css?v=20260919b",
+    "edujob-refresh.js?v=20260919b",
 ]
 for needle in required_index:
     if needle not in index:
@@ -44,3 +44,16 @@ if "학사모 E 로고" not in logo or "E 마스코트" not in mascot:
     raise SystemExit("brand SVG accessibility labels missing")
 
 print("bright Edujob brand refresh contract verified")
+
+mobile_polish = {
+    "save label": "현재<br>조건<br>저장",
+    "apply label": "내 조건<br>불러<br>오기",
+    "new label": "새<br>공고",
+    "favorite label": "♡<br>관심<br>공고",
+    "compact mobile nav": ".edujob-mobile-nav button svg{width:18px!important;height:18px!important}",
+    "short radar copy": "지난 방문 이후 신규 공고 0건",
+}
+combined = Path("job-radar.js").read_text(encoding="utf-8") + "\n" + css
+for label, needle in mobile_polish.items():
+    if needle not in combined:
+        raise SystemExit(f"mobile polish contract missing: {label}")

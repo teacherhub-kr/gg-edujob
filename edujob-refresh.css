@@ -313,3 +313,53 @@ body{
   .toolbar-right{width:100%!important}
   #quickJobFilters{max-width:none!important;overflow-x:auto!important}
 }
+
+
+/* 2026-09-19 mobile readability polish */
+.job-radar-copy .radar-copy-line{display:block;line-height:1.55}
+.job-radar-copy .radar-copy-line + .radar-copy-line{margin-top:1px}
+.radar-action-label{display:block;line-height:1.22;white-space:normal;word-break:keep-all;text-align:center}
+.job-radar-btn{white-space:normal!important;word-break:keep-all!important}
+@media(max-width:650px){
+  .top{min-height:44px!important}
+  .brand{gap:7px!important;min-width:0!important}
+  .brand-logo-img{width:36px!important;height:36px!important}
+  .brand-copy{min-width:0!important}
+  .brand-title{font-size:18px!important;white-space:nowrap!important;letter-spacing:-.8px!important}
+  .brand-subtitle{font-size:8px!important;margin-top:3px!important;white-space:nowrap!important}
+  .top .scope-chips{display:none!important}
+  .job-radar{padding-right:78px!important}
+  .radar-mascot-wrap{right:2px!important;top:4px!important;width:74px!important;height:92px!important}
+  .radar-mascot{width:60px!important}
+  .job-radar-actions{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:5px!important;
+    width:calc(100% + 62px)!important;
+    margin-right:-62px!important;
+    margin-top:10px!important
+  }
+  .job-radar-btn{
+    min-width:0!important;
+    min-height:58px!important;
+    padding:5px 2px!important;
+    border-radius:12px!important;
+    font-size:9.5px!important;
+    line-height:1.2!important;
+    flex:none!important
+  }
+  .job-radar-overview{margin-right:-62px!important}
+  .job-radar-profile{margin-right:-62px!important}
+  .edujob-mobile-nav{
+    min-height:50px!important;
+    padding:3px max(6px,env(safe-area-inset-right)) calc(3px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))!important
+  }
+  .edujob-mobile-nav button{
+    min-height:42px!important;
+    gap:1px!important;
+    font-size:8px!important;
+    padding:1px 2px!important
+  }
+  .edujob-mobile-nav button svg{width:18px!important;height:18px!important}
+  .footer{padding-bottom:62px!important}
+}

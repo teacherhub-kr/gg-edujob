@@ -44,7 +44,13 @@
 
   function installScopeChips(){
     const search=qs('.searchbox');
-    if(!search||qs('#scopeChips'))return;
+    if(!search)return;
+    qsa('.scope-chips').forEach(el=>{if(el.id!=='scopeChips')el.remove()});
+    const existing=qs('#scopeChips');
+    if(existing){
+      if(existing.previousElementSibling!==search)search.insertAdjacentElement('afterend',existing);
+      return;
+    }
     const bar=document.createElement('div');
     bar.id='scopeChips';
     bar.className='scope-chips';
