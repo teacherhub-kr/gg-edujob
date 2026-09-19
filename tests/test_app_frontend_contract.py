@@ -73,3 +73,50 @@ if 'id="sortSelect"' in filter_row:
 
 if "edujob-final-ui.css" in html or "edujob-final-ui.js" in html:
     raise SystemExit("canonical app preview must not load the legacy final-ui layer")
+
+
+# Readable six-step type scale and density guards
+for needle in [
+    "--fs-xs:11px",
+    "--fs-sm:12px",
+    "--fs-md:13px",
+    "--fs-lg:15px",
+    "--fs-xl:16px",
+    "--fs-2xl:18px",
+]:
+    if needle not in css:
+        raise SystemExit(f"type scale variable missing: {needle}")
+
+import re
+allowed = {
+    "var(--fs-xs)",
+    "var(--fs-sm)",
+    "var(--fs-md)",
+    "var(--fs-lg)",
+    "var(--fs-xl)",
+    "var(--fs-2xl)",
+}
+font_sizes = re.findall(r"font-size:\s*([^;}\n]+)", css)
+bad_font_sizes = [v.strip() for v in font_sizes if v.strip() not in allowed]
+if bad_font_sizes:
+    raise SystemExit(f"font-size must use six-step variables only: {bad_font_sizes[:10]}")
+
+if re.search(r"(?:^|[;{\n])\s*font:\s*[^;}\n]*\d+(?:\.\d+)?px", css):
+    raise SystemExit("font shorthand must not contain direct pixel font sizes")
+
+for needle in [
+    ".job-meta{display:flex;align-items:center;gap:6px;min-width:0}",
+    "padding-bottom:calc(57px + env(safe-area-inset-bottom, 0px) + 16px)",
+    ".school-emblem{width:40px;height:40px}",
+    "font-size:var(--fs-lg);\n  line-height:1.3;",
+]:
+    if needle not in css:
+        raise SystemExit(f"density/safe-area contract missing: {needle}")
+
+card_start=js.find("const cardHtml")
+card_end=js.find("const jobsListHtml", card_start)
+card_block=js[card_start:card_end]
+if 'class="job-meta"' not in card_block:
+    raise SystemExit("deadline/meta must share the same compact row")
+if card_block.find('class="job-deadline"') < card_block.find('class="job-meta"'):
+    raise SystemExit("deadline must render inside the meta row")
