@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: metro-edujob-data
@@ -215,6 +216,19 @@ jobs:
           git reset --hard HEAD
           git pull --rebase
           git push
+
+      - name: Wake production supervisor after successful Fast completion
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/fast-refresh-watchdog.yml/dispatches" \
+            -f ref=main
+          echo 'Dispatched production supervisor for immediate post-Fast decision.'
 
       - name: Preserve last-known-good on fast refresh failure
         if: failure()
