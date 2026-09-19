@@ -35,7 +35,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Compile reconciliation population proof
         run: |
-          python -m py_compile scripts/ensure_incheon_registry.py scripts/merge_incheon_official.py scripts/verify_required_regions.py scripts/verify_central_pagination.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/scrape_jobs.py
+          python -m py_compile scripts/ensure_incheon_registry.py scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/verify_required_regions.py scripts/verify_central_pagination.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/scrape_jobs.py
       - name: Materialize the reviewed three-region registry in this read-only checkout
         env:
           PYTHONPATH: scripts
@@ -47,10 +47,10 @@ jobs:
           from source_registry import official_source_count
           registry=json.loads(Path('sources.json').read_text(encoding='utf-8'))
           assert {'gyeonggi','seoul','incheon'} <= set(registry), registry.keys()
-          assert official_source_count() == 39, official_source_count()
+          assert official_source_count() == 44, official_source_count()
           boards=((registry.get('incheon') or {}).get('central') or {}).get('requiredBoards') or []
           assert {str(x.get('bbsId')) for x in boards} == {'1981','1534'}, boards
-          print('preflight registry materialized: 39 logical sources, two mandatory Incheon boards')
+          print('preflight registry materialized: 44 logical sources, two mandatory Incheon boards')
           PY
       - name: Apply production pagination hardeners in isolated PR checkout
         run: |
