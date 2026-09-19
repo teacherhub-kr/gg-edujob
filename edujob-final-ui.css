@@ -239,3 +239,18 @@ body[data-edujob-view="radar"] #finalRadarManager,body[data-edujob-view="mypage"
   .final-logout{min-height:36px;margin-top:9px}
   .final-favorite-tip{margin-bottom:70px}
 }
+
+
+/* 2026-09-19 screenshot parity + filter interaction correction */
+@media(max-width:900px){
+  /* Home: approved compact card, not the earlier large 2x2 action treatment. */
+  .final-home-radar-head{padding:13px 13px 3px}
+  .final-home-radar-metrics{padding:5px 10px 10px}
+  .final-home-radar-actions{display:none!important}
+
+  /* Search: filter button remains visible while the legacy panel is collapsed. */
+  body[data-edujob-view="search"] #finalSearchTools{display:grid!important}
+  body[data-edujob-view="search"] .filter-panel.mobile-collapsed{display:none!important}
+  body[data-edujob-view="search"] .filter-panel:not(.mobile-collapsed){display:block!important}
+  body[data-edujob-view="search"] #finalOpenFilters{display:flex!important;position:relative;z-index:3;cursor:pointer}
+}
