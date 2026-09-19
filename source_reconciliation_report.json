@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-19 15:41:24 KST",
+  "generatedAt": "2026-09-19 21:20:17 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-39-v3-metro-central-90d",
   "summary": {
-    "generatedAt": "2026-09-19 15:41:24 KST",
+    "generatedAt": "2026-09-19 21:20:17 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-39-v3-metro-central-90d",
-    "officialIdCount": 20328,
+    "officialIdCount": 20329,
     "datasetIdCountBefore": 22235,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 39,
     "totalSources": 39,
     "reconciledOffices": 39,
     "totalOffices": 39,
-    "scanId": "20260919T063605Z-35425101205-1"
+    "scanId": "20260919T121538Z-35440658622-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 390,
+      "officialIdCount": 391,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
       "inDatasetBefore": 390,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 390,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 391,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2155,15 +2155,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 390,
+      "officialIdCount": 391,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
       "inDatasetBefore": 390,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 390,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 391,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -4092,5 +4092,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260919T063605Z-35425101205-1"
+  "scanId": "20260919T121538Z-35440658622-1"
 }
