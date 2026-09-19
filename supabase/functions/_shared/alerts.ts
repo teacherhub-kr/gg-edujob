@@ -1,4 +1,6 @@
 export type Job=Record<string,unknown>;
+export const MATCH_CONTRACT_VERSION=2;
+
 export type Profile={
   provinces?:string[];
   regions?:string[];
@@ -7,9 +9,23 @@ export type Profile={
   categories?:string[];
   subjects?:string[];
   q?:string;
+  _matchContractVersion?:number;
 };
 
 const arr=(v:unknown):string[]=>Array.isArray(v)?v.map(String).filter(Boolean):[];
+export const profileComparable=(p:Profile)=>({
+  provinces:arr(p?.provinces),
+  regions:arr(p?.regions),
+  schools:arr(p?.schools),
+  types:arr(p?.types),
+  categories:arr(p?.categories),
+  subjects:arr(p?.subjects),
+  q:String(p?.q||'').trim()
+});
+export const stampedProfile=(p:Profile):Profile=>({
+  ...profileComparable(p),
+  _matchContractVersion:MATCH_CONTRACT_VERSION
+});
 const norm=(v:unknown)=>String(v??'').toLowerCase().normalize('NFKC')
   .replace(/[\u200b-\u200d\ufeff]/g,'')
   .replace(/[^0-9a-z가-힣]+/gi,' ')
