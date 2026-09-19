@@ -336,7 +336,7 @@ const homeHtml=()=>{
   const today=active.filter(r=>isToday(r.j.registered)).length;
   const latest=[...active].sort((a,b)=>b.registered-a.registered).slice(0,HOME_LIMIT);
   return `<section class="home-radar">
-    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="radar-mascot"><img src="edujob-mascot.svg?v=20260919g" width="70" height="70" alt="" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920a" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
     <div class="metric-grid">
       <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?snapshotNewCount(p):0}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
       <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
@@ -388,7 +388,7 @@ const radarHtml=()=>{
   const matches=p?profileMatches(p):[];
   if(state.radarTab==='matches'&&p)writeSnapshot(p);
   return `<section class="radar-page">
-    <div class="hero-row"><div class="hero-copy"><div class="hero-title-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">←</button><h1>내 채용 레이더</h1></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" width="76" height="64" alt="" loading="lazy"></div>
+    <div class="hero-row"><div class="hero-copy"><div class="hero-title-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">←</button><h1>내 채용 레이더</h1></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="assets/mascot.png?v=20260920a" width="76" height="64" alt="수도권에듀잡 마스코트" loading="lazy"></div>
     <div class="segment-tabs"><button type="button" data-radar-tab="conditions" class="${state.radarTab==='conditions'?'active':''}">내 조건</button><button type="button" data-radar-tab="matches" class="${state.radarTab==='matches'?'active':''}">맞춤 공고</button></div>
     ${state.radarTab==='conditions'?
       `<div class="condition-card"><div class="condition-head"><strong>저장된 검색 조건 (${p?1:0})</strong><button type="button" data-go="search">＋ 새 조건 추가</button></div>
@@ -397,7 +397,7 @@ const radarHtml=()=>{
       :jobsListHtml(matches,state.visible,{emptyText:'저장 조건에 맞는 모집 중 공고가 없습니다.'})
     }
     <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
-    <div class="tip-card"><img src="edujob-mascot.svg?v=20260919g" width="72" height="66" alt="" loading="lazy"><div><strong>내 조건에 딱 맞는<br>좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
+    <div class="tip-card"><img src="assets/mascot.png?v=20260920a" width="72" height="66" alt="수도권에듀잡 마스코트" loading="lazy"><div><strong>내 조건에 딱 맞는<br>좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
   </section>`;
 };
 
@@ -408,7 +408,7 @@ const savedHtml=()=>{
   const recent=recentRows().map(x=>recentMap.get(x.key)).filter(Boolean);
   const rows=state.savedTab==='saved'?savedRows:recent;
   return `<section class="saved-page"><div class="segment-tabs"><button type="button" data-saved-tab="saved" class="${state.savedTab==='saved'?'active':''}">저장한 공고 (${savedRows.length})</button><button type="button" data-saved-tab="recent" class="${state.savedTab==='recent'?'active':''}">최근 본 공고</button></div>
-  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state saved-tip"><img src="edujob-mascot.svg?v=20260919g" width="76" height="68" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p><button type="button" class="empty-cta" data-go="search">공고 검색하러 가기</button></div>`}</section>`;
+  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state saved-tip"><img src="assets/mascot.png?v=20260920a" width="76" height="68" alt="수도권에듀잡 마스코트" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p><button type="button" class="empty-cta" data-go="search">공고 검색하러 가기</button></div>`}</section>`;
 };
 
 const meHtml=()=>{
