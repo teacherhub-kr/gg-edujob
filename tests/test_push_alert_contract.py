@@ -9,6 +9,9 @@ store = Path("user-store.js").read_text(encoding="utf-8")
 migration = Path("supabase/migrations/20260918_create_push_subscriptions.sql").read_text(encoding="utf-8")
 subscribe = Path("supabase/functions/push-subscription/index.ts").read_text(encoding="utf-8")
 dispatch = Path("supabase/functions/push-dispatch/index.ts").read_text(encoding="utf-8")
+shared_alerts = Path("supabase/functions/_shared/alerts.ts").read_text(encoding="utf-8")
+radar = Path("job-radar.js").read_text(encoding="utf-8")
+unified_ui = Path("unified-ui.js").read_text(encoding="utf-8")
 workflow = Path(".github/workflows/job-alerts.yml").read_text(encoding="utf-8")
 
 required_client = {
@@ -62,3 +65,25 @@ if "push" in workflow.lower() and "git push" in workflow.lower():
     raise SystemExit("alert workflow must never write to the repository")
 
 print("web push alert contract verified")
+
+subject_contract = [
+    "'국어':/(^|\\s)(국어|독서|논술)(\\s|$)/",
+    "'영어':/(^|\\s)(영어|영어회화)(\\s|$)/",
+    "'수학':/(^|\\s)(수학|수리)(\\s|$)/",
+    "'과학':/(^|\\s)(과학|물리|화학|생명과학|생물|지구과학|통합과학)(\\s|$)/",
+    "'사회·역사':/(^|\\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\\s|$)/",
+]
+for rule in subject_contract:
+    if rule not in unified_ui or rule not in radar or rule not in shared_alerts:
+        raise SystemExit("saved-profile subject matching drift: " + rule)
+for legacy in ("'사회':/", "'역사':/"):
+    if legacy not in radar or legacy not in shared_alerts:
+        raise SystemExit("legacy saved-profile subject compatibility missing: " + legacy)
+
+
+for needle in ("savedAt?:string",):
+    if needle not in shared_alerts:
+        raise SystemExit("push profile baseline contract missing: " + needle)
+for needle in ("created_at", "isOnOrAfterBaselineDay", "suppressedBacklog", "seen_ids:currentIds", "suppressed,total"):
+    if needle not in dispatch:
+        raise SystemExit("push backlog suppression contract missing: " + needle)
