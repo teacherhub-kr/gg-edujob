@@ -181,8 +181,8 @@ if "grid-template-columns:repeat(4,minmax(0,1fr))" not in css:
 
 # Click-binding regression guard
 for bad in [
-    "$('[data-filter-focus]',screen).forEach",
-    "$('[data-quick-filter]',screen).forEach",
+    "  $('[data-filter-focus]',screen).forEach",
+    "  $('[data-quick-filter]',screen).forEach",
 ]:
     if bad in js:
         raise SystemExit(f"single-element selector used with forEach: {bad}")
