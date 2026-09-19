@@ -9,7 +9,7 @@
     const brand=qs('.brand');
     if(!brand||brand.dataset.refreshReady)return;
     brand.dataset.refreshReady='1';
-    brand.innerHTML='<img class="brand-logo-img" src="edujob-logo.svg?v=20260919f" alt=""><span class="brand-copy"><span class="brand-title">수도권<em>에듀잡</em></span><span class="brand-subtitle">좋은 선생님이, 더 좋은 교육을 만듭니다</span></span>';
+    brand.innerHTML='<img class="brand-logo-img" src="edujob-logo.svg?v=20260919g" alt=""><span class="brand-copy"><span class="brand-title">수도권<em>에듀잡</em></span><span class="brand-subtitle">좋은 선생님이, 더 좋은 교육을 만듭니다</span></span>';
     const top=qs('.top');
     if(top&&!qs('.brand-note',top)){
       const note=document.createElement('div');
@@ -96,7 +96,7 @@
       const wrap=document.createElement('div');
       wrap.className='radar-mascot-wrap';
       wrap.setAttribute('aria-hidden','true');
-      wrap.innerHTML='<span class="radar-speech">좋은 기회가<br>기다리고 있어요!</span><img class="radar-mascot" src="edujob-mascot.svg?v=20260919f" alt="">';
+      wrap.innerHTML='<span class="radar-speech">좋은 기회가<br>기다리고 있어요!</span><img class="radar-mascot" src="edujob-mascot.svg?v=20260919g" alt="">';
       radar.appendChild(wrap);
     }
     return true;
