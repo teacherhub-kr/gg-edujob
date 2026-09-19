@@ -129,7 +129,8 @@ for path in list(Path(".").rglob("*.html")) + list(Path(".").rglob("*.js")) + li
         txt=path.read_text(encoding="utf-8")
     except Exception:
         continue
-    if "edujob-mascot.svg" in txt:
+    legacy_mascot = "edujob-mascot" + ".svg"
+    if legacy_mascot in txt:
         raise SystemExit(f"legacy mascot SVG reference remains in code: {path}")
 
 if "assets/mascot.png?v=20260920b" not in js:
