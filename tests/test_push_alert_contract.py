@@ -51,6 +51,12 @@ if "baseline-unavailable" not in subscribe or "matchingKeys(jobs,profile)" not i
     raise SystemExit("subscribe endpoint must fail closed if current-job baseline cannot be established")
 if "x-edujob-alert-secret" not in dispatch or "webpush.sendNotification" not in dispatch:
     raise SystemExit("dispatch endpoint must require secret and use Web Push sender")
+for needle in ("savedAt?:string",):
+    if needle not in Path("supabase/functions/_shared/alerts.ts").read_text(encoding="utf-8"):
+        raise SystemExit("push profile baseline contract missing: " + needle)
+for needle in ("created_at", "isOnOrAfterBaselineDay", "suppressedBacklog", "seen_ids:currentIds", "suppressed,total"):
+    if needle not in dispatch:
+        raise SystemExit("push backlog suppression contract missing: " + needle)
 if "web-push@3.6.7" not in dispatch:
     raise SystemExit("Web Push sender dependency must stay pinned")
 if "contents: read" not in workflow or "ALERT_ENDPOINT" not in workflow:
