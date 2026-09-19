@@ -400,53 +400,58 @@ const selectedSummaryHtml=()=>{
   if(state.subjects.size)parts.push(`과목·담당 ${[...state.subjects].join('·')}`);
   return parts.length?`<div class="selected-box show"><b>선택된 조건</b><p>${parts.map(esc).join(' · ')}</p></div>`:'<div class="selected-box"></div>';
 };
+const sectionChoiceLabel=(set,empty='선택 안 함')=>{
+  if(!(set instanceof Set)||!set.size)return empty;
+  const vals=[...set];
+  if(vals.length===1)return vals[0];
+  return `${vals[0]} 외 ${vals.length-1}`;
+};
+const filterSectionHtml=(key,title,set,body,{defaultOpen=false,note='중복 선택 가능'}={})=>{
+  const open=defaultOpen||state.filterFocus===key||Boolean(set?.size);
+  return `<details class="filter-section" data-group="${key}" ${open?'open':''}>
+    <summary><span class="filter-section-title">${esc(title)}</span><span class="filter-section-choice">${esc(sectionChoiceLabel(set))}</span><span class="filter-chevron">⌄</span></summary>
+    <div class="filter-section-body"><div class="filter-section-note">${esc(note)}</div>${body}</div>
+  </details>`;
+};
 const filterDrawerHtml=()=>`<div id="filterDrawer" class="filter-drawer ${state.filterOpen?'open':''}">
-  <div class="filter-drawer-head"><strong>필터</strong><button type="button" class="filter-reset-top" id="filterReset">전체 초기화</button><button type="button" class="filter-close" id="filterClose">${state.filterOpen?'필터 닫기':'필터 열기'}</button></div>
-  <div class="filter-group"><div class="filter-title"><h3>시·도</h3><span>중복 선택 가능</span></div>${chipsHtml('provinces',provinceOptions(),state.provinces,'two-col')}</div>
-  <div class="filter-group" data-group="regions"><div class="filter-title"><h3>지역</h3><span>여러 지역 동시 선택</span></div>
-    ${regionGroupHtml('경기','gyeonggi',GYEONGGI_REGIONS)}
-    ${regionGroupHtml('서울','seoul',SEOUL_REGIONS)}
-    ${regionGroupHtml('인천','incheon',INCHEON_REGIONS)}
-  </div>
-  <div class="filter-group" data-group="schools"><div class="filter-title"><h3>학교급</h3><span>중복 선택 가능</span></div>${chipsHtml('schools',schoolOptions(),state.schools,'two-col')}</div>
-  <div class="filter-group"><div class="filter-title"><h3>직종</h3><span>중복 선택 가능</span></div>${chipsHtml('types',typeOptions(),state.types,'one-col')}</div>
-  <div class="filter-group"><div class="filter-title"><h3>공고 구분</h3><span>중복 선택 가능</span></div>${chipsHtml('sources',sourceOptions(),state.sources,'two-col')}</div>
-  <div class="filter-group"><div class="filter-title"><h3>구인 분야</h3><span>중복 선택 가능</span></div>${chipsHtml('categories',categoryOptions(),state.categories,'one-col')}</div>
-  <div class="filter-group" data-group="subjects"><div class="filter-title"><h3>과목·담당</h3><span>중복 선택 가능</span></div>${chipsHtml('subjects',subjectOptions(),state.subjects,'one-col')}</div>
+  <div class="filter-drawer-head"><strong>필터</strong><button type="button" class="filter-reset-top" id="filterReset">전체 초기화</button><button type="button" class="filter-close" id="filterClose">닫기</button></div>
+  ${filterSectionHtml('provinces','시·도',state.provinces,chipsHtml('provinces',provinceOptions(),state.provinces,'two-col'),{defaultOpen:true})}
+  ${filterSectionHtml('regions','지역',state.regions,`${regionGroupHtml('경기','gyeonggi',GYEONGGI_REGIONS)}${regionGroupHtml('서울','seoul',SEOUL_REGIONS)}${regionGroupHtml('인천','incheon',INCHEON_REGIONS)}`,{defaultOpen:true,note:'여러 지역 동시 선택'})}
+  ${filterSectionHtml('schools','학교급',state.schools,chipsHtml('schools',schoolOptions(),state.schools,'two-col'))}
+  ${filterSectionHtml('types','직종',state.types,chipsHtml('types',typeOptions(),state.types,'one-col'))}
+  ${filterSectionHtml('sources','공고 구분',state.sources,chipsHtml('sources',sourceOptions(),state.sources,'two-col'))}
+  ${filterSectionHtml('categories','구인 분야',state.categories,chipsHtml('categories',categoryOptions(),state.categories,'one-col'))}
+  ${filterSectionHtml('subjects','과목·담당',state.subjects,chipsHtml('subjects',subjectOptions(),state.subjects,'one-col'))}
   ${selectedSummaryHtml()}
+  <div class="filter-footer"><button type="button" id="filterApply">${filteredRows().length.toLocaleString()}건 공고 보기</button></div>
 </div>`;
 
 const homeHtml=()=>{
   const p=store()?.profile?.get?.();
   const favorites=favoriteKeys().size;
-  const alerts=store()?.alerts?.get?.()||{enabled:false};
   const active=state.indexed.filter(r=>r.active);
   const soon=active.filter(r=>{const d=dayDiff(r.j.applyEnd);return d!==null&&d>=0&&d<=3}).length;
   const today=active.filter(r=>isToday(r.j.registered)).length;
   const latest=[...active].sort((a,b)=>b.registered-a.registered).slice(0,HOME_LIMIT);
-  return `<section class="home-radar">
-    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
-    <div class="metric-grid">
+  return `<section class="home-radar calm">
+    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새 공고를 빠르게 확인하세요.</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    <div class="metric-grid calm">
       <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?snapshotNewCount(p):0}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
       <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
       <button class="metric" data-home="radar"><span class="metric-icon">${icon('bookmark')}</span><b>${p?1:0}</b><strong>저장 조건</strong><small>내 검색 조건</small></button>
-      <button class="metric" data-home="alert"><span class="metric-icon">${icon('bell')}</span><b>${alerts.enabled?'✓':'-'}</b><strong>알림 ${alerts.enabled?'켜짐':'꺼짐'}</strong><small>새 공고 알림</small></button>
     </div>
-    <div class="radar-actions">
-      <button type="button" data-radar-action="save">현재 조건 저장</button><button type="button" data-radar-action="load">내 조건 불러오기</button><button type="button" data-radar-action="new">새 공고만</button><button type="button" data-radar-action="saved">관심공고</button>
+    <div class="radar-actions calm">
+      <button type="button" data-radar-action="save">현재 조건 저장</button>
+      <button type="button" data-go="radar">내 채용 레이더 보기</button>
     </div>
   </section>
-  <div class="section-title"><span>${icon('database')}</span><h2>채용 현황</h2><span class="spacer"></span><button class="link-btn" data-go="search">전체보기 ›</button></div>
-  <div class="status-grid">
-    <div class="status-card"><span class="status-icon">${icon('users')}</span><b>${active.length.toLocaleString()}</b><span>모집 중</span></div>
-    <div class="status-card"><span class="status-icon">${icon('calendar')}</span><b>${soon.toLocaleString()}</b><span>3일 내 마감</span></div>
-    <div class="status-card"><span class="status-icon">${icon('document')}</span><b>${today.toLocaleString()}</b><span>오늘 등록</span></div>
-    <div class="status-card"><span class="status-icon">${icon('database')}</span><b>${Number(state.payload?.totalSourceCount||0).toLocaleString()}</b><span>수집 출처</span></div>
-  </div>
-  <div class="filter-row"><strong>필터</strong><button type="button" class="reset-btn" id="homeReset">전체 초기화</button><button type="button" class="open-filter" id="homeFilterOpen">필터 열기</button></div>
-  ${filterDrawerHtml()}
-  <div class="section-title"><span>${icon('document')}</span><h2>최신 채용 공고</h2><span class="spacer"></span><button class="link-btn" data-go="search">전체보기 ›</button></div>
-  ${jobsListHtml(latest,HOME_LIMIT)}`;
+  <div class="section-title home-primary-title"><span>${icon('document')}</span><h2>최신 채용 공고</h2><span class="spacer"></span><button class="link-btn" data-go="search">전체보기 ›</button></div>
+  ${jobsListHtml(latest,HOME_LIMIT)}
+  <div class="home-status-strip" aria-label="채용 데이터 현황">
+    <span><b>${active.length.toLocaleString()}</b> 모집 중</span>
+    <span><b>${today.toLocaleString()}</b> 오늘 등록</span>
+    <span><b>${soon.toLocaleString()}</b> 3일 내 마감</span>
+  </div>`;
 };
 
 const searchHtml=()=>{
@@ -589,13 +594,15 @@ function bindScreen(){
   $('#searchFilterOpen',screen)?.addEventListener('click',()=>{state.filterOpen=!state.filterOpen;render()});
   $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{state.filterOpen=true;state.filterFocus=b.dataset.filterFocus;render();setTimeout(()=>screen.querySelector(`[data-group="${state.filterFocus}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),10)}));
   $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
-  $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.visible=PAGE_SIZE;render()});
+  $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
+  $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
   $$('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
     const set=state[e.target.dataset.filter];if(!(set instanceof Set))return;
     e.target.checked?set.add(e.target.value):set.delete(e.target.value);
     state.visible=PAGE_SIZE;
     const box=$('.selected-box',screen);if(box)box.outerHTML=selectedSummaryHtml();
+    const apply=$('#filterApply',screen);if(apply)apply.textContent=`${filteredRows().length.toLocaleString()}건 공고 보기`;
   }));
   $$('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     const groups={gyeonggi:GYEONGGI_REGIONS,seoul:SEOUL_REGIONS,incheon:INCHEON_REGIONS};
