@@ -1,5 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2.116.0';
-import {fetchCurrentJobs,matchingKeys,sha256,type Profile} from '../_shared/alerts.ts';
+import {fetchCurrentJobs,matchingKeys,profileComparable,sha256,stampedProfile,MATCH_CONTRACT_VERSION,type Profile} from '../_shared/alerts.ts';
 
 const PUBLIC_ORIGIN='https://teacherhub-kr.github.io';
 
@@ -54,7 +54,7 @@ export default {
     const endpoint=String(sub?.endpoint||'');
     const p256dh=String(sub?.keys?.p256dh||'');
     const auth=String(sub?.keys?.auth||'');
-    const profile=(body?.profile||{}) as Profile;
+    const profile=profileComparable((body?.profile||{}) as Profile) as Profile;
     const hasConditions=['provinces','regions','schools','types','categories','subjects']
       .some(k=>Array.isArray((profile as any)[k])&&(profile as any)[k].length)
       ||Boolean(String(profile.q||'').trim());
@@ -71,8 +71,10 @@ export default {
     if(existing&&existing.client_token_hash!==tokenHash)return json({error:'subscription-owned'},409);
 
     let seenIds=Array.isArray(existing?.seen_ids)?existing.seen_ids:[];
-    const profileChanged=JSON.stringify(existing?.profile||{})!==JSON.stringify(profile||{});
-    if(!existing||profileChanged){
+    const existingProfile=(existing?.profile||{}) as Profile;
+    const profileChanged=JSON.stringify(profileComparable(existingProfile))!==JSON.stringify(profileComparable(profile));
+    const contractChanged=Number(existingProfile?._matchContractVersion||0)!==MATCH_CONTRACT_VERSION;
+    if(!existing||profileChanged||contractChanged){
       try{
         const jobs=await fetchCurrentJobs();
         seenIds=matchingKeys(jobs,profile).slice(0,3000);
@@ -87,7 +89,7 @@ export default {
       p256dh,
       auth,
       client_token_hash:tokenHash,
-      profile,
+      profile:stampedProfile(profile),
       seen_ids:seenIds,
       enabled:true,
       updated_at:new Date().toISOString()
