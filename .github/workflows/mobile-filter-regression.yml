@@ -26,6 +26,8 @@ on:
       - 'supabase/functions/_shared/alerts.ts'
       - 'tests/test_mobile_filter_idempotence.py'
       - 'tests/test_job_radar_personalization.py'
+      - 'tests/test_profile_match_parity.py'
+      - 'scripts/build_unified_search.py'
       - 'tests/test_job_radar_first_screen.py'
       - 'tests/test_user_store_contract.py'
       - 'tests/test_edujob_brand_contract.py'
@@ -56,6 +58,8 @@ jobs:
           node --check sw.js
       - name: Verify job radar personalization contract
         run: python tests/test_job_radar_personalization.py
+      - name: Verify profile matching parity
+        run: python tests/test_profile_match_parity.py
       - name: Verify first-screen radar contract
         run: python tests/test_job_radar_first_screen.py
       - name: Verify account-ready user store
