@@ -120,3 +120,24 @@ if 'class="job-meta"' not in card_block:
     raise SystemExit("deadline/meta must share the same compact row")
 if card_block.find('class="job-deadline"') < card_block.find('class="job-meta"'):
     raise SystemExit("deadline must render inside the meta row")
+
+
+# Final mascot asset guards
+import hashlib
+for path in list(Path(".").rglob("*.html")) + list(Path(".").rglob("*.js")) + list(Path(".").rglob("*.css")):
+    try:
+        txt=path.read_text(encoding="utf-8")
+    except Exception:
+        continue
+    if "edujob-mascot.svg" in txt:
+        raise SystemExit(f"legacy mascot SVG reference remains in code: {path}")
+
+if "assets/mascot.png?v=20260920b" not in js:
+    raise SystemExit("canonical app must use the final mascot cache version")
+
+asset=Path("assets/mascot.png")
+if not asset.exists():
+    raise SystemExit("final mascot PNG is missing")
+digest=hashlib.sha256(asset.read_bytes()).hexdigest()
+if digest != "0a0c793bfb460bb9d02897b1f2f9219b561ef243221967f49c8095ff4ae5ccff":
+    raise SystemExit(f"unexpected mascot asset bytes: {digest}")

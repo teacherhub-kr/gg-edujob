@@ -96,7 +96,7 @@
       const wrap=document.createElement('div');
       wrap.className='radar-mascot-wrap';
       wrap.setAttribute('aria-hidden','true');
-      wrap.innerHTML='<span class="radar-speech">좋은 기회가<br>기다리고 있어요!</span><img class="radar-mascot" src="edujob-mascot.svg?v=20260919g" alt="">';
+      wrap.innerHTML='<span class="radar-speech">좋은 기회가<br>기다리고 있어요!</span><img class="radar-mascot" src="assets/mascot.png?v=20260920b" alt="">';
       radar.appendChild(wrap);
     }
     return true;
