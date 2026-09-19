@@ -38,6 +38,7 @@ CIRCUIT_BACKOFF_HOURS = {
 }
 P0_TITLE = "[AUTO][P0] Production recruitment pipeline incident"
 P1_TITLE = "[AUTO][P1] Official source volume anomaly"
+FAST_REFRESH_MAX_AGE = timedelta(hours=2, minutes=30)
 
 
 def load_json(path: str | Path, default: Any) -> Any:
@@ -316,7 +317,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         fast_needed = (
             not required_registry
             or success_at is None
-            or success_age > timedelta(hours=3, minutes=15)
+            or success_age > FAST_REFRESH_MAX_AGE
             or collector_changes_after_success > 0
         )
         fast_status_running = (
@@ -486,6 +487,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "fastState": state,
         "fastLastSuccessAt": fast.get("lastSuccessAt"),
         "fastSuccessAgeHours": stale_hours,
+        "fastRefreshMaxAgeHours": round(FAST_REFRESH_MAX_AGE.total_seconds() / 3600, 2),
         "collectorChangesAfterSuccess": collector_changes_after_success,
         "recoveryWorkflowCommitAt": recovery_workflow_time.isoformat() if recovery_workflow_time else None,
         "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
