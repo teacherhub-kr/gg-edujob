@@ -105,14 +105,14 @@
     const saved=p?1:0;
     const chips=p?[fmtValues('지역',p.regions),fmtValues('학교급',p.schools),fmtValues('직종',p.types),fmtValues('과목',p.subjects),p.q?`<span class="final-profile-chip"><b>검색</b> “${esc(p.q)}”</span>`:''].filter(Boolean).join(''):'';
     return `<section class="final-radar-manager" aria-label="내 채용 레이더 관리">
-      <div class="final-page-head"><div><div class="final-page-title-line"><button type="button" id="finalRadarBack" aria-label="홈으로 돌아가기">←</button><h2>내 채용 레이더</h2></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" alt="" aria-hidden="true"></div>
+      <div class="final-page-head"><div><div class="final-page-title-line"><button type="button" id="finalRadarBack" aria-label="홈으로 돌아가기">←</button><h2>내 채용 레이더</h2></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="assets/mascot.png?v=20260920b" alt="" aria-hidden="true"></div>
       <div class="final-segment"><button type="button" class="active">내 조건</button><button type="button" id="finalRadarMatched">맞춤 공고</button></div>
       <div class="final-manager-card">
         <div class="final-manager-title"><strong>저장된 검색 조건 (${saved})</strong><button type="button" id="finalAddCondition">＋ 새 조건 추가</button></div>
         ${p?`<div class="final-saved-condition"><div><strong>${esc(p.q||'저장한 채용 조건')}</strong><p>${chips||'저장한 조건을 불러와 사용할 수 있습니다.'}</p><em>새 공고 ${esc(newCount)}건 · 관심공고 ${favCount}건</em></div><button type="button" class="final-switch on" id="finalApplySaved" aria-label="저장 조건 불러오기"></button></div>`:`<div class="final-empty-condition"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>`}
       </div>
       <div class="final-manager-card final-alert-setting"><div>${icon('bell')}<div><strong>알림 설정</strong><p>새로운 공고가 등록되면 바로 알려드릴게요.</p></div></div><button type="button" class="final-switch ${a.enabled?'on':''}" id="finalAlertToggle" aria-label="새 공고 알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
-      <div class="final-radar-tip"><img src="edujob-mascot.svg?v=20260919g" alt="" aria-hidden="true"><div><strong>내 조건에 딱 맞는 좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
+      <div class="final-radar-tip"><img src="assets/mascot.png?v=20260920b" alt="" aria-hidden="true"><div><strong>내 조건에 딱 맞는 좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
     </section>`;
   }
 
@@ -173,7 +173,7 @@
   function homeRadarHtml(){
     const p=profile(), fav=favorites(), a=alerts();
     return `<section class="final-home-radar" aria-label="내 채용 레이더 요약">
-      <div class="final-home-radar-head"><div><h2>🎯 내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="final-home-mascot"><img src="edujob-mascot.svg?v=20260919g" alt="" aria-hidden="true"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+      <div class="final-home-radar-head"><div><h2>🎯 내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="final-home-mascot"><img src="assets/mascot.png?v=20260920b" alt="" aria-hidden="true"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
       <div class="final-home-radar-metrics">
         <button type="button" data-home-radar="new"><span class="metric-icon blue">${icon('document')}</span><b>${esc(newCount())}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
         <button type="button" data-home-radar="favorites"><span class="metric-icon pink">${icon('heart')}</span><b>${fav.length}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
@@ -277,7 +277,7 @@
     qs('#finalFavRecent',box)?.addEventListener('click',()=>{favoritesTab='recent';document.body.classList.add('final-recent-mode');installFavoritesChrome('recent')});
     document.body.classList.toggle('final-recent-mode',favoritesTab==='recent');
     let tip=qs('#finalFavoriteTip');
-    if(!tip){tip=document.createElement('div');tip.id='finalFavoriteTip';tip.className='final-view-panel final-favorite-tip';tip.innerHTML=`<img src="edujob-mascot.svg?v=20260919g" alt="" aria-hidden="true"><div><strong>관심 있는 공고를 저장하고 놓치지 마세요!</strong><p>✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 확인<br>✓ 내 채용 레이더와 함께 활용</p></div>`;const layout=qs('.layout');layout?.insertAdjacentElement('afterend',tip)}
+    if(!tip){tip=document.createElement('div');tip.id='finalFavoriteTip';tip.className='final-view-panel final-favorite-tip';tip.innerHTML=`<img src="assets/mascot.png?v=20260920b" alt="" aria-hidden="true"><div><strong>관심 있는 공고를 저장하고 놓치지 마세요!</strong><p>✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 확인<br>✓ 내 채용 레이더와 함께 활용</p></div>`;const layout=qs('.layout');layout?.insertAdjacentElement('afterend',tip)}
   }
 
   function installStatIcons(){
