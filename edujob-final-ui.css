@@ -132,3 +132,110 @@ body[data-edujob-view="radar"] #finalRadarManager,body[data-edujob-view="mypage"
   .edujob-mobile-nav.final-mobile-nav button svg{width:20px!important;height:20px!important}
   .footer{padding-bottom:72px!important}
 }
+
+
+/* 2026-09-19 exact approved mockup correction */
+.final-page-title-line{display:flex;align-items:center;gap:7px}
+.final-page-title-line button{border:0;background:transparent;color:#173a72;font-size:24px;line-height:1;padding:0;cursor:pointer}
+.final-logout{width:100%;min-height:40px;margin-top:12px;border:1px solid var(--final-line);border-radius:12px;background:#fff;color:#315b91;font-size:11px;font-weight:800}
+.final-home-radar,.final-search-tools,.final-favorites-page,.final-favorite-tip{display:none}
+.final-home-radar{position:relative;overflow:hidden;border:1px solid #cde5fb;border-radius:22px;background:linear-gradient(135deg,#eef8ff 0%,#f8fcff 62%,#edfff8 100%);box-shadow:0 9px 24px rgba(42,103,169,.06)}
+.final-home-radar-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:13px 13px 5px}
+.final-home-radar-head h2{margin:0;color:#0e2b62;font-size:18px;letter-spacing:-.6px}
+.final-home-radar-head p{margin:4px 0 0;color:#7186a2;font-size:9px;line-height:1.45}
+.final-home-mascot{position:relative;width:88px;height:66px;flex:0 0 88px}
+.final-home-mascot img{position:absolute;right:0;bottom:-3px;width:65px;height:65px;object-fit:contain}
+.final-home-mascot span{position:absolute;right:48px;top:0;width:58px;color:#0f70e9;font-size:7px;font-weight:900;line-height:1.25;transform:rotate(-4deg);text-align:center}
+.final-home-radar-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px 10px}
+.final-home-radar-metrics button{min-width:0;min-height:74px;border:1px solid #e2edf8;border-radius:13px;background:rgba(255,255,255,.9);padding:7px 3px 6px;text-align:center;color:#183968;box-shadow:0 4px 12px rgba(42,88,139,.04)}
+.final-home-radar-metrics .metric-icon{width:27px;height:27px;margin:0 auto 3px;border-radius:9px;display:grid;place-items:center}
+.final-home-radar-metrics .metric-icon svg{width:16px;height:16px}
+.final-home-radar-metrics .metric-icon.blue{background:#e9f3ff;color:#0b6ef3}.final-home-radar-metrics .metric-icon.pink{background:#fff0f3;color:#f34764}.final-home-radar-metrics .metric-icon.navy{background:#edf2fb;color:#315f9f}.final-home-radar-metrics .metric-icon.green{background:#eafff6;color:#15a77c}
+.final-home-radar-metrics b{display:block;font-size:16px;line-height:1;color:#12356d}
+.final-home-radar-metrics strong{display:block;margin-top:3px;font-size:8px;color:#24466f;white-space:nowrap}
+.final-home-radar-metrics small{display:block;margin-top:3px;font-size:6.8px;color:#8a9bb0;white-space:nowrap}
+.final-home-radar-metrics button.alert.on{background:#edfff6;border-color:#c9eedf}.final-home-radar-metrics button.alert.on b,.final-home-radar-metrics button.alert.on strong{color:#138667}
+.final-home-radar-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:2px 10px 10px}
+.final-home-radar-actions button{min-height:31px;border:1px solid #dbe8f5;border-radius:9px;background:#fff;color:#315b91;font-size:8.7px;font-weight:850;display:flex;align-items:center;justify-content:center;gap:5px}
+.final-home-radar-actions button:first-child{background:linear-gradient(135deg,#1487ff,#0759df);color:#fff;border-color:transparent}
+.final-home-radar-actions button svg{width:14px;height:14px}
+
+.final-search-tools{grid-template-columns:auto repeat(3,1fr) 34px;gap:5px;align-items:center;margin:8px 0 7px}
+.final-search-tools button{min-width:0;min-height:34px;border:1px solid #dce8f5;border-radius:9px;background:#fff;color:#496584;font-size:9px;font-weight:800;padding:0 7px;display:flex;align-items:center;justify-content:center;gap:4px}
+.final-search-tools button.main{border:0;background:transparent;color:#173661;font-size:10px;justify-content:flex-start;padding-left:0}
+.final-search-tools button.main svg{width:17px;height:17px}.final-search-tools button.sort{font-size:18px;color:#0b6ef3;padding:0}
+
+.final-favorites-page{padding-top:10px}
+.final-favorites-segment{margin-bottom:10px}
+#finalFavoritesRecent{display:none}.final-recent-mode #finalFavoritesRecent.show{display:block}
+.final-recent-empty{background:#fff;border:1px dashed #cfdcea;border-radius:16px;padding:34px 16px;text-align:center;color:#7c8da3}
+.final-recent-empty strong{display:block;color:#294b78;font-size:13px}.final-recent-empty p{font-size:9px;line-height:1.6}
+.final-recent-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid #dce8f5;border-radius:14px;padding:11px 13px;margin-bottom:7px}
+.final-recent-row strong{display:block;color:#173661;font-size:11px}.final-recent-row span{display:block;color:#0b6ef3;font-size:10px;font-weight:850;margin-top:3px}.final-recent-row em{font-style:normal;color:#9badc0;font-size:18px}
+.final-favorite-tip{align-items:center;gap:10px;margin:12px 0 76px;padding:12px;border:1px solid #d8edf5;border-radius:18px;background:linear-gradient(135deg,#eefaff,#effff8)}
+.final-favorite-tip img{width:88px;height:78px;object-fit:contain}.final-favorite-tip strong{color:#0b69d0;font-size:11px}.final-favorite-tip p{margin:6px 0 0;color:#557b91;font-size:8.5px;line-height:1.65}
+
+.final-stat-icon{display:none}
+
+@media(max-width:900px){
+  .brand-note{display:none!important}
+  #jobRadar{display:none!important}
+  body[data-edujob-view="home"] #finalHomeRadar{display:block}
+  body[data-edujob-view="search"] #finalSearchTools{display:grid}
+  body[data-edujob-view="favorites"] #finalFavoritesHeader{display:block}
+  body[data-edujob-view="favorites"] #finalFavoriteTip{display:flex}
+
+  body[data-edujob-view="radar"] .searchbox,body[data-edujob-view="radar"] #scopeChips,
+  body[data-edujob-view="favorites"] .searchbox,body[data-edujob-view="favorites"] #scopeChips,
+  body[data-edujob-view="mypage"] .searchbox,body[data-edujob-view="mypage"] #scopeChips{display:none!important}
+  body[data-edujob-view="radar"] .hero,body[data-edujob-view="favorites"] .hero,body[data-edujob-view="mypage"] .hero{padding-bottom:7px!important}
+  body[data-edujob-view="radar"] main.wrap,body[data-edujob-view="favorites"] main.wrap,body[data-edujob-view="mypage"] main.wrap{padding-top:2px!important}
+
+  body[data-edujob-view="home"] .filter-panel .filter-section,body[data-edujob-view="home"] .filter-panel .selected-box{display:block!important}
+  body[data-edujob-view="home"] .filter-panel.mobile-collapsed .filter-section,body[data-edujob-view="home"] .filter-panel.mobile-collapsed .selected-box{display:none!important}
+  body[data-edujob-view="home"] .filter-panel:not(.mobile-collapsed) .filter-section{display:block!important}
+  body[data-edujob-view="home"] .filter-panel:not(.mobile-collapsed) .selected-box.show{display:block!important}
+
+  body[data-edujob-view="search"] #jobsHeading{display:none!important}
+  body[data-edujob-view="search"] .filter-panel.mobile-collapsed{display:none!important}
+  body[data-edujob-view="search"] .filter-panel:not(.mobile-collapsed){display:block!important;margin-bottom:7px!important}
+  body[data-edujob-view="search"] .toolbar{display:flex!important;margin:4px 2px 7px!important}
+  body[data-edujob-view="search"] .toolbar-right{display:none!important}
+  body[data-edujob-view="search"] .result{font-size:0!important;color:#5f7692!important}
+  body[data-edujob-view="search"] .result:before{content:'검색 결과 ';font-size:10px;font-weight:700}
+  body[data-edujob-view="search"] .result strong{font-size:13px!important;color:#0b6ef3!important}
+  body[data-edujob-view="search"] .result:after{content:'건';font-size:10px;font-weight:800;color:#0b6ef3}
+  body[data-edujob-view="search"] .layout{display:block!important;margin-top:0!important}
+  body[data-edujob-view="search"] .layout>section{margin-top:0!important}
+  body[data-edujob-view="search"] .source-status,body[data-edujob-view="search"] .update{display:none!important}
+
+  body[data-edujob-view="favorites"] #jobsHeading,body[data-edujob-view="favorites"] .toolbar,body[data-edujob-view="favorites"] .source-status,body[data-edujob-view="favorites"] .update{display:none!important}
+  body[data-edujob-view="favorites"] .layout{display:block!important;margin-top:0!important;margin-bottom:0!important}
+  body[data-edujob-view="favorites"].final-recent-mode .layout{display:none!important}
+
+  body[data-edujob-view="home"] .stats .stat{display:grid!important;grid-template-columns:31px minmax(0,1fr)!important;grid-template-rows:auto auto!important;align-items:center!important;column-gap:4px!important}
+  body[data-edujob-view="home"] .final-stat-icon{display:grid;grid-row:1/3;width:27px;height:27px;border-radius:9px;place-items:center;background:#eaf3ff;color:#0b6ef3}
+  body[data-edujob-view="home"] .final-stat-icon.i1{background:#fff0f3;color:#f34f67}body[data-edujob-view="home"] .final-stat-icon.i2{background:#eafff5;color:#16a77b}body[data-edujob-view="home"] .final-stat-icon.i3{background:#f3efff;color:#715ad1}
+  body[data-edujob-view="home"] .final-stat-icon svg{width:15px;height:15px}
+  body[data-edujob-view="home"] .stat .n{grid-column:2;align-self:end}body[data-edujob-view="home"] .stat .t{grid-column:2;align-self:start}
+  body[data-edujob-view="home"] .stat:after{display:none!important}
+
+  .scope-chip[data-icon]:before{display:none!important}
+  .scope-chip svg{width:14px;height:14px;color:#729ad0;flex:0 0 auto}
+}
+
+@media(max-width:650px){
+  body[data-edujob-view="home"] #finalHomeRadar{margin-top:9px}
+  body[data-edujob-view="home"] #statusHeading.section-heading{margin-top:9px!important}
+  .final-home-radar-head h2{font-size:17px}.final-home-radar-head p{font-size:8.5px}
+  .final-home-radar-metrics{gap:5px;padding-left:8px;padding-right:8px}.final-home-radar-metrics button{min-height:70px;padding-left:2px;padding-right:2px}.final-home-radar-metrics small{font-size:6.4px}
+  .final-home-radar-actions{padding-left:8px;padding-right:8px}
+  .final-search-tools{grid-template-columns:auto repeat(3,minmax(0,1fr)) 32px}
+  .final-search-tools button{font-size:8.5px;padding:0 5px}
+  .final-page-head{padding-top:8px!important}.final-page-title-line h2{font-size:19px!important}.final-page-title-line button{font-size:21px}
+  .final-my-page{padding-top:7px!important;padding-bottom:74px!important}
+  .final-profile-card{padding:13px!important}.final-avatar{width:48px;height:48px}.final-my-stats{margin:9px 0!important}.final-my-stats div{padding:11px 3px!important}
+  .final-menu-card{margin-top:9px!important}.final-menu-card button{min-height:46px!important}
+  .final-logout{min-height:36px;margin-top:9px}
+  .final-favorite-tip{margin-bottom:70px}
+}
