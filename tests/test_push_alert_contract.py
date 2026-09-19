@@ -102,3 +102,19 @@ if "ARTS_SUBJECT_RE" not in build or "INSTRUMENT_RE.search(t) or ARTS_SUBJECT_RE
     raise SystemExit("official arts subject titles must map into 음악·예체능 category")
 
 print("profile matching contract verified")
+
+
+# A matching-contract upgrade must baseline silently before sending new-job alerts.
+for needle in [
+    "MATCH_CONTRACT_VERSION=2",
+    "profileComparable",
+    "stampedProfile",
+]:
+    if needle not in alerts:
+        raise SystemExit("Push matching version contract missing: " + needle)
+if "contractChanged" not in subscribe or "MATCH_CONTRACT_VERSION" not in subscribe:
+    raise SystemExit("subscription endpoint must re-baseline on matching-contract upgrades")
+if "contractVersion!==MATCH_CONTRACT_VERSION" not in dispatch or "seen_ids:currentIds" not in dispatch:
+    raise SystemExit("dispatch must silently baseline old matching contracts before notifying")
+
+print("Push matching migration contract verified")
