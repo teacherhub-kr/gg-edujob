@@ -62,3 +62,59 @@ if "push" in workflow.lower() and "git push" in workflow.lower():
     raise SystemExit("alert workflow must never write to the repository")
 
 print("web push alert contract verified")
+
+
+# Browser filter, first-screen radar and server Push must agree on saved subject values.
+ui = Path("unified-ui.js").read_text(encoding="utf-8")
+radar = Path("job-radar.js").read_text(encoding="utf-8")
+alerts = Path("supabase/functions/_shared/alerts.ts").read_text(encoding="utf-8")
+build = Path("scripts/build_unified_search.py").read_text(encoding="utf-8")
+
+subject_contract = {
+    "국어": "국어|독서|논술",
+    "영어": "영어|영어회화",
+    "수학": "수학|수리",
+    "과학": "과학|물리|화학|생명과학|생물|지구과학|통합과학",
+    "사회·역사": "사회|역사|한국사|지리|윤리|도덕|통합사회",
+    "음악": "음악|합창|오케스트라|관현악|밴드",
+    "미술": "미술|디자인",
+    "체육": "체육|스포츠|운동",
+    "특수": "특수|특수교육",
+    "보건": "보건|간호",
+    "상담": "상담|전문상담|위클래스|wee",
+    "사서": "사서|도서관",
+    "영양": "영양|영양교사",
+    "정보·컴퓨터": "정보|컴퓨터|코딩|소프트웨어|ai|인공지능",
+    "유아": "유아|유치원|유치",
+}
+for label, terms in subject_contract.items():
+    needle = f"'{label}':/(^|\\s)({terms})(\\s|$)/"
+    for name, source in (("unified-ui", ui), ("job-radar", radar), ("push-alerts", alerts)):
+        if needle not in source:
+            raise SystemExit(f"profile matching contract drift: {name} missing {label}")
+
+if "'사회':/(^|\\s)" in radar or "'역사':/(^|\\s)" in radar:
+    raise SystemExit("radar must use the saved UI value 사회·역사, not split legacy values")
+if "'사회':/(^|\\s)" in alerts or "'역사':/(^|\\s)" in alerts:
+    raise SystemExit("Push must use the saved UI value 사회·역사, not split legacy values")
+
+if "ARTS_SUBJECT_RE" not in build or "INSTRUMENT_RE.search(t) or ARTS_SUBJECT_RE.search(t)" not in build:
+    raise SystemExit("official arts subject titles must map into 음악·예체능 category")
+
+print("profile matching contract verified")
+
+
+# A matching-contract upgrade must baseline silently before sending new-job alerts.
+for needle in [
+    "MATCH_CONTRACT_VERSION=2",
+    "profileComparable",
+    "stampedProfile",
+]:
+    if needle not in alerts:
+        raise SystemExit("Push matching version contract missing: " + needle)
+if "contractChanged" not in subscribe or "MATCH_CONTRACT_VERSION" not in subscribe:
+    raise SystemExit("subscription endpoint must re-baseline on matching-contract upgrades")
+if "contractVersion!==MATCH_CONTRACT_VERSION" not in dispatch or "seen_ids:currentIds" not in dispatch:
+    raise SystemExit("dispatch must silently baseline old matching contracts before notifying")
+
+print("Push matching migration contract verified")

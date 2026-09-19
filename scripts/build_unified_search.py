@@ -28,6 +28,7 @@ RESULT_RE = re.compile(r"최종\s*합격|합격자|서류\s*(?:심사|전형)\s*
 ALWAYS_RE = re.compile(r"상시\s*(?:채용|모집)|채용\s*시까지|충원\s*시까지", re.I)
 PRIVATE_BANNED_RE = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY_RE = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
+ARTS_SUBJECT_RE = re.compile(r"(?<![가-힣])(음악|미술|체육)(?:과)?(?![가-힣])", re.I)
 INSTRUMENT_RE = re.compile(r"피아노|바이올린|비올라|첼로|플루트|클라리넷|오보에|바순|색소폰|트럼펫|트롬본|호른|튜바|타악기|드럼|기타|우쿨렐레|우크렐레|리코더|칼림바|국악|가야금|해금|대금|사물놀이|합창|성악|작곡|지휘|반주|오케스트라", re.I)
 
 
@@ -158,7 +159,7 @@ def categories(title, source_surface="", source_type=""):
     out = []
     if source_surface == "afterschool-nulbom" or re.search(r"방과후|늘봄", t): out.append("방과후·늘봄")
     if source_surface == "culture-arts" or re.search(r"문화예술|공연|미술|박물관|미술관|갤러리|극단|예술", t): out.append("문화예술")
-    if INSTRUMENT_RE.search(t): out.append("음악·예체능")
+    if INSTRUMENT_RE.search(t) or ARTS_SUBJECT_RE.search(t): out.append("음악·예체능")
     if re.search(r"학원|보습|입시|어학원", t): out.append("학원강사")
     if not out and re.search(r"강사|교사|선생님", t): out.append("강사·교사")
     if not out and source_type == "민간 구인": out.append("기타 민간구인")

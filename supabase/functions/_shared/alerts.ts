@@ -1,4 +1,6 @@
 export type Job=Record<string,unknown>;
+export const MATCH_CONTRACT_VERSION=2;
+
 export type Profile={
   provinces?:string[];
   regions?:string[];
@@ -7,9 +9,23 @@ export type Profile={
   categories?:string[];
   subjects?:string[];
   q?:string;
+  _matchContractVersion?:number;
 };
 
 const arr=(v:unknown):string[]=>Array.isArray(v)?v.map(String).filter(Boolean):[];
+export const profileComparable=(p:Profile)=>({
+  provinces:arr(p?.provinces),
+  regions:arr(p?.regions),
+  schools:arr(p?.schools),
+  types:arr(p?.types),
+  categories:arr(p?.categories),
+  subjects:arr(p?.subjects),
+  q:String(p?.q||'').trim()
+});
+export const stampedProfile=(p:Profile):Profile=>({
+  ...profileComparable(p),
+  _matchContractVersion:MATCH_CONTRACT_VERSION
+});
 const norm=(v:unknown)=>String(v??'').toLowerCase().normalize('NFKC')
   .replace(/[\u200b-\u200d\ufeff]/g,'')
   .replace(/[^0-9a-z가-힣]+/gi,' ')
@@ -54,12 +70,11 @@ const jobProvinces=(j:Job)=>{const xs=arr(j.provinces);return xs.length?[...new 
 const jobRegions=(j:Job)=>[...new Set([String(j.region||''),...arr(j.regions)].filter(Boolean))];
 
 const subjectRules:Record<string,RegExp>={
-  '국어':/(^|\s)(국어|한국어)(\s|$)/,
-  '영어':/(^|\s)(영어|english)(\s|$)/,
-  '수학':/(^|\s)(수학|math)(\s|$)/,
-  '사회':/(^|\s)(사회|일반사회)(\s|$)/,
-  '역사':/(^|\s)(역사|한국사)(\s|$)/,
-  '과학':/(^|\s)(과학|물리|화학|생명과학|지구과학)(\s|$)/,
+  '국어':/(^|\s)(국어|독서|논술)(\s|$)/,
+  '영어':/(^|\s)(영어|영어회화)(\s|$)/,
+  '수학':/(^|\s)(수학|수리)(\s|$)/,
+  '과학':/(^|\s)(과학|물리|화학|생명과학|생물|지구과학|통합과학)(\s|$)/,
+  '사회·역사':/(^|\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\s|$)/,
   '음악':/(^|\s)(음악|합창|오케스트라|관현악|밴드)(\s|$)/,
   '미술':/(^|\s)(미술|디자인)(\s|$)/,
   '체육':/(^|\s)(체육|스포츠|운동)(\s|$)/,

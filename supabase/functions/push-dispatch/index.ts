@@ -1,6 +1,6 @@
 import {createClient} from 'npm:@supabase/supabase-js@2.116.0';
 import webpush from 'npm:web-push@3.6.7';
-import {fetchCurrentJobs,jobKey,matchesProfile,type Job,type Profile} from '../_shared/alerts.ts';
+import {fetchCurrentJobs,jobKey,matchesProfile,stampedProfile,MATCH_CONTRACT_VERSION,type Job,type Profile} from '../_shared/alerts.ts';
 
 const response=(body:unknown,status=200)=>new Response(JSON.stringify(body),{
   status,
@@ -52,6 +52,17 @@ export default {
       const profile=(row.profile||{}) as Profile;
       const matching=(jobs as Job[]).filter(j=>matchesProfile(j,profile));
       const currentIds=matching.map(jobKey).filter(Boolean).slice(0,3000);
+      const contractVersion=Number(profile?._matchContractVersion||0);
+      if(contractVersion!==MATCH_CONTRACT_VERSION){
+        const {error:migrateError}=await db.from('edujob_push_subscriptions').update({
+          profile:stampedProfile(profile),
+          seen_ids:currentIds,
+          updated_at:new Date().toISOString()
+        }).eq('id',row.id);
+        if(migrateError){failed++;continue}
+        unchanged++;
+        continue;
+      }
       const seen=new Set(Array.isArray(row.seen_ids)?row.seen_ids:[]);
       const fresh=matching.filter(j=>!seen.has(jobKey(j)));
       if(!fresh.length){unchanged++;continue}
