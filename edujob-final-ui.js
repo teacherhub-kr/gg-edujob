@@ -216,7 +216,15 @@
   function openFilters(sectionLabel=''){
     const panel=qs('.filter-panel'),toggle=qs('#mobileFilterToggle');
     if(!panel)return;
-    if(panel.classList.contains('mobile-collapsed'))toggle?.click();
+    // The final search screen owns filter visibility. Do not depend on the
+    // legacy mobile toggle because the panel itself is hidden while collapsed.
+    panel.classList.remove('mobile-collapsed');
+    panel.dataset.mobileInit='1';
+    if(toggle){
+      toggle.hidden=false;
+      toggle.setAttribute('aria-expanded','true');
+      toggle.textContent='필터 닫기';
+    }
     setTimeout(()=>{
       if(sectionLabel){
         const heads=qsa('.filter-title h3',panel);
