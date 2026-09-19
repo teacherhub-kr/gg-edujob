@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-09-15T10:56:17+09:00",
+  "generatedAt": "2026-09-19T21:48:00+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
-  "canonicalOfficialJobs": 19986,
+  "canonicalOfficialJobs": 22236,
   "canonicalFoundationOfficialJobs": 3,
-  "canonicalPrivateJobs": 4150,
-  "selectedCanonicalOfficialJobs": 3051,
-  "selectedFoundationOfficialJobs": 3,
-  "selectedOfficialJobs": 3054,
-  "selectedPrivateJobs": 4125,
-  "publishedJobs": 7179,
+  "canonicalPrivateJobs": 4385,
+  "selectedCanonicalOfficialJobs": 3157,
+  "selectedFoundationOfficialJobs": 2,
+  "selectedOfficialJobs": 3159,
+  "selectedPrivateJobs": 4321,
+  "publishedJobs": 7474,
   "perFeed": {
-    "official": 3054,
-    "private": 4125
+    "official": 3159,
+    "private": 4315
   },
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
       "configuredPublicationEnabled": true,
-      "publicationEnabled": false,
-      "degraded": true,
-      "ok": false,
+      "publicationEnabled": true,
+      "degraded": false,
+      "ok": true,
       "candidateCount": 235,
-      "count": 0,
+      "count": 235,
       "lastVerifiedAt": "2026-09-15T10:55:00+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 0
+      "displayedAsPrivate": 229
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -33,12 +33,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 10,
-      "count": 10,
+      "candidateCount": 3,
+      "count": 3,
       "lastVerifiedAt": "2026-09-13T07:31:10+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
-      "displayedAsPrivate": 10
+      "displayedAsPrivate": 3
     },
     "jobteacher": {
       "name": "잡티처",
@@ -48,7 +48,7 @@
       "ok": true,
       "candidateCount": 4035,
       "count": 4035,
-      "lastVerifiedAt": "2026-09-15T10:05:45+09:00",
+      "lastVerifiedAt": "2026-09-15T11:03:38+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "displayedAsPrivate": 4035
@@ -59,12 +59,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 45,
-      "count": 45,
+      "candidateCount": 35,
+      "count": 35,
       "lastVerifiedAt": "2026-09-15T09:59:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 45
+      "displayedAsPrivate": 35
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -72,12 +72,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 32,
-      "count": 32,
+      "candidateCount": 11,
+      "count": 11,
       "lastVerifiedAt": "2026-09-15T10:35:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 32
+      "displayedAsPrivate": 11
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -85,12 +85,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1,
-      "count": 1,
+      "candidateCount": 0,
+      "count": 0,
       "lastVerifiedAt": "2026-09-15T10:39:21+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 1
+      "displayedAsPrivate": 0
     },
     "boramyc": {
       "name": "시립보라매청소년센터",
@@ -106,13 +106,11 @@
       "displayedAsPrivate": 2
     }
   },
-  "protectedOfficialIds": 17422,
-  "explicitOfficialAliasGroupsMerged": 0,
+  "protectedOfficialIds": 20329,
+  "explicitOfficialAliasGroupsMerged": 6,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
-  "degradedPrivateSources": [
-    "lessoninfo"
-  ],
-  "allPublicationEnabledSourcesHealthy": false
+  "degradedPrivateSources": [],
+  "allPublicationEnabledSourcesHealthy": true
 }
