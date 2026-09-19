@@ -56,6 +56,7 @@ REQUIRED_BOARDS = (
         "mi": MI,
         "idPrefix": "ice-central",
         "sourceType": "통합게시판",
+        "bootstrapUrl": "https://www.ice.go.kr/ice/main.do",
     },
     {
         "key": "afterschool",
@@ -66,6 +67,7 @@ REQUIRED_BOARDS = (
         "mi": AFTERSCHOOL_MI,
         "idPrefix": "ice-afterschool",
         "sourceType": "늘봄지원센터",
+        "bootstrapUrl": "https://www.ice.go.kr/afterschool/main.do",
     },
 )
 
@@ -93,6 +95,7 @@ def build_session() -> requests.Session:
     session = requests.Session()
     session.headers.update({
         "User-Agent": UA,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.6",
         "Cache-Control": "no-cache",
         "Pragma": "no-cache",
@@ -112,6 +115,41 @@ def reset_session() -> None:
         SESSION.close()
     finally:
         SESSION = build_session()
+
+
+def bootstrap_board_session(board: dict) -> dict:
+    """Prime the official ICE site only after the narrow tiny-empty response signature.
+
+    This is deliberately bounded: one landing-page GET followed by one retry of the requested
+    list page. Bootstrap success is never treated as completeness evidence; only parsed official
+    rows and the existing pagination/lookback guards can make coverageComplete true.
+    """
+    landing_url = str(board.get("bootstrapUrl") or "")
+    if not landing_url:
+        return {"attempted": False, "ok": False, "status": 0, "contentLength": 0}
+    try:
+        response = SESSION.get(
+            landing_url,
+            timeout=(8, 25),
+            allow_redirects=True,
+            headers={"Referer": "https://www.ice.go.kr/"},
+        )
+        response.raise_for_status()
+        return {
+            "attempted": True,
+            "ok": True,
+            "status": int(response.status_code),
+            "contentLength": len(response.content or b""),
+            "finalUrl": str(response.url or ""),
+        }
+    except Exception as exc:
+        return {
+            "attempted": True,
+            "ok": False,
+            "status": 0,
+            "contentLength": 0,
+            "error": f"{type(exc).__name__}: {str(exc)[:160]}",
+        }
 
 
 def clean(value) -> str:
@@ -343,6 +381,22 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
 
         pages_scanned += 1
         rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
+
+        # ICE intermittently returns a tiny HTTP-200 body (~77 bytes) to direct GitHub-hosted
+        # requests. Only for that narrow first-page signature, discard connection/cookies,
+        # visit the official site landing page once, then retry this exact list page once.
+        # A failed bootstrap or still-empty retry remains fail-closed.
+        bootstrap_evidence = {}
+        if page == 1 and meta["rawRows"] == 0 and len(response.content or b"") <= 256:
+            reset_session()
+            bootstrap_evidence = bootstrap_board_session(board)
+            try:
+                response = fetch_with_one_explicit_retry(page_url)
+                rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
+            except Exception as exc:
+                access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
+                break
+
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
             stop_reason = "repeated-page"
@@ -361,6 +415,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "contentLength": len(response.content or b""),
                 "contentType": str(response.headers.get("content-type") or ""),
                 "pageTextSample": clean(meta.get("pageText") or "")[:600],
+                "bootstrap": bootstrap_evidence,
             }
             stop_reason = "empty-page"
             break
