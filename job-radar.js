@@ -260,13 +260,13 @@
     const preview=document.getElementById('jobRadarPreview');
     if(!overview||!profile||!preview)return;
     if(!p){
-      overview.innerHTML='<div class="job-radar-metric"><b>-</b><span>내 신규</span></div><div class="job-radar-metric"><b>-</b><span>관심공고</span></div><div class="job-radar-metric"><b>-</b><span>조건 일치</span></div>';
+      overview.innerHTML='<div class="job-radar-metric"><b>-</b><span data-short="신규">내 신규</span></div><div class="job-radar-metric"><b>-</b><span data-short="관심">관심공고</span></div><div class="job-radar-metric"><b>-</b><span data-short="일치">조건 일치</span></div>';
       profile.innerHTML='';
       preview.innerHTML='';
       return;
     }
     const favCount=activeFavoriteCount();
-    overview.innerHTML=`<div class="job-radar-metric"><b>${currentNewKeys.size.toLocaleString()}</b><span>지난 방문 이후 신규</span></div><div class="job-radar-metric"><b>${favCount.toLocaleString()}</b><span>모집 중 관심공고</span></div><div class="job-radar-metric"><b>${currentMatchKeys.length.toLocaleString()}</b><span>현재 조건 일치</span></div>`;
+    overview.innerHTML=`<div class="job-radar-metric"><b>${currentNewKeys.size.toLocaleString()}</b><span data-short="신규">지난 방문 이후 신규</span></div><div class="job-radar-metric"><b>${favCount.toLocaleString()}</b><span data-short="관심">모집 중 관심공고</span></div><div class="job-radar-metric"><b>${currentMatchKeys.length.toLocaleString()}</b><span data-short="일치">현재 조건 일치</span></div>`;
     profile.innerHTML=profileChips(p).map(x=>`<span class="job-radar-chip">${esc(x)}</span>`).join('');
     preview.innerHTML=newPreviewJobs().map(j=>{
       const href=postingLink(j);

@@ -7,8 +7,8 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919d",
-    "edujob-refresh.js?v=20260919c",
+    "edujob-refresh.css?v=20260919e",
+    "edujob-refresh.js?v=20260919e",
 ]
 for needle in required_index:
     if needle not in index:
@@ -83,3 +83,18 @@ if "M94 68 150 45l65 23-63 28z" not in mascot:
     raise SystemExit("mascot graduation cap must be large enough to read as worn")
 
 print("mobile radar compact v4 and worn-cap contract verified")
+
+
+radar = Path("job-radar.js").read_text(encoding="utf-8")
+
+if "grid-template-columns:repeat(4,minmax(0,1fr))!important" not in css:
+    raise SystemExit("mobile radar must be a one-row four-column strip")
+
+for short in ['data-short="신규"', 'data-short="관심"', 'data-short="일치"']:
+    if short not in radar:
+        raise SystemExit(f"mobile radar short label missing: {short}")
+
+if "edujob-logo.svg?v=20260919e" not in js or "edujob-mascot.svg?v=20260919e" not in js:
+    raise SystemExit("brand SVG cache busting is required")
+
+print("mobile radar strip v5 and SVG cache-bust contract verified")

@@ -443,3 +443,52 @@ body{
     margin-top:1px!important;
   }
 }
+
+
+/* 2026-09-19 mobile radar strip v5: obvious one-row summary */
+@media(max-width:650px){
+  .job-radar-overview{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    margin-right:-53px!important;
+    margin-top:6px!important;
+    gap:5px!important;
+  }
+  .job-radar-metric,
+  .radar-alert-card{
+    min-height:46px!important;
+    padding:5px 4px!important;
+    border-radius:10px!important;
+  }
+  .job-radar-metric b{
+    font-size:16px!important;
+    line-height:1!important;
+  }
+  .job-radar-metric span{
+    font-size:0!important;
+    margin-top:3px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .job-radar-metric span::after{
+    content:attr(data-short);
+    font-size:7.5px!important;
+    line-height:1!important;
+  }
+  .radar-alert-card{
+    align-items:center!important;
+    text-align:center!important;
+  }
+  .radar-alert-card .alert-icon{
+    font-size:14px!important;
+    line-height:1!important;
+  }
+  .radar-alert-card strong{
+    font-size:9.5px!important;
+    line-height:1!important;
+    margin-top:2px!important;
+    white-space:nowrap!important;
+  }
+  .radar-alert-card span{
+    display:none!important;
+  }
+}
