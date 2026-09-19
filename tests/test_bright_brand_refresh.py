@@ -101,7 +101,7 @@ if "M29 50 90 23l67 25-64 29z" not in logo:
 if "M72 73 150 38l90 33-86 39z" not in mascot:
     raise SystemExit("mascot cap must be visibly oversized and worn")
 
-if "edujob-logo.svg?v=20260919f" not in js or "edujob-mascot.svg?v=20260919f" not in js:
+if "edujob-logo.svg?v=20260919g" not in js or "edujob-mascot.svg?v=20260919g" not in js:
     raise SystemExit("v6 SVG cache busting missing")
 
 print("stats compact v6 and oversized worn-cap contract verified")
