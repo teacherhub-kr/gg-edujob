@@ -31,3 +31,11 @@ if "if(favoriteOnly)newOnly=false;" not in text:
     raise SystemExit("favorites and new-only modes must remain mutually exclusive")
 
 print("job radar personalization contract verified")
+
+for needle in (
+    "'사회·역사':/(^|\\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\\s|$)/",
+    "'국어':/(^|\\s)(국어|독서|논술)(\\s|$)/",
+    "'과학':/(^|\\s)(과학|물리|화학|생명과학|생물|지구과학|통합과학)(\\s|$)/",
+):
+    if needle not in text:
+        raise SystemExit("job radar subject contract drift: " + needle)
