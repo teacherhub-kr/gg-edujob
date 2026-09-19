@@ -51,6 +51,8 @@ if "baseline-unavailable" not in subscribe or "matchingKeys(jobs,profile)" not i
     raise SystemExit("subscribe endpoint must fail closed if current-job baseline cannot be established")
 if "x-edujob-alert-secret" not in dispatch or "webpush.sendNotification" not in dispatch:
     raise SystemExit("dispatch endpoint must require secret and use Web Push sender")
+if "last_notified_at" not in dispatch or "if(!seen.size&&row.last_notified_at&&matching.length)" not in dispatch:
+    raise SystemExit("empty baseline backlog guard missing from Push dispatch")
 if "web-push@3.6.7" not in dispatch:
     raise SystemExit("Web Push sender dependency must stay pinned")
 if "contents: read" not in workflow or "ALERT_ENDPOINT" not in workflow:
