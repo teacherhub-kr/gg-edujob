@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 270" role="img" aria-labelledby="title desc">
   <title id="title">수도권에듀잡 E 마스코트</title>
-  <desc id="desc">파란색 E 캐릭터가 남색 학사모를 머리에 자연스럽게 쓰고 짧은 팔과 다리로 서 있는 모습</desc>
+  <desc id="desc">파란색 E 캐릭터가 큰 남색 학사모를 실제로 머리에 쓰고 짧은 팔과 다리로 서 있는 모습</desc>
   <defs>
     <linearGradient id="e" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7bd0ff"/><stop offset=".45" stop-color="#2b91ff"/><stop offset="1" stop-color="#1264e8"/></linearGradient>
     <linearGradient id="cap" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1a428e"/><stop offset="1" stop-color="#071b4d"/></linearGradient>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#175aa8" flood-opacity=".18"/></filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="175%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#175aa8" flood-opacity=".18"/></filter>
   </defs>
   <ellipse cx="150" cy="246" rx="70" ry="12" fill="#d9eaff" opacity=".65"/>
   <g stroke="#102f6b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
@@ -19,11 +19,11 @@
     <ellipse cx="105" cy="145" rx="13" ry="7" fill="#ff7f9e" opacity=".55"/><ellipse cx="194" cy="145" rx="13" ry="7" fill="#ff7f9e" opacity=".55"/>
     <path d="M137 147c8 8 18 8 26 0" fill="none" stroke="#0d2e67" stroke-width="6" stroke-linecap="round"/>
   </g>
-  <g transform="rotate(-3 151 74)">
-    <path fill="url(#cap)" d="M94 68 150 45l65 23-63 28z"/>
-    <path fill="#0b2864" d="M108 76v14c0 11 19 20 43 20s43-9 43-20V78l-43 18z"/>
-    <path d="M212 69v28" stroke="#f4b51d" stroke-width="5.5" stroke-linecap="round"/>
-    <circle cx="212" cy="103" r="6" fill="#f4b51d"/>
+  <g transform="rotate(-4 151 82)">
+    <path fill="url(#cap)" d="M72 73 150 38l90 33-86 39z"/>
+    <path fill="#0b2864" d="M93 86v18c0 14 25 25 59 25s59-11 59-25V89l-59 25z"/>
+    <path d="M235 73v35" stroke="#f4b51d" stroke-width="6.5" stroke-linecap="round"/>
+    <circle cx="235" cy="116" r="7" fill="#f4b51d"/>
   </g>
   <g transform="translate(235 145) rotate(-7)">
     <path d="M0 12 38 0v42L0 30z" fill="#ffbd2e"/><rect x="-13" y="14" width="18" height="15" rx="7" fill="#176bf0"/>
