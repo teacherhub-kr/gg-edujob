@@ -588,7 +588,7 @@ function bindScreen(){
 
   $('#moreJobs',screen)?.addEventListener('click',()=>{state.visible+=PAGE_SIZE;render()});
   $('#homeReset',screen)?.addEventListener('click',()=>resetFilters());
-  $('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{
     const focus=b.dataset.filterFocus;
     if(state.filterOpen&&state.filterFocus===focus){state.filterOpen=false;state.filterFocus=''}
     else{state.filterOpen=true;state.filterFocus=focus}
@@ -601,7 +601,7 @@ function bindScreen(){
   });
   $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
-  $('[data-quick-filter]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-quick-filter]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     const name=btn.dataset.quickFilter,value=btn.dataset.value;
     const set=state[name];if(!(set instanceof Set))return;
     if(name==='provinces'){
