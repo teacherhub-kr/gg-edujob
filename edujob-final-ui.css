@@ -79,11 +79,8 @@ body[data-edujob-view="radar"] #finalRadarManager,body[data-edujob-view="mypage"
   body[data-edujob-view="search"] .layout{margin-top:7px!important}
   body[data-edujob-view="search"] .filter-panel{display:block!important}
 
-  body[data-edujob-view="radar"] #jobRadarOutcome,body[data-edujob-view="radar"] #jobRadarOverview,body[data-edujob-view="radar"] #jobRadarProfile,body[data-edujob-view="radar"] #jobRadarPreview{display:none!important}
-  body[data-edujob-view="radar"] #jobRadarDelete,body[data-edujob-view="radar"] #jobRadarNewOnly,body[data-edujob-view="radar"] #jobRadarFavorites{display:none!important}
-  body[data-edujob-view="radar"] #jobRadarActions{display:none!important}
-
-  body[data-edujob-view="mypage"] .job-radar-overview, body[data-edujob-view="mypage"] .job-radar-actions, body[data-edujob-view="mypage"] .job-radar-profile{display:none!important}
+  body[data-edujob-view="radar"] #jobRadar,body[data-edujob-view="radar"] #statusHeading,body[data-edujob-view="radar"] .stats,body[data-edujob-view="radar"] .layout,body[data-edujob-view="radar"] #jobsHeading{display:none!important}
+  body[data-edujob-view="mypage"] #jobRadar,body[data-edujob-view="mypage"] #statusHeading,body[data-edujob-view="mypage"] .stats,body[data-edujob-view="mypage"] .layout,body[data-edujob-view="mypage"] #jobsHeading{display:none!important}
 
   body[data-edujob-view="favorites"] #jobRadar,body[data-edujob-view="favorites"] #statusHeading,body[data-edujob-view="favorites"] .stats,body[data-edujob-view="favorites"] .filter-panel{display:none!important}
   body[data-edujob-view="favorites"] .layout{display:block!important;margin-top:10px!important}
