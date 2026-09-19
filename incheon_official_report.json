@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19 06:50:38 KST",
+  "generatedAt": "2026-09-19 15:28:33 KST",
   "name": "인천광역시교육청 채용공고",
   "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
   "boards": [
@@ -9,7 +9,7 @@
   "requiredBoardCount": 2,
   "lookbackDays": 90,
   "pagesScanned": 263,
-  "count": 2597,
+  "count": 2598,
   "coverageComplete": true,
   "accessError": "",
   "paginationRepeated": false,
@@ -23,19 +23,19 @@
       "bbsId": "1981",
       "lookbackDays": 90,
       "pagesScanned": 256,
-      "count": 2545,
+      "count": 2546,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
       "stopReason": "lookback-exhausted",
       "emptyPageEvidence": {},
-      "latestRegistered": "2026/09/18",
+      "latestRegistered": "2026/09/19",
       "sampleIds": [
+        "ice-central:3384948",
         "ice-central:3384872",
         "ice-central:3384940",
         "ice-central:3384888",
-        "ice-central:3384906",
-        "ice-central:3384904"
+        "ice-central:3384906"
       ]
     },
     {
@@ -61,16 +61,24 @@
       ]
     }
   ],
-  "latestRegistered": "2026/09/18",
+  "latestRegistered": "2026/09/19",
   "sampleIds": [
+    "ice-central:3384948",
     "ice-central:3384872",
     "ice-central:3384940",
     "ice-central:3384888",
-    "ice-central:3384906",
-    "ice-central:3384904"
+    "ice-central:3384906"
   ],
   "merged": true,
   "officialSample": [
+    {
+      "id": "ice-central:3384948",
+      "school": "인천송림초등학교",
+      "title": "인천송림초등학교 기간제 교사(5,6학년 영어전담교사) 채용 공고(3차 자격확대)",
+      "registered": "2026/09/19",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3384948"
+    },
     {
       "id": "ice-central:3384872",
       "school": "인천미래생활고등학교",
@@ -110,14 +118,6 @@
       "registered": "2026/09/18",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3384904"
-    },
-    {
-      "id": "ice-central:3384914",
-      "school": "인천한별초등학교",
-      "title": "인천한별초등학교 기간제교원 채용 2차 공고",
-      "registered": "2026/09/18",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3384914"
     }
   ]
 }
