@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.production_supervisor import (
     KST,
+    FAST_REFRESH_MAX_AGE,
     change_after_failure,
     circuit_blocked,
     consecutive_real_failures,
@@ -22,6 +23,10 @@ def run(conclusion, hours_ago=0, status="completed"):
 
 
 class ProductionSupervisorTests(unittest.TestCase):
+
+    def test_fast_refresh_max_age_targets_sub_four_hour_visibility(self):
+        self.assertEqual(FAST_REFRESH_MAX_AGE, timedelta(hours=2, minutes=30))
+
     def test_unified_publication_stale_when_jobs_are_newer(self):
         jobs = datetime(2026, 9, 19, 7, 28, tzinfo=KST)
         unified = datetime(2026, 9, 10, 23, 58, tzinfo=KST)
