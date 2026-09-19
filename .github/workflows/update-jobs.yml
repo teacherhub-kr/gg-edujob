@@ -84,7 +84,7 @@ jobs:
           # Collector behavior is validated by compilation and downstream fail-closed verification,
           # not by brittle source-text grep contracts that drift during refactors.
           python scripts/ensure_incheon_registry.py
-          python -m py_compile scripts/scrape_jobs.py scripts/merge_incheon_official.py scripts/verify_required_regions.py scripts/ensure_incheon_registry.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/recover_seoul_office_cms_jobs.py scripts/verify_jobs.py scripts/merge_recovery_snapshot.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sanitize_job_dates.py scripts/validate_reconciliation_policy.py scripts/validate_reconciliation_policy_v3.py scripts/sync_effective_audit_status.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/stable_source_identity.py scripts/verify_support_completeness.py
+          python -m py_compile scripts/scrape_jobs.py scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/verify_required_regions.py scripts/ensure_incheon_registry.py scripts/repair_gyeonggi_support.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/recover_seoul_office_cms_jobs.py scripts/verify_jobs.py scripts/merge_recovery_snapshot.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sanitize_job_dates.py scripts/validate_reconciliation_policy.py scripts/validate_reconciliation_policy_v3.py scripts/sync_effective_audit_status.py scripts/reconcile_source_ids.py scripts/verify_central_reconciliation_consistency.py scripts/stable_source_identity.py scripts/verify_support_completeness.py
           git diff --exit-code -- scripts
 
       - name: Fast crawl of central portals and support-office current pages
@@ -93,6 +93,7 @@ jobs:
           python scripts/update_collector_status.py --workflow fast --stage fast-crawl --state running
           python scripts/scrape_jobs.py
           python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
+          python scripts/collect_incheon_support.py --lookback-days 90
           python scripts/verify_required_regions.py
 
       - name: Fast re-check of Gyeonggi support-office boards
@@ -206,7 +207,7 @@ jobs:
           rm -f verification_failure_report.json
           # Fast publication may materialize the one-time Incheon registry entry, but it must not
           # commit collector source code. Source changes belong in reviewed PRs only.
-          git add collector_status.json deep_audit_status.json jobs.json job_ledger.json collection_state.json board_cache.json missing_recovery_report.json seoul_office_cms_recovery_report.json date_anomaly_report.json support_link_resolution.json support_period_cache.json sources.json incheon_official_report.json
+          git add collector_status.json deep_audit_status.json jobs.json job_ledger.json collection_state.json board_cache.json missing_recovery_report.json seoul_office_cms_recovery_report.json date_anomaly_report.json support_link_resolution.json support_period_cache.json sources.json incheon_official_report.json incheon_support_report.json
           git add support_coverage_report.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json gyeonggi_central_90d_report.json
           if git ls-files --error-unmatch verification_failure_report.json >/dev/null 2>&1; then
             git add -u -- verification_failure_report.json

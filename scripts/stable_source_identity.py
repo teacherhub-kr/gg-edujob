@@ -2,6 +2,7 @@
 """Canonical strong identities derived only from source-native URL identifiers."""
 from __future__ import annotations
 
+import hashlib
 import re
 from urllib.parse import parse_qs, urlparse
 
@@ -73,6 +74,26 @@ def canonical_source_id(job) -> str:
                 if bbs == "1534":
                     return f"ice-afterschool:{ntt}"
                 return f"ice-mircms:{bbs}:{ntt}"
+
+    if province == "인천" and job.get("sourceType") == "교육지원청 개별 게시판":
+        for raw, parsed in parsed_urls:
+            host = _host(parsed)
+            if not (host.endswith("ice.go.kr") or host.endswith("nambuice.go.kr")):
+                continue
+            query = parse_qs(parsed.query)
+            for key in (
+                "data_idx", "msg_seq", "nttSn", "idx", "seq", "no", "num",
+                "uid", "boardSeq", "board_seq", "serial", "sn",
+            ):
+                value = str((query.get(key) or [""])[0]).strip()
+                if re.fullmatch(r"[A-Za-z0-9_-]{2,80}", value):
+                    return f"ice-support:{host}:{key}:{value}"
+            # Legacy support-office boards are not uniform. Once the collector has
+            # resolved an exact detail URL, a digest of that permanent URL is a
+            # stable source-native identity and is safer than title similarity.
+            if re.search(r"view|detail|read|recruit|job", parsed.path, re.IGNORECASE):
+                digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:24]
+                return f"ice-support-url:{host}:{digest}"
 
     if job.get("sourceType") == "통합게시판":
         for _raw, parsed in parsed_urls:

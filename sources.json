@@ -430,6 +430,64 @@
         }
       ]
     },
-    "supportOffices": []
+    "supportOffices": [
+      {
+        "key": "nambu",
+        "name": "인천남부교육지원청",
+        "url": "https://nambu.ice.go.kr/",
+        "allowedHosts": [
+          "nambu.ice.go.kr",
+          "nambuice.go.kr"
+        ],
+        "boardUrls": [],
+        "autoDiscover": true
+      },
+      {
+        "key": "bukbu",
+        "name": "인천북부교육지원청",
+        "url": "https://bukbu.ice.go.kr/",
+        "allowedHosts": [
+          "bukbu.ice.go.kr"
+        ],
+        "boardUrls": [
+          "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
+        ],
+        "autoDiscover": false
+      },
+      {
+        "key": "dongbu",
+        "name": "인천동부교육지원청",
+        "url": "https://dongbu.ice.go.kr/",
+        "allowedHosts": [
+          "dongbu.ice.go.kr"
+        ],
+        "boardUrls": [
+          "https://dongbu.ice.go.kr/participation/job_offer.jsp"
+        ],
+        "autoDiscover": false
+      },
+      {
+        "key": "seobu",
+        "name": "인천서부교육지원청",
+        "url": "https://seobu.ice.go.kr/",
+        "allowedHosts": [
+          "seobu.ice.go.kr"
+        ],
+        "boardUrls": [],
+        "autoDiscover": true
+      },
+      {
+        "key": "ganghwa",
+        "name": "인천강화교육지원청",
+        "url": "https://ganghwa.ice.go.kr/",
+        "allowedHosts": [
+          "ganghwa.ice.go.kr"
+        ],
+        "boardUrls": [
+          "https://ganghwa.ice.go.kr/open/recruiting.asp"
+        ],
+        "autoDiscover": false
+      }
+    ]
   }
 }
