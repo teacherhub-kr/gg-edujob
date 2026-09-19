@@ -492,3 +492,55 @@ body{
     display:none!important;
   }
 }
+
+
+/* 2026-09-19 mobile stats compact v6 */
+@media(max-width:650px){
+  #statusHeading.section-heading{
+    margin:10px 1px 5px!important;
+  }
+  #statusHeading .section-heading-main{
+    gap:7px!important;
+  }
+  #statusHeading .section-heading-icon{
+    width:24px!important;
+    height:24px!important;
+    border-radius:8px!important;
+    font-size:12px!important;
+  }
+  #statusHeading h2{
+    font-size:16px!important;
+    line-height:1.05!important;
+    letter-spacing:-.5px!important;
+  }
+  #statusHeading small{
+    display:block!important;
+    margin-top:2px!important;
+    font-size:8px!important;
+    line-height:1.15!important;
+  }
+  .stats{
+    gap:6px!important;
+    margin-top:4px!important;
+  }
+  .stat{
+    min-height:56px!important;
+    padding:8px 10px!important;
+    border-radius:14px!important;
+  }
+  .stat .n{
+    font-size:20px!important;
+    line-height:1!important;
+  }
+  .stat .t{
+    margin-top:4px!important;
+    font-size:8.5px!important;
+    line-height:1.1!important;
+  }
+  .stat:after{
+    width:28px!important;
+    height:28px!important;
+    right:-7px!important;
+    bottom:-8px!important;
+  }
+}
