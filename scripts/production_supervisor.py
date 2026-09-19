@@ -222,6 +222,20 @@ def unified_publication_stale(
     return bool(jobs_time and (unified_time is None or jobs_time > unified_time))
 
 
+def unified_publication_overdue(
+    jobs_time: datetime | None,
+    unified_time: datetime | None,
+    *,
+    limit: timedelta = timedelta(hours=4),
+) -> bool:
+    """Escalate when verified jobs have not reached the user-facing dataset in time."""
+    if jobs_time is None:
+        return False
+    if unified_time is None:
+        return True
+    return jobs_time - unified_time > limit
+
+
 def previous_reconciliation_report() -> dict[str, Any] | None:
     commits = [
         x.strip()
@@ -467,11 +481,19 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     stale_hours = (
         round(success_age.total_seconds() / 3600, 2) if success_age is not None else None
     )
+    publication_lag = (
+        jobs_time - unified_time
+        if jobs_time is not None and unified_time is not None and jobs_time > unified_time
+        else timedelta(0)
+    )
+    publication_lag_hours = round(publication_lag.total_seconds() / 3600, 2)
+    publication_overdue = unified_publication_overdue(jobs_time, unified_time)
     p0_incident = bool(
         not required_registry
         or (success_age is not None and success_age > timedelta(hours=6))
         or (success_at is None)
         or (circuit == "fast")
+        or publication_overdue
     )
 
     workflow_count = len(list(Path(".github/workflows").glob("*.yml"))) + len(
@@ -496,6 +518,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "p0Incident": p0_incident,
         "jobsCommitAt": jobs_time.isoformat() if jobs_time else None,
         "unifiedCommitAt": unified_time.isoformat() if unified_time else None,
+        "unifiedPublicationLagHours": publication_lag_hours,
+        "unifiedPublicationOverdue": publication_overdue,
         "workflowCount": workflow_count,
         "priority": ["fast", "unified", "recovery", "completeness"],
         "fastFailures": fast_failures,
@@ -567,6 +591,10 @@ def manage_issues(repo: str, state: dict[str, Any], now: datetime) -> None:
                 f"- registryComplete: `{state['requiredRegistryComplete']}`\n"
                 f"- fastLastSuccessAt: `{state['fastLastSuccessAt']}`\n"
                 f"- fastSuccessAgeHours: `{state['fastSuccessAgeHours']}`\n"
+                f"- jobsCommitAt: `{state['jobsCommitAt']}`\n"
+                f"- unifiedCommitAt: `{state['unifiedCommitAt']}`\n"
+                f"- unifiedPublicationLagHours: `{state['unifiedPublicationLagHours']}`\n"
+                f"- unifiedPublicationOverdue: `{state['unifiedPublicationOverdue']}`\n"
                 f"- fastConsecutiveRealFailures: `{state['fastFailures']}`\n\n"
                 "The watchdog keeps last-known-good production data in place. "
                 "Automatic retries are circuit-broken after repeated real failures; "
