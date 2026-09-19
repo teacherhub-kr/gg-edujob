@@ -4,11 +4,11 @@ index = Path("index.html").read_text(encoding="utf-8")
 css = Path("edujob-refresh.css").read_text(encoding="utf-8")
 js = Path("edujob-refresh.js").read_text(encoding="utf-8")
 logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
-mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
+mascot_png = Path("assets/mascot.png")
 
 required_index = [
     "edujob-refresh.css?v=20260919g",
-    "edujob-refresh.js?v=20260919g",
+    "edujob-refresh.js?v=20260920b",
 ]
 for needle in required_index:
     if needle not in index:
@@ -29,7 +29,7 @@ for needle in required_css:
 required_js = [
     "학교·교육청",
     "학원·민간",
-    "edujob-mascot.svg",
+    "assets/mascot.png?v=20260920b",
     "radarAlertCard",
     "내 채용 레이더",
 ]
@@ -40,8 +40,10 @@ for needle in required_js:
 if "#03c75a" in css.lower():
     raise SystemExit("legacy NAVER green must not return in bright refresh")
 
-if "학사모 E 로고" not in logo or "E 마스코트" not in mascot:
-    raise SystemExit("brand SVG accessibility labels missing")
+if "학사모 E 로고" not in logo:
+    raise SystemExit("brand logo SVG accessibility label missing")
+if not mascot_png.exists() or mascot_png.stat().st_size < 10000:
+    raise SystemExit("final raster mascot asset missing or unexpectedly small")
 
 print("bright Edujob brand refresh contract verified")
 
@@ -86,8 +88,8 @@ for short in ['data-short="신규"', 'data-short="관심"', 'data-short="일치"
     if short not in radar:
         raise SystemExit(f"mobile radar short label missing: {short}")
 
-if "edujob-logo.svg?v=20260919g" not in js or "edujob-mascot.svg?v=20260919g" not in js:
-    raise SystemExit("brand SVG cache busting is required")
+if "edujob-logo.svg?v=20260919g" not in js or "assets/mascot.png?v=20260920b" not in js:
+    raise SystemExit("brand asset cache busting is required")
 
 print("mobile radar strip v5 and SVG cache-bust contract verified")
 
@@ -98,11 +100,8 @@ if "min-height:56px!important" not in css or "#statusHeading h2" not in css:
 if "M29 50 90 23l67 25-64 29z" not in logo:
     raise SystemExit("logo cap must be visibly oversized and worn")
 
-if "M72 73 150 38l90 33-86 39z" not in mascot:
-    raise SystemExit("mascot cap must be visibly oversized and worn")
-
-if "edujob-logo.svg?v=20260919g" not in js or "edujob-mascot.svg?v=20260919g" not in js:
-    raise SystemExit("v6 SVG cache busting missing")
+if "edujob-logo.svg?v=20260919g" not in js or "assets/mascot.png?v=20260920b" not in js:
+    raise SystemExit("v6 brand asset cache busting missing")
 
 print("stats compact v6 and oversized worn-cap contract verified")
 
@@ -116,7 +115,4 @@ if "min-height:50px!important" not in css:
 if 'translate(-8 -18) rotate(-4 91 58)' not in logo:
     raise SystemExit("logo cap offset must lightly overlap the E")
 
-if 'translate(-12 -22) rotate(-4 151 82)' not in mascot:
-    raise SystemExit("mascot cap offset must lightly overlap the E")
-
-print("one-row recruitment stats v7 and cap-offset contract verified")
+print("one-row recruitment stats v7 and raster mascot contract verified")
