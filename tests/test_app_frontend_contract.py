@@ -177,3 +177,19 @@ if "filter-drawer{display:none!important}" not in css:
 
 if "grid-template-columns:repeat(4,minmax(0,1fr))" not in css:
     raise SystemExit("quick filter row must expose exactly four compact controls")
+
+
+# Click-binding regression guard
+for bad in [
+    "$('[data-filter-focus]',screen).forEach",
+    "$('[data-quick-filter]',screen).forEach",
+]:
+    if bad in js:
+        raise SystemExit(f"single-element selector used with forEach: {bad}")
+
+for good in [
+    "$$('[data-filter-focus]',screen).forEach",
+    "$$('[data-quick-filter]',screen).forEach",
+]:
+    if good not in js:
+        raise SystemExit(f"multi-element click binding missing: {good}")
