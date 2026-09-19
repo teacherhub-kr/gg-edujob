@@ -4,6 +4,7 @@ html=Path("app.html").read_text(encoding="utf-8")
 css=Path("app.css").read_text(encoding="utf-8")
 js=Path("app.js").read_text(encoding="utf-8")
 store=Path("user-store.js").read_text(encoding="utf-8")
+alerts=Path("alert-client.js").read_text(encoding="utf-8")
 
 for needle in ["app.css","user-store.js","app.js","direct-link-guard.js","alert-client.js","#/home","#/search","#/radar","#/saved","#/me"]:
     if needle not in html:
@@ -227,3 +228,52 @@ for label in ["시·도","지역","학교급","직종","공고 구분","구인 �
 
 if "region-group" not in js or "region-group-body" not in js:
     raise SystemExit("long region lists must remain available in nested groups")
+
+
+# Saved conditions must drive the home page after the user applies them.
+for needle in [
+    "const matches=p?[...profileMatches(p)]",
+    "const homeRows=p?matches:latest",
+    "내 저장 조건",
+    "내 조건 맞춤 공고",
+    "data-home-profile=\"edit\"",
+    "data-home-profile=\"matches\"",
+    "profileSignature",
+    "store()?.profile?.set?.(next)",
+]:
+    if needle not in js:
+        raise SystemExit(f"saved-condition home contract missing: {needle}")
+
+# The filter must use real, tappable checkboxes and update the explicit checked class.
+for needle in [
+    "pointer-events:auto !important",
+    "opacity:1 !important",
+    "accent-color:#377bd7",
+    ".check-chip.checked",
+]:
+    if needle not in css:
+        raise SystemExit(f"native checkbox contract missing: {needle}")
+if "class=\"check-chip ${set.has(v)?'checked':''}\"" not in js:
+    raise SystemExit("checkbox checked class must render from filter state")
+if "classList.toggle('checked',e.target.checked)" not in js:
+    raise SystemExit("checkbox checked class must update immediately on change")
+
+# New app alert toggle must call the push client directly, not a legacy DOM button.
+for needle in [
+    "window.EduJobAlerts",
+    "await client.subscribe()",
+    "await client.unsubscribe()",
+]:
+    if needle not in js:
+        raise SystemExit(f"new app alert integration missing: {needle}")
+if "jobRadarAlerts" in js:
+    raise SystemExit("new app must not depend on the legacy alert button")
+for needle in [
+    "window.EduJobAlerts=Object.freeze",
+    "supported,",
+    "subscribe,",
+    "unsubscribe,",
+    "sync",
+]:
+    if needle not in alerts:
+        raise SystemExit(f"alert client API missing: {needle}")
