@@ -256,7 +256,7 @@ const writeSnapshot=(p)=>{
 const badgeData=(j)=>{
   const out=[];
   const d=dayDiff(j.applyEnd);
-  if(d!==null&&d>=0&&d<=3)out.push(['deadline',d===0?'오늘 마감':`D-${d}`]);
+  if(d!==null&&d>=0&&d<=3)out.push(['deadline','마감임박']);
   if(isToday(j.registered))out.push(['new','신규']);
   if(jobType(j)==='기간제교원')out.push(['term','기간제']);
   if(String(j.sourceType||'').includes('교육청'))out.push(['gov','교육청']);
@@ -268,6 +268,7 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
   const badges=badgeData(j).map(([cls,label])=>`<span class="badge ${cls}">${esc(label)}</span>`).join('');
   const summary=summaryOf(j);
   const deadline=deadlineLabel(j);
+  const showDeadline=Boolean(parseDate(j.applyEnd));
   return `<article class="job-card" data-job-key="${esc(r.key)}" tabindex="0" role="link" aria-label="${esc(j.title||'채용 공고')}">
     <div class="badge-row">${badges}</div>
     <div class="job-content">
@@ -280,12 +281,12 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
           <span class="meta-chip">${icon('pin')}${esc(regionLabel(j))}</span>
           <span class="meta-chip">${icon('school')}${esc(schoolLevel(j))}</span>
           ${j.subject?`<span class="meta-chip">${icon('book')}${esc(j.subject)}</span>`:''}
-          <span class="meta-chip">${esc(deadline)}</span>
         </div>
       </div>
     </div>
     <span class="job-time">${esc(registeredLabel(j.registered))}</span>
     <button type="button" class="favorite-btn ${on?'on':''}" aria-pressed="${on}" aria-label="${on?'관심공고 해제':'관심공고 저장'}" data-favorite="${esc(r.key)}">${icon('heart')}</button>
+    ${showDeadline?`<span class="job-deadline">${esc(deadline)}</span>`:''}
   </article>`;
 };
 
@@ -333,7 +334,7 @@ const homeHtml=()=>{
   const today=active.filter(r=>isToday(r.j.registered)).length;
   const latest=[...active].sort((a,b)=>b.registered-a.registered).slice(0,HOME_LIMIT);
   return `<section class="home-radar">
-    <div class="radar-top"><div><h2>🎯 내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="radar-mascot"><img src="edujob-mascot.svg?v=20260919g" width="70" height="70" alt="" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새로운 일자리를 찾아드려요!</p></div><div class="radar-mascot"><img src="edujob-mascot.svg?v=20260919g" width="70" height="70" alt="" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
     <div class="metric-grid">
       <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?snapshotNewCount(p):0}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
       <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
@@ -364,10 +365,9 @@ const searchHtml=()=>{
     <button type="button" class="grow" data-filter-focus="regions">지역${selectedCount(state.regions)?` ${selectedCount(state.regions)}`:''}⌄</button>
     <button type="button" class="grow" data-filter-focus="schools">학교급${selectedCount(state.schools)?` ${selectedCount(state.schools)}`:''}⌄</button>
     <button type="button" class="grow" data-filter-focus="subjects">과목${selectedCount(state.subjects)?` ${selectedCount(state.subjects)}`:''}⌄</button>
-    <select id="sortSelect" aria-label="정렬"><option value="newest" ${state.sort==='newest'?'selected':''}>최신순</option><option value="deadline" ${state.sort==='deadline'?'selected':''}>마감임박순</option><option value="relevance" ${state.sort==='relevance'?'selected':''}>관련도순</option></select>
   </div>
   ${filterDrawerHtml()}
-  <div class="results-bar"><span>검색 결과 <strong>${rows.length.toLocaleString()}</strong>건</span><span>${state.payload?.updatedAt?`갱신 ${esc(state.payload.updatedAt)}`:''}</span></div>
+  <div class="results-bar"><span>검색 결과 <strong>${rows.length.toLocaleString()}</strong>건</span><select id="sortSelect" class="results-sort" aria-label="정렬"><option value="newest" ${state.sort==='newest'?'selected':''}>최신순</option><option value="deadline" ${state.sort==='deadline'?'selected':''}>마감임박순</option><option value="relevance" ${state.sort==='relevance'?'selected':''}>관련도순</option></select></div>
   ${jobsListHtml(rows,state.visible)}`;
 };
 
@@ -386,7 +386,7 @@ const radarHtml=()=>{
   const matches=p?profileMatches(p):[];
   if(state.radarTab==='matches'&&p)writeSnapshot(p);
   return `<section class="radar-page">
-    <div class="hero-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">‹</button><div class="hero-copy"><h1>내 채용 레이더</h1><p>내가 원하는 조건에 맞는 공고를<br>자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" width="76" height="64" alt="" loading="lazy"></div>
+    <div class="hero-row"><div class="hero-copy"><div class="hero-title-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">←</button><h1>내 채용 레이더</h1></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" width="76" height="64" alt="" loading="lazy"></div>
     <div class="segment-tabs"><button type="button" data-radar-tab="conditions" class="${state.radarTab==='conditions'?'active':''}">내 조건</button><button type="button" data-radar-tab="matches" class="${state.radarTab==='matches'?'active':''}">맞춤 공고</button></div>
     ${state.radarTab==='conditions'?
       `<div class="condition-card"><div class="condition-head"><strong>저장된 검색 조건 (${p?1:0})</strong><button type="button" data-go="search">＋ 새 조건 추가</button></div>
@@ -406,22 +406,20 @@ const savedHtml=()=>{
   const recent=recentRows().map(x=>recentMap.get(x.key)).filter(Boolean);
   const rows=state.savedTab==='saved'?savedRows:recent;
   return `<section class="saved-page"><div class="segment-tabs"><button type="button" data-saved-tab="saved" class="${state.savedTab==='saved'?'active':''}">저장한 공고 (${savedRows.length})</button><button type="button" data-saved-tab="recent" class="${state.savedTab==='recent'?'active':''}">최근 본 공고</button></div>
-  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state saved-tip"><img src="edujob-mascot.svg?v=20260919g" width="76" height="68" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p></div>`}</section>`;
+  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state saved-tip"><img src="edujob-mascot.svg?v=20260919g" width="76" height="68" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p><button type="button" class="empty-cta" data-go="search">공고 검색하러 가기</button></div>`}</section>`;
 };
 
 const meHtml=()=>{
   const fav=favoriteKeys().size,p=store()?.profile?.get?.(),recent=recentRows().length,a=store()?.alerts?.get?.()||{enabled:false};
-  const row=(ic,label,action,extra='',disabled=false)=>`<button type="button" data-me="${action}" ${disabled?'disabled':''}>${icon(ic)}<span>${esc(label)}${extra?` · ${esc(extra)}`:''}</span><em>${disabled?'준비 중':'›'}</em></button>`;
-  return `<div class="me-profile"><div class="avatar">${icon('user')}</div><div><strong>선생님</strong><p>이 기기에 저장된 개인 설정을 사용합니다.</p></div><span style="margin-left:auto;color:#2b7cf3">${icon('settings')}</span></div>
+  const row=(ic,label,action,status='',disabled=false)=>`<button type="button" data-me="${action}" ${disabled?'disabled':''}>${icon(ic)}<span>${esc(label)}</span><em class="${status?'status':''}">${status?esc(status):'›'}</em></button>`;
+  return `<div class="me-profile"><div class="avatar">${icon('user')}</div><div><strong>선생님</strong><p>안녕하세요!</p></div><span style="margin-left:auto;color:#2b7cf3">${icon('settings')}</span></div>
   <div class="me-stats"><div><span>저장한 공고</span><b>${fav}</b></div><div><span>저장한 조건</span><b>${p?1:0}</b></div><div><span>최근 본 공고</span><b>${recent}</b></div></div>
-  <div class="menu-list">
+  <div class="menu-list menu-list-single">
     ${row('user','내 정보 관리','profile','준비 중',true)}
     ${row('bell','알림 설정','alerts',a.enabled?'켜짐':'꺼짐')}
     ${row('bookmark','저장한 조건','radar')}
     ${row('heart','관심공고','saved')}
     ${row('history','최근 본 공고','recent')}
-  </div>
-  <div class="menu-list">
     ${row('document','이용 가이드','guide','준비 중',true)}
     ${row('document','문의하기','contact','준비 중',true)}
     ${row('document','서비스 소개','about','준비 중',true)}

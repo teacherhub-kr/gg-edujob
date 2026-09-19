@@ -40,3 +40,36 @@ for needle in ["recent:'edujob.recentJobs.v1'","recent:{","resetLocal:"]:
         raise SystemExit(f"user store extension missing: {needle}")
 
 print("frontend rebuild preview contract verified")
+
+
+# Approved mockup parity guards
+for needle in [
+    "마감임박",
+    "radar-heading-icon",
+    'class="job-deadline"',
+    'class="results-sort"',
+    'class="hero-title-row"',
+    'class="empty-cta"',
+    "menu-list menu-list-single",
+]:
+    if needle not in js and needle not in css:
+        raise SystemExit(f"approved mockup parity contract missing: {needle}")
+
+if "D-" + "$" + "{d}" in js:
+    raise SystemExit("deadline badge must use vocabulary '마감임박', not D-day text")
+
+card_start=js.find("const cardHtml")
+card_end=js.find("const jobsListHtml", card_start)
+card_block=js[card_start:card_end]
+if 'meta-chip">${esc(deadline)}' in card_block:
+    raise SystemExit("deadline must not be rendered as a fourth meta chip")
+
+search_start=js.find("const searchHtml")
+search_end=js.find("const profileSummary", search_start)
+search_block=js[search_start:search_end]
+filter_row=search_block.split('${filterDrawerHtml()}')[0]
+if 'id="sortSelect"' in filter_row:
+    raise SystemExit("sort control must live on results row, not filter row")
+
+if "edujob-final-ui.css" in html or "edujob-final-ui.js" in html:
+    raise SystemExit("canonical app preview must not load the legacy final-ui layer")
