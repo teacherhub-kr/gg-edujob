@@ -287,6 +287,16 @@ const currentProfile=()=>({
   savedAt:new Date().toISOString()
 });
 const hasProfileConditions=(p)=>['provinces','regions','schools','types','sources','categories','subjects'].some(k=>arr(p?.[k]).length)||Boolean(String(p?.q||'').trim());
+const profileSignature=(p)=>JSON.stringify({
+  provinces:[...arr(p?.provinces)].sort(),
+  regions:[...arr(p?.regions)].sort(),
+  schools:[...arr(p?.schools)].sort(),
+  types:[...arr(p?.types)].sort(),
+  sources:[...arr(p?.sources)].sort(),
+  categories:[...arr(p?.categories)].sort(),
+  subjects:[...arr(p?.subjects)].sort(),
+  q:norm(p?.q||'')
+});
 const matchesProfile=(r,p)=>{
   const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
   if(!r.active)return false;
@@ -605,7 +615,17 @@ function bindScreen(){
   $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{state.filterOpen=true;state.filterFocus=b.dataset.filterFocus;render();setTimeout(()=>screen.querySelector(`[data-group="${state.filterFocus}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),10)}));
   $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
   $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
-  $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
+  $('#filterApply',screen)?.addEventListener('click',()=>{
+    const next=currentProfile();
+    if(hasProfileConditions(next)){
+      const prev=store()?.profile?.get?.();
+      const changed=profileSignature(prev)!==profileSignature(next);
+      store()?.profile?.set?.(next);
+      if(changed)writeSnapshot(next);
+      toast(changed?'내 조건으로 저장했습니다.':'저장한 조건으로 공고를 보여드립니다.');
+    }
+    state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render();
+  });
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
   $$('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
     const set=state[e.target.dataset.filter];if(!(set instanceof Set))return;
