@@ -195,3 +195,35 @@ for needle in [
 
 if "left:0;" not in css or "left:62px;" not in css:
     raise SystemExit("home radar must place mascot left and message right")
+
+
+# Calm hierarchy: preserve every filter, reduce what is visible at once.
+for needle in [
+    "const filterSectionHtml",
+    'class="filter-section"',
+    'class="filter-footer"',
+    'id="filterApply"',
+    'class="metric-grid calm"',
+    'class="radar-actions calm"',
+    'class="home-status-strip"',
+]:
+    if needle not in js and needle not in css:
+        raise SystemExit(f"calm hierarchy contract missing: {needle}")
+
+home_start=js.find("const homeHtml")
+home_end=js.find("const searchHtml", home_start)
+home_block=js[home_start:home_end]
+if "filterDrawerHtml()" in home_block:
+    raise SystemExit("home must not expand the detailed filter drawer")
+if "채용 현황" in home_block:
+    raise SystemExit("home must not give the status dashboard equal visual weight to jobs")
+
+filter_start=js.find("const filterDrawerHtml")
+filter_end=js.find("const homeHtml", filter_start)
+filter_block=js[filter_start:filter_end]
+for label in ["시·도","지역","학교급","직종","공고 구분","구인 분야","과목·담당"]:
+    if label not in filter_block:
+        raise SystemExit(f"full filter option disappeared: {label}")
+
+if "region-group" not in js or "region-group-body" not in js:
+    raise SystemExit("long region lists must remain available in nested groups")
