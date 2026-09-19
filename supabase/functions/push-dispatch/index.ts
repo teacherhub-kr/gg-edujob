@@ -14,6 +14,29 @@ const safeEqual=(a:string,b:string)=>{
   return out===0;
 };
 
+const KST_OFFSET_MS=9*60*60*1000;
+const CATCHUP_LOOKBACK_DAYS=2;
+
+const registeredDay=(value:unknown)=>{
+  const m=String(value||'').match(/(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})/);
+  if(!m)return null;
+  return Math.floor(Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3]))/86400000);
+};
+
+const checkpointDay=(value:unknown)=>{
+  const t=Date.parse(String(value||''));
+  if(!Number.isFinite(t))return null;
+  return Math.floor((t+KST_OFFSET_MS)/86400000);
+};
+
+const recentEnoughForCatchup=(job:Job,checkpoint:unknown)=>{
+  const jd=registeredDay(job.registered);
+  const cd=checkpointDay(checkpoint);
+  if(cd===null)return true;
+  if(jd===null)return false;
+  return jd>=cd-CATCHUP_LOOKBACK_DAYS;
+};
+
 const adminClient=()=>{
   const url=Deno.env.get('SUPABASE_URL')||'';
   const modern=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
@@ -44,23 +67,44 @@ export default {
 
     const jobs=await fetchCurrentJobs();
     const {data:rows,error}=await db.from('edujob_push_subscriptions')
-      .select('id,endpoint,p256dh,auth,profile,seen_ids').eq('enabled',true).limit(1000);
+      .select('id,endpoint,p256dh,auth,profile,seen_ids,created_at,updated_at').eq('enabled',true).limit(1000);
     if(error)return response({error:'db'},500);
 
-    let sent=0,disabled=0,unchanged=0,failed=0;
+    let sent=0,disabled=0,unchanged=0,rebaselined=0,failed=0;
     for(const row of rows||[]){
+      const checkedAt=new Date().toISOString();
       const profile=(row.profile||{}) as Profile;
       const matching=(jobs as Job[]).filter(j=>matchesProfile(j,profile));
       const currentIds=matching.map(jobKey).filter(Boolean).slice(0,3000);
       const seen=new Set(Array.isArray(row.seen_ids)?row.seen_ids:[]);
       const fresh=matching.filter(j=>!seen.has(jobKey(j)));
-      if(!fresh.length){unchanged++;continue}
+      if(!fresh.length){
+        await db.from('edujob_push_subscriptions')
+          .update({updated_at:checkedAt}).eq('id',row.id);
+        unchanged++;
+        continue;
+      }
 
-      const first=fresh[0];
-      const title=fresh.length===1?'내 조건에 맞는 새 공고 1건':`내 조건에 맞는 새 공고 ${fresh.length}건`;
+      // A stale unified publication can recover with many still-active historical rows.
+      // Do not convert that catch-up into an alert flood. Only unseen jobs registered
+      // within the recent catch-up window are eligible for notification; older unseen
+      // rows are silently folded into the baseline.
+      const checkpoint=row.updated_at||row.created_at||'';
+      const notifyFresh=fresh.filter(j=>recentEnoughForCatchup(j,checkpoint));
+      if(!notifyFresh.length){
+        await db.from('edujob_push_subscriptions').update({
+          seen_ids:currentIds,
+          updated_at:checkedAt
+        }).eq('id',row.id);
+        rebaselined++;
+        continue;
+      }
+
+      const first=notifyFresh[0];
+      const title=notifyFresh.length===1?'내 조건에 맞는 새 공고 1건':`내 조건에 맞는 새 공고 ${notifyFresh.length}건`;
       const school=String(first.school||'기관명 확인');
       const jobTitle=String(first.title||'채용 공고');
-      const body=fresh.length===1?`${school} · ${jobTitle}`:`${school} · ${jobTitle} 외 ${fresh.length-1}건`;
+      const body=notifyFresh.length===1?`${school} · ${jobTitle}`:`${school} · ${jobTitle} 외 ${notifyFresh.length-1}건`;
 
       try{
         await webpush.sendNotification(
@@ -70,8 +114,8 @@ export default {
         );
         await db.from('edujob_push_subscriptions').update({
           seen_ids:currentIds,
-          last_notified_at:new Date().toISOString(),
-          updated_at:new Date().toISOString()
+          last_notified_at:checkedAt,
+          updated_at:checkedAt
         }).eq('id',row.id);
         sent++;
       }catch(e){
@@ -79,12 +123,12 @@ export default {
         if(status===404||status===410){
           await db.from('edujob_push_subscriptions').update({
             enabled:false,
-            updated_at:new Date().toISOString()
+            updated_at:checkedAt
           }).eq('id',row.id);
           disabled++;
         }else failed++;
       }
     }
-    return response({ok:true,sent,disabled,unchanged,failed,total:(rows||[]).length});
+    return response({ok:true,sent,disabled,unchanged,rebaselined,failed,total:(rows||[]).length});
   }
 };

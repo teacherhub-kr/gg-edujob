@@ -62,3 +62,14 @@ if "push" in workflow.lower() and "git push" in workflow.lower():
     raise SystemExit("alert workflow must never write to the repository")
 
 print("web push alert contract verified")
+
+for needle in (
+    "CATCHUP_LOOKBACK_DAYS=2",
+    "recentEnoughForCatchup",
+    "created_at,updated_at",
+    "const notifyFresh=fresh.filter",
+    "rebaselined",
+    ".update({updated_at:checkedAt})",
+):
+    if needle not in dispatch:
+        raise SystemExit("push catch-up flood guard missing: " + needle)
