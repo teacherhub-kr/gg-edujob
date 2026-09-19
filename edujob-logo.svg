@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
   <title id="title">수도권에듀잡 학사모 E 로고</title>
-  <desc id="desc">파란색 E 글자 위에 작은 남색 학사모가 자연스럽게 얹힌 교육 채용 서비스 로고</desc>
+  <desc id="desc">파란색 E 글자가 남색 학사모를 머리에 자연스럽게 쓰고 있는 교육 채용 서비스 로고</desc>
   <defs>
     <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#52b7ff"/><stop offset=".55" stop-color="#1674f5"/><stop offset="1" stop-color="#0d52cf"/>
@@ -14,9 +14,11 @@
   </defs>
   <g filter="url(#shadow)">
     <path fill="url(#body)" d="M43 53c0-11 9-20 20-20h66c9 0 16 7 16 16s-7 16-16 16H78v17h42c9 0 16 7 16 16s-7 16-16 16H78v18h52c9 0 16 7 16 16s-7 16-16 16H63c-11 0-20-9-20-20V53z"/>
-    <path fill="url(#cap)" d="M57 48 89 35l35 12-34 16z"/>
-    <path fill="#0a245d" d="M66 53v8c0 7 11 12 24 12s24-5 24-12v-7L90 64z"/>
-    <path d="M123 48v17" stroke="#f2b423" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="123" cy="69" r="4" fill="#f2b423"/>
+    <g transform="rotate(-3 90 53)">
+      <path fill="url(#cap)" d="M44 48 89 29l51 18-49 22z"/>
+      <path fill="#0a245d" d="M56 55v11c0 9 15 16 34 16s34-7 34-16V57L90 71z"/>
+      <path d="M138 48v22" stroke="#f2b423" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="138" cy="74" r="4.8" fill="#f2b423"/>
+    </g>
   </g>
 </svg>
