@@ -14,6 +14,30 @@ const safeEqual=(a:string,b:string)=>{
   return out===0;
 };
 
+const KST_OFFSET_MS=9*60*60*1000;
+
+const kstDay=(value:unknown)=>{
+  const raw=String(value||'').trim();
+  if(!raw)return '';
+  const dt=new Date(raw);
+  if(Number.isNaN(dt.getTime()))return '';
+  return new Date(dt.getTime()+KST_OFFSET_MS).toISOString().slice(0,10);
+};
+
+const jobDay=(value:unknown)=>{
+  const m=String(value||'').match(/(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})/);
+  if(!m)return '';
+  return `${m[1]}-${String(Number(m[2])).padStart(2,'0')}-${String(Number(m[3])).padStart(2,'0')}`;
+};
+
+const isOnOrAfterBaselineDay=(j:Job,profile:Profile,createdAt:unknown)=>{
+  const baselineDay=kstDay(profile.savedAt||createdAt);
+  if(!baselineDay)return true;
+  const registeredDay=jobDay(j.registered);
+  if(!registeredDay)return false;
+  return registeredDay>=baselineDay;
+};
+
 const adminClient=()=>{
   const url=Deno.env.get('SUPABASE_URL')||'';
   const modern=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
@@ -44,17 +68,29 @@ export default {
 
     const jobs=await fetchCurrentJobs();
     const {data:rows,error}=await db.from('edujob_push_subscriptions')
-      .select('id,endpoint,p256dh,auth,profile,seen_ids').eq('enabled',true).limit(1000);
+      .select('id,endpoint,p256dh,auth,profile,seen_ids,created_at').eq('enabled',true).limit(1000);
     if(error)return response({error:'db'},500);
 
-    let sent=0,disabled=0,unchanged=0,failed=0;
+    let sent=0,disabled=0,unchanged=0,failed=0,suppressed=0;
     for(const row of rows||[]){
       const profile=(row.profile||{}) as Profile;
       const matching=(jobs as Job[]).filter(j=>matchesProfile(j,profile));
       const currentIds=matching.map(jobKey).filter(Boolean).slice(0,3000);
       const seen=new Set(Array.isArray(row.seen_ids)?row.seen_ids:[]);
-      const fresh=matching.filter(j=>!seen.has(jobKey(j)));
-      if(!fresh.length){unchanged++;continue}
+      const unseen=matching.filter(j=>!seen.has(jobKey(j)));
+      const fresh=unseen.filter(j=>isOnOrAfterBaselineDay(j,profile,row.created_at));
+      const suppressedBacklog=unseen.length-fresh.length;
+      suppressed+=suppressedBacklog;
+      if(!fresh.length){
+        if(suppressedBacklog>0){
+          await db.from('edujob_push_subscriptions').update({
+            seen_ids:currentIds,
+            updated_at:new Date().toISOString()
+          }).eq('id',row.id);
+        }
+        unchanged++;
+        continue
+      }
 
       const first=fresh[0];
       const title=fresh.length===1?'내 조건에 맞는 새 공고 1건':`내 조건에 맞는 새 공고 ${fresh.length}건`;
@@ -85,6 +121,6 @@ export default {
         }else failed++;
       }
     }
-    return response({ok:true,sent,disabled,unchanged,failed,total:(rows||[]).length});
+    return response({ok:true,sent,disabled,unchanged,failed,suppressed,total:(rows||[]).length});
   }
 };
