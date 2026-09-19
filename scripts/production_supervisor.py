@@ -215,6 +215,13 @@ def change_after_failure(change_at: datetime | None, failure_at: datetime | None
     return bool(change_at and failure_at and change_at > failure_at)
 
 
+def unified_publication_stale(
+    jobs_time: datetime | None, unified_time: datetime | None
+) -> bool:
+    """Return True when the user-facing unified publication lags verified jobs data."""
+    return bool(jobs_time and (unified_time is None or jobs_time > unified_time))
+
+
 def previous_reconciliation_report() -> dict[str, Any] | None:
     commits = [
         x.strip()
@@ -364,7 +371,34 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             recovery_success_time = completed_at(latest_recovery_success)
             recovery_latest_time = completed_at(latest_recovery)
 
-            if audit_failed:
+            # User-visible publication must not wait behind long recovery/completeness
+            # loops once jobs.json has already passed the Fast publication gates.
+            # unified-search has its own fail-closed validation, so a failed rebuild
+            # preserves the last-known-good unified_jobs.json.
+            if unified_publication_stale(jobs_time, unified_time):
+                blocked, failures, _ = circuit_blocked(
+                    "unified", unified_runs, now
+                )
+                latest_unified_time = completed_at(latest_unified)
+                if blocked:
+                    action = "skip-unified-circuit-open"
+                    circuit = "unified"
+                    reason = f"Unified search circuit open after {failures} real failures"
+                elif (
+                    latest_unified
+                    and latest_unified.get("conclusion") in REAL_FAILURES
+                    and latest_unified_time
+                    and now - latest_unified_time < timedelta(hours=1)
+                ):
+                    action = "skip-unified-backoff"
+                    reason = "unified search failed within the last hour"
+                else:
+                    action = "unified"
+                    reason = (
+                        f"jobs.json is newer than unified_jobs.json: "
+                        f"jobs={jobs_time}, unified={unified_time}"
+                    )
+            elif audit_failed:
                 if (
                     recovery_success_time
                     and audit_failure_time
@@ -428,29 +462,6 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                 else:
                     action = "completeness"
                     reason = "no current successful daily official completeness proof"
-            elif jobs_time and (unified_time is None or jobs_time > unified_time):
-                blocked, failures, _ = circuit_blocked(
-                    "unified", unified_runs, now
-                )
-                latest_unified_time = completed_at(latest_unified)
-                if blocked:
-                    action = "skip-unified-circuit-open"
-                    circuit = "unified"
-                    reason = f"Unified search circuit open after {failures} real failures"
-                elif (
-                    latest_unified
-                    and latest_unified.get("conclusion") in REAL_FAILURES
-                    and latest_unified_time
-                    and now - latest_unified_time < timedelta(hours=1)
-                ):
-                    action = "skip-unified-backoff"
-                    reason = "unified search failed within the last hour"
-                else:
-                    action = "unified"
-                    reason = (
-                        f"jobs.json is newer than unified_jobs.json: "
-                        f"jobs={jobs_time}, unified={unified_time}"
-                    )
 
     fast_failures = failure_state["fast"]["consecutiveRealFailures"]
     stale_hours = (
@@ -486,7 +497,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "jobsCommitAt": jobs_time.isoformat() if jobs_time else None,
         "unifiedCommitAt": unified_time.isoformat() if unified_time else None,
         "workflowCount": workflow_count,
-        "priority": ["fast", "recovery", "completeness", "unified"],
+        "priority": ["fast", "unified", "recovery", "completeness"],
         "fastFailures": fast_failures,
     }
 
