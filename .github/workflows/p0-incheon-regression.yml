@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'scripts/merge_incheon_official.py'
+      - 'scripts/collect_incheon_support.py'
       - 'scripts/ensure_incheon_registry.py'
       - 'scripts/verify_required_regions.py'
       - 'scripts/stable_source_identity.py'
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/p0-incheon-regression.yml'
       - '.github/workflows/official-completeness-audit.yml'
       - 'tests/test_incheon_transient_retry.py'
+      - 'tests/test_incheon_support_offices.py'
   workflow_dispatch:
 
 permissions:
@@ -35,11 +37,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Static compile
         run: |
-          python -m py_compile scripts/merge_incheon_official.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py
+          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_incheon_transient_retry
+        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
@@ -81,7 +83,7 @@ jobs:
           from stable_source_identity import canonical_source_id
           data=json.loads(Path('sources.json').read_text(encoding='utf-8'))
           assert {'gyeonggi','seoul','incheon'} <= set(data),data.keys()
-          assert official_source_count() == 39,official_source_count()
+          assert official_source_count() == 44,official_source_count()
           boards=(data['incheon']['central'].get('requiredBoards') or [])
           by_bbs={str(x.get('bbsId')):str(x.get('url')) for x in boards}
           assert by_bbs == {'1981':'https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997','1534':'https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571'},by_bbs
@@ -89,9 +91,16 @@ jobs:
           afterschool={'province':'인천','sourceType':'늘봄지원센터','bbsId':'1534','nttSn':'3384314','url':'https://www.ice.go.kr/afterschool/na/ntt/selectNttInfo.do?bbsId=1534&mi=10571&nttSn=3384314'}
           assert canonical_source_id(central) == 'ice-central:3384652'
           assert canonical_source_id(afterschool) == 'ice-afterschool:3384314'
-          print('registry/identity ok',by_bbs)
+          support=(data['incheon'].get('supportOffices') or [])
+          assert len(support) == 5,support
+          assert {x.get('key') for x in support} == {'nambu','bukbu','dongbu','seobu','ganghwa'},support
+          north={'province':'인천','sourceType':'교육지원청 개별 게시판','url':'https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008173&menu_idx=86'}
+          east={'province':'인천','sourceType':'교육지원청 개별 게시판','url':'https://dongbu.ice.go.kr/bbs/bbsMsgDetail.do?bcd=job_offer&msg_seq=6928'}
+          assert canonical_source_id(north) == 'ice-support:bukbu.ice.go.kr:data_idx:BD0000008173'
+          assert canonical_source_id(east) == 'ice-support:dongbu.ice.go.kr:msg_seq:6928'
+          print('registry/identity ok',by_bbs,[x.get('name') for x in support])
           PY
-      - name: Probe both live official Incheon boards
+      - name: Probe complete live Incheon official network
         env:
           PYTHONPATH: scripts
         run: |
@@ -109,4 +118,16 @@ jobs:
           assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
           assert all(int(x.get('count') or 0) > 0 for x in health),health
           print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
+          PY
+          python scripts/collect_incheon_support.py --check-only --lookback-days 14 --max-pages 10
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('incheon_support_report.json').read_text(encoding='utf-8'))
+          assert report.get('officeCount') == 5,report
+          assert report.get('completeOffices') == 5,report
+          assert {x.get('name') for x in report.get('offices',[])} == {
+              '인천남부교육지원청','인천북부교육지원청','인천동부교육지원청','인천서부교육지원청','인천강화교육지원청'
+          },report
+          print('five-office live probe ok',[(x.get('name'),x.get('count'),x.get('pagesScanned')) for x in report.get('offices',[])])
           PY
