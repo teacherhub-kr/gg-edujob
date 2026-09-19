@@ -288,15 +288,16 @@ const currentProfile=()=>({
 });
 const hasProfileConditions=(p)=>['provinces','regions','schools','types','sources','categories','subjects'].some(k=>arr(p?.[k]).length)||Boolean(String(p?.q||'').trim());
 const matchesProfile=(r,p)=>{
-  const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),subs=arr(p?.subjects),ts=arr(p?.types),cs=arr(p?.categories);
+  const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
   if(!r.active)return false;
   if(ps.length&&!ps.includes(r.province))return false;
-  if(rs.length&&!r.regions.some(x=>rs.includes(x)))return false;
+  if(rs.length&&!r.regions.some(x=>rs.some(s=>regionKey(s)===regionKey(x))))return false;
   if(ss.length&&!ss.includes(r.school))return false;
-  if(subs.length&&!subs.includes(r.subject))return false;
-  if(ts.length&&!ts.includes(jobType(r.j)))return false;
-  if(cs.length&&!arr(r.j.categories).some(x=>cs.includes(x)))return false;
-  if(String(p?.q||'').trim()&&!r.search.includes(norm(p.q)))return false;
+  if(ts.length&&!ts.includes(r.type))return false;
+  if(src.length&&!src.some(x=>r.sources.has(x)))return false;
+  if(cats.length&&!cats.some(x=>r.categories.has(x)))return false;
+  if(subs.length&&!subs.some(x=>matchesSubject(r.j,x)))return false;
+  if(q&&!r.search.includes(q))return false;
   return true;
 };
 const profileMatches=(p)=>state.indexed.filter(r=>matchesProfile(r,p));
@@ -590,13 +591,13 @@ function bindScreen(){
   $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
   $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.visible=PAGE_SIZE;render()});
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
-  $('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
+  $$('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
     const set=state[e.target.dataset.filter];if(!(set instanceof Set))return;
     e.target.checked?set.add(e.target.value):set.delete(e.target.value);
     state.visible=PAGE_SIZE;
     const box=$('.selected-box',screen);if(box)box.outerHTML=selectedSummaryHtml();
   }));
-  $('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     const groups={gyeonggi:GYEONGGI_REGIONS,seoul:SEOUL_REGIONS,incheon:INCHEON_REGIONS};
     const vals=groups[btn.dataset.regionAll]||[];
     const all=vals.every(v=>state.regions.has(v));
