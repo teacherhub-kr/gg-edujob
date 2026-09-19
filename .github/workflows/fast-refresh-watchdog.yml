@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     # Single scheduler. All production writer workflows remain dispatch-only.
-    - cron: '17,47 * * * *'
+    # Shifted two minutes to re-register the schedule after multiple missed events.
+    - cron: '19,49 * * * *'
 
 permissions:
   contents: read
