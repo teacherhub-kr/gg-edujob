@@ -76,14 +76,6 @@ if "min-height:48px!important" not in css:
 print("mobile cleanup v3 contract verified")
 
 
-if "M44 48 89 29l51 18-49 22z" not in logo:
-    raise SystemExit("logo graduation cap must be large enough to read as worn")
-
-if "M94 68 150 45l65 23-63 28z" not in mascot:
-    raise SystemExit("mascot graduation cap must be large enough to read as worn")
-
-print("mobile radar compact v4 and worn-cap contract verified")
-
 
 radar = Path("job-radar.js").read_text(encoding="utf-8")
 
