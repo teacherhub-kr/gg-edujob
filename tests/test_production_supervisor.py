@@ -22,6 +22,21 @@ def run(conclusion, hours_ago=0, status="completed"):
 
 
 class ProductionSupervisorTests(unittest.TestCase):
+    def test_verified_data_writers_chain_unified_publication(self):
+        from pathlib import Path
+
+        for path in (
+            ".github/workflows/update-jobs.yml",
+            ".github/workflows/recover-missing-jobs.yml",
+        ):
+            text = Path(path).read_text(encoding="utf-8")
+            self.assertIn("actions: write", text)
+            self.assertIn("Dispatch unified publication when canonical jobs advanced", text)
+            self.assertIn("git log -1 --format=%ct origin/main -- jobs.json", text)
+            self.assertIn("git log -1 --format=%ct origin/main -- unified_jobs.json", text)
+            self.assertIn("unified-search.yml/runs?per_page=10", text)
+            self.assertIn("unified-search.yml/dispatches", text)
+
     def test_unified_publication_stale_when_jobs_are_newer(self):
         jobs = datetime(2026, 9, 19, 7, 28, tzinfo=KST)
         unified = datetime(2026, 9, 10, 23, 58, tzinfo=KST)

@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 
 # The recovery workflow performs long network scans before it is ready to publish.
 # Keep those scans serialized with each other, but do not hold the shared data-writer
@@ -172,6 +173,39 @@ jobs:
             --allow-concurrent-path operational_quality_report.json \
             --allow-concurrent-path operational_quality_history.json \
             --revalidate-command 'python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json && python scripts/validate_reconciliation_policy.py && python scripts/verify_central_reconciliation_consistency.py && python scripts/verify_required_regions.py'
+
+
+      - name: Dispatch unified publication when canonical jobs advanced
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          jobs_ts="$(git log -1 --format=%ct origin/main -- jobs.json || true)"
+          unified_ts="$(git log -1 --format=%ct origin/main -- unified_jobs.json || true)"
+          if [ -z "$jobs_ts" ]; then
+            echo "No canonical jobs.json commit found; refusing follow-up dispatch."
+            exit 1
+          fi
+          if [ -n "$unified_ts" ] && [ "$jobs_ts" -le "$unified_ts" ]; then
+            echo "Unified publication is already current."
+            exit 0
+          fi
+          active="$(gh api \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/runs?per_page=10" \
+            --jq '[.workflow_runs[] | select(.status == "queued" or .status == "in_progress")] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Unified publication already queued/in progress; skipping duplicate dispatch."
+            exit 0
+          fi
+          gh api --method POST \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/dispatches" \
+            -f ref=main
+          echo "Dispatched unified publication immediately after verified data publication."
 
       - name: Preserve failed recovery diagnostics without publishing unverified data
         if: failure()
