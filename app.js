@@ -385,7 +385,7 @@ const radarHtml=()=>{
     <div class="segment-tabs"><button type="button" data-radar-tab="conditions" class="${state.radarTab==='conditions'?'active':''}">내 조건</button><button type="button" data-radar-tab="matches" class="${state.radarTab==='matches'?'active':''}">맞춤 공고</button></div>
     ${state.radarTab==='conditions'?
       `<div class="condition-card"><div class="condition-head"><strong>저장된 검색 조건 (${p?1:0})</strong><button type="button" data-go="search">＋ 새 조건 추가</button></div>
-      ${p?`<div class="saved-condition"><div><strong>${esc(p.q||'내 채용 조건')}</strong><p>${esc(profileSummary(p))}</p><em>새 공고 ${snapshotNewCount(p).toLocaleString()}건 · 일치 ${matches.length.toLocaleString()}건</em></div><button type="button" class="switch on" id="profileApply" aria-label="저장 조건 불러오기"></button></div>`:
+      ${p?`<div class="saved-condition"><div><strong>${esc(p.q||'내 채용 조건')}</strong><p>${esc(profileSummary(p))}</p><em>새 공고 ${snapshotNewCount(p).toLocaleString()}건 · 일치 ${matches.length.toLocaleString()}건</em></div><details class="condition-menu"><summary aria-label="저장 조건 메뉴">⋯</summary><div class="condition-menu-pop"><button type="button" id="conditionEdit">수정</button><button type="button" class="danger" id="conditionDelete">삭제</button></div></details></div>`:
       '<div class="empty-state"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>'}</div>`
       :jobsListHtml(matches,state.visible,{emptyText:'저장 조건에 맞는 모집 중 공고가 없습니다.'})
     }
@@ -402,7 +402,7 @@ const savedHtml=()=>{
   const rows=state.savedTab==='saved'?savedRows:recent;
   return `<div class="screen-head"><div><h1>관심공고</h1><p>저장한 공고와 최근 확인한 공고를 모아봅니다.</p></div></div>
   <div class="segment-tabs"><button type="button" data-saved-tab="saved" class="${state.savedTab==='saved'?'active':''}">저장한 공고 (${savedRows.length})</button><button type="button" data-saved-tab="recent" class="${state.savedTab==='recent'?'active':''}">최근 본 공고</button></div>
-  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state"><img src="edujob-mascot.svg?v=20260919g" width="84" height="76" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'중요한 공고를 따로 관리하고 마감 전에 다시 확인할 수 있습니다.':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p></div>`}`;
+  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state"><img src="edujob-mascot.svg?v=20260919g" width="84" height="76" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p></div>`}`;
 };
 
 const meHtml=()=>{
@@ -520,7 +520,8 @@ function bindScreen(){
   }));
 
   $$('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{state.radarTab=b.dataset.radarTab;state.visible=PAGE_SIZE;render()}));
-  $('#profileApply',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();applyProfileToState(p);setRoute('search')});
+  $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
+  $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
   $('#alertToggle',screen)?.addEventListener('click',()=>{
     const legacy=$('#jobRadarAlerts');
     if(legacy){legacy.click();setTimeout(render,600)}else toast('이 브라우저에서는 알림 설정을 사용할 수 없습니다.');
@@ -570,6 +571,8 @@ function installStaticEvents(){
   $$('#surfaceSegment [data-surface]').forEach(b=>b.addEventListener('click',()=>{state.surface=b.dataset.surface;state.visible=PAGE_SIZE;render()}));
   $('#headerMenuBtn')?.addEventListener('click',()=>setRoute('me'));
   $('#headerAlertBtn')?.addEventListener('click',()=>setRoute('radar'));
+  const compactHeader=()=>$('#appHeader')?.classList.toggle('compact',window.scrollY>36);
+  window.addEventListener('scroll',compactHeader,{passive:true});compactHeader();
   window.addEventListener('hashchange',routeFromHash);
   window.addEventListener('edujob:user-state-changed',()=>render());
 }
