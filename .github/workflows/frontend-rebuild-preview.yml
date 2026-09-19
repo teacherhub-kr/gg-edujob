@@ -1,0 +1,29 @@
+name: Frontend rebuild preview
+
+on:
+  pull_request:
+    paths:
+      - 'app.html'
+      - 'app.css'
+      - 'app.js'
+      - 'user-store.js'
+      - 'tests/test_app_frontend_contract.py'
+      - '.github/workflows/frontend-rebuild-preview.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check JavaScript syntax
+        run: node --check app.js
+      - name: Verify isolated frontend contract
+        run: python tests/test_app_frontend_contract.py
+      - name: Ensure production index is not replaced in preview phase
+        run: |
+          grep -q "edujob-final-ui" index.html
+          test -f app.html
