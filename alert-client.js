@@ -42,7 +42,7 @@
   async function subscribe(){
     if(!supported())throw new Error('unsupported');
     const profile=store.profile.get();
-    const hasConditions=profile&&(['provinces','regions','schools','types','categories','subjects'].some(k=>Array.isArray(profile[k])&&profile[k].length)||String(profile.q||'').trim());
+    const hasConditions=profile&&(['provinces','regions','schools','types','sources','categories','subjects'].some(k=>Array.isArray(profile[k])&&profile[k].length)||String(profile.q||'').trim());
     if(!hasConditions)throw new Error('profile-required');
     if(isIOS()&&!isStandalone())throw new Error('ios-home-screen-required');
     const permission=await Notification.requestPermission();
