@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Ensure the required Incheon official recruitment network exists in sources.json.
+"""Ensure the complete official Incheon recruitment network exists in sources.json.
 
-Incheon uses one logical regional source backed by two mandatory official boards:
-1) the general education-office recruitment board; and
-2) the Neulbom Support Center individual-contractor/external-instructor board.
-The central board itself explicitly redirects after-school postings to the second board, so both
-must be present before Incheon registry completeness can be claimed.
+Incheon has one metropolitan-office logical source backed by two mandatory citywide boards, plus
+five education support offices: Nambu, Bukbu, Dongbu, Seobu and Ganghwa.
+
+For Nambu and Seobu, only the official homepage is pinned because a stable recruitment-board path
+has not been independently verified. Production discovers a recruitment link from the official
+homepage and fails closed if it cannot prove one. We intentionally do not invent a guessed URL.
 """
 from __future__ import annotations
 
@@ -18,7 +19,52 @@ PATH = ROOT / "sources.json"
 CENTRAL_URL = "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
 AFTERSCHOOL_URL = "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
 
-INCHOEON = {
+SUPPORT_OFFICES = [
+    {
+        "key": "nambu",
+        "name": "인천남부교육지원청",
+        "url": "https://nambu.ice.go.kr/",
+        "allowedHosts": ["nambu.ice.go.kr", "nambuice.go.kr"],
+        "boardUrls": [],
+        "autoDiscover": True,
+    },
+    {
+        "key": "bukbu",
+        "name": "인천북부교육지원청",
+        "url": "https://bukbu.ice.go.kr/",
+        "allowedHosts": ["bukbu.ice.go.kr"],
+        "boardUrls": [
+            "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
+        ],
+        "autoDiscover": False,
+    },
+    {
+        "key": "dongbu",
+        "name": "인천동부교육지원청",
+        "url": "https://dongbu.ice.go.kr/",
+        "allowedHosts": ["dongbu.ice.go.kr"],
+        "boardUrls": ["https://dongbu.ice.go.kr/participation/job_offer.jsp"],
+        "autoDiscover": False,
+    },
+    {
+        "key": "seobu",
+        "name": "인천서부교육지원청",
+        "url": "https://seobu.ice.go.kr/",
+        "allowedHosts": ["seobu.ice.go.kr"],
+        "boardUrls": [],
+        "autoDiscover": True,
+    },
+    {
+        "key": "ganghwa",
+        "name": "인천강화교육지원청",
+        "url": "https://ganghwa.ice.go.kr/",
+        "allowedHosts": ["ganghwa.ice.go.kr"],
+        "boardUrls": ["https://ganghwa.ice.go.kr/open/recruiting.asp"],
+        "autoDiscover": False,
+    },
+]
+
+INCHEON = {
     "name": "인천",
     "central": {
         "name": "인천광역시교육청 채용공고",
@@ -36,7 +82,7 @@ INCHOEON = {
             },
         ],
     },
-    "supportOffices": [],
+    "supportOffices": SUPPORT_OFFICES,
 }
 
 
@@ -49,8 +95,8 @@ def main() -> None:
     if current is not None and not isinstance(current, dict):
         raise SystemExit("Refusing to replace malformed incheon registry entry")
 
-    changed = current != INCHOEON
-    data["incheon"] = INCHOEON
+    changed = current != INCHEON
+    data["incheon"] = INCHEON
     PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("Incheon official registry:", "updated" if changed else "already current")
 
