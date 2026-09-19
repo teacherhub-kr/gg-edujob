@@ -7,7 +7,7 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919c",
+    "edujob-refresh.css?v=20260919d",
     "edujob-refresh.js?v=20260919c",
 ]
 for needle in required_index:
@@ -70,7 +70,16 @@ if "nav.id='edujobTabs'" in mobile or 'nav.id="edujobTabs"' in mobile:
 if "mobile-ui.js?v=20260919a" not in index:
     raise SystemExit("mobile cleanup must bust the legacy mobile-ui cache")
 
-if "min-height:59px!important" not in css:
-    raise SystemExit("mobile radar metric cards must stay compact")
+if "min-height:48px!important" not in css:
+    raise SystemExit("mobile radar metric cards must stay extra compact")
 
 print("mobile cleanup v3 contract verified")
+
+
+if "M44 48 89 29l51 18-49 22z" not in logo:
+    raise SystemExit("logo graduation cap must be large enough to read as worn")
+
+if "M94 68 150 45l65 23-63 28z" not in mascot:
+    raise SystemExit("mascot graduation cap must be large enough to read as worn")
+
+print("mobile radar compact v4 and worn-cap contract verified")
