@@ -115,7 +115,7 @@
     const seenCount=Array.isArray(snap?.keys)?snap.keys.length:0;
     return `<section class="final-my-page" aria-label="마이페이지">
       <div class="final-profile-card"><div class="final-avatar">${icon('user')}</div><div><strong>선생님</strong><p>안녕하세요!</p></div><span class="final-profile-gear">${icon('settings')}</span></div>
-      <div class="final-my-stats"><div><span>저장핔 공고</span><b>${fav.length}</b></div><div><span>저장한 조건</span><b>${savedCount}</b></div><div><span>확인한 맞춤공고</span><b>${seenCount}</b></div></div>
+      <div class="final-my-stats"><div><span>저장한 공고</span><b>${fav.length}</b></div><div><span>저장한 조건</span><b>${savedCount}</b></div><div><span>확인한 맞춤공고</span><b>${seenCount}</b></div></div>
       <div class="final-menu-card">
         <button type="button" data-action="profile">${icon('user')}<span>내 정보 관리</span><em>›</em></button>
         <button type="button" data-action="alerts">${icon('bell')}<span>알림 설정 ${a.enabled?'· 켜짐':''}</span><em>›</em></button>
