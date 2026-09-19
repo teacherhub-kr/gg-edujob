@@ -92,14 +92,25 @@
     });
   }
 
+  window.EduJobAlerts=Object.freeze({
+    supported,
+    state,
+    subscribe,
+    unsubscribe,
+    sync
+  });
+
   function setStatus(message){
     const copy=document.getElementById('jobRadarCopy');
     if(copy&&message)copy.textContent=message;
   }
 
-  function installButton(){
+  function installButton(attempt=0){
     const actions=document.querySelector('.job-radar-actions');
-    if(!actions){setTimeout(installButton,120);return}
+    if(!actions){
+      if(attempt<20)setTimeout(()=>installButton(attempt+1),120);
+      return;
+    }
     if(document.getElementById('jobRadarAlerts'))return;
 
     const btn=document.createElement('button');
