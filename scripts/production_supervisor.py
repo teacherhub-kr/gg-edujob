@@ -222,6 +222,19 @@ def unified_publication_stale(
     return bool(jobs_time and (unified_time is None or jobs_time > unified_time))
 
 
+def unified_publication_overdue(
+    jobs_time: datetime | None,
+    unified_time: datetime | None,
+    threshold: timedelta = timedelta(hours=4),
+) -> bool:
+    """Escalate user-visible publication lag without weakening last-known-good guards."""
+    if jobs_time is None:
+        return False
+    if unified_time is None:
+        return True
+    return jobs_time > unified_time and (jobs_time - unified_time) > threshold
+
+
 def previous_reconciliation_report() -> dict[str, Any] | None:
     commits = [
         x.strip()
@@ -467,11 +480,21 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     stale_hours = (
         round(success_age.total_seconds() / 3600, 2) if success_age is not None else None
     )
+    unified_lag = (
+        jobs_time - unified_time
+        if jobs_time and unified_time and jobs_time > unified_time
+        else None
+    )
+    unified_lag_hours = (
+        round(unified_lag.total_seconds() / 3600, 2) if unified_lag is not None else None
+    )
+    unified_overdue = unified_publication_overdue(jobs_time, unified_time)
     p0_incident = bool(
         not required_registry
         or (success_age is not None and success_age > timedelta(hours=6))
         or (success_at is None)
         or (circuit == "fast")
+        or unified_overdue
     )
 
     workflow_count = len(list(Path(".github/workflows").glob("*.yml"))) + len(
@@ -496,6 +519,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "p0Incident": p0_incident,
         "jobsCommitAt": jobs_time.isoformat() if jobs_time else None,
         "unifiedCommitAt": unified_time.isoformat() if unified_time else None,
+        "unifiedLagHours": unified_lag_hours,
+        "unifiedPublicationOverdue": unified_overdue,
         "workflowCount": workflow_count,
         "priority": ["fast", "unified", "recovery", "completeness"],
         "fastFailures": fast_failures,
@@ -567,7 +592,9 @@ def manage_issues(repo: str, state: dict[str, Any], now: datetime) -> None:
                 f"- registryComplete: `{state['requiredRegistryComplete']}`\n"
                 f"- fastLastSuccessAt: `{state['fastLastSuccessAt']}`\n"
                 f"- fastSuccessAgeHours: `{state['fastSuccessAgeHours']}`\n"
-                f"- fastConsecutiveRealFailures: `{state['fastFailures']}`\n\n"
+                f"- fastConsecutiveRealFailures: `{state['fastFailures']}`\n"
+                f"- unifiedLagHours: `{state.get('unifiedLagHours')}`\n"
+                f"- unifiedPublicationOverdue: `{state.get('unifiedPublicationOverdue')}`\n\n"
                 "The watchdog keeps last-known-good production data in place. "
                 "Automatic retries are circuit-broken after repeated real failures; "
                 "a controlled probe resumes after the backoff window or after collector code changes."

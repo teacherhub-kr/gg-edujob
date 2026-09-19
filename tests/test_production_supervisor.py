@@ -8,6 +8,7 @@ from scripts.production_supervisor import (
     consecutive_real_failures,
     detect_source_anomalies,
     unified_publication_stale,
+    unified_publication_overdue,
 )
 
 
@@ -29,6 +30,15 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(unified_publication_stale(jobs, None))
         self.assertFalse(unified_publication_stale(jobs, jobs))
         self.assertFalse(unified_publication_stale(None, unified))
+
+    def test_unified_publication_overdue_after_four_hours(self):
+        jobs = datetime(2026, 9, 19, 12, 0, tzinfo=KST)
+        recent = datetime(2026, 9, 19, 9, 0, tzinfo=KST)
+        stale = datetime(2026, 9, 19, 7, 0, tzinfo=KST)
+        self.assertFalse(unified_publication_overdue(jobs, recent))
+        self.assertTrue(unified_publication_overdue(jobs, stale))
+        self.assertTrue(unified_publication_overdue(jobs, None))
+        self.assertFalse(unified_publication_overdue(None, stale))
 
     def test_cancelled_runs_do_not_count_as_failures(self):
         runs = [run("failure"), run("cancelled"), run("failure"), run("failure"), run("success")]
