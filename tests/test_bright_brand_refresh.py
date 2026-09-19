@@ -7,8 +7,8 @@ logo = Path("edujob-logo.svg").read_text(encoding="utf-8")
 mascot = Path("edujob-mascot.svg").read_text(encoding="utf-8")
 
 required_index = [
-    "edujob-refresh.css?v=20260919f",
-    "edujob-refresh.js?v=20260919f",
+    "edujob-refresh.css?v=20260919g",
+    "edujob-refresh.js?v=20260919g",
 ]
 for needle in required_index:
     if needle not in index:
@@ -86,7 +86,7 @@ for short in ['data-short="신규"', 'data-short="관심"', 'data-short="일치"
     if short not in radar:
         raise SystemExit(f"mobile radar short label missing: {short}")
 
-if "edujob-logo.svg?v=20260919f" not in js or "edujob-mascot.svg?v=20260919f" not in js:
+if "edujob-logo.svg?v=20260919g" not in js or "edujob-mascot.svg?v=20260919g" not in js:
     raise SystemExit("brand SVG cache busting is required")
 
 print("mobile radar strip v5 and SVG cache-bust contract verified")
@@ -105,3 +105,18 @@ if "edujob-logo.svg?v=20260919f" not in js or "edujob-mascot.svg?v=20260919f" no
     raise SystemExit("v6 SVG cache busting missing")
 
 print("stats compact v6 and oversized worn-cap contract verified")
+
+
+if "grid-template-columns:repeat(4,minmax(0,1fr))!important" not in css:
+    raise SystemExit("one-row recruitment stats v7 missing")
+
+if "min-height:50px!important" not in css:
+    raise SystemExit("recruitment stats must stay compact on mobile")
+
+if 'translate(-8 -18) rotate(-4 91 58)' not in logo:
+    raise SystemExit("logo cap offset must lightly overlap the E")
+
+if 'translate(-12 -22) rotate(-4 151 82)' not in mascot:
+    raise SystemExit("mascot cap offset must lightly overlap the E")
+
+print("one-row recruitment stats v7 and cap-offset contract verified")
