@@ -5,7 +5,8 @@
     profile:'edujob.jobRadar.profile.v1',
     snapshot:'edujob.jobRadar.snapshot.v1',
     favorites:'edujob.jobRadar.favorites.v1',
-    alerts:'edujob.alerts.v1'
+    alerts:'edujob.alerts.v1',
+    recent:'edujob.recentJobs.v1'
   };
 
   const parse=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
@@ -52,12 +53,18 @@
       get:()=>local.get(KEYS.alerts,{enabled:false}),
       set:value=>{local.set(KEYS.alerts,value&&typeof value==='object'?value:{enabled:false});emit('alerts');api.syncAccountSoon()}
     },
+    recent:{
+      get:()=>local.get(KEYS.recent,[]),
+      set:value=>{local.set(KEYS.recent,Array.isArray(value)?value.slice(0,50):[]);emit('recent');api.syncAccountSoon()},
+      clear:()=>{local.remove(KEYS.recent);emit('recent');api.syncAccountSoon()}
+    },
     exportState:()=>({
       version:1,
       profile:local.get(KEYS.profile),
       snapshot:local.get(KEYS.snapshot),
       favorites:local.get(KEYS.favorites,[]),
-      alerts:local.get(KEYS.alerts,{enabled:false})
+      alerts:local.get(KEYS.alerts,{enabled:false}),
+      recent:local.get(KEYS.recent,[])
     }),
     importState:(state,{overwrite=true}={})=>{
       if(!state||typeof state!=='object')return;
@@ -66,6 +73,11 @@
       if(overwrite||!current.snapshot){if(state.snapshot)local.set(KEYS.snapshot,state.snapshot)}
       if(overwrite||!current.favorites?.length){if(Array.isArray(state.favorites))local.set(KEYS.favorites,state.favorites)}
       if(overwrite||!current.alerts?.enabled){if(state.alerts&&typeof state.alerts==='object')local.set(KEYS.alerts,state.alerts)}
+      if(overwrite||!current.recent?.length){if(Array.isArray(state.recent))local.set(KEYS.recent,state.recent.slice(0,50))}
+    },
+    resetLocal:()=>{
+      Object.values(KEYS).forEach(local.remove);
+      emit('reset');
     },
     setAccountAdapter:adapter=>{
       if(adapter!==null&&(!adapter||typeof adapter.pull!=='function'||typeof adapter.push!=='function')){
