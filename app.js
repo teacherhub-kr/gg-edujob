@@ -388,7 +388,13 @@ const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>r.active
 const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.categories.has(v)).length]);
 const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&matchesSubject(r.j,v)).length]);
 const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n])=>`<label class="check-chip"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(v)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
-const regionGroupHtml=(title,key,values)=>`<div class="region-group"><div class="region-group-head"><b>${title}</b><button type="button" class="region-all" data-region-all="${key}">${title} 전체 선택</button></div>${chipsHtml('regions',regionOptions(values),state.regions,'region-checks')}</div>`;
+const regionGroupHtml=(title,key,values)=>{
+  const selected=values.filter(v=>state.regions.has(v)).length;
+  return `<details class="region-group" ${selected?'open':''}>
+    <summary><b>${title}</b><span>${selected?`${selected}개 선택`:`${values.length}개 지역`}</span><i>⌄</i></summary>
+    <div class="region-group-body"><button type="button" class="region-all" data-region-all="${key}">${title} 전체 선택</button>${chipsHtml('regions',regionOptions(values),state.regions,'region-checks')}</div>
+  </details>`;
+};
 const selectedSummaryHtml=()=>{
   const parts=[];
   if(state.provinces.size)parts.push(`시·도 ${[...state.provinces].join(', ')}`);
@@ -602,6 +608,9 @@ function bindScreen(){
     e.target.checked?set.add(e.target.value):set.delete(e.target.value);
     state.visible=PAGE_SIZE;
     const box=$('.selected-box',screen);if(box)box.outerHTML=selectedSummaryHtml();
+    const section=e.target.closest('.filter-section');
+    const choice=section?.querySelector('.filter-section-choice');
+    if(choice)choice.textContent=sectionChoiceLabel(set);
     const apply=$('#filterApply',screen);if(apply)apply.textContent=`${filteredRows().length.toLocaleString()}건 공고 보기`;
   }));
   $$('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
