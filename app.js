@@ -270,14 +270,19 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
   const deadline=deadlineLabel(j);
   return `<article class="job-card" data-job-key="${esc(r.key)}" tabindex="0" role="link" aria-label="${esc(j.title||'채용 공고')}">
     <div class="badge-row">${badges}</div>
-    <div class="job-school">${esc(j.school||j.source||'기관명 확인')}</div>
-    <h3 class="job-title">${esc(j.title||'채용 공고')}</h3>
-    ${summary?`<div class="job-summary">${esc(summary)}</div>`:''}
-    <div class="chip-row">
-      <span class="meta-chip">${icon('pin')}${esc(regionLabel(j))}</span>
-      <span class="meta-chip">${icon('school')}${esc(schoolLevel(j))}</span>
-      ${j.subject?`<span class="meta-chip">${icon('book')}${esc(j.subject)}</span>`:''}
-      <span class="meta-chip">${esc(deadline)}</span>
+    <div class="job-content">
+      <span class="school-emblem">${icon('school')}</span>
+      <div class="job-body">
+        <div class="job-school">${esc(j.school||j.source||'기관명 확인')}</div>
+        <h3 class="job-title">${esc(j.title||'채용 공고')}</h3>
+        ${summary?`<div class="job-summary">${esc(summary)}</div>`:''}
+        <div class="chip-row">
+          <span class="meta-chip">${icon('pin')}${esc(regionLabel(j))}</span>
+          <span class="meta-chip">${icon('school')}${esc(schoolLevel(j))}</span>
+          ${j.subject?`<span class="meta-chip">${icon('book')}${esc(j.subject)}</span>`:''}
+          <span class="meta-chip">${esc(deadline)}</span>
+        </div>
+      </div>
     </div>
     <span class="job-time">${esc(registeredLabel(j.registered))}</span>
     <button type="button" class="favorite-btn ${on?'on':''}" aria-pressed="${on}" aria-label="${on?'관심공고 해제':'관심공고 저장'}" data-favorite="${esc(r.key)}">${icon('heart')}</button>
@@ -381,16 +386,16 @@ const radarHtml=()=>{
   const matches=p?profileMatches(p):[];
   if(state.radarTab==='matches'&&p)writeSnapshot(p);
   return `<section class="radar-page">
-    <div class="hero-row"><div><h1>내 채용 레이더</h1><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" width="90" height="75" alt="" loading="lazy"></div>
+    <div class="hero-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">‹</button><div class="hero-copy"><h1>내 채용 레이더</h1><p>내가 원하는 조건에 맞는 공고를<br>자동으로 찾아드려요.</p></div><img src="edujob-mascot.svg?v=20260919g" width="76" height="64" alt="" loading="lazy"></div>
     <div class="segment-tabs"><button type="button" data-radar-tab="conditions" class="${state.radarTab==='conditions'?'active':''}">내 조건</button><button type="button" data-radar-tab="matches" class="${state.radarTab==='matches'?'active':''}">맞춤 공고</button></div>
     ${state.radarTab==='conditions'?
       `<div class="condition-card"><div class="condition-head"><strong>저장된 검색 조건 (${p?1:0})</strong><button type="button" data-go="search">＋ 새 조건 추가</button></div>
-      ${p?`<div class="saved-condition"><div><strong>${esc(p.q||'내 채용 조건')}</strong><p>${esc(profileSummary(p))}</p><em>새 공고 ${snapshotNewCount(p).toLocaleString()}건 · 일치 ${matches.length.toLocaleString()}건</em></div><details class="condition-menu"><summary aria-label="저장 조건 메뉴">⋯</summary><div class="condition-menu-pop"><button type="button" id="conditionEdit">수정</button><button type="button" class="danger" id="conditionDelete">삭제</button></div></details></div>`:
+      ${p?`<div class="saved-condition"><div><strong>${esc(p.q||'내 채용 조건')}</strong><p>${esc(profileSummary(p))}</p><em>새 공고 ${snapshotNewCount(p).toLocaleString()}건</em></div><details class="condition-menu"><summary aria-label="저장 조건 메뉴">⋯</summary><div class="condition-menu-pop"><button type="button" id="conditionEdit">수정</button><button type="button" class="danger" id="conditionDelete">삭제</button></div></details></div>`:
       '<div class="empty-state"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>'}</div>`
       :jobsListHtml(matches,state.visible,{emptyText:'저장 조건에 맞는 모집 중 공고가 없습니다.'})
     }
-    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>지원되는 브라우저에서 저장한 조건의 새 공고 알림을 받을 수 있습니다.</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
-    <div class="tip-card"><img src="edujob-mascot.svg?v=20260919g" width="78" height="70" alt="" loading="lazy"><div><strong>내 조건에 딱 맞는 좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 확인<br>✓ 조건별 맞춤 검색<br>✓ 관심 공고와 쉽게 비교</p></div></div>
+    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
+    <div class="tip-card"><img src="edujob-mascot.svg?v=20260919g" width="72" height="66" alt="" loading="lazy"><div><strong>내 조건에 딱 맞는<br>좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
   </section>`;
 };
 
@@ -400,9 +405,8 @@ const savedHtml=()=>{
   const recentMap=new Map(state.indexed.map(r=>[r.key,r]));
   const recent=recentRows().map(x=>recentMap.get(x.key)).filter(Boolean);
   const rows=state.savedTab==='saved'?savedRows:recent;
-  return `<div class="screen-head"><div><h1>관심공고</h1><p>저장한 공고와 최근 확인한 공고를 모아봅니다.</p></div></div>
-  <div class="segment-tabs"><button type="button" data-saved-tab="saved" class="${state.savedTab==='saved'?'active':''}">저장한 공고 (${savedRows.length})</button><button type="button" data-saved-tab="recent" class="${state.savedTab==='recent'?'active':''}">최근 본 공고</button></div>
-  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state"><img src="edujob-mascot.svg?v=20260919g" width="84" height="76" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p></div>`}`;
+  return `<section class="saved-page"><div class="segment-tabs"><button type="button" data-saved-tab="saved" class="${state.savedTab==='saved'?'active':''}">저장한 공고 (${savedRows.length})</button><button type="button" data-saved-tab="recent" class="${state.savedTab==='recent'?'active':''}">최근 본 공고</button></div>
+  ${rows.length?jobsListHtml(rows,state.visible,{forceFavorite:state.savedTab==='saved'}):`<div class="empty-state saved-tip"><img src="edujob-mascot.svg?v=20260919g" width="76" height="68" alt="" loading="lazy"><strong>${state.savedTab==='saved'?'관심 있는 공고를 저장하고 놓치지 마세요!':'최근 본 공고가 없습니다.'}</strong><p>${state.savedTab==='saved'?'✓ 중요한 공고 따로 관리<br>✓ 마감 임박 공고 다시 확인<br>✓ 내 채용 레이더와 함께 활용':'공고를 열어보면 최근 본 공고에 최대 50건까지 기록됩니다.'}</p></div>`}</section>`;
 };
 
 const meHtml=()=>{
