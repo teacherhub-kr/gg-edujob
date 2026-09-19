@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Strict publication gate for 25 Gyeonggi + 11 Seoul support-office completeness and exact links.
+"""Strict publication gate for 25 Gyeonggi + 11 Seoul + 5 Incheon support-office completeness and exact links.
 
 The gate persists auditable coverage evidence before deciding pass/fail. MirCMS can expose the
 same physical board through multiple menu ids (mi). A stale menu alias must not make an otherwise
@@ -81,7 +81,7 @@ def same_candidate_reconciliation():
     for src in report.get("sources") or []:
         province = src.get("province")
         name = src.get("name")
-        if province not in ("경기", "서울") or not name or "교육지원청" not in name:
+        if province not in ("경기", "서울", "인천") or not name or "교육지원청" not in name:
             continue
         # Do not infer health from counts. Reconciliation itself must have proven traversal and
         # reconciled every stable ID for this exact source.
@@ -186,8 +186,8 @@ def reconcile_stale_aliases(office, province):
     return effective
 
 
-expected = {"gyeonggi": 25, "seoul": 11}
-province_labels = {"gyeonggi": "경기", "seoul": "서울"}
+expected = {"gyeonggi": 25, "seoul": 11, "incheon": 5}
+province_labels = {"gyeonggi": "경기", "seoul": "서울", "incheon": "인천"}
 later_evidence = same_candidate_reconciliation()
 # Fast candidates have primary statuses but no deep-pass summary. Bootstrap only
 # from actual same-candidate traversal evidence for every configured office. The
@@ -212,7 +212,7 @@ report = {
     "expectedOfficialSources": EXPECTED_OFFICIAL_SOURCES,
 }
 
-complete_counts = {"gyeonggi": 0, "seoul": 0}
+complete_counts = {"gyeonggi": 0, "seoul": 0, "incheon": 0}
 for province, want in expected.items():
     statuses = data.get("sources", {}).get(province, {}).get("supportOffices", [])
     apply_later_reconciliation_evidence(statuses, province_labels[province], later_evidence)
@@ -256,21 +256,29 @@ for province, want in expected.items():
 if comp:
     comp["gyeonggiTotal"] = len(data.get("sources", {}).get("gyeonggi", {}).get("supportOffices", []))
     comp["seoulTotal"] = len(data.get("sources", {}).get("seoul", {}).get("supportOffices", []))
+    comp["incheonTotal"] = len(data.get("sources", {}).get("incheon", {}).get("supportOffices", []))
     comp["gyeonggiComplete"] = complete_counts["gyeonggi"]
     comp["seoulComplete"] = complete_counts["seoul"]
+    comp["incheonComplete"] = complete_counts["incheon"]
     comp["warnings"] = [
         o.get("name")
-        for province in ("gyeonggi", "seoul")
+        for province in ("gyeonggi", "seoul", "incheon")
         for o in data.get("sources", {}).get(province, {}).get("supportOffices", [])
         if not (o.get("coverageComplete") and o.get("ok"))
     ]
     report["supportCompleteness"] = comp
-    if int(comp.get("gyeonggiTotal") or 0) != 25 or int(comp.get("seoulTotal") or 0) != 11:
-        problems.append("supportCompleteness totals are not 25/11")
+    if (
+        int(comp.get("gyeonggiTotal") or 0) != 25
+        or int(comp.get("seoulTotal") or 0) != 11
+        or int(comp.get("incheonTotal") or 0) != 5
+    ):
+        problems.append("supportCompleteness totals are not 25/11/5")
     if int(comp.get("gyeonggiComplete") or 0) != 25:
         problems.append(f"Gyeonggi complete offices: {comp.get('gyeonggiComplete')}/25")
     if int(comp.get("seoulComplete") or 0) != 11:
         problems.append(f"Seoul complete offices: {comp.get('seoulComplete')}/11")
+    if int(comp.get("incheonComplete") or 0) != 5:
+        problems.append(f"Incheon complete offices: {comp.get('incheonComplete')}/5")
 else:
     problems.append("supportCompleteness metadata missing")
 
@@ -312,4 +320,4 @@ if problems:
         print("FAIL", problem)
     raise SystemExit(f"Support-office completeness gate failed with {len(problems)} issue(s)")
 
-print("Support-office gate passed: Gyeonggi 25/25, Seoul 11/11, board-level traversal proven, all individual links exact")
+print("Support-office gate passed: Gyeonggi 25/25, Seoul 11/11, Incheon 5/5, board-level traversal proven, all individual links exact")
