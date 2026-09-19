@@ -277,16 +277,18 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
         <div class="job-school">${esc(j.school||j.source||'기관명 확인')}</div>
         <h3 class="job-title">${esc(j.title||'채용 공고')}</h3>
         ${summary?`<div class="job-summary">${esc(summary)}</div>`:''}
-        <div class="chip-row">
-          <span class="meta-chip">${icon('pin')}${esc(regionLabel(j))}</span>
-          <span class="meta-chip">${icon('school')}${esc(schoolLevel(j))}</span>
-          ${j.subject?`<span class="meta-chip">${icon('book')}${esc(j.subject)}</span>`:''}
+        <div class="job-meta">
+          <div class="chip-row">
+            <span class="meta-chip">${icon('pin')}${esc(regionLabel(j))}</span>
+            <span class="meta-chip">${icon('school')}${esc(schoolLevel(j))}</span>
+            ${j.subject?`<span class="meta-chip">${icon('book')}${esc(j.subject)}</span>`:''}
+          </div>
+          ${showDeadline?`<span class="job-deadline">${esc(deadline)}</span>`:''}
         </div>
       </div>
     </div>
     <span class="job-time">${esc(registeredLabel(j.registered))}</span>
     <button type="button" class="favorite-btn ${on?'on':''}" aria-pressed="${on}" aria-label="${on?'관심공고 해제':'관심공고 저장'}" data-favorite="${esc(r.key)}">${icon('heart')}</button>
-    ${showDeadline?`<span class="job-deadline">${esc(deadline)}</span>`:''}
   </article>`;
 };
 
