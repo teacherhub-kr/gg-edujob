@@ -195,7 +195,7 @@ const matchesFilters=(r)=>{
   if(!r.active)return false;
   if(state.surface&&r.surface!==state.surface)return false;
   if(state.provinces.size&&!state.provinces.has(r.province))return false;
-  if(state.regions.size&&!r.regions.some(x=>state.regions.has(x)))return false;
+  if(state.regions.size&&!r.regions.some(x=>[...state.regions].some(s=>shortRegion(s)===shortRegion(x))))return false;
   if(state.schools.size&&!state.schools.has(r.school))return false;
   if(state.subjects.size&&!state.subjects.has(r.subject))return false;
   if(state.quickFlags.has('today')&&!isToday(r.j.registered))return false;
@@ -236,7 +236,7 @@ const matchesProfile=(r,p)=>{
   const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),subs=arr(p?.subjects),ts=arr(p?.types),cs=arr(p?.categories);
   if(!r.active)return false;
   if(ps.length&&!ps.includes(r.province))return false;
-  if(rs.length&&!r.regions.some(x=>rs.includes(x)))return false;
+  if(rs.length&&!r.regions.some(x=>rs.some(s=>shortRegion(s)===shortRegion(x))))return false;
   if(ss.length&&!ss.includes(r.school))return false;
   if(subs.length&&!subs.includes(r.subject))return false;
   const qf=new Set(arr(p?.quickFlags));
@@ -333,8 +333,16 @@ const subjectOptions=()=>{
   return missing?[...main,missing]:main;
 };
 const regionOptionsForSelectedProvinces=()=>{
-  if(!state.provinces.size)return [];
-  return optionCounts(r=>r.regions,state.indexed.filter(r=>r.active&&state.provinces.has(r.province)));
+  const selectedProvince=[...state.provinces][0];
+  if(!selectedProvince)return [];
+  const counts=new Map();
+  state.indexed.filter(r=>r.active&&r.province===selectedProvince).forEach(r=>{
+    r.regions.forEach(raw=>{
+      const label=shortRegion(raw);
+      if(label)counts.set(label,(counts.get(label)||0)+1);
+    });
+  });
+  return [...counts.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
 };
 const shortRegion=(v)=>String(v||'').replace(/^(경기|서울|인천)\s+/,'');
 const optionButton=(name,v,n,selected,label=v)=>`<button type="button" class="quick-option ${selected?'selected':''}" data-quick-filter="${name}" data-value="${esc(v)}"><span>${esc(label)}</span><small>${n.toLocaleString()}</small></button>`;
@@ -350,8 +358,8 @@ const regionPanelHtml=()=>{
   const provinces=provinceOptions();
   const all=regionOptionsForSelectedProvinces();
   const q=norm(state.regionQuery);
-  const filtered=q?all.filter(([v])=>norm(shortRegion(v)).includes(q)):all;
-  const selected=new Set(state.regions);
+  const filtered=q?all.filter(([v])=>norm(v).includes(q)):all;
+  const selected=new Set([...state.regions].map(shortRegion));
   const mustShow=filtered.filter(([v])=>selected.has(v));
   const base=state.regionExpanded||q?filtered:filtered.slice(0,8);
   const merged=[...new Map([...mustShow,...base].map(x=>[x[0],x])).values()];
@@ -359,7 +367,7 @@ const regionPanelHtml=()=>{
     <div class="quick-panel-head"><div><strong>지역</strong><p>시·도를 먼저 고른 뒤 필요한 지역만 선택하세요.</p></div><button type="button" class="panel-close" id="filterClose" aria-label="닫기">×</button></div>
     <div class="province-pills">${provinces.map(([v,n])=>optionButton('provinces',v,n,state.provinces.has(v),v)).join('')}</div>
     ${state.provinces.size?`<label class="filter-search"><span>${icon('search')}</span><input id="regionFilterSearch" type="search" value="${esc(state.regionQuery)}" placeholder="지역 검색"></label>
-      <div class="quick-option-grid">${merged.map(([v,n])=>optionButton('regions',v,n,selected.has(v),shortRegion(v))).join('')}</div>
+      <div class="quick-option-grid">${merged.map(([v,n])=>optionButton('regions',v,n,selected.has(v),v)).join('')}</div>
       ${!q&&filtered.length>8?`<button type="button" class="quick-more" id="regionMore">${state.regionExpanded?'간단히 보기':'지역 더보기'}</button>`:''}`
       :'<div class="quick-hint">서울 · 경기 · 인천 중 하나를 먼저 선택하세요.</div>'}
     ${quickPanelFooter()}
@@ -587,16 +595,20 @@ function bindScreen(){
     state.visible=PAGE_SIZE;render();
   }));
   $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';render()});
-  $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
+  $('#filterReset',screen)?.addEventListener('click',()=>{
+    state.provinces.clear();state.regions.clear();state.schools.clear();state.subjects.clear();state.quickFlags.clear();
+    state.regionQuery='';state.regionExpanded=false;state.subjectQuery='';state.subjectExpanded=false;state.visible=PAGE_SIZE;render();
+  });
   $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
   $('[data-quick-filter]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     const name=btn.dataset.quickFilter,value=btn.dataset.value;
     const set=state[name];if(!(set instanceof Set))return;
     if(name==='provinces'){
-      if(set.has(value))set.delete(value);else set.add(value);
-      const allowed=new Set(regionOptionsForSelectedProvinces().map(([v])=>v));
-      state.regions=new Set([...state.regions].filter(v=>allowed.has(v)));
+      const wasSelected=set.has(value);
+      set.clear();
+      if(!wasSelected)set.add(value);
+      state.regions.clear();
       state.regionQuery='';state.regionExpanded=false;
     }else{
       set.has(value)?set.delete(value):set.add(value);
