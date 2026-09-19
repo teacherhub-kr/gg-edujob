@@ -19,21 +19,51 @@ const state={
   provinces:new Set(),
   regions:new Set(),
   schools:new Set(),
+  types:new Set(),
+  sources:new Set(),
+  categories:new Set(),
   subjects:new Set(),
-  quickFlags:new Set(),
   sort:'newest',
   visible:PAGE_SIZE,
   filterOpen:false,
   filterFocus:'',
-  regionQuery:'',
-  regionExpanded:false,
-  subjectQuery:'',
-  subjectExpanded:false,
   radarTab:'conditions',
   savedTab:'saved',
   loading:true,
   error:''
 };
+
+const GYEONGGI_REGIONS=['수원시','성남시','용인시','고양시','화성시','안산시','평택시','파주시','김포시','남양주시','부천시','안양시','시흥시','광명시','광주시','군포시','이천시','오산시','안성시','의왕시','하남시','여주시','양평군','과천시','의정부시','양주시','구리시','포천시','동두천시','가평군','연천군'];
+const SEOUL_REGIONS=['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
+const INCHEON_REGIONS=['중구','동구','미추홀구','연수구','남동구','부평구','계양구','서구','강화군','옹진군'];
+const SCHOOL_VALUES=['유치원','초등학교','중학교','고등학교','특수학교','교육행정기관','기타'];
+const TYPE_VALUES=['기간제교원','시간강사/강사','교육공무직/기간제근로자','정규채용','자원봉사','기타'];
+const SOURCE_VALUES=['공식','민간'];
+const CATEGORY_VALUES=['방과후·늘봄','음악·예체능','문화예술','학원강사','강사·교사','기타 민간구인'];
+const SUBJECT_VALUES=['국어','영어','수학','과학','사회·역사','음악','미술','체육','특수','보건','상담','사서','영양','정보·컴퓨터','유아'];
+const SUBJECT_RULES={
+  '국어':/(^|\s)(국어|독서|논술)(\s|$)/,
+  '영어':/(^|\s)(영어|영어회화)(\s|$)/,
+  '수학':/(^|\s)(수학|수리)(\s|$)/,
+  '과학':/(^|\s)(과학|물리|화학|생명과학|생물|지구과학|통합과학)(\s|$)/,
+  '사회·역사':/(^|\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\s|$)/,
+  '음악':/(^|\s)(음악|합창|오케스트라|관현악|밴드)(\s|$)/,
+  '미술':/(^|\s)(미술|디자인)(\s|$)/,
+  '체육':/(^|\s)(체육|스포츠|운동)(\s|$)/,
+  '특수':/(^|\s)(특수|특수교육)(\s|$)/,
+  '보건':/(^|\s)(보건|간호)(\s|$)/,
+  '상담':/(^|\s)(상담|전문상담|위클래스|wee)(\s|$)/,
+  '사서':/(^|\s)(사서|도서관)(\s|$)/,
+  '영양':/(^|\s)(영양|영양교사)(\s|$)/,
+  '정보·컴퓨터':/(^|\s)(정보|컴퓨터|코딩|소프트웨어|ai|인공지능)(\s|$)/,
+  '유아':/(^|\s)(유아|유치원|유치)(\s|$)/,
+};
+const regionKey=(v)=>String(v||'').replace(/^(경기도|서울특별시|인천광역시|경기|서울|인천)\s*/,'').trim();
+const regionsMatch=(selected,actual)=>[...selected].some(s=>regionKey(s)===regionKey(actual));
+const subjectHay=(j)=>` ${norm([j.subject,j.title,j.schoolLevel,j.type].filter(Boolean).join(' '))} `;
+const matchesSubject=(j,label)=>SUBJECT_RULES[label]?.test(subjectHay(j))===true;
+const sourceKinds=(j)=>new Set([j?.feedKind==='private'?'민간':'공식',...(arr(j?.alsoSeenOn).length?['민간']:[])]);
+const categorySet=(j)=>new Set(arr(j?.categories));
 
 const icon=(name)=>{
   const c='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
@@ -65,8 +95,31 @@ const norm=(v)=>String(v??'').toLowerCase().replace(/\s+/g,' ').trim();
 const arr=(v)=>Array.isArray(v)?v.filter(Boolean):[];
 const keyOf=(j)=>String(j?.sourceIdentity||j?.id||j?.verifiedUrl||j?.detailUrl||j?.url||[j?.source,j?.school,j?.title,j?.registered].filter(Boolean).join('|'));
 const province=(j)=>String(j?.province||'').trim();
-const schoolLevel=(j)=>String(j?.schoolLevel||'미분류').trim()||'미분류';
-const jobType=(j)=>String(j?.type||'미분류').trim()||'미분류';
+const schoolLevel=(j)=>{
+  const raw=String(j?.schoolLevel||'').trim();
+  if(raw==='교육지원청')return '교육행정기관';
+  if(SCHOOL_VALUES.includes(raw))return raw;
+  const t=`${j?.school||''} ${j?.title||''}`;
+  if(/특수학교/.test(t))return '특수학교';
+  if(/유치원|병설유/.test(t))return '유치원';
+  if(/초등학교/.test(t))return '초등학교';
+  if(/중학교/.test(t))return '중학교';
+  if(/고등학교/.test(t))return '고등학교';
+  if(/교육지원청|교육청/.test(t))return '교육행정기관';
+  return '기타';
+};
+const jobType=(j)=>{
+  const raw=String(j?.type||'').trim();
+  if(raw==='교육공무직')return '교육공무직/기간제근로자';
+  if(TYPE_VALUES.includes(raw))return raw;
+  const t=`${raw} ${j?.title||''} ${j?.subject||''}`;
+  if(/자원봉사|봉사자/.test(t))return '자원봉사';
+  if(/정규/.test(t))return '정규채용';
+  if(/교육공무직|기간제근로|조리실무|돌봄전담/.test(t))return '교육공무직/기간제근로자';
+  if(/시간강사|강사|시간제/.test(t))return '시간강사/강사';
+  if(/기간제|교원|교사/.test(t))return '기간제교원';
+  return '기타';
+};
 const regionsOf=(j)=>arr(j?.regions).length?arr(j.regions):[j?.region].filter(Boolean);
 const today0=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())};
 const parseDate=(v)=>{
@@ -184,6 +237,9 @@ const buildIndex=(jobs)=>jobs.map((j,i)=>({
   province:province(j),
   regions:regionsOf(j),
   school:schoolLevel(j),
+  type:jobType(j),
+  sources:sourceKinds(j),
+  categories:categorySet(j),
   subject:String(j.subject||'').trim()||'미분류',
   registered:parseDate(j.registered)?.getTime()||0,
   deadline:parseDate(j.applyEnd)?.getTime()||Number.POSITIVE_INFINITY,
@@ -195,13 +251,12 @@ const matchesFilters=(r)=>{
   if(!r.active)return false;
   if(state.surface&&r.surface!==state.surface)return false;
   if(state.provinces.size&&!state.provinces.has(r.province))return false;
-  if(state.regions.size&&!r.regions.some(x=>[...state.regions].some(s=>shortRegion(s)===shortRegion(x))))return false;
+  if(state.regions.size&&!r.regions.some(x=>regionsMatch(state.regions,x)))return false;
   if(state.schools.size&&!state.schools.has(r.school))return false;
-  if(state.subjects.size&&!state.subjects.has(r.subject))return false;
-  if(state.quickFlags.has('today')&&!isToday(r.j.registered))return false;
-  if(state.quickFlags.has('soon')){const d=dayDiff(r.j.applyEnd);if(d===null||d<0||d>3)return false}
-  if(state.quickFlags.has('term')&&jobType(r.j)!=='기간제교원')return false;
-  if(state.quickFlags.has('office')&&!String(r.j.sourceType||'').includes('교육청'))return false;
+  if(state.types.size&&!state.types.has(r.type))return false;
+  if(state.sources.size&&![...state.sources].some(x=>r.sources.has(x)))return false;
+  if(state.categories.size&&![...state.categories].some(x=>r.categories.has(x)))return false;
+  if(state.subjects.size&&![...state.subjects].some(x=>matchesSubject(r.j,x)))return false;
   if(state.q&&!r.search.includes(norm(state.q)))return false;
   return true;
 };
@@ -224,29 +279,25 @@ const currentProfile=()=>({
   provinces:[...state.provinces],
   regions:[...state.regions],
   schools:[...state.schools],
-  types:[],
-  categories:[],
+  types:[...state.types],
+  sources:[...state.sources],
+  categories:[...state.categories],
   subjects:[...state.subjects],
-  quickFlags:[...state.quickFlags],
   q:String(state.q||'').trim(),
   savedAt:new Date().toISOString()
 });
-const hasProfileConditions=(p)=>['provinces','regions','schools','types','categories','subjects','quickFlags'].some(k=>arr(p?.[k]).length)||Boolean(String(p?.q||'').trim());
+const hasProfileConditions=(p)=>['provinces','regions','schools','types','sources','categories','subjects'].some(k=>arr(p?.[k]).length)||Boolean(String(p?.q||'').trim());
 const matchesProfile=(r,p)=>{
-  const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),subs=arr(p?.subjects),ts=arr(p?.types),cs=arr(p?.categories);
+  const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
   if(!r.active)return false;
   if(ps.length&&!ps.includes(r.province))return false;
-  if(rs.length&&!r.regions.some(x=>rs.some(s=>shortRegion(s)===shortRegion(x))))return false;
+  if(rs.length&&!r.regions.some(x=>rs.some(s=>regionKey(s)===regionKey(x))))return false;
   if(ss.length&&!ss.includes(r.school))return false;
-  if(subs.length&&!subs.includes(r.subject))return false;
-  const qf=new Set(arr(p?.quickFlags));
-  if(qf.has('today')&&!isToday(r.j.registered))return false;
-  if(qf.has('soon')){const d=dayDiff(r.j.applyEnd);if(d===null||d<0||d>3)return false}
-  if(qf.has('term')&&jobType(r.j)!=='기간제교원')return false;
-  if(qf.has('office')&&!String(r.j.sourceType||'').includes('교육청'))return false;
-  if(ts.length&&!ts.includes(jobType(r.j)))return false;
-  if(cs.length&&!arr(r.j.categories).some(x=>cs.includes(x)))return false;
-  if(String(p?.q||'').trim()&&!r.search.includes(norm(p.q)))return false;
+  if(ts.length&&!ts.includes(r.type))return false;
+  if(src.length&&!src.some(x=>r.sources.has(x)))return false;
+  if(cats.length&&!cats.some(x=>r.categories.has(x)))return false;
+  if(subs.length&&!subs.some(x=>matchesSubject(r.j,x)))return false;
+  if(q&&!r.search.includes(q))return false;
   return true;
 };
 const profileMatches=(p)=>state.indexed.filter(r=>matchesProfile(r,p));
@@ -315,114 +366,55 @@ const jobsListHtml=(rows,limit,{emptyText='조건에 맞는 모집 중 공고가
 
 const skeleton=()=>`<div class="skeleton"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="loading-note">최신 채용정보를 불러오고 있습니다.</div></div>`;
 
-const optionCounts=(getter,rows=state.indexed.filter(r=>r.active))=>{
+const optionCounts=(getter)=>{
   const m=new Map();
-  rows.forEach(r=>{
+  state.indexed.filter(r=>r.active).forEach(r=>{
     const vals=arr(getter(r));
     vals.forEach(v=>{if(v)m.set(v,(m.get(v)||0)+1)});
   });
-  return [...m.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
+  return m;
 };
-const provinceOptions=()=>optionCounts(r=>[r.province]).filter(([v])=>['경기','서울','인천'].includes(v));
-const regionOptions=()=>optionCounts(r=>r.regions);
-const schoolOptions=()=>optionCounts(r=>[r.school]);
-const subjectOptions=()=>{
-  const rows=optionCounts(r=>[r.subject]);
-  const main=rows.filter(([v])=>v!=='미분류').slice(0,SUBJECT_LIMIT);
-  const missing=rows.find(([v])=>v==='미분류');
-  return missing?[...main,missing]:main;
+const provinceOptions=()=>['경기','서울','인천'].map(v=>[v,optionCounts(r=>[r.province]).get(v)||0]);
+const canonicalOptions=(values,getter)=>{const m=optionCounts(getter);return values.map(v=>[v,m.get(v)||0])};
+const regionCounts=()=>{
+  const m=new Map();
+  state.indexed.filter(r=>r.active).forEach(r=>r.regions.forEach(v=>{const k=regionKey(v);if(k)m.set(k,(m.get(k)||0)+1)}));
+  return m;
 };
-const regionOptionsForSelectedProvinces=()=>{
-  const selectedProvince=[...state.provinces][0];
-  if(!selectedProvince)return [];
-  const counts=new Map();
-  state.indexed.filter(r=>r.active&&r.province===selectedProvince).forEach(r=>{
-    r.regions.forEach(raw=>{
-      const label=shortRegion(raw);
-      if(label)counts.set(label,(counts.get(label)||0)+1);
-    });
-  });
-  return [...counts.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
+const regionOptions=(values)=>{const m=regionCounts();return values.map(v=>[v,m.get(v)||0])};
+const schoolOptions=()=>canonicalOptions(SCHOOL_VALUES,r=>[r.school]);
+const typeOptions=()=>canonicalOptions(TYPE_VALUES,r=>[r.type]);
+const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.sources.has(v)).length]);
+const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.categories.has(v)).length]);
+const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&matchesSubject(r.j,v)).length]);
+const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n])=>`<label class="check-chip"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(v)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
+const regionGroupHtml=(title,key,values)=>`<div class="region-group"><div class="region-group-head"><b>${title}</b><button type="button" class="region-all" data-region-all="${key}">${title} 전체 선택</button></div>${chipsHtml('regions',regionOptions(values),state.regions,'region-checks')}</div>`;
+const selectedSummaryHtml=()=>{
+  const parts=[];
+  if(state.provinces.size)parts.push(`시·도 ${[...state.provinces].join(', ')}`);
+  if(state.regions.size)parts.push(`지역 ${state.regions.size}곳`);
+  if(state.schools.size)parts.push(`학교급 ${[...state.schools].join(', ')}`);
+  if(state.types.size)parts.push(`직종 ${[...state.types].join(', ')}`);
+  if(state.sources.size)parts.push(`공고 ${[...state.sources].join('·')}`);
+  if(state.categories.size)parts.push(`분야 ${[...state.categories].join('·')}`);
+  if(state.subjects.size)parts.push(`과목·담당 ${[...state.subjects].join('·')}`);
+  return parts.length?`<div class="selected-box show"><b>선택된 조건</b><p>${parts.map(esc).join(' · ')}</p></div>`:'<div class="selected-box"></div>';
 };
-const shortRegion=(v)=>String(v||'').replace(/^(경기|서울|인천)\s+/,'');
-const optionButton=(name,v,n,selected,label=v)=>`<button type="button" class="quick-option ${selected?'selected':''}" data-quick-filter="${name}" data-value="${esc(v)}"><span>${esc(label)}</span><small>${n.toLocaleString()}</small></button>`;
-const selectedSummary=(set,label)=>{
-  const n=set.size;
-  if(!n)return label;
-  const first=[...set][0];
-  return n===1?`${label} · ${shortRegion(first)}`:`${label} · ${n}`;
-};
-const quickCountLabel=()=>state.quickFlags.size?`필터 · ${state.quickFlags.size}`:'필터';
-
-const regionPanelHtml=()=>{
-  const provinces=provinceOptions();
-  const all=regionOptionsForSelectedProvinces();
-  const q=norm(state.regionQuery);
-  const filtered=q?all.filter(([v])=>norm(v).includes(q)):all;
-  const selected=new Set([...state.regions].map(shortRegion));
-  const mustShow=filtered.filter(([v])=>selected.has(v));
-  const base=state.regionExpanded||q?filtered:filtered.slice(0,8);
-  const merged=[...new Map([...mustShow,...base].map(x=>[x[0],x])).values()];
-  return `<div class="quick-filter-panel" data-panel="regions">
-    <div class="quick-panel-head"><div><strong>지역</strong><p>시·도를 먼저 고른 뒤 필요한 지역만 선택하세요.</p></div><button type="button" class="panel-close" id="filterClose" aria-label="닫기">×</button></div>
-    <div class="province-pills">${provinces.map(([v,n])=>optionButton('provinces',v,n,state.provinces.has(v),v)).join('')}</div>
-    ${state.provinces.size?`<label class="filter-search"><span>${icon('search')}</span><input id="regionFilterSearch" type="search" value="${esc(state.regionQuery)}" placeholder="지역 검색"></label>
-      <div class="quick-option-grid">${merged.map(([v,n])=>optionButton('regions',v,n,selected.has(v),v)).join('')}</div>
-      ${!q&&filtered.length>8?`<button type="button" class="quick-more" id="regionMore">${state.regionExpanded?'간단히 보기':'지역 더보기'}</button>`:''}`
-      :'<div class="quick-hint">서울 · 경기 · 인천 중 하나를 먼저 선택하세요.</div>'}
-    ${quickPanelFooter()}
-  </div>`;
-};
-
-const schoolPanelHtml=()=>{
-  const opts=schoolOptions().filter(([v])=>v!=='미분류').slice(0,8);
-  return `<div class="quick-filter-panel" data-panel="schools">
-    <div class="quick-panel-head"><div><strong>학교급</strong><p>필요한 학교급만 빠르게 선택하세요.</p></div><button type="button" class="panel-close" id="filterClose" aria-label="닫기">×</button></div>
-    <div class="quick-option-grid two-col">${opts.map(([v,n])=>optionButton('schools',v,n,state.schools.has(v),v)).join('')}</div>
-    ${quickPanelFooter()}
-  </div>`;
-};
-
-const subjectPanelHtml=()=>{
-  const all=subjectOptions().filter(([v])=>v!=='미분류');
-  const q=norm(state.subjectQuery);
-  const filtered=q?all.filter(([v])=>norm(v).includes(q)):all;
-  const selected=new Set(state.subjects);
-  const mustShow=filtered.filter(([v])=>selected.has(v));
-  const base=state.subjectExpanded||q?filtered:filtered.slice(0,8);
-  const merged=[...new Map([...mustShow,...base].map(x=>[x[0],x])).values()];
-  return `<div class="quick-filter-panel" data-panel="subjects">
-    <div class="quick-panel-head"><div><strong>과목·직종</strong><p>자주 찾는 항목만 먼저 보여드립니다.</p></div><button type="button" class="panel-close" id="filterClose" aria-label="닫기">×</button></div>
-    <label class="filter-search"><span>${icon('search')}</span><input id="subjectFilterSearch" type="search" value="${esc(state.subjectQuery)}" placeholder="과목 또는 직종 검색"></label>
-    <div class="quick-option-grid two-col">${merged.map(([v,n])=>optionButton('subjects',v,n,selected.has(v),v)).join('')}</div>
-    ${!q&&filtered.length>8?`<button type="button" class="quick-more" id="subjectMore">${state.subjectExpanded?'간단히 보기':'더보기'}</button>`:''}
-    ${quickPanelFooter()}
-  </div>`;
-};
-
-const morePanelHtml=()=>{
-  const opts=[
-    ['today','오늘 등록',state.indexed.filter(r=>r.active&&isToday(r.j.registered)).length],
-    ['soon','3일 내 마감',state.indexed.filter(r=>{if(!r.active)return false;const d=dayDiff(r.j.applyEnd);return d!==null&&d>=0&&d<=3}).length],
-    ['term','기간제',state.indexed.filter(r=>r.active&&jobType(r.j)==='기간제교원').length],
-    ['office','교육청',state.indexed.filter(r=>r.active&&String(r.j.sourceType||'').includes('교육청')).length]
-  ];
-  return `<div class="quick-filter-panel" data-panel="more">
-    <div class="quick-panel-head"><div><strong>빠른 필터</strong><p>많이 쓰는 조건만 남겼습니다.</p></div><button type="button" class="panel-close" id="filterClose" aria-label="닫기">×</button></div>
-    <div class="quick-option-grid two-col">${opts.map(([v,label,n])=>optionButton('quickFlags',v,n,state.quickFlags.has(v),label)).join('')}</div>
-    ${quickPanelFooter()}
-  </div>`;
-};
-
-const quickPanelFooter=()=>`<div class="quick-panel-footer"><button type="button" class="panel-reset" id="filterReset">초기화</button><button type="button" class="panel-apply" id="filterApply">${filteredRows().length.toLocaleString()}건 공고 보기</button></div>`;
-
-const quickFilterPanelHtml=()=>{
-  if(!state.filterOpen)return '';
-  if(state.filterFocus==='schools')return schoolPanelHtml();
-  if(state.filterFocus==='subjects')return subjectPanelHtml();
-  if(state.filterFocus==='more')return morePanelHtml();
-  return regionPanelHtml();
-};
+const filterDrawerHtml=()=>`<div id="filterDrawer" class="filter-drawer ${state.filterOpen?'open':''}">
+  <div class="filter-drawer-head"><strong>필터</strong><button type="button" class="filter-reset-top" id="filterReset">전체 초기화</button><button type="button" class="filter-close" id="filterClose">${state.filterOpen?'필터 닫기':'필터 열기'}</button></div>
+  <div class="filter-group"><div class="filter-title"><h3>시·도</h3><span>중복 선택 가능</span></div>${chipsHtml('provinces',provinceOptions(),state.provinces,'two-col')}</div>
+  <div class="filter-group" data-group="regions"><div class="filter-title"><h3>지역</h3><span>여러 지역 동시 선택</span></div>
+    ${regionGroupHtml('경기','gyeonggi',GYEONGGI_REGIONS)}
+    ${regionGroupHtml('서울','seoul',SEOUL_REGIONS)}
+    ${regionGroupHtml('인천','incheon',INCHEON_REGIONS)}
+  </div>
+  <div class="filter-group" data-group="schools"><div class="filter-title"><h3>학교급</h3><span>중복 선택 가능</span></div>${chipsHtml('schools',schoolOptions(),state.schools,'two-col')}</div>
+  <div class="filter-group"><div class="filter-title"><h3>직종</h3><span>중복 선택 가능</span></div>${chipsHtml('types',typeOptions(),state.types,'one-col')}</div>
+  <div class="filter-group"><div class="filter-title"><h3>공고 구분</h3><span>중복 선택 가능</span></div>${chipsHtml('sources',sourceOptions(),state.sources,'two-col')}</div>
+  <div class="filter-group"><div class="filter-title"><h3>구인 분야</h3><span>중복 선택 가능</span></div>${chipsHtml('categories',categoryOptions(),state.categories,'one-col')}</div>
+  <div class="filter-group" data-group="subjects"><div class="filter-title"><h3>과목·담당</h3><span>중복 선택 가능</span></div>${chipsHtml('subjects',subjectOptions(),state.subjects,'one-col')}</div>
+  ${selectedSummaryHtml()}
+</div>`;
 
 const homeHtml=()=>{
   const p=store()?.profile?.get?.();
@@ -451,7 +443,8 @@ const homeHtml=()=>{
     <div class="status-card"><span class="status-icon">${icon('document')}</span><b>${today.toLocaleString()}</b><span>오늘 등록</span></div>
     <div class="status-card"><span class="status-icon">${icon('database')}</span><b>${Number(state.payload?.totalSourceCount||0).toLocaleString()}</b><span>수집 출처</span></div>
   </div>
-  <div class="filter-row"><strong>빠른 검색</strong><button type="button" class="reset-btn" id="homeReset">전체 초기화</button><button type="button" class="open-filter" data-go="search">조건 찾기</button></div>
+  <div class="filter-row"><strong>필터</strong><button type="button" class="reset-btn" id="homeReset">전체 초기화</button><button type="button" class="open-filter" id="homeFilterOpen">필터 열기</button></div>
+  ${filterDrawerHtml()}
   <div class="section-title"><span>${icon('document')}</span><h2>최신 채용 공고</h2><span class="spacer"></span><button class="link-btn" data-go="search">전체보기 ›</button></div>
   ${jobsListHtml(latest,HOME_LIMIT)}`;
 };
@@ -459,12 +452,12 @@ const homeHtml=()=>{
 const searchHtml=()=>{
   const rows=filteredRows();
   return `<div class="search-filter-row">
-    <button type="button" class="grow ${state.filterOpen&&state.filterFocus==='regions'?'active':''}" data-filter-focus="regions">${esc(selectedSummary(state.regions,'지역'))}⌄</button>
-    <button type="button" class="grow ${state.filterOpen&&state.filterFocus==='schools'?'active':''}" data-filter-focus="schools">${esc(selectedSummary(state.schools,'학교급'))}⌄</button>
-    <button type="button" class="grow ${state.filterOpen&&state.filterFocus==='subjects'?'active':''}" data-filter-focus="subjects">${esc(selectedSummary(state.subjects,'과목'))}⌄</button>
-    <button type="button" class="filter-main ${state.filterOpen&&state.filterFocus==='more'?'active':''}" data-filter-focus="more">${icon('filter')}<span>${esc(quickCountLabel())}</span></button>
+    <button type="button" class="filter-main" id="searchFilterOpen">${icon('filter')}<span>필터</span></button>
+    <button type="button" class="grow" data-filter-focus="regions">지역${selectedCount(state.regions)?` ${selectedCount(state.regions)}`:''}⌄</button>
+    <button type="button" class="grow" data-filter-focus="schools">학교급${selectedCount(state.schools)?` ${selectedCount(state.schools)}`:''}⌄</button>
+    <button type="button" class="grow" data-filter-focus="subjects">과목${selectedCount(state.subjects)?` ${selectedCount(state.subjects)}`:''}⌄</button>
   </div>
-  ${quickFilterPanelHtml()}
+  ${filterDrawerHtml()}
   <div class="results-bar"><span>검색 결과 <strong>${rows.length.toLocaleString()}</strong>건</span><select id="sortSelect" class="results-sort" aria-label="정렬"><option value="newest" ${state.sort==='newest'?'selected':''}>최신순</option><option value="deadline" ${state.sort==='deadline'?'selected':''}>마감임박순</option><option value="relevance" ${state.sort==='relevance'?'selected':''}>관련도순</option></select></div>
   ${jobsListHtml(rows,state.visible)}`;
 };
@@ -474,6 +467,9 @@ const profileSummary=(p)=>{
   if(arr(p?.provinces).length)items.push(arr(p.provinces).join('·'));
   if(arr(p?.regions).length)items.push(arr(p.regions).slice(0,3).join('·')+(arr(p.regions).length>3?` +${arr(p.regions).length-3}`:''));
   if(arr(p?.schools).length)items.push(arr(p.schools).join('·'));
+  if(arr(p?.types).length)items.push(arr(p.types).slice(0,2).join('·'));
+  if(arr(p?.sources).length)items.push(arr(p.sources).join('·'));
+  if(arr(p?.categories).length)items.push(arr(p.categories).slice(0,2).join('·'));
   if(arr(p?.subjects).length)items.push(arr(p.subjects).slice(0,2).join('·'));
   if(p?.q)items.push(`“${p.q}”`);
   return items.join(' · ')||'저장된 상세 조건';
@@ -551,9 +547,8 @@ function render(){
 }
 
 function resetFilters({surface=true}={}){
-  state.provinces.clear();state.regions.clear();state.schools.clear();state.subjects.clear();state.quickFlags.clear();
+  state.provinces.clear();state.regions.clear();state.schools.clear();state.types.clear();state.sources.clear();state.categories.clear();state.subjects.clear();
   state.q='';state.sort='newest';state.visible=PAGE_SIZE;state.filterOpen=false;state.filterFocus='';
-  state.regionQuery='';state.regionExpanded=false;state.subjectQuery='';state.subjectExpanded=false;
   if(surface)state.surface='';
   render();
 }
@@ -562,8 +557,10 @@ function applyProfileToState(p){
   state.provinces=new Set(arr(p.provinces));
   state.regions=new Set(arr(p.regions));
   state.schools=new Set(arr(p.schools));
+  state.types=new Set(arr(p.types));
+  state.sources=new Set(arr(p.sources));
+  state.categories=new Set(arr(p.categories));
   state.subjects=new Set(arr(p.subjects));
-  state.quickFlags=new Set(arr(p.quickFlags));
   state.q=String(p.q||'');
   state.visible=PAGE_SIZE;
 }
@@ -588,37 +585,25 @@ function bindScreen(){
 
   $('#moreJobs',screen)?.addEventListener('click',()=>{state.visible+=PAGE_SIZE;render()});
   $('#homeReset',screen)?.addEventListener('click',()=>resetFilters());
-  $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{
-    const focus=b.dataset.filterFocus;
-    if(state.filterOpen&&state.filterFocus===focus){state.filterOpen=false;state.filterFocus=''}
-    else{state.filterOpen=true;state.filterFocus=focus}
-    state.visible=PAGE_SIZE;render();
-  }));
-  $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';render()});
-  $('#filterReset',screen)?.addEventListener('click',()=>{
-    state.provinces.clear();state.regions.clear();state.schools.clear();state.subjects.clear();state.quickFlags.clear();
-    state.regionQuery='';state.regionExpanded=false;state.subjectQuery='';state.subjectExpanded=false;state.visible=PAGE_SIZE;render();
-  });
-  $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
+  $('#homeFilterOpen',screen)?.addEventListener('click',()=>{state.filterOpen=!state.filterOpen;render()});
+  $('#searchFilterOpen',screen)?.addEventListener('click',()=>{state.filterOpen=!state.filterOpen;render()});
+  $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{state.filterOpen=true;state.filterFocus=b.dataset.filterFocus;render();setTimeout(()=>screen.querySelector(`[data-group="${state.filterFocus}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),10)}));
+  $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
+  $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.visible=PAGE_SIZE;render()});
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
-  $$('[data-quick-filter]',screen).forEach(btn=>btn.addEventListener('click',()=>{
-    const name=btn.dataset.quickFilter,value=btn.dataset.value;
-    const set=state[name];if(!(set instanceof Set))return;
-    if(name==='provinces'){
-      const wasSelected=set.has(value);
-      set.clear();
-      if(!wasSelected)set.add(value);
-      state.regions.clear();
-      state.regionQuery='';state.regionExpanded=false;
-    }else{
-      set.has(value)?set.delete(value):set.add(value);
-    }
+  $$('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
+    const set=state[e.target.dataset.filter];if(!(set instanceof Set))return;
+    e.target.checked?set.add(e.target.value):set.delete(e.target.value);
+    state.visible=PAGE_SIZE;
+    const box=$('.selected-box',screen);if(box)box.outerHTML=selectedSummaryHtml();
+  }));
+  $$('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+    const groups={gyeonggi:GYEONGGI_REGIONS,seoul:SEOUL_REGIONS,incheon:INCHEON_REGIONS};
+    const vals=groups[btn.dataset.regionAll]||[];
+    const all=vals.every(v=>state.regions.has(v));
+    vals.forEach(v=>all?state.regions.delete(v):state.regions.add(v));
     state.visible=PAGE_SIZE;render();
   }));
-  $('#regionMore',screen)?.addEventListener('click',()=>{state.regionExpanded=!state.regionExpanded;render()});
-  $('#subjectMore',screen)?.addEventListener('click',()=>{state.subjectExpanded=!state.subjectExpanded;render()});
-  $('#regionFilterSearch',screen)?.addEventListener('input',e=>{state.regionQuery=e.target.value;state.regionExpanded=true;render();setTimeout(()=>$('#regionFilterSearch')?.focus(),0)});
-  $('#subjectFilterSearch',screen)?.addEventListener('input',e=>{state.subjectQuery=e.target.value;state.subjectExpanded=true;render();setTimeout(()=>$('#subjectFilterSearch')?.focus(),0)});
 
   $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
