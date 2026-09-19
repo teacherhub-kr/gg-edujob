@@ -69,7 +69,6 @@ body[data-edujob-view="radar"] #finalRadarManager,body[data-edujob-view="mypage"
   body[data-edujob-view="home"] .layout>section{margin-top:8px!important}
   body[data-edujob-view="home"] .toolbar{display:none!important}
   body[data-edujob-view="home"] .source-status,body[data-edujob-view="home"] .update{display:none!important}
-  body[data-edujob-view="home"] #list .job-card-wrap:nth-of-type(n+3),body[data-edujob-view="home"] #list>#loadMoreJobs{display:none!important}
   body[data-edujob-view="home"] #jobRadarDelete{display:none!important}
   body[data-edujob-view="home"] .job-radar-actions{grid-template-columns:repeat(4,minmax(0,1fr))!important}
   body[data-edujob-view="home"] .job-radar-profile{display:none!important}
