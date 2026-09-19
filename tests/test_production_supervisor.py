@@ -30,6 +30,16 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertFalse(unified_publication_stale(jobs, jobs))
         self.assertFalse(unified_publication_stale(None, unified))
 
+    def test_priority_contract_places_unified_before_fast(self):
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        unified_guard = source.index(
+            "if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:"
+        )
+        fast_guard = source.index("elif fast_needed and not fast_status_running:")
+        self.assertLess(unified_guard, fast_guard)
+        self.assertIn("publish verified jobs backlog before another Fast refresh", source)
+
+
     def test_cancelled_runs_do_not_count_as_failures(self):
         runs = [run("failure"), run("cancelled"), run("failure"), run("failure"), run("success")]
         count, _ = consecutive_real_failures(runs)
