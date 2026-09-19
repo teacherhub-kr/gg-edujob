@@ -544,3 +544,45 @@ body{
     bottom:-8px!important;
   }
 }
+
+
+/* 2026-09-19 one-row recruitment stats v7 */
+@media(max-width:650px){
+  #statusHeading.section-heading{
+    margin:8px 1px 4px!important;
+  }
+  #statusHeading small{
+    display:none!important;
+  }
+  .stats{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:5px!important;
+    margin-top:4px!important;
+  }
+  .stat{
+    min-width:0!important;
+    min-height:50px!important;
+    padding:7px 5px!important;
+    border-radius:12px!important;
+  }
+  .stat .n{
+    font-size:17px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .stat .t{
+    margin-top:3px!important;
+    font-size:7.2px!important;
+    line-height:1.05!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  .stat:after{
+    width:22px!important;
+    height:22px!important;
+    right:-6px!important;
+    bottom:-7px!important;
+  }
+}
