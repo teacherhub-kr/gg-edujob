@@ -252,3 +252,180 @@ a{color:inherit;text-decoration:none}
   body{background:#eaf3fc}
   .app-header{max-width:430px;margin:0 auto}
 }
+
+
+/* 2026-09-19 detail parity pass — approved mockup */
+.app-shell{padding-left:16px;padding-right:16px}
+.screen{margin-top:6px}
+.section-title{margin-top:16px;margin-bottom:8px}
+.section-title h2{font-size:15px;line-height:1.35;font-weight:700}
+.job-list{gap:10px}
+
+/* Job card anatomy */
+.job-card{
+  min-height:0;
+  padding:14px 52px 14px 14px;
+  border-radius:16px;
+}
+.job-content{grid-template-columns:36px minmax(0,1fr);gap:10px}
+.school-emblem{width:36px;height:36px}
+.school-emblem svg{width:20px;height:20px}
+.job-school{font-size:12px;line-height:1.35;font-weight:500;color:var(--ink-sub)}
+.job-title{
+  margin:3px 0 4px;
+  font-size:15px;
+  line-height:1.35;
+  font-weight:700;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.job-summary{
+  margin-bottom:8px;
+  font-size:12px;
+  line-height:1.4;
+  font-weight:400;
+  color:var(--ink-sub);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.chip-row{gap:5px}
+.meta-chip{
+  min-height:24px;
+  padding:0 8px;
+  gap:4px;
+  font-size:11px;
+  line-height:1;
+}
+.meta-chip svg{width:12px;height:12px}
+.badge-row{gap:5px;margin-bottom:7px}
+.badge{
+  min-height:20px;
+  padding:0 7px;
+  font-size:11px;
+  line-height:1;
+  font-weight:700;
+}
+.badge.deadline{background:#fff0f1;color:#E5484D}
+.badge.new{background:#fff3f5;color:#d94b62}
+.badge.term{background:#f1edff;color:#7A5AF8}
+.badge.gov{background:#eaf9f3;color:#1B9E6B}
+.job-time{top:11px;right:14px;font-size:10px}
+.favorite-btn{
+  top:27px;
+  right:4px;
+  bottom:auto;
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  padding:10px;
+}
+.favorite-btn svg{width:24px;height:24px}
+.favorite-btn.on{border:0;background:transparent;color:var(--star-on)}
+.job-deadline{
+  position:absolute;
+  right:14px;
+  bottom:12px;
+  color:#8795a8;
+  font-size:10px;
+  font-weight:500;
+}
+
+/* Home: keep approved compact structure but use line icon, not emoji. */
+.radar-top h2{display:flex;align-items:center;gap:6px}
+.radar-heading-icon{display:grid;place-items:center;width:21px;height:21px;color:var(--brand)}
+.radar-heading-icon svg{width:20px;height:20px}
+.home-radar{padding:14px}
+.metric-grid{margin-top:8px}
+.radar-actions{margin-top:8px}
+.status-grid{gap:6px}
+.filter-row{margin:10px 0;padding:8px 10px}
+
+/* Search controls: filter + 3 chips; sort lives with results. */
+.search-filter-row{
+  grid-template-columns:auto repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin:5px 0 9px;
+}
+.search-filter-row button{
+  min-height:40px;
+  font-size:10px;
+}
+.search-filter-row .filter-main{font-size:10px}
+.results-bar{margin:8px 2px 10px;font-size:10px}
+.results-bar strong{font-size:14px}
+.results-sort{
+  min-height:34px;
+  border:0;
+  background:transparent;
+  color:#526984;
+  font-size:10px;
+  font-weight:700;
+  padding:0 18px 0 6px;
+}
+
+/* Radar header: arrow + title on one row, subtitle below. */
+.radar-page .hero-row{
+  grid-template-columns:minmax(0,1fr) 84px;
+  gap:8px;
+  align-items:center;
+}
+.hero-title-row{display:flex;align-items:center;gap:4px}
+.hero-title-row .back-btn{
+  width:28px;
+  height:32px;
+  font-size:19px;
+  font-weight:700;
+  display:grid;
+  place-items:center;
+}
+.radar-page .hero-copy h1{font-size:17px;line-height:1.2}
+.radar-page .hero-copy p{margin:4px 0 0 32px;font-size:9px;line-height:1.45}
+
+/* My Page: one white menu card, status shown only at right. */
+.menu-list-single{margin-top:10px}
+.menu-list-single button{min-height:50px}
+.menu-list button em.status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  background:#f2f5f8;
+  color:var(--ink-mute);
+  font-size:8px;
+  white-space:nowrap;
+}
+.menu-list button:not([disabled]) em.status{background:#eef5ff;color:#4f6f98}
+
+/* Saved empty state: give the user a next action. */
+.saved-tip{margin-top:14px;min-height:0;padding:30px 16px}
+.empty-cta{
+  margin-top:14px;
+  min-height:40px;
+  padding:0 16px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(135deg,#258eff,#0862ec);
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+}
+
+/* Target density for phone-sized preview. */
+@media(max-width:430px){
+  .header-inner{padding-left:16px;padding-right:16px}
+  .app-shell{padding-left:16px;padding-right:16px}
+  .home-radar{padding:12px}
+  .job-card{padding:12px 48px 12px 12px}
+  .job-title{font-size:14px}
+  .job-school,.job-summary{font-size:11px}
+  .meta-chip{font-size:10px;min-height:23px;padding:0 7px}
+  .badge{font-size:10px}
+}
