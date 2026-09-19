@@ -67,7 +67,7 @@ if 'meta-chip">${esc(deadline)}' in card_block:
 search_start=js.find("const searchHtml")
 search_end=js.find("const profileSummary", search_start)
 search_block=js[search_start:search_end]
-filter_row=search_block.split('${filterDrawerHtml()}')[0]
+filter_row=search_block.split('${quickFilterPanelHtml()}')[0]
 if 'id="sortSelect"' in filter_row:
     raise SystemExit("sort control must live on results row, not filter row")
 
@@ -142,3 +142,38 @@ if not asset.exists():
 digest=hashlib.sha256(asset.read_bytes()).hexdigest()
 if digest != "0a0c793bfb460bb9d02897b1f2f9219b561ef243221967f49c8095ff4ae5ccff":
     raise SystemExit(f"unexpected mascot asset bytes: {digest}")
+
+
+# Fast quick-filter UX guards
+for needle in [
+    "const quickFilterPanelHtml",
+    "regionOptionsForSelectedProvinces",
+    "data-filter-focus=\"regions\"",
+    "data-filter-focus=\"schools\"",
+    "data-filter-focus=\"subjects\"",
+    "data-filter-focus=\"more\"",
+    "오늘 등록",
+    "3일 내 마감",
+    "quick-panel-footer",
+    "건 공고 보기",
+]:
+    if needle not in js and needle not in css:
+        raise SystemExit(f"fast quick-filter contract missing: {needle}")
+
+search_start=js.find("const searchHtml")
+search_end=js.find("const profileSummary", search_start)
+search_block=js[search_start:search_end]
+if "filterDrawerHtml()" in search_block:
+    raise SystemExit("search must not render the old all-at-once filter drawer")
+
+home_start=js.find("const homeHtml")
+home_end=js.find("const searchHtml", home_start)
+home_block=js[home_start:home_end]
+if "filterDrawerHtml()" in home_block:
+    raise SystemExit("home must not render the old all-at-once filter drawer")
+
+if "filter-drawer{display:none!important}" not in css:
+    raise SystemExit("legacy drawer must remain visually retired")
+
+if "grid-template-columns:repeat(4,minmax(0,1fr))" not in css:
+    raise SystemExit("quick filter row must expose exactly four compact controls")
