@@ -597,3 +597,212 @@ a{color:inherit;text-decoration:none}
 .loading-note{font-size:var(--fs-xs)}
 .bottom-nav b{font-size:var(--fs-xs)}
 .toast{font-size:var(--fs-xs)}
+
+
+/* 2026-09-20 fast quick-filter UX: one decision at a time */
+.search-filter-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin:4px 0 8px;
+}
+.search-filter-row button{
+  min-width:0;
+  min-height:40px;
+  padding:0 7px;
+  border:1px solid #dce7f3;
+  border-radius:10px;
+  background:#fff;
+  color:#49627f;
+  font-size:var(--fs-xs);
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.search-filter-row button.active{
+  border-color:#9fc8fb;
+  background:var(--brand-soft);
+  color:var(--brand-strong);
+}
+.search-filter-row .filter-main{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  padding:0 5px;
+  border:1px solid #dce7f3;
+  background:#fff;
+  color:#49627f;
+  font-size:var(--fs-xs);
+}
+.search-filter-row .filter-main svg{width:16px;height:16px;flex:0 0 auto}
+
+.quick-filter-panel{
+  position:relative;
+  margin:0 0 10px;
+  padding:12px;
+  border:1px solid #dce7f3;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(23,58,110,.08);
+}
+.quick-panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.quick-panel-head strong{
+  display:block;
+  color:#173661;
+  font-size:var(--fs-lg);
+  line-height:1.3;
+}
+.quick-panel-head p{
+  margin:3px 0 0;
+  color:var(--ink-sub);
+  font-size:var(--fs-xs);
+  line-height:1.4;
+}
+.panel-close{
+  width:36px;
+  height:36px;
+  flex:0 0 auto;
+  border:0;
+  border-radius:10px;
+  background:#f3f6fa;
+  color:#6f8198;
+  font-size:var(--fs-2xl);
+}
+.province-pills{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-bottom:9px;
+}
+.quick-option-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+}
+.quick-option-grid.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.quick-option{
+  min-width:0;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  padding:0 10px;
+  border:1px solid #dce7f3;
+  border-radius:11px;
+  background:#fff;
+  color:#405a78;
+  text-align:left;
+  font-size:var(--fs-sm);
+  font-weight:700;
+}
+.province-pills .quick-option{justify-content:center}
+.province-pills .quick-option small{display:none}
+.quick-option span{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.quick-option small{
+  flex:0 0 auto;
+  color:#9aa8b9;
+  font-size:var(--fs-xs);
+  font-weight:600;
+}
+.quick-option.selected{
+  border-color:#8ebffc;
+  background:#edf5ff;
+  color:#155fc9;
+}
+.quick-option.selected small{color:#5d8fcc}
+.filter-search{
+  min-height:42px;
+  display:grid;
+  grid-template-columns:20px minmax(0,1fr);
+  align-items:center;
+  gap:7px;
+  margin-bottom:8px;
+  padding:0 10px;
+  border:1px solid #dce7f3;
+  border-radius:11px;
+  background:#f9fbfe;
+  color:#7790ad;
+}
+.filter-search svg{width:18px;height:18px}
+.filter-search input{
+  width:100%;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#233f64;
+  font-size:var(--fs-sm);
+}
+.filter-search input::placeholder{color:#9aa8b9}
+.quick-hint{
+  padding:16px 10px;
+  border-radius:11px;
+  background:#f7f9fc;
+  color:#7b8ca1;
+  text-align:center;
+  font-size:var(--fs-sm);
+  line-height:1.5;
+}
+.quick-more{
+  width:100%;
+  min-height:38px;
+  margin-top:7px;
+  border:0;
+  border-radius:10px;
+  background:#f4f7fb;
+  color:#496581;
+  font-size:var(--fs-xs);
+  font-weight:800;
+}
+.quick-panel-footer{
+  position:sticky;
+  bottom:calc(57px + env(safe-area-inset-bottom, 0px) + 4px);
+  z-index:4;
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:7px;
+  margin-top:12px;
+  padding-top:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff 30%);
+}
+.quick-panel-footer button{
+  min-height:44px;
+  border-radius:11px;
+  font-size:var(--fs-sm);
+  font-weight:850;
+}
+.panel-reset{
+  border:1px solid #dce7f3;
+  background:#fff;
+  color:#5f738d;
+}
+.panel-apply{
+  border:0;
+  background:linear-gradient(135deg,#258eff,#0862ec);
+  color:#fff;
+  box-shadow:0 5px 12px rgba(43,124,243,.16);
+}
+
+/* The old all-at-once drawer is deliberately retired in app.html/app.js. */
+.filter-drawer{display:none!important}
+
+@media(max-width:360px){
+  .search-filter-row{gap:4px}
+  .search-filter-row button{padding:0 4px}
+  .quick-filter-panel{padding:10px}
+  .quick-option{padding:0 8px}
+}
