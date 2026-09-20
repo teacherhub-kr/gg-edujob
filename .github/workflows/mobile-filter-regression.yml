@@ -4,32 +4,24 @@ on:
   pull_request:
     paths:
       - 'index.html'
-      - 'mobile-ui.js'
-      - 'job-radar.js'
-      - 'edujob-theme.css'
-      - 'edujob-refresh.css'
-      - 'edujob-refresh.js'
-      - 'edujob-logo.svg'
-      - 'edujob-mascot.svg'
-      - 'edujob-icon.svg'
-      - 'tests/test_bright_brand_refresh.py'
+      - 'app.html'
+      - 'app.css'
+      - 'app.js'
       - 'user-store.js'
-      - '.github/workflows/job-alerts.yml'
-      - 'tests/test_push_alert_contract.py'
+      - 'direct-link-guard.js'
       - 'manifest.webmanifest'
       - 'sw.js'
       - 'alert-client.js'
       - 'alert-config.js'
+      - 'tests/test_app_frontend_contract.py'
+      - 'tests/test_user_store_contract.py'
+      - 'tests/test_push_alert_contract.py'
+      - '.github/workflows/mobile-filter-regression.yml'
+      - '.github/workflows/job-alerts.yml'
       - 'supabase/migrations/20260918_create_push_subscriptions.sql'
       - 'supabase/functions/push-dispatch/index.ts'
       - 'supabase/functions/push-subscription/index.ts'
       - 'supabase/functions/_shared/alerts.ts'
-      - 'tests/test_mobile_filter_idempotence.py'
-      - 'tests/test_job_radar_personalization.py'
-      - 'tests/test_job_radar_first_screen.py'
-      - 'tests/test_user_store_contract.py'
-      - 'tests/test_edujob_brand_contract.py'
-      - '.github/workflows/mobile-filter-regression.yml'
   workflow_dispatch:
 
 permissions:
@@ -43,28 +35,17 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Verify mobile filter toggle binding
-        run: python tests/test_mobile_filter_idempotence.py
-      - name: Verify personalization script syntax
+      - name: Verify production JavaScript syntax
         run: |
+          node --check app.js
           node --check user-store.js
-          node --check job-radar.js
-      - name: Verify push alert client syntax
-        run: |
+          node --check direct-link-guard.js
           node --check alert-config.js
           node --check alert-client.js
           node --check sw.js
-      - name: Verify job radar personalization contract
-        run: python tests/test_job_radar_personalization.py
-      - name: Verify first-screen radar contract
-        run: python tests/test_job_radar_first_screen.py
+      - name: Verify current frontend contract
+        run: python tests/test_app_frontend_contract.py
       - name: Verify account-ready user store
         run: python tests/test_user_store_contract.py
-      - name: Verify independent Edujob brand
-        run: python tests/test_edujob_brand_contract.py
-      - name: Verify bright brand refresh
-        run: |
-          node --check edujob-refresh.js
-          python tests/test_bright_brand_refresh.py
       - name: Verify Web Push alert contract
         run: python tests/test_push_alert_contract.py

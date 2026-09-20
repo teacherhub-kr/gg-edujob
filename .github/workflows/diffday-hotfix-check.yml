@@ -6,7 +6,7 @@ name: diffDay hotfix check
 on:
   pull_request:
     paths:
-      - 'index.html'
+      - 'app.js'
       - 'tests/test_diffday_calendar.js'
       - '.github/workflows/diffday-hotfix-check.yml'
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Deterministic diffDay and 5-bucket boundary tests
         run: node tests/test_diffday_calendar.js
@@ -36,6 +36,7 @@ jobs:
             exit 0
           fi
           echo "base=$BASE head=$HEAD"
+          git fetch --no-tags --depth=1 origin "$BASE" "$HEAD"
 
           # applyEnd 원본을 포함한 수집 데이터가 이 PR 에서 바뀌지 않았음을 증명한다.
           # 같은 파일을 두 번 파싱하는 검사는 동어반복이므로 쓰지 않는다.
