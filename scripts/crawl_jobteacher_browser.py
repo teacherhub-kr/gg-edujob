@@ -14,8 +14,9 @@ BASE='https://www.jobteacher.kr'
 SURFACES={
  'seoul': f'{BASE}/employ/lists/all/?is_search=yes&sel_area%5B%5D=1',
  'gyeonggi': f'{BASE}/employ/lists/all/?is_search=yes&sel_area%5B%5D=2422',
+ 'incheon': f'{BASE}/employ/lists/all/?is_search=yes&sel_area%5B%5D=907',
 }
-REGION_TOKEN={'seoul':'서울','gyeonggi':'경기'}
+REGION_TOKEN={'seoul':'서울','gyeonggi':'경기','incheon':'인천'}
 ID_RE=re.compile(r'/employ/detail/(\d+)(?:/|$|\?)',re.I)
 BLOCK_RE=re.compile(r'captcha|자동입력|사람인지|접근이\s*제한|비정상적인\s*접근',re.I)
 BANNED_RE=re.compile(r'구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대',re.I)
@@ -92,6 +93,7 @@ def region_tokens(text):
  out=[]
  if re.search(r'(?:^|\s)서울(?:특별시)?(?:\s|$)', text): out.append('서울')
  if re.search(r'(?:^|\s)(?:경기|경기도)(?:\s|$)', text): out.append('경기')
+ if re.search(r'(?:^|\s)인천(?:광역시)?(?:\s|$)', text): out.append('인천')
  return out
 
 def merge_duplicate(existing,new):
@@ -176,7 +178,7 @@ def main():
  jobs=sorted(discovered.values(),key=lambda j:int(j['sourceId']),reverse=True)
  now=datetime.now(KST).isoformat(timespec='seconds'); discovered_ids=set(discovered); published_ids={j.get('sourceIdentity') for j in jobs}; missing=sorted(discovered_ids-published_ids)
  missing_registered=sorted(j['sourceIdentity'] for j in jobs if not j.get('registered'))
- traversal_complete=(len(reports)==2 and all(r['complete'] and r['ids']>0 for r in reports) and not errors)
+ traversal_complete=(len(reports)==len(SURFACES) and all(r['complete'] and r['ids']>0 for r in reports) and not errors)
  prev_count=len(prev_jobs); severe_drop=prev_count>=20 and len(jobs)<max(10,int(prev_count*0.45))
  healthy=traversal_complete and not missing and len(jobs)>0 and not severe_drop and not missing_registered
  entries=dict(old_entries)
