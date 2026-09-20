@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T19:10:02+09:00",
+  "generatedAt": "2026-09-21T02:55:37+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 49,
@@ -22,8 +22,8 @@
   "failedAvailableComponents": [],
   "currentMappedBySource": {
     "official": 2,
-    "cleaneye": 3,
-    "artmore": 1,
+    "cleaneye": 2,
+    "artmore": 0,
     "ancf": 1,
     "lessoninfo-discovery": 16
   },
@@ -184,14 +184,14 @@
       "municipality": "도봉구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:dongdaemun",
@@ -809,11 +809,11 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 1,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     }
