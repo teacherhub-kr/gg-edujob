@@ -284,7 +284,7 @@ async def main():
     discovered = set(by_id)
     prev = previous_ids()
     missing_after = []
-    healthy = len(surfaces) == 2 and not errors and bool(all_jobs) and not missing_after
+    healthy = len(surfaces) == len(REGIONS) and not errors and bool(all_jobs) and not missing_after
     if prev and len(discovered) < max(10, int(len(prev) * 0.35)):
         healthy = False
         errors.append({"region": "all", "error": f"suspicious drop: previous={len(prev)} current={len(discovered)}"})
@@ -308,7 +308,7 @@ async def main():
         "missingAfter": missing_after,
         "sourceReports": surfaces,
         "errors": errors,
-        "regionsAllowed": ["서울", "경기"],
+        "regionsAllowed": ["서울", "경기", "인천"],
         "nextGate": "detail-link validation + candidate promotion + unified validation",
     }
     state = {
