@@ -18,7 +18,7 @@ PAGE_SIZE = 100
 MAX_RETRIES = 4
 MAX_CATCHUP_ROUNDS = 4
 DROP_CRITICAL_RATIO = 0.65
-ALLOWED_PROVINCES = {"서울", "경기"}
+ALLOWED_PROVINCES = {"서울", "경기", "인천"}
 
 CANDIDATE_JOBS = Path("gonggonggangsa_jobs.candidate.json")
 CANDIDATE_LEDGER = Path("gonggonggangsa_source_id_ledger.candidate.json")
