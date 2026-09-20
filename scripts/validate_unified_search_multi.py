@@ -15,7 +15,7 @@ TODAY = datetime.now(KST).date()
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 BANNED = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
-ALLOWED_PROVINCES = {"서울", "경기"}
+ALLOWED_PROVINCES = {"서울", "경기", "인천"}
 
 
 def load(path, default=None):
@@ -188,7 +188,7 @@ def main():
 
     extra_private = sorted(represented - source_ids_union)
     if extra_private: errors.append(f"Unified dataset invented {len(extra_private)} private stable IDs")
-    if non_metro: errors.append(f"Publication-effective private datasets contain {non_metro} non-Seoul/Gyeonggi rows")
+    if non_metro: errors.append(f"Publication-effective private datasets contain {non_metro} non-Seoul/Gyeonggi/Incheon rows")
     if banned: errors.append(f"Publication-effective private datasets contain {banned} banned non-recruitment titles")
     if expired: errors.append(f"Publication-effective private datasets contain {expired} expired postings")
     if future: errors.append(f"Publication-effective private datasets contain {future} future registration dates")
