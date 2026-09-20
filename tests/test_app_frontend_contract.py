@@ -404,3 +404,30 @@ for legacy in [
 ]:
     if legacy in index_html:
         raise SystemExit(f"legacy production layer survived cutover: {legacy}")
+
+
+# Unsupported in-app browsers must offer a clear Chrome handoff instead of a dead-end error.
+for needle in [
+    "const APP_URL='https://teacherhub-kr.github.io/gg-edujob/'",
+    "const pushCapable=()=>",
+    "const chromeIntentUrl=()=>",
+    "package=com.android.chrome",
+    "data-open-chrome",
+    "data-copy-app-url",
+    "Chrome에서 열어 알림을 켜주세요.",
+]:
+    if needle not in js:
+        raise SystemExit(f"chrome handoff contract missing: {needle}")
+for needle in [
+    ".push-browser-guide",
+    ".chrome-open-btn",
+]:
+    if needle not in css:
+        raise SystemExit(f"chrome handoff style missing: {needle}")
+for needle in ["app.css?v=20260920n","app.js?v=20260920n"]:
+    if needle not in html:
+        raise SystemExit(f"chrome handoff cache-bust missing from app preview: {needle}")
+index_html=Path("index.html").read_text(encoding="utf-8")
+for needle in ["app.css?v=20260920n","app.js?v=20260920n"]:
+    if needle not in index_html:
+        raise SystemExit(f"chrome handoff cache-bust missing from production shell: {needle}")
