@@ -28,6 +28,8 @@ const state={
   filterOpen:false,
   filterFocus:'',
   radarTab:'conditions',
+  radarMode:'all',
+  radarNewKeys:null,
   savedTab:'saved',
   loading:true,
   error:''
@@ -464,7 +466,7 @@ const homeHtml=()=>{
       '<div class="radar-actions calm"><button type="button" data-go="search">내 조건 만들기</button><button type="button" data-go="radar">채용 레이더 보기</button></div>'}
   </section>
   ${p?
-    `<div class="section-title home-primary-title"><span>${icon('document')}</span><h2>내 조건에 맞는 새 공고</h2><span class="spacer"></span><button class="link-btn" data-home-profile="matches">${newRows.length.toLocaleString()}건 전체보기 ›</button></div>
+    `<div class="section-title home-primary-title"><span>${icon('document')}</span><h2>내 조건에 맞는 새 공고</h2><span class="spacer"></span><button class="link-btn" data-home-new>${newRows.length.toLocaleString()}건 전체보기 ›</button></div>
       ${newRows.length?
         jobsListHtml(newRows,5):
         `<div class="home-no-new"><strong>새로 들어온 맞춤 공고가 없습니다.</strong><p>현재 조건에 맞는 모집 중 공고는 ${matches.length.toLocaleString()}건입니다.</p><button type="button" data-home-profile="matches">기존 맞춤공고 보기</button></div>`}
@@ -504,18 +506,20 @@ const profileSummary=(p)=>{
 const radarHtml=()=>{
   const p=store()?.profile?.get?.(),a=store()?.alerts?.get?.()||{enabled:false};
   const matches=p?profileMatches(p):[];
-  if(state.radarTab==='matches'&&p)writeSnapshot(p);
+  const newMatches=state.radarMode==='new'&&state.radarNewKeys instanceof Set
+    ?matches.filter(r=>state.radarNewKeys.has(r.key))
+    :[];
+  const rows=state.radarMode==='new'?newMatches:matches;
   return `<section class="radar-page">
     <div class="hero-row"><div class="hero-copy"><div class="hero-title-row"><button type="button" class="back-btn" data-go="home" aria-label="홈으로">←</button><h1>내 채용 레이더</h1></div><p>내가 원하는 조건에 맞는 공고를 자동으로 찾아드려요.</p></div><img src="assets/mascot.png?v=20260920b" width="76" height="64" alt="수도권에듀잡 마스코트" loading="lazy"></div>
     <div class="segment-tabs"><button type="button" data-radar-tab="conditions" class="${state.radarTab==='conditions'?'active':''}">내 조건</button><button type="button" data-radar-tab="matches" class="${state.radarTab==='matches'?'active':''}">맞춤 공고</button></div>
     ${state.radarTab==='conditions'?
-      `<div class="condition-card"><div class="condition-head"><strong>저장된 검색 조건 (${p?1:0})</strong><button type="button" data-go="search">＋ 새 조건 추가</button></div>
+      `<div class="condition-card"><div class="condition-head"><strong>내 검색 조건</strong>${p?'':'<button type="button" data-go="search">조건 만들기</button>'}</div>
       ${p?`<div class="saved-condition"><div><strong>${esc(p.q||'내 채용 조건')}</strong><p>${esc(profileSummary(p))}</p><em>새 공고 ${snapshotNewCount(p).toLocaleString()}건</em></div><details class="condition-menu"><summary aria-label="저장 조건 메뉴">⋯</summary><div class="condition-menu-pop"><button type="button" id="conditionEdit">수정</button><button type="button" class="danger" id="conditionDelete">삭제</button></div></details></div>`:
       '<div class="empty-state"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>'}</div>`
-      :jobsListHtml(matches,state.visible,{emptyText:'저장 조건에 맞는 모집 중 공고가 없습니다.'})
+      :`${state.radarMode==='new'?'<div class="radar-result-head"><strong>지난 확인 이후 새 공고 '+rows.length.toLocaleString()+'건</strong><button type="button" data-radar-all>전체 맞춤공고</button></div>':''}${jobsListHtml(rows,state.visible,{emptyText:state.radarMode==='new'?'지난 확인 이후 새로 들어온 맞춤 공고가 없습니다.':'저장 조건에 맞는 모집 중 공고가 없습니다.'})}`
     }
     <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
-    <div class="tip-card"><img src="assets/mascot.png?v=20260920b" width="72" height="66" alt="수도권에듀잡 마스코트" loading="lazy"><div><strong>내 조건에 딱 맞는<br>좋은 기회를 찾아드릴게요!</strong><p>✓ 새로운 공고 자동 확인<br>✓ 조건별 맞춤 알림<br>✓ 관심 공고와 쉽게 비교</p></div></div>
   </section>`;
 };
 
@@ -531,18 +535,14 @@ const savedHtml=()=>{
 
 const meHtml=()=>{
   const fav=favoriteKeys().size,p=store()?.profile?.get?.(),recent=recentRows().length,a=store()?.alerts?.get?.()||{enabled:false};
-  const row=(ic,label,action,status='',disabled=false)=>`<button type="button" data-me="${action}" ${disabled?'disabled':''}>${icon(ic)}<span>${esc(label)}</span><em class="${status?'status':''}">${status?esc(status):'›'}</em></button>`;
+  const row=(ic,label,action,status='')=>`<button type="button" data-me="${action}">${icon(ic)}<span>${esc(label)}</span><em class="${status?'status':''}">${status?esc(status):'›'}</em></button>`;
   return `<div class="me-profile"><div class="avatar">${icon('user')}</div><div><strong>선생님</strong><p>안녕하세요!</p></div><span style="margin-left:auto;color:#2b7cf3">${icon('settings')}</span></div>
   <div class="me-stats"><div><span>저장한 공고</span><b>${fav}</b></div><div><span>저장한 조건</span><b>${p?1:0}</b></div><div><span>최근 본 공고</span><b>${recent}</b></div></div>
   <div class="menu-list menu-list-single">
-    ${row('user','내 정보 관리','profile','준비 중',true)}
     ${row('bell','알림 설정','alerts',a.enabled?'켜짐':'꺼짐')}
     ${row('bookmark','저장한 조건','radar')}
     ${row('heart','관심공고','saved')}
     ${row('history','최근 본 공고','recent')}
-    ${row('document','이용 가이드','guide','준비 중',true)}
-    ${row('document','문의하기','contact','준비 중',true)}
-    ${row('document','서비스 소개','about','준비 중',true)}
   </div>
   <button type="button" class="device-reset" id="deviceReset">내 기기 데이터 초기화</button>`;
 };
@@ -553,7 +553,9 @@ function render(){
   const screen=$('#screen');if(!screen)return;
   const searchTop=$('#searchTop');
   if(searchTop)searchTop.hidden=!['home','search'].includes(state.route);
-  $$('#bottomNav [data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===state.route));
+  const surfaceSegment=$('#surfaceSegment');
+  if(surfaceSegment)surfaceSegment.hidden=state.route!=='search';
+  $('#bottomNav [data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===state.route));
   $$('#surfaceSegment [data-surface]').forEach(b=>b.classList.toggle('active',b.dataset.surface===state.surface));
   const input=$('#searchInput');if(input&&input.value!==state.q)input.value=state.q;
   $('#searchClear')?.classList.toggle('show',Boolean(state.q));
@@ -647,19 +649,31 @@ function bindScreen(){
     state.visible=PAGE_SIZE;render();
   }));
 
-  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  const openNewRadar=()=>{
+    const p=store()?.profile?.get?.();
+    if(!p){toast('먼저 검색 조건을 저장해 주세요.');setRoute('search');return}
+    const rows=newProfileRows(p);
+    state.radarNewKeys=new Set(rows.map(r=>r.key));
+    state.radarMode='new';
+    state.radarTab='matches';
+    writeSnapshot(p);
+    setRoute('radar');
+  };
+  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
-    else if(x==='radar'||x==='new')setRoute('radar');
-    else if(x==='alert')setRoute('radar');
+    else if(x==='new')openNewRadar();
+    else if(x==='radar'||x==='alert')setRoute('radar');
   }));
-  $$('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $('[data-home-new]',screen).forEach(b=>b.addEventListener('click',openNewRadar));
+  $('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.homeProfile,p=store()?.profile?.get?.();
     if(x==='edit'){
       if(p)applyProfileToState(p);
       setRoute('search');
     }else if(x==='matches'){
-      state.radarTab='matches';
+      state.radarMode='all';state.radarNewKeys=null;state.radarTab='matches';
+      if(p)writeSnapshot(p);
       setRoute('radar');
     }
   }));
@@ -683,7 +697,19 @@ function bindScreen(){
     }else if(x==='saved')setRoute('saved');
   }));
 
-  $$('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{state.radarTab=b.dataset.radarTab;state.visible=PAGE_SIZE;render()}));
+  $('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{
+    state.radarTab=b.dataset.radarTab;state.visible=PAGE_SIZE;
+    if(state.radarTab==='matches'){
+      state.radarMode='all';state.radarNewKeys=null;
+      const p=store()?.profile?.get?.();if(p)writeSnapshot(p);
+    }
+    render();
+  }));
+  $('[data-radar-all]',screen).forEach(b=>b.addEventListener('click',()=>{
+    state.radarMode='all';state.radarNewKeys=null;state.radarTab='matches';state.visible=PAGE_SIZE;
+    const p=store()?.profile?.get?.();if(p)writeSnapshot(p);
+    render();
+  }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
   $('#alertToggle',screen)?.addEventListener('click',async()=>{
@@ -692,7 +718,7 @@ function bindScreen(){
     try{
       const client=window.EduJobAlerts;
       if(!client)throw new Error('client-unavailable');
-      const on=Boolean(store()?.alerts?.get?.()?.enabled);
+      const on=await client.reconcile();
       if(on){
         await client.unsubscribe();
         toast('새 공고 알림을 껐습니다.');
