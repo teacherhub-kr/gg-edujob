@@ -8,6 +8,18 @@ const PAGE_SIZE=80;
 const HOME_LIMIT=10;
 const SUBJECT_LIMIT=24;
 const ROUTES=new Set(['home','search','radar','saved','me']);
+const APP_URL='https://teacherhub-kr.github.io/gg-edujob/';
+const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);
+const chromeIntentUrl=()=>`intent://teacherhub-kr.github.io/gg-edujob/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(APP_URL)};end`;
+const copyAppUrl=async()=>{
+  try{
+    if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(APP_URL);return true}
+  }catch(e){}
+  try{
+    const t=document.createElement('textarea');t.value=APP_URL;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';
+    document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();return ok;
+  }catch(e){return false}
+};
 
 const state={
   payload:null,
@@ -521,6 +533,7 @@ const profileSummary=(p)=>{
 
 const radarHtml=()=>{
   const p=store()?.profile?.get?.(),a=store()?.alerts?.get?.()||{enabled:false};
+  const pushOk=pushCapable();
   const matches=p?profileMatches(p):[];
   const newMatches=state.radarMode==='new'&&state.radarNewKeys instanceof Set
     ?matches.filter(r=>state.radarNewKeys.has(r.key))
@@ -535,7 +548,8 @@ const radarHtml=()=>{
       '<div class="empty-state"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>'}</div>`
       :`${state.radarMode==='new'?'<div class="radar-result-head"><strong>지난 확인 이후 새 공고 '+rows.length.toLocaleString()+'건</strong><button type="button" data-radar-all>전체 맞춤공고</button></div>':''}${jobsListHtml(rows,state.visible,{emptyText:state.radarMode==='new'?'지난 확인 이후 새로 들어온 맞춤 공고가 없습니다.':'저장 조건에 맞는 모집 중 공고가 없습니다.'})}`
     }
-    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
+    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>${pushOk?'새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.':'현재 브라우저에서는 웹 푸시를 사용할 수 없습니다.'}</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
+    ${pushOk?'':`<div class="push-browser-guide"><strong>Chrome에서 열어 알림을 켜주세요.</strong><p>네이버·카카오 등 앱 안 브라우저에서는 알림 기능이 제한될 수 있습니다.</p><div class="push-browser-actions"><button type="button" class="chrome-open-btn" data-open-chrome>Chrome에서 열기</button><button type="button" class="url-copy-btn" data-copy-app-url>주소 복사</button></div></div>`}
   </section>`;
 };
 
@@ -728,6 +742,14 @@ function bindScreen(){
   }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
+  $('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+    location.href=chromeIntentUrl();
+  }));
+  $('[data-copy-app-url]',screen).forEach(btn=>btn.addEventListener('click',async()=>{
+    const ok=await copyAppUrl();
+    toast(ok?'수도권에듀잡 주소를 복사했습니다.':'주소 복사에 실패했습니다. 주소창의 주소를 직접 복사해 주세요.');
+  }));
+
   $('#alertToggle',screen)?.addEventListener('click',async()=>{
     const btn=$('#alertToggle',screen);
     if(btn)btn.disabled=true;
@@ -747,7 +769,7 @@ function bindScreen(){
       if(code==='profile-required')toast('먼저 검색 조건을 저장해 주세요.');
       else if(code==='ios-home-screen-required')toast('iPhone·iPad는 홈 화면에 추가한 뒤 알림을 켤 수 있습니다.');
       else if(code==='permission-denied')toast('브라우저 알림 권한을 허용해 주세요.');
-      else if(code==='unsupported')toast('현재 브라우저는 웹 푸시 알림을 지원하지 않습니다.');
+      else if(code==='unsupported')toast('현재 브라우저에서는 알림을 사용할 수 없습니다. Chrome에서 열어주세요.');
       else toast('알림 설정을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.');
     }finally{
       if(btn)btn.disabled=false;
