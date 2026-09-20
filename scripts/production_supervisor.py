@@ -408,7 +408,34 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             and running_age is not None
             and running_age <= timedelta(minutes=90)
         )
-        if fast_needed and not fast_status_running:
+        unified_runs = all_runs["unified"]
+        latest_unified = latest_completed(unified_runs)
+
+        # If verified official jobs have already advanced beyond the user-facing
+        # unified dataset, drain that publication backlog before starting another
+        # potentially long Fast refresh. Unified publication remains fail-closed.
+        if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:
+            blocked, failures, _ = circuit_blocked("unified", unified_runs, now)
+            latest_unified_time = completed_at(latest_unified)
+            if blocked:
+                action = "skip-unified-circuit-open"
+                circuit = "unified"
+                reason = f"Unified search circuit open after {failures} real failures"
+            elif (
+                latest_unified
+                and latest_unified.get("conclusion") in REAL_FAILURES
+                and latest_unified_time
+                and now - latest_unified_time < timedelta(hours=1)
+            ):
+                action = "skip-unified-backoff"
+                reason = "unified search failed within the last hour"
+            else:
+                action = "unified"
+                reason = (
+                    "publish verified official jobs backlog before another Fast refresh: "
+                    f"jobs={jobs_time}, unified={unified_time}"
+                )
+        elif fast_needed and not fast_status_running:
             blocked, failures, latest_failure = circuit_blocked(
                 "fast",
                 all_runs["fast"],
@@ -435,12 +462,10 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         else:
             audit_runs = all_runs["completeness"]
             recovery_runs = all_runs["recovery"]
-            unified_runs = all_runs["unified"]
             latest_audit = latest_completed(audit_runs)
             latest_audit_success = latest_success(audit_runs)
             latest_recovery = latest_completed(recovery_runs)
             latest_recovery_success = latest_success(recovery_runs)
-            latest_unified = latest_completed(unified_runs)
 
             audit_success_time = completed_at(latest_audit_success)
             audit_current = bool(
