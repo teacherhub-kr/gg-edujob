@@ -1251,3 +1251,46 @@ a{color:inherit;text-decoration:none}
   font-size:var(--fs-xs);
   font-weight:800;
 }
+
+
+/* Unsupported in-app browser -> Chrome handoff for Web Push */
+.push-browser-guide{
+  margin:10px 0 16px;
+  padding:14px;
+  border:1px solid #d7e5f6;
+  border-radius:14px;
+  background:#f7fbff;
+}
+.push-browser-guide strong{
+  display:block;
+  color:#244a78;
+  font-size:var(--fs-sm);
+}
+.push-browser-guide p{
+  margin:5px 0 12px;
+  color:#66788f;
+  font-size:var(--fs-xs);
+  line-height:1.5;
+}
+.push-browser-actions{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+}
+.push-browser-actions button{
+  min-height:42px;
+  border-radius:11px;
+  font-weight:800;
+  font-size:var(--fs-sm);
+}
+.chrome-open-btn{
+  border:0;
+  background:var(--brand);
+  color:#fff;
+}
+.url-copy-btn{
+  border:1px solid #cbd9e9;
+  background:#fff;
+  color:#365b83;
+  padding:0 14px;
+}
