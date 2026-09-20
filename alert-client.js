@@ -79,9 +79,29 @@
     save({enabled:false,clientToken:prev.clientToken||'',endpoint:'',updatedAt:new Date().toISOString()});
   }
 
-  async function sync(){
+  async function reconcile(){
     const prev=state();
-    if(!prev.enabled||!prev.clientToken||!supported())return;
+    if(!prev.enabled)return false;
+    if(!supported()||Notification.permission!=='granted'){
+      save({...prev,enabled:false,endpoint:'',updatedAt:new Date().toISOString()});
+      return false;
+    }
+    const sub=await currentSubscription().catch(()=>null);
+    const live=Boolean(sub&&(!prev.endpoint||sub.endpoint===prev.endpoint));
+    if(!live){
+      save({...prev,enabled:false,endpoint:'',updatedAt:new Date().toISOString()});
+      return false;
+    }
+    if(prev.endpoint!==sub.endpoint){
+      save({...prev,enabled:true,endpoint:sub.endpoint,updatedAt:new Date().toISOString()});
+    }
+    return true;
+  }
+
+  async function sync(){
+    if(!(await reconcile()))return;
+    const prev=state();
+    if(!prev.clientToken)return;
     const sub=await currentSubscription().catch(()=>null);
     if(!sub)return;
     await post({
@@ -95,6 +115,7 @@
   window.EduJobAlerts=Object.freeze({
     supported,
     state,
+    reconcile,
     subscribe,
     unsubscribe,
     sync
@@ -151,7 +172,7 @@
   window.addEventListener('edujob:user-state-changed',event=>{
     if(event.detail?.kind==='profile')sync().catch(()=>{});
   });
-  window.addEventListener('pageshow',()=>sync().catch(()=>{}));
-  registration().catch(()=>{});
+  window.addEventListener('pageshow',()=>registration().then(()=>sync()).catch(()=>{}));
+  registration().then(()=>reconcile()).catch(()=>{});
   installButton();
 })();
