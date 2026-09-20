@@ -55,8 +55,11 @@ GYEONGGI_PLACES = (
     "처인구", "영통구", "권선구", "팔달구", "장안구", "만안구", "동안구",
     "판교", "동탄", "광교", "일산", "분당",
 )
+INCHEON_DISTRICTS = (
+    "강화군", "계양구", "미추홀구", "남동구", "동구", "부평구", "서구", "연수구", "중구", "옹진군",
+)
 NON_METRO_RE = re.compile(
-    r"인천(?:광역시)?|부산(?:광역시)?|대구(?:광역시)?|대전(?:광역시)?|광주광역시|"
+    r"부산(?:광역시)?|대구(?:광역시)?|대전(?:광역시)?|광주광역시|"
     r"울산(?:광역시)?|세종(?:특별자치시)?|강원(?:특별자치도)?|충청북도|충북|충청남도|충남|"
     r"전북특별자치도|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주(?:특별자치도)?",
     re.I,
@@ -176,7 +179,7 @@ def _extract_location(signal: str) -> str:
 
 
 def _metro_region(location: str, signal: str) -> str:
-    """Return 서울/경기 only when the posting location is positively identifiable."""
+    """Return 서울/경기/인천 only when the posting location is positively identifiable."""
     loc = _norm(location)
     full = _norm(signal)
 
@@ -187,10 +190,14 @@ def _metro_region(location: str, signal: str) -> str:
             return "서울"
         if re.search(r"경기(?:도)?", loc):
             return "경기"
+        if re.search(r"인천(?:광역시|시)?", loc):
+            return "인천"
         if any(place in loc for place in GYEONGGI_PLACES):
             return "경기"
         if any(d in loc for d in SEOUL_DISTRICTS):
             return "서울"
+        if any(d in loc for d in INCHEON_DISTRICTS):
+            return "인천"
 
     if NON_METRO_RE.search(full):
         return ""
@@ -198,13 +205,19 @@ def _metro_region(location: str, signal: str) -> str:
         return "서울"
     if re.search(r"경기도", full):
         return "경기"
+    if re.search(r"인천광역시|인천시", full):
+        return "인천"
     if any(place in full for place in GYEONGGI_PLACES):
         return "경기"
     if any(d in full for d in SEOUL_DISTRICTS):
         return "서울"
+    if any(d in full for d in INCHEON_DISTRICTS):
+        return "인천"
 
     if re.search(r"(?:^|[\s(\[/])서울(?:[\s)\]/]|$)", full):
         return "서울"
+    if re.search(r"(?:^|[\s(\[/])인천(?:[\s)\]/]|$)", full):
+        return "인천"
     return ""
 
 
@@ -217,8 +230,12 @@ def _title_region(title: str) -> str:
         return "서울"
     if re.search(r"경기도", title) or any(place in title for place in GYEONGGI_PLACES):
         return "경기"
+    if re.search(r"인천광역시|인천시", title) or any(d in title for d in INCHEON_DISTRICTS):
+        return "인천"
     if re.search(r"(?:^|[\s(\[/])서울(?:[\s)\]/]|$)", title):
         return "서울"
+    if re.search(r"(?:^|[\s(\[/])인천(?:[\s)\]/]|$)", title):
+        return "인천"
     return ""
 
 
