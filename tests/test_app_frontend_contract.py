@@ -380,3 +380,27 @@ for needle in [
 ]:
     if needle not in js:
         raise SystemExit(f"direct new-jobs contract missing: {needle}")
+
+
+# Production cutover: root index must now serve the approved app shell, not the legacy UI.
+index_html=Path("index.html").read_text(encoding="utf-8")
+for needle in [
+    'id="appHeader"',
+    'id="searchTop"',
+    'id="bottomNav"',
+    'app.css?v=20260920k',
+    'app.js?v=20260920k',
+    'alert-client.js?v=20260920c',
+    'manifest.webmanifest',
+]:
+    if needle not in index_html:
+        raise SystemExit(f"production app shell missing: {needle}")
+for legacy in [
+    "edujob-final-ui.css",
+    "edujob-refresh.css",
+    "mobile-ui.js",
+    'class="hero"',
+    'class="filter-panel"',
+]:
+    if legacy in index_html:
+        raise SystemExit(f"legacy production layer survived cutover: {legacy}")
