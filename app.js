@@ -726,10 +726,12 @@ function bindScreen(){
     store()?.resetLocal?.();toast('이 기기의 저장 데이터를 초기화했습니다.');render();
   });
 
-  $$('.favorite-btn',screen).forEach(btn=>btn.addEventListener('click',e=>{
+  $('.favorite-btn',screen).forEach(btn=>btn.addEventListener('click',e=>{
     e.stopPropagation();
     const r=state.indexed.find(x=>x.key===btn.dataset.favorite);if(!r)return;
-    const on=toggleFavorite(r.j);btn.classList.toggle('on',on);btn.setAttribute('aria-pressed',String(on));render();
+    const on=toggleFavorite(r.j);
+    toast(on?'관심공고에 저장했어요.':'관심공고에서 해제했어요.');
+    render();
   }));
   $$('.job-card',screen).forEach(card=>{
     const open=()=>{
