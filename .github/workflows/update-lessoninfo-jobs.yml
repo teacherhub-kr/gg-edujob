@@ -126,11 +126,11 @@ jobs:
           jobs = d if isinstance(d, list) else (d.get('jobs') or [])
           bad = [
               {'id': j.get('sourceIdentity'),'title': j.get('title'),'metroRegion': j.get('metroRegion'),'location': j.get('location')}
-              for j in jobs if j.get('metroRegion') not in {'서울', '경기'}
+              for j in jobs if j.get('metroRegion') not in {'서울', '경기', '인천'}
           ]
           if bad:
               print(json.dumps(bad[:20], ensure_ascii=False, indent=2))
-              raise SystemExit(f'non-Seoul/Gyeonggi Lessoninfo rows published: {len(bad)}')
+              raise SystemExit(f'non-Seoul/Gyeonggi/Incheon Lessoninfo rows published: {len(bad)}')
 
           # A list-container parsing bug once stamped the same long first-row location onto most
           # culture-arts postings. Repeated scalar metro labels such as '서울' are fine, but a
@@ -140,7 +140,7 @@ jobs:
               ' '.join(str(j.get('location') or '').split())
               for j in culture
               if len(' '.join(str(j.get('location') or '').split())) >= 12
-              and ' '.join(str(j.get('location') or '').split()) not in {'서울', '경기'}
+              and ' '.join(str(j.get('location') or '').split()) not in {'서울', '경기', '인천'}
           ]
           if specific_locations:
               location, count = Counter(specific_locations).most_common(1)[0]
@@ -152,7 +152,7 @@ jobs:
                   )
 
           linked=sum(1 for j in jobs if j.get('linkedOfficialUrls'))
-          print(f'Lessoninfo metro-only guard passed: {len(jobs)} Seoul/Gyeonggi jobs; explicit official links captured on {linked} rows')
+          print(f'Lessoninfo metro-only guard passed: {len(jobs)} Seoul/Gyeonggi/Incheon jobs; explicit official links captured on {linked} rows')
           PY
 
       - name: Preserve failed Lessoninfo diagnostics
