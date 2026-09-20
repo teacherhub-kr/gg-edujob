@@ -555,7 +555,7 @@ function render(){
   if(searchTop)searchTop.hidden=!['home','search'].includes(state.route);
   const surfaceSegment=$('#surfaceSegment');
   if(surfaceSegment)surfaceSegment.hidden=state.route!=='search';
-  $('#bottomNav [data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===state.route));
+  $$('#bottomNav [data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===state.route));
   $$('#surfaceSegment [data-surface]').forEach(b=>b.classList.toggle('active',b.dataset.surface===state.surface));
   const input=$('#searchInput');if(input&&input.value!==state.q)input.value=state.q;
   $('#searchClear')?.classList.toggle('show',Boolean(state.q));
@@ -659,14 +659,14 @@ function bindScreen(){
     writeSnapshot(p);
     setRoute('radar');
   };
-  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='new')openNewRadar();
     else if(x==='radar'||x==='alert')setRoute('radar');
   }));
-  $('[data-home-new]',screen).forEach(b=>b.addEventListener('click',openNewRadar));
-  $('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home-new]',screen).forEach(b=>b.addEventListener('click',openNewRadar));
+  $$('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.homeProfile,p=store()?.profile?.get?.();
     if(x==='edit'){
       if(p)applyProfileToState(p);
@@ -697,7 +697,7 @@ function bindScreen(){
     }else if(x==='saved')setRoute('saved');
   }));
 
-  $('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{
     state.radarTab=b.dataset.radarTab;state.visible=PAGE_SIZE;
     if(state.radarTab==='matches'){
       state.radarMode='all';state.radarNewKeys=null;
@@ -705,7 +705,7 @@ function bindScreen(){
     }
     render();
   }));
-  $('[data-radar-all]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-radar-all]',screen).forEach(b=>b.addEventListener('click',()=>{
     state.radarMode='all';state.radarNewKeys=null;state.radarTab='matches';state.visible=PAGE_SIZE;
     const p=store()?.profile?.get?.();if(p)writeSnapshot(p);
     render();
