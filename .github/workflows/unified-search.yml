@@ -10,6 +10,15 @@ on:
       - 'scripts/validate_unified_search_multi.py'
       - 'scripts/validate_required_metro_publication.py'
       - 'scripts/crosscheck_private_official.py'
+      - 'scripts/crawl_jobteacher_browser.py'
+      - 'scripts/crawl_artmore_browser.py'
+      - 'scripts/crawl_artmore_browser_v2.py'
+      - 'scripts/crawl_gonggonggangsa_jobs.py'
+      - 'scripts/run_lessoninfo_browser_fast.py'
+      - 'scripts/run_lessoninfo_browser_resilient.py'
+      - '.github/workflows/update-jobteacher-jobs.yml'
+      - '.github/workflows/update-artmore-candidate.yml'
+      - '.github/workflows/update-lessoninfo-jobs.yml'
       - 'scripts/reconcile_cultural_foundation_coverage.py'
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
@@ -68,7 +77,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Syntax check unified multi-source pipeline and UI
         run: |
-          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py
+          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py scripts/crawl_jobteacher_browser.py scripts/crawl_artmore_browser.py scripts/crawl_artmore_browser_v2.py scripts/crawl_gonggonggangsa_jobs.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_resilient.py
           node --check unified-ui.js
           node --check metro-ui.js
           node --check mobile-ui.js
@@ -140,7 +149,7 @@ jobs:
           disabled_names={(private[k] or {}).get('name') for k in expected-enabled}
           leaked=[j for j in d['jobs'] if j.get('feedKind')=='private' and j.get('source') in disabled_names]
           assert not leaked, f'publication-disabled private rows: {len(leaked)}'
-          allowed={'서울','경기'}
+          allowed={'서울','경기','인천'}
           def provinces(j):
               ps={str(x) for x in (j.get('provinces') or []) if str(x)}
               if ps: return ps
