@@ -388,8 +388,8 @@ for needle in [
     'id="appHeader"',
     'id="searchTop"',
     'id="bottomNav"',
-    'app.css?v=20260920k',
-    'app.js?v=20260920m',
+    'app.css?v=20260920n',
+    'app.js?v=20260920n',
     'alert-client.js?v=20260920c',
     'manifest.webmanifest',
 ]:
