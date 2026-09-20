@@ -330,3 +330,53 @@ for needle in [
 ]:
     if needle not in css and needle not in js:
         raise SystemExit(f"favorite-state contract missing: {needle}")
+
+
+# Final UI trim: keep only working, repeat-use features visible.
+for needle in [
+    "surfaceSegment.hidden=state.route!=='search'",
+    "내 검색 조건",
+    "data-home-new",
+    "radarMode:'all'",
+    "radarNewKeys:null",
+    "data-radar-all",
+]:
+    if needle not in js:
+        raise SystemExit(f"final trim contract missing: {needle}")
+
+for removed in [
+    "저장된 검색 조건 (",
+    "＋ 새 조건 추가",
+    "내 정보 관리",
+    "이용 가이드",
+    "문의하기",
+    "서비스 소개",
+    "내 조건에 딱 맞는<br>좋은 기회를 찾아드릴게요!",
+]:
+    if removed in js:
+        raise SystemExit(f"unfinished/redundant UI must stay hidden: {removed}")
+
+if ".surface-segment[hidden]" not in css:
+    raise SystemExit("home source-scope controls must be visually hidden")
+
+# Alert ON/OFF must reflect real browser permission + live PushManager subscription.
+for needle in [
+    "async function reconcile()",
+    "Notification.permission!=='granted'",
+    "const sub=await currentSubscription()",
+    "reconcile,",
+]:
+    if needle not in alerts:
+        raise SystemExit(f"alert truth-state contract missing: {needle}")
+if "const on=await client.reconcile()" not in js:
+    raise SystemExit("app alert toggle must query live alert state before toggling")
+
+# New-jobs count must open the exact captured new rows, not generic matches.
+for needle in [
+    "const openNewRadar=()=>",
+    "state.radarNewKeys=new Set(rows.map(r=>r.key))",
+    "state.radarMode='new'",
+    "writeSnapshot(p)",
+]:
+    if needle not in js:
+        raise SystemExit(f"direct new-jobs contract missing: {needle}")
