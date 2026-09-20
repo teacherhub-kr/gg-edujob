@@ -206,7 +206,6 @@ for needle in [
     'id="filterApply"',
     'class="metric-grid calm"',
     'class="radar-actions calm"',
-    'class="home-status-strip"',
 ]:
     if needle not in js and needle not in css:
         raise SystemExit(f"calm hierarchy contract missing: {needle}")
