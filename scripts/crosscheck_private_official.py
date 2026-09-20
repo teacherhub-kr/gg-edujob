@@ -23,7 +23,7 @@ DATE_RE=re.compile(r"(20\d{2})\D+(\d{1,2})\D+(\d{1,2})")
 SCHOOL_RE=re.compile(r"([가-힣A-Za-z0-9·]+(?:초등학교|중학교|고등학교|학교))")
 SCHOOL_SIGNAL=re.compile(r"초등학교|중학교|고등학교|학교|방과후|늘봄|특성화\s*강사|예술교육",re.I)
 STOP={"채용","모집","공고","강사","교사","선생님","구함","구인","기간제","학교","2026년","2026"}
-ALLOWED_PROVINCES={"서울","경기"}
+ALLOWED_PROVINCES={"서울","경기","인천"}
 
 
 def load(path,default=None):
@@ -93,7 +93,7 @@ def main():
     for j in oj:
         for u in official_urls(j):url_index.setdefault(u,[]).append(j)
 
-    by_province={'서울':[],'경기':[]}
+    by_province={'서울':[],'경기':[],'인천':[]}
     for j in oj:
         if j.get('province') in by_province:by_province[j['province']].append(j)
 
