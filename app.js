@@ -742,10 +742,10 @@ function bindScreen(){
   }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
-  $('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     location.href=chromeIntentUrl();
   }));
-  $('[data-copy-app-url]',screen).forEach(btn=>btn.addEventListener('click',async()=>{
+  $$('[data-copy-app-url]',screen).forEach(btn=>btn.addEventListener('click',async()=>{
     const ok=await copyAppUrl();
     toast(ok?'수도권에듀잡 주소를 복사했습니다.':'주소 복사에 실패했습니다. 주소창의 주소를 직접 복사해 주세요.');
   }));
