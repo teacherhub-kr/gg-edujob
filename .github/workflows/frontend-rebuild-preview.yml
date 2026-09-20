@@ -3,6 +3,7 @@ name: Frontend rebuild preview
 on:
   pull_request:
     paths:
+      - 'index.html'
       - 'app.html'
       - 'app.css'
       - 'app.js'
@@ -23,7 +24,12 @@ jobs:
         run: node --check app.js
       - name: Verify isolated frontend contract
         run: python tests/test_app_frontend_contract.py
-      - name: Ensure production index is not replaced in preview phase
+      - name: Verify production app shell
         run: |
-          grep -q "edujob-final-ui" index.html
+          grep -q 'id="appHeader"' index.html
+          grep -q 'app.css?v=20260920k' index.html
+          grep -q 'app.js?v=20260920k' index.html
+          grep -q 'manifest.webmanifest' index.html
+          ! grep -q 'edujob-final-ui' index.html
+          ! grep -q 'mobile-ui.js' index.html
           test -f app.html
