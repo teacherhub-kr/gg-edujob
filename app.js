@@ -126,7 +126,7 @@ const regionsOf=(j)=>arr(j?.regions).length?arr(j.regions):[j?.region].filter(Bo
 const today0=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())};
 const parseDate=(v)=>{
   if(!v)return null;
-  const m=String(v).match(/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);
+  const m=String(v).match(/(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})/);
   if(!m)return null;
   const d=new Date(+m[1],+m[2]-1,+m[3]);
   return Number.isNaN(d.getTime())?null:d;
