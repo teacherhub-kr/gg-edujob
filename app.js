@@ -262,10 +262,26 @@ const matchesFilters=(r)=>{
   if(state.q&&!r.search.includes(norm(state.q)))return false;
   return true;
 };
+const deadlineSortKey=(r)=>{
+  const j=r.j,dd=dayDiff(j.applyEnd),rd=parseDate(j.registered);
+  const r0=rd?new Date(rd.getFullYear(),rd.getMonth(),rd.getDate()):null;
+  const age=r0?Math.floor((today0()-r0)/86400000):null;
+  const official=(j.feedKind||'official')==='official';
+  let bucket=4,primary=0;
+  if(dd!==null&&dd>=0&&dd<=3){bucket=0;primary=dd}
+  else if(dd!==null&&dd>=4&&dd<=7){bucket=1;primary=dd}
+  else if(dd===null&&official&&age!==null&&age>=0&&age<=7){bucket=2}
+  else if(dd!==null){bucket=3;primary=dd}
+  return [bucket,primary,-(rd?rd.getTime():0),r.key];
+};
+const compareDeadline=(a,b)=>{
+  const x=deadlineSortKey(a),y=deadlineSortKey(b);
+  return x[0]-y[0]||x[1]-y[1]||x[2]-y[2]||String(x[3]).localeCompare(String(y[3]));
+};
 const filteredRows=()=>{
   const out=state.indexed.filter(matchesFilters);
   out.sort((a,b)=>{
-    if(state.sort==='deadline')return a.deadline-b.deadline||b.registered-a.registered;
+    if(state.sort==='deadline')return compareDeadline(a,b);
     if(state.sort==='relevance'&&state.q){
       const q=norm(state.q);
       const score=x=>(norm(x.j.title).includes(q)?4:0)+(norm(x.j.school).includes(q)?2:0)+(norm(x.j.subject).includes(q)?1:0);
