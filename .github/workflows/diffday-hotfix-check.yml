@@ -6,7 +6,7 @@ name: diffDay hotfix check
 on:
   pull_request:
     paths:
-      - 'index.html'
+      - 'app.js'
       - 'tests/test_diffday_calendar.js'
       - '.github/workflows/diffday-hotfix-check.yml'
   workflow_dispatch:
