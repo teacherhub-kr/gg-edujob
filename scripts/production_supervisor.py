@@ -24,17 +24,63 @@ from typing import Any
 KST = timezone(timedelta(hours=9))
 ACTIVE_STATES = {"queued", "in_progress", "waiting", "requested", "pending"}
 REAL_FAILURES = {"failure", "timed_out", "startup_failure"}
-TARGETS = {
+CORE_TARGETS = {
     "fast": "update-jobs.yml",
     "recovery": "recover-missing-jobs.yml",
     "completeness": "official-completeness-audit.yml",
     "unified": "unified-search.yml",
+}
+PRIVATE_REFRESH_TARGETS = {
+    "private-lessoninfo": {
+        "workflow": "update-lessoninfo-jobs.yml",
+        "report": "lessoninfo_reconciliation_report.json",
+        "maxAgeHours": 6,
+    },
+    "private-jobteacher": {
+        "workflow": "update-jobteacher-jobs.yml",
+        "report": "jobteacher_reconciliation_report.json",
+        "maxAgeHours": 6,
+    },
+    "private-artmore-candidate": {
+        "workflow": "update-artmore-candidate.yml",
+        "report": "artmore_reconciliation_report.json",
+        "maxAgeHours": 6,
+    },
+    "private-gonggonggangsa": {
+        "workflow": "update-gonggonggangsa-jobs.yml",
+        "report": "gonggonggangsa_reconciliation_report.json",
+        "maxAgeHours": 6,
+    },
+    "private-seekle": {
+        "workflow": "update-seekle-instructor-jobs.yml",
+        "report": "seekle_reconciliation_report.json",
+        "maxAgeHours": 12,
+    },
+    "private-boramyc": {
+        "workflow": "update-boramyc-instructor-jobs.yml",
+        "report": "boramyc_reconciliation_report.json",
+        "maxAgeHours": 12,
+    },
+    "private-foundation": {
+        "workflow": "cultural-foundation-coverage.yml",
+        "report": "cleaneye_foundation_report.json",
+        "maxAgeHours": 24,
+    },
+}
+ARTMORE_PROMOTE_KEY = "private-artmore-promote"
+ARTMORE_PROMOTE_WORKFLOW = "promote-artmore.yml"
+TARGETS = {
+    **CORE_TARGETS,
+    **{key: spec["workflow"] for key, spec in PRIVATE_REFRESH_TARGETS.items()},
+    ARTMORE_PROMOTE_KEY: ARTMORE_PROMOTE_WORKFLOW,
 }
 CIRCUIT_BACKOFF_HOURS = {
     "fast": 6,
     "recovery": 12,
     "completeness": 6,
     "unified": 6,
+    **{key: 6 for key in PRIVATE_REFRESH_TARGETS},
+    ARTMORE_PROMOTE_KEY: 6,
 }
 P0_TITLE = "[AUTO][P0] Production recruitment pipeline incident"
 P1_TITLE = "[AUTO][P1] Official source volume anomaly"
@@ -110,7 +156,7 @@ def circuit_blocked(
         return False, failures, latest_failure
     if allow_probe_after_change:
         return False, failures, latest_failure
-    backoff = timedelta(hours=CIRCUIT_BACKOFF_HOURS[key])
+    backoff = timedelta(hours=CIRCUIT_BACKOFF_HOURS.get(key, 6))
     return now - latest_failure < backoff, failures, latest_failure
 
 
@@ -216,10 +262,18 @@ def change_after_failure(change_at: datetime | None, failure_at: datetime | None
 
 
 def unified_publication_stale(
-    jobs_time: datetime | None, unified_time: datetime | None
+    input_time: datetime | None, unified_time: datetime | None
 ) -> bool:
-    """Return True when the user-facing unified publication lags verified jobs data."""
-    return bool(jobs_time and (unified_time is None or jobs_time > unified_time))
+    """Return True when the user-facing unified publication lags verified input data."""
+    return bool(input_time and (unified_time is None or input_time > unified_time))
+
+
+def private_refresh_due(
+    last_refresh: datetime | None, now: datetime, max_age_hours: int
+) -> bool:
+    if last_refresh is None:
+        return True
+    return now - last_refresh > timedelta(hours=max_age_hours)
 
 
 def previous_reconciliation_report() -> dict[str, Any] | None:
@@ -243,8 +297,13 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     all_runs = {key: gh_runs(repo, filename) for key, filename in TARGETS.items()}
     active = [
         key
-        for key, runs in all_runs.items()
-        if any(r.get("status") in ACTIVE_STATES for r in runs)
+        for key in CORE_TARGETS
+        if any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
+    ]
+    active_private = [
+        key
+        for key in (*PRIVATE_REFRESH_TARGETS.keys(), ARTMORE_PROMOTE_KEY)
+        if any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
     ]
 
     root = load_json("collector_status.json", {})
@@ -285,6 +344,31 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
 
     jobs_time = git_commit_time("jobs.json")
     unified_time = git_commit_time("unified_jobs.json")
+    private_refresh_times = {
+        key: git_commit_time(str(spec["report"]))
+        for key, spec in PRIVATE_REFRESH_TARGETS.items()
+    }
+    publication_input_times = [jobs_time, *private_refresh_times.values()]
+    latest_publication_input = max(
+        (value for value in publication_input_times if value is not None),
+        default=None,
+    )
+    private_freshness = {}
+    for key, spec in PRIVATE_REFRESH_TARGETS.items():
+        refreshed_at = private_refresh_times.get(key)
+        age_hours = (
+            round((now - refreshed_at).total_seconds() / 3600, 2)
+            if refreshed_at is not None
+            else None
+        )
+        private_freshness[key] = {
+            "workflow": spec["workflow"],
+            "report": spec["report"],
+            "lastRefreshAt": refreshed_at.isoformat() if refreshed_at else None,
+            "ageHours": age_hours,
+            "maxAgeHours": spec["maxAgeHours"],
+            "overdue": private_refresh_due(refreshed_at, now, int(spec["maxAgeHours"])),
+        }
 
     current_reconciliation = load_json("source_reconciliation_report.json", {})
     anomalies = detect_source_anomalies(
@@ -375,7 +459,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             # loops once jobs.json has already passed the Fast publication gates.
             # unified-search has its own fail-closed validation, so a failed rebuild
             # preserves the last-known-good unified_jobs.json.
-            if unified_publication_stale(jobs_time, unified_time):
+            if unified_publication_stale(latest_publication_input, unified_time):
                 blocked, failures, _ = circuit_blocked(
                     "unified", unified_runs, now
                 )
@@ -395,8 +479,9 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                 else:
                     action = "unified"
                     reason = (
-                        f"jobs.json is newer than unified_jobs.json: "
-                        f"jobs={jobs_time}, unified={unified_time}"
+                        "verified publication input is newer than unified_jobs.json: "
+                        f"latestInput={latest_publication_input}, jobs={jobs_time}, "
+                        f"unified={unified_time}"
                     )
             elif audit_failed:
                 if (
@@ -463,6 +548,73 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     action = "completeness"
                     reason = "no current successful daily official completeness proof"
 
+            if action == "skip-healthy":
+                if active_private:
+                    action = "skip-private-active"
+                    reason = "active private refresh workflows: " + ",".join(active_private)
+                else:
+                    candidate_time = git_commit_time("artmore_reconciliation_report.candidate.json")
+                    canonical_artmore_time = private_refresh_times.get("private-artmore-candidate")
+                    candidate_report = load_json("artmore_reconciliation_report.candidate.json", {})
+                    artmore_ready = bool(
+                        candidate_time
+                        and (canonical_artmore_time is None or candidate_time > canonical_artmore_time)
+                        and candidate_report.get("healthy") is True
+                        and candidate_report.get("traversalComplete") is True
+                        and int(candidate_report.get("missingAfterCount") or 0) == 0
+                    )
+
+                    private_candidates: list[tuple[float, str]] = []
+                    if artmore_ready:
+                        private_candidates.append((10_000.0, ARTMORE_PROMOTE_KEY))
+                    for key, spec in PRIVATE_REFRESH_TARGETS.items():
+                        refreshed_at = private_refresh_times.get(key)
+                        if not private_refresh_due(refreshed_at, now, int(spec["maxAgeHours"])):
+                            continue
+                        age_hours = (
+                            (now - refreshed_at).total_seconds() / 3600
+                            if refreshed_at is not None
+                            else 10_000.0
+                        )
+                        private_candidates.append(
+                            (age_hours / float(spec["maxAgeHours"]), key)
+                        )
+
+                    skipped_private: list[str] = []
+                    for _, key in sorted(private_candidates, reverse=True):
+                        runs = all_runs[key]
+                        blocked, failures, _ = circuit_blocked(key, runs, now)
+                        latest = latest_completed(runs)
+                        latest_time = completed_at(latest)
+                        recent_failure = bool(
+                            latest
+                            and latest.get("conclusion") in REAL_FAILURES
+                            and latest_time
+                            and now - latest_time < timedelta(hours=1)
+                        )
+                        if blocked or recent_failure:
+                            skipped_private.append(
+                                f"{key}:{'circuit' if blocked else 'backoff'}:{failures}"
+                            )
+                            continue
+                        action = key
+                        if key == ARTMORE_PROMOTE_KEY:
+                            reason = (
+                                "verified ArtMore candidate is newer than canonical publication"
+                            )
+                        else:
+                            freshness = private_freshness[key]
+                            reason = (
+                                f"private source refresh overdue: {key}, "
+                                f"ageHours={freshness['ageHours']}, "
+                                f"maxAgeHours={freshness['maxAgeHours']}"
+                            )
+                        break
+                    else:
+                        if private_candidates and skipped_private:
+                            action = "skip-private-backoff"
+                            reason = "private refreshes are temporarily backed off: " + ",".join(skipped_private)
+
     fast_failures = failure_state["fast"]["consecutiveRealFailures"]
     stale_hours = (
         round(success_age.total_seconds() / 3600, 2) if success_age is not None else None
@@ -490,6 +642,9 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "recoveryWorkflowCommitAt": recovery_workflow_time.isoformat() if recovery_workflow_time else None,
         "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
         "activeTargets": active,
+        "activePrivateTargets": active_private,
+        "privateFreshness": private_freshness,
+        "latestPublicationInputAt": latest_publication_input.isoformat() if latest_publication_input else None,
         "circuit": circuit,
         "failureState": failure_state,
         "sourceAnomalies": anomalies,
@@ -497,7 +652,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "jobsCommitAt": jobs_time.isoformat() if jobs_time else None,
         "unifiedCommitAt": unified_time.isoformat() if unified_time else None,
         "workflowCount": workflow_count,
-        "priority": ["fast", "unified", "recovery", "completeness"],
+        "priority": ["fast", "unified", "recovery", "completeness", "private-refresh"],
         "fastFailures": fast_failures,
     }
 
