@@ -726,7 +726,7 @@ function bindScreen(){
     store()?.resetLocal?.();toast('이 기기의 저장 데이터를 초기화했습니다.');render();
   });
 
-  $('.favorite-btn',screen).forEach(btn=>btn.addEventListener('click',e=>{
+  $$('.favorite-btn',screen).forEach(btn=>btn.addEventListener('click',e=>{
     e.stopPropagation();
     const r=state.indexed.find(x=>x.key===btn.dataset.favorite);if(!r)return;
     const on=toggleFavorite(r.j);
