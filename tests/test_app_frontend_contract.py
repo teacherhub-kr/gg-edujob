@@ -319,3 +319,14 @@ bind_end=js.find("function installStaticEvents", bind_start)
 bind_block=js[bind_start:bind_end]
 if "$$('[data-home-latest]',screen).forEach" not in bind_block:
     raise SystemExit("general latest link must have a safe multi-element click binding")
+
+
+# Favorite state must be visually unambiguous and provide immediate feedback.
+for needle in [
+    ".favorite-btn.on svg",
+    "fill:currentColor",
+    "관심공고에 저장했어요.",
+    "관심공고에서 해제했어요.",
+]:
+    if needle not in css and needle not in js:
+        raise SystemExit(f"favorite-state contract missing: {needle}")
