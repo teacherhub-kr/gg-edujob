@@ -17,7 +17,7 @@ OUT = Path("artmore_jobs.candidate.json")
 LEDGER = Path("artmore_source_id_ledger.candidate.json")
 REPORT = Path("artmore_reconciliation_report.candidate.json")
 STATE = Path("artmore_collection_state.candidate.json")
-REGIONS = [("서울", "2001"), ("경기", "2083")]
+REGIONS = [("서울", "2001"), ("경기", "2083"), ("인천", "2053")]
 REC_RE = re.compile(r"rec_idx=(\d+)")
 DATE_RE = re.compile(r"20\d{2}[.-]\d{1,2}[.-]\d{1,2}")
 BLOCK_RE = re.compile(r"captcha|사람인지|자동입력|비정상적인\s*접근|접근이\s*제한", re.I)
@@ -25,6 +25,7 @@ END_RE = re.compile(r"\b마감\b|\b종료\b|채용완료", re.I)
 REGION_PATTERNS = {
     "서울": re.compile(r"(?<![가-힣])서울(?:특별시)?\s"),
     "경기": re.compile(r"(?<![가-힣])경기(?:도)?\s"),
+    "인천": re.compile(r"(?<![가-힣])인천(?:광역시)?\s"),
 }
 
 
@@ -155,15 +156,17 @@ async def page_rows(page, region: str):
         location = ""
         if region == "서울":
             lm = re.search(r"서울(?:특별시)?\s+[^\s]+(?:구|군)(?:\s+[^\s]+){0,4}", text)
-        else:
+        elif region == "경기":
             lm = re.search(r"경기(?:도)?\s+[^\s]+(?:시|군)(?:\s+[^\s]+){0,4}", text)
+        else:
+            lm = re.search(r"인천(?:광역시)?\s+[^\s]+(?:구|군)(?:\s+[^\s]+){0,4}", text)
         if lm:
             location = lm.group(0).strip()
-        other = "경기" if region == "서울" else "서울"
         if not REGION_PATTERNS[region].search(text):
             continue
-        if REGION_PATTERNS[other].search(text):
-            raise RuntimeError(f"cross-metro contamination in {region}: {rid} {text[:180]}")
+        contaminants = [name for name, pattern in REGION_PATTERNS.items() if name != region and pattern.search(text)]
+        if contaminants:
+            raise RuntimeError(f"cross-metro contamination in {region} from {contaminants}: {rid} {text[:180]}")
         if END_RE.search(text) and "진행중" not in text:
             raise RuntimeError(f"ended row on current-only surface: {rid} {text[:180]}")
         rows.append({
