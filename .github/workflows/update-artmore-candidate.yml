@@ -50,13 +50,14 @@ jobs:
           if not r.get('healthy') or not r.get('traversalComplete'): raise SystemExit('ArtMore candidate unhealthy')
           if r.get('missingAfterCount') != 0: raise SystemExit('ArtMore missingAfter != 0')
           reports=r.get('sourceReports') or []
-          if {x.get('region') for x in reports} != {'서울','경기'}: raise SystemExit('both metro regions not verified')
+          if {x.get('region') for x in reports} != {'서울','경기','인천'}: raise SystemExit('all three metro regions not verified')
           if any((x.get('ids') or 0) <= 0 for x in reports): raise SystemExit('zero region IDs')
           d=json.loads(pathlib.Path('artmore_jobs.candidate.json').read_text(encoding='utf-8'))
           jobs=d.get('jobs') or []
           if not jobs: raise SystemExit('zero candidate jobs')
-          bad=[j for j in jobs if j.get('province') not in {'서울','경기'}]
+          bad=[j for j in jobs if j.get('province') not in {'서울','경기','인천'}]
           if bad: raise SystemExit(f'non-metro rows: {len(bad)}')
+          if not any(j.get('province') == '인천' for j in jobs): raise SystemExit('zero current Incheon ArtMore jobs; verify source surface before promotion')
           missing=[j for j in jobs if not j.get('sourceIdentity') or not j.get('originalUrl')]
           if missing: raise SystemExit(f'missing identity/link: {len(missing)}')
           PY
