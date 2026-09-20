@@ -45,7 +45,7 @@ jobs:
             --state-file /tmp/production-supervisor.json \
             --manage-issues
       - name: Dispatch the selected production action
-        if: steps.gate.outputs.action == 'fast' || steps.gate.outputs.action == 'recovery' || steps.gate.outputs.action == 'completeness' || steps.gate.outputs.action == 'unified'
+        if: steps.gate.outputs.action == 'fast' || steps.gate.outputs.action == 'recovery' || steps.gate.outputs.action == 'completeness' || steps.gate.outputs.action == 'unified' || startsWith(steps.gate.outputs.action, 'private-')
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -57,6 +57,14 @@ jobs:
             recovery) workflow='recover-missing-jobs.yml' ;;
             completeness) workflow='official-completeness-audit.yml' ;;
             unified) workflow='unified-search.yml' ;;
+            private-lessoninfo) workflow='update-lessoninfo-jobs.yml' ;;
+            private-jobteacher) workflow='update-jobteacher-jobs.yml' ;;
+            private-artmore-candidate) workflow='update-artmore-candidate.yml' ;;
+            private-artmore-promote) workflow='promote-artmore.yml' ;;
+            private-gonggonggangsa) workflow='update-gonggonggangsa-jobs.yml' ;;
+            private-seekle) workflow='update-seekle-instructor-jobs.yml' ;;
+            private-boramyc) workflow='update-boramyc-instructor-jobs.yml' ;;
+            private-foundation) workflow='cultural-foundation-coverage.yml' ;;
             *) echo "Unknown action: $ACTION" >&2; exit 2 ;;
           esac
           gh api --method POST \
