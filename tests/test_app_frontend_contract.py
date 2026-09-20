@@ -206,7 +206,6 @@ for needle in [
     'id="filterApply"',
     'class="metric-grid calm"',
     'class="radar-actions calm"',
-    'class="home-status-strip"',
 ]:
     if needle not in js and needle not in css:
         raise SystemExit(f"calm hierarchy contract missing: {needle}")
@@ -233,9 +232,8 @@ if "region-group" not in js or "region-group-body" not in js:
 # Saved conditions must drive the home page after the user applies them.
 for needle in [
     "const matches=p?[...profileMatches(p)]",
-    "const homeRows=p?matches:latest",
-    "내 저장 조건",
-    "내 조건 맞춤 공고",
+    "const newRows=p?[...newProfileRows(p)]",
+    "내 조건에 맞는 새 공고",
     "data-home-profile=\"edit\"",
     "data-home-profile=\"matches\"",
     "profileSignature",
@@ -292,3 +290,32 @@ for good in [
 ]:
     if good not in js:
         raise SystemExit(f"home click binding missing: {good}")
+
+
+# Personalized-first home: saved conditions are the primary home experience.
+for needle in [
+    "const newProfileRows=(p)=>",
+    "내 조건에 맞는 새 공고",
+    "전체 최신공고 보기 ›",
+    "data-home-latest",
+    "새로 들어온 맞춤 공고가 없습니다.",
+    "먼저 원하는 채용 조건을 저장해 보세요.",
+]:
+    if needle not in js:
+        raise SystemExit(f"personalized-first home contract missing: {needle}")
+
+home_start=js.find("const homeHtml")
+home_end=js.find("const searchHtml", home_start)
+home_block=js[home_start:home_end]
+if "home-status-strip" in home_block:
+    raise SystemExit("personalized home must not give general status metrics equal visual weight")
+if "jobsListHtml(latest,HOME_LIMIT" in home_block:
+    raise SystemExit("saved-condition home must not default to a long generic latest-jobs feed")
+if "jobsListHtml(newRows,5)" not in home_block:
+    raise SystemExit("home must prioritize new rows matching the saved condition")
+
+bind_start=js.find("function bindScreen")
+bind_end=js.find("function installStaticEvents", bind_start)
+bind_block=js[bind_start:bind_end]
+if "$$('[data-home-latest]',screen).forEach" not in bind_block:
+    raise SystemExit("general latest link must have a safe multi-element click binding")
