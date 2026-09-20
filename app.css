@@ -1204,3 +1204,19 @@ a{color:inherit;text-decoration:none}
 .home-secondary-title h2{
   font-size:var(--fs-md);
 }
+
+
+/* 2026-09-20: make favorite state unmistakable */
+.favorite-btn svg{
+  fill:none;
+  stroke:currentColor;
+  transition:fill .12s ease,transform .12s ease,color .12s ease;
+}
+.favorite-btn.on{
+  color:var(--brand);
+}
+.favorite-btn.on svg{
+  fill:currentColor;
+  stroke:currentColor;
+  transform:scale(1.06);
+}
