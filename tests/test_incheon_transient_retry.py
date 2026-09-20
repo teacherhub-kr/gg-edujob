@@ -31,6 +31,31 @@ def meta_for(count=0, stop_reason="empty-page", access_error=""):
 
 
 class IncheonTransientRetryTests(unittest.TestCase):
+    def test_bootstrap_uses_board_landing_page_and_records_evidence(self):
+        class Response:
+            status_code = 200
+            content = b"<html>ok</html>"
+            url = "https://www.ice.go.kr/ice/main.do"
+
+            def raise_for_status(self):
+                return None
+
+        board = {"bootstrapUrl": "https://www.ice.go.kr/ice/main.do"}
+        with patch.object(ice.SESSION, "get", return_value=Response()) as get:
+            evidence = ice.bootstrap_board_session(board)
+        self.assertTrue(evidence["attempted"])
+        self.assertTrue(evidence["ok"])
+        self.assertEqual(evidence["status"], 200)
+        get.assert_called_once()
+
+    def test_tiny_empty_bootstrap_contract_is_bounded(self):
+        from pathlib import Path
+
+        source = Path("scripts/merge_incheon_official.py").read_text(encoding="utf-8")
+        self.assertIn('page == 1 and meta["rawRows"] == 0 and len(response.content or b"") <= 256', source)
+        self.assertIn("bootstrap_board_session(board)", source)
+        self.assertIn('"bootstrap": bootstrap_evidence', source)
+
     def test_all_empty_signature_is_retryable(self):
         self.assertTrue(ice.is_transient_all_empty(meta_for(), []))
 
