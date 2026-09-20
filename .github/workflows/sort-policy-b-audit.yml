@@ -3,9 +3,8 @@ name: Sort policy B audit
 on:
   pull_request:
     paths:
-      - 'scripts/apply_unified_frontend.py'
+      - 'app.js'
       - 'index.html'
-      - 'unified-ui.js'
       - '.github/workflows/sort-policy-b-audit.yml'
   workflow_dispatch:
 
@@ -18,11 +17,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Materialize production comparator
+      - name: Verify production policy B comparator
         run: |
-          python scripts/apply_unified_frontend.py
-          grep -q 'function deadlineSortKey(j)' index.html
-          grep -q 'return compareDeadline(x,y)' index.html
+          grep -q 'const deadlineSortKey=(r)=>' app.js
+          grep -q "if(state.sort==='deadline')return compareDeadline(a,b)" app.js
       - name: Compare legacy deadline sort C with production policy B
         shell: bash
         run: |
