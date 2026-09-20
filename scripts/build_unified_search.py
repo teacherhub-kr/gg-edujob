@@ -105,7 +105,7 @@ def private_current(job):
     title = str(job.get("title") or "")
     if PRIVATE_BANNED_RE.search(title) or PROMO_ONLY_RE.search(title):
         return False
-    if job.get("province") not in {"서울", "경기"}:
+    if job.get("province") not in {"서울", "경기", "인천"}:
         return False
     end = parse_date(job.get("applyEnd"))
     if end and end < TODAY:
@@ -127,8 +127,12 @@ def region_from(job):
         m = re.search(r"([가-힣]+(?:시|군))\b", loc)
         if m:
             return m.group(1)
+    if province == "인천":
+        m = re.search(r"([가-힣]+(?:구|군))\b", loc)
+        if m:
+            return m.group(1)
     raw = str(job.get("region") or "")
-    if raw not in {"서울", "경기"}:
+    if raw not in {"서울", "경기", "인천"}:
         return raw
     return ""
 
