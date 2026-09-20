@@ -312,14 +312,15 @@ const matchesProfile=(r,p)=>{
 };
 const profileMatches=(p)=>state.indexed.filter(r=>matchesProfile(r,p));
 
-const snapshotNewCount=(p)=>{
-  if(!p)return 0;
-  const current=profileMatches(p).map(r=>r.key);
+const newProfileRows=(p)=>{
+  if(!p)return [];
+  const current=profileMatches(p);
   const snap=store()?.snapshot?.get?.();
-  if(!snap||!Array.isArray(snap.keys))return current.length;
+  if(!snap||!Array.isArray(snap.keys))return current;
   const old=new Set(snap.keys);
-  return current.filter(k=>!old.has(k)).length;
+  return current.filter(r=>!old.has(r.key));
 };
+const snapshotNewCount=(p)=>newProfileRows(p).length;
 const writeSnapshot=(p)=>{
   if(!p)return;
   store()?.snapshot?.set?.({
@@ -447,31 +448,31 @@ const homeHtml=()=>{
   const favorites=favoriteKeys().size;
   const alerts=store()?.alerts?.get?.()||{enabled:false};
   const active=state.indexed.filter(r=>r.active);
-  const soon=active.filter(r=>{const d=dayDiff(r.j.applyEnd);return d!==null&&d>=0&&d<=3}).length;
-  const today=active.filter(r=>isToday(r.j.registered)).length;
   const latest=[...active].sort((a,b)=>b.registered-a.registered);
   const matches=p?[...profileMatches(p)].sort((a,b)=>b.registered-a.registered):[];
-  const homeRows=p?matches:latest;
-  const homeTitle=p?'내 조건 맞춤 공고':'최신 채용 공고';
-  return `<section class="home-radar calm">
-    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>${p?'저장한 조건을 기준으로 새 공고를 확인합니다.':'조건을 한 번 저장하면 다음부터 홈에서 바로 맞춤 공고를 볼 수 있어요.'}</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
-    ${p?`<div class="home-saved-profile"><div><span>내 저장 조건</span><strong>${esc(profileSummary(p))}</strong></div><button type="button" data-home-profile="edit">수정</button></div>`:''}
+  const newRows=p?[...newProfileRows(p)].sort((a,b)=>b.registered-a.registered):[];
+  return `<section class="home-radar calm personalized">
+    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>${p?'한 번 저장한 조건을 기준으로 필요한 공고만 먼저 보여드립니다.':'원하는 조건을 한 번 저장하면 다음부터 홈이 내 채용 화면으로 바뀝니다.'}</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    ${p?`<div class="home-saved-profile"><div><span>내 조건</span><strong>${esc(profileSummary(p))}</strong></div><button type="button" data-home-profile="edit">수정</button></div>`:''}
     <div class="metric-grid calm">
-      <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?snapshotNewCount(p):0}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
-      <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
-      <button class="metric" data-home="alert"><span class="metric-icon">${icon('bell')}</span><b>${alerts.enabled?'✓':'-'}</b><strong>알림 ${alerts.enabled?'켜짐':'꺼짐'}</strong><small>${p?'내 조건 새 공고':'조건 저장 필요'}</small></button>
+      <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?newRows.length:0}</b><strong>새 공고</strong><small>지난 확인 이후</small></button>
+      <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심공고</strong><small>저장한 공고</small></button>
+      <button class="metric" data-home="alert"><span class="metric-icon">${icon('bell')}</span><b>${alerts.enabled?'ON':'OFF'}</b><strong>알림</strong><small>${p?'내 조건 기준':'조건 저장 필요'}</small></button>
     </div>
-    <div class="radar-actions calm">
-      ${p?'<button type="button" data-home-profile="matches">맞춤 공고 전체보기</button><button type="button" data-home-profile="edit">조건 수정</button>':'<button type="button" data-go="search">내 조건 만들기</button><button type="button" data-go="radar">채용 레이더 보기</button>'}
-    </div>
+    ${p?
+      '<div class="radar-actions calm"><button type="button" data-home-profile="matches">맞춤공고 전체보기</button><button type="button" data-home-profile="edit">조건 수정</button></div>':
+      '<div class="radar-actions calm"><button type="button" data-go="search">내 조건 만들기</button><button type="button" data-go="radar">채용 레이더 보기</button></div>'}
   </section>
-  <div class="section-title home-primary-title"><span>${icon('document')}</span><h2>${homeTitle}</h2><span class="spacer"></span><button class="link-btn" ${p?'data-home-profile="matches"':'data-go="search"'}>${p?`${matches.length.toLocaleString()}건 전체보기 ›`:'전체보기 ›'}</button></div>
-  ${jobsListHtml(homeRows,HOME_LIMIT,{emptyText:p?'저장한 조건에 맞는 모집 중 공고가 없습니다.':'현재 모집 중 공고가 없습니다.'})}
-  <div class="home-status-strip" aria-label="채용 데이터 현황">
-    <span><b>${active.length.toLocaleString()}</b> 모집 중</span>
-    <span><b>${today.toLocaleString()}</b> 오늘 등록</span>
-    <span><b>${soon.toLocaleString()}</b> 3일 내 마감</span>
-  </div>`;
+  ${p?
+    `<div class="section-title home-primary-title"><span>${icon('document')}</span><h2>내 조건에 맞는 새 공고</h2><span class="spacer"></span><button class="link-btn" data-home-profile="matches">${newRows.length.toLocaleString()}건 전체보기 ›</button></div>
+      ${newRows.length?
+        jobsListHtml(newRows,5):
+        `<div class="home-no-new"><strong>새로 들어온 맞춤 공고가 없습니다.</strong><p>현재 조건에 맞는 모집 중 공고는 ${matches.length.toLocaleString()}건입니다.</p><button type="button" data-home-profile="matches">기존 맞춤공고 보기</button></div>`}
+      <button type="button" class="latest-secondary-link" data-home-latest>전체 최신공고 보기 ›</button>`:
+    `<div class="first-use-card"><strong>먼저 원하는 채용 조건을 저장해 보세요.</strong><p>지역·학교급·직종·과목을 한 번 선택하면 다음 방문부터 맞춤공고와 새 공고를 홈에서 바로 확인할 수 있습니다.</p><button type="button" data-go="search">내 조건 만들기</button></div>
+      <div class="section-title home-secondary-title"><span>${icon('document')}</span><h2>최근 공고 미리보기</h2><span class="spacer"></span><button class="link-btn" data-home-latest>전체보기 ›</button></div>
+      ${jobsListHtml(latest,3)}`}
+  `;
 };
 
 const searchHtml=()=>{
@@ -652,7 +653,7 @@ function bindScreen(){
     else if(x==='radar'||x==='new')setRoute('radar');
     else if(x==='alert')setRoute('radar');
   }));
-  $$('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.homeProfile,p=store()?.profile?.get?.();
     if(x==='edit'){
       if(p)applyProfileToState(p);
@@ -661,6 +662,11 @@ function bindScreen(){
       state.radarTab='matches';
       setRoute('radar');
     }
+  }));
+  $('[data-home-latest]',screen).forEach(b=>b.addEventListener('click',()=>{
+    state.provinces.clear();state.regions.clear();state.schools.clear();state.types.clear();state.sources.clear();state.categories.clear();state.subjects.clear();
+    state.q='';state.surface='';state.sort='newest';state.visible=PAGE_SIZE;
+    setRoute('search');
   }));
   $$('[data-radar-action]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.radarAction;
