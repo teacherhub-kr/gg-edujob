@@ -107,17 +107,16 @@ jobs:
         if: steps.validate_candidate.outcome == 'success'
         continue-on-error: true
         run: python scripts/crosscheck_private_official.py
-      - name: Publish only verified unified dataset
+      - name: Publish only verified unified dataset without mutating frontend
         id: prepare_publication
         if: steps.build_candidate.outcome == 'success' && steps.link_audit.outcome == 'success' && steps.validate_candidate.outcome == 'success'
         run: |
           mv unified_jobs.next.json unified_jobs.json
           python scripts/validate_required_metro_publication.py
-          python scripts/apply_unified_frontend.py
-          grep -q "fetch('unified_jobs.json',{cache:'no-cache'})" index.html
-          grep -q 'unified-ui.js' index.html
-          grep -q 'metro-ui.js' index.html
-          grep -q 'direct-link-guard.js' index.html
+          grep -Fq "fetch('unified_jobs.json',{cache:'no-cache'})" app.js
+          grep -Fq "const provinceOptions=()=>['경기','서울','인천']" app.js
+          grep -Fq '<button type="button" data-surface="학원·민간">학원·민간</button>' index.html
+          grep -Fq 'app.js?v=' index.html
           python - <<'PY'
           import json,sys
           sys.path.insert(0,'scripts')
@@ -175,7 +174,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add unified_search_report.json unified_validation_report.json unified_crosscheck_report.json direct_post_link_report.json cultural_foundation_coverage_report.json 2>/dev/null || true
-          git add unified_jobs.json index.html
+          git add unified_jobs.json
           git diff --cached --quiet && exit 0
           python scripts/publication_transaction.py publish \
             --baseline-file /tmp/unified_publication_base_sha \
