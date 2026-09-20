@@ -277,3 +277,18 @@ for needle in [
 ]:
     if needle not in alerts:
         raise SystemExit(f"alert client API missing: {needle}")
+
+
+# No single-element selector may ever be iterated. This runtime bug halts bindScreen
+# and makes every following screen control appear dead.
+for line in js.splitlines():
+    stripped=line.lstrip()
+    if stripped.startswith("$(") and ".forEach" in stripped:
+        raise SystemExit(f"single-element selector used with forEach: {stripped}")
+
+for good in [
+    "$$('[data-home]',screen).forEach",
+    "$$('[data-home-profile]',screen).forEach",
+]:
+    if good not in js:
+        raise SystemExit(f"home click binding missing: {good}")
