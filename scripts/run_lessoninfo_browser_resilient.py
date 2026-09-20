@@ -166,7 +166,7 @@ def _culture_list_fallback(item: dict, mismatch_reason: str) -> dict | None:
     if location and fast.NON_METRO_RE.search(location):
         return None
     region = fast._metro_region(location, signal) or title_region
-    if region not in {"서울", "경기"}:
+    if region not in {"서울", "경기", "인천"}:
         return None
 
     return {
@@ -199,7 +199,7 @@ def _compact_verified_location(job: dict) -> None:
     """Collapse noisy container-derived location text to already-verified metro evidence."""
     location = _norm(str(job.get("location") or ""))
     region = _norm(str(job.get("metroRegion") or job.get("region") or job.get("province") or ""))
-    if not location or region not in {"서울", "경기"}:
+    if not location or region not in {"서울", "경기", "인천"}:
         return
 
     noisy = (
@@ -224,17 +224,31 @@ def _compact_verified_location(job: dict) -> None:
         job["location"] = "서울"
         return
 
-    m = re.search(r"경기(?:도)?\s*([가-힣]{1,10}(?:시|군))?", location)
+    if region == "경기":
+        m = re.search(r"경기(?:도)?\s*([가-힣]{1,10}(?:시|군))?", location)
+        if m:
+            compact = _norm(m.group(0))
+            if compact:
+                job["location"] = compact
+                return
+        for place in integrated.run_lessoninfo_browser_fast.GYEONGGI_PLACES:
+            if place in location:
+                job["location"] = f"경기 {place}"
+                return
+        job["location"] = "경기"
+        return
+
+    m = re.search(r"인천(?:광역시|시)?\s*([가-힣]{1,8}(?:구|군))?", location)
     if m:
         compact = _norm(m.group(0))
         if compact:
             job["location"] = compact
             return
-    for place in integrated.run_lessoninfo_browser_fast.GYEONGGI_PLACES:
-        if place in location:
-            job["location"] = f"경기 {place}"
+    for district in integrated.run_lessoninfo_browser_fast.INCHEON_DISTRICTS:
+        if district in location:
+            job["location"] = f"인천 {district}"
             return
-    job["location"] = "경기"
+    job["location"] = "인천"
 
 
 def classify_with_location_postcondition(html: str, text: str, item: dict):
