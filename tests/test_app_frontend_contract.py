@@ -431,3 +431,15 @@ index_html=Path("index.html").read_text(encoding="utf-8")
 for needle in ["app.css?v=20260920n","app.js?v=20260920n"]:
     if needle not in index_html:
         raise SystemExit(f"chrome handoff cache-bust missing from production shell: {needle}")
+
+
+# Shareable HTTPS launcher must attempt the current site in Android Chrome.
+chrome_launcher=Path("open-in-chrome.html").read_text(encoding="utf-8")
+for needle in [
+    "intent://teacherhub-kr.github.io/gg-edujob/",
+    "package=com.android.chrome",
+    "https://teacherhub-kr.github.io/gg-edujob/",
+    "Chrome에서 열기",
+]:
+    if needle not in chrome_launcher:
+        raise SystemExit(f"open-in-chrome launcher contract missing: {needle}")
