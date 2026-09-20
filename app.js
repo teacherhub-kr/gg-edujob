@@ -287,6 +287,16 @@ const currentProfile=()=>({
   savedAt:new Date().toISOString()
 });
 const hasProfileConditions=(p)=>['provinces','regions','schools','types','sources','categories','subjects'].some(k=>arr(p?.[k]).length)||Boolean(String(p?.q||'').trim());
+const profileSignature=(p)=>JSON.stringify({
+  provinces:[...arr(p?.provinces)].sort(),
+  regions:[...arr(p?.regions)].sort(),
+  schools:[...arr(p?.schools)].sort(),
+  types:[...arr(p?.types)].sort(),
+  sources:[...arr(p?.sources)].sort(),
+  categories:[...arr(p?.categories)].sort(),
+  subjects:[...arr(p?.subjects)].sort(),
+  q:norm(p?.q||'')
+});
 const matchesProfile=(r,p)=>{
   const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
   if(!r.active)return false;
@@ -387,7 +397,7 @@ const typeOptions=()=>canonicalOptions(TYPE_VALUES,r=>[r.type]);
 const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.sources.has(v)).length]);
 const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.categories.has(v)).length]);
 const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&matchesSubject(r.j,v)).length]);
-const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n])=>`<label class="check-chip"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(v)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
+const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n])=>`<label class="check-chip ${set.has(v)?'checked':''}"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(v)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
 const regionGroupHtml=(title,key,values)=>{
   const selected=values.filter(v=>state.regions.has(v)).length;
   return `<details class="region-group" ${selected?'open':''}>
@@ -435,24 +445,28 @@ const filterDrawerHtml=()=>`<div id="filterDrawer" class="filter-drawer ${state.
 const homeHtml=()=>{
   const p=store()?.profile?.get?.();
   const favorites=favoriteKeys().size;
+  const alerts=store()?.alerts?.get?.()||{enabled:false};
   const active=state.indexed.filter(r=>r.active);
   const soon=active.filter(r=>{const d=dayDiff(r.j.applyEnd);return d!==null&&d>=0&&d<=3}).length;
   const today=active.filter(r=>isToday(r.j.registered)).length;
-  const latest=[...active].sort((a,b)=>b.registered-a.registered).slice(0,HOME_LIMIT);
+  const latest=[...active].sort((a,b)=>b.registered-a.registered);
+  const matches=p?[...profileMatches(p)].sort((a,b)=>b.registered-a.registered):[];
+  const homeRows=p?matches:latest;
+  const homeTitle=p?'내 조건 맞춤 공고':'최신 채용 공고';
   return `<section class="home-radar calm">
-    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>내 조건에 맞는 새 공고를 빠르게 확인하세요.</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>${p?'저장한 조건을 기준으로 새 공고를 확인합니다.':'조건을 한 번 저장하면 다음부터 홈에서 바로 맞춤 공고를 볼 수 있어요.'}</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
+    ${p?`<div class="home-saved-profile"><div><span>내 저장 조건</span><strong>${esc(profileSummary(p))}</strong></div><button type="button" data-home-profile="edit">수정</button></div>`:''}
     <div class="metric-grid calm">
       <button class="metric" data-home="new"><span class="metric-icon">${icon('document')}</span><b>${p?snapshotNewCount(p):0}</b><strong>새 공고</strong><small>지난 방문 이후</small></button>
       <button class="metric" data-home="saved"><span class="metric-icon">${icon('heart')}</span><b>${favorites}</b><strong>관심 공고</strong><small>저장한 공고</small></button>
-      <button class="metric" data-home="radar"><span class="metric-icon">${icon('bookmark')}</span><b>${p?1:0}</b><strong>저장 조건</strong><small>내 검색 조건</small></button>
+      <button class="metric" data-home="alert"><span class="metric-icon">${icon('bell')}</span><b>${alerts.enabled?'✓':'-'}</b><strong>알림 ${alerts.enabled?'켜짐':'꺼짐'}</strong><small>${p?'내 조건 새 공고':'조건 저장 필요'}</small></button>
     </div>
     <div class="radar-actions calm">
-      <button type="button" data-radar-action="save">현재 조건 저장</button>
-      <button type="button" data-go="radar">내 채용 레이더 보기</button>
+      ${p?'<button type="button" data-home-profile="matches">맞춤 공고 전체보기</button><button type="button" data-home-profile="edit">조건 수정</button>':'<button type="button" data-go="search">내 조건 만들기</button><button type="button" data-go="radar">채용 레이더 보기</button>'}
     </div>
   </section>
-  <div class="section-title home-primary-title"><span>${icon('document')}</span><h2>최신 채용 공고</h2><span class="spacer"></span><button class="link-btn" data-go="search">전체보기 ›</button></div>
-  ${jobsListHtml(latest,HOME_LIMIT)}
+  <div class="section-title home-primary-title"><span>${icon('document')}</span><h2>${homeTitle}</h2><span class="spacer"></span><button class="link-btn" ${p?'data-home-profile="matches"':'data-go="search"'}>${p?`${matches.length.toLocaleString()}건 전체보기 ›`:'전체보기 ›'}</button></div>
+  ${jobsListHtml(homeRows,HOME_LIMIT,{emptyText:p?'저장한 조건에 맞는 모집 중 공고가 없습니다.':'현재 모집 중 공고가 없습니다.'})}
   <div class="home-status-strip" aria-label="채용 데이터 현황">
     <span><b>${active.length.toLocaleString()}</b> 모집 중</span>
     <span><b>${today.toLocaleString()}</b> 오늘 등록</span>
@@ -601,11 +615,22 @@ function bindScreen(){
   $$('[data-filter-focus]',screen).forEach(b=>b.addEventListener('click',()=>{state.filterOpen=true;state.filterFocus=b.dataset.filterFocus;render();setTimeout(()=>screen.querySelector(`[data-group="${state.filterFocus}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),10)}));
   $('#filterReset',screen)?.addEventListener('click',()=>resetFilters({surface:false}));
   $('#filterClose',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
-  $('#filterApply',screen)?.addEventListener('click',()=>{state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render()});
+  $('#filterApply',screen)?.addEventListener('click',()=>{
+    const next=currentProfile();
+    if(hasProfileConditions(next)){
+      const prev=store()?.profile?.get?.();
+      const changed=profileSignature(prev)!==profileSignature(next);
+      store()?.profile?.set?.(next);
+      if(changed)writeSnapshot(next);
+      toast(changed?'내 조건으로 저장했습니다.':'저장한 조건으로 공고를 보여드립니다.');
+    }
+    state.filterOpen=false;state.filterFocus='';state.visible=PAGE_SIZE;render();
+  });
   $('#sortSelect',screen)?.addEventListener('change',e=>{state.sort=e.target.value;state.visible=PAGE_SIZE;render()});
   $$('[data-filter]',screen).forEach(input=>input.addEventListener('change',e=>{
     const set=state[e.target.dataset.filter];if(!(set instanceof Set))return;
     e.target.checked?set.add(e.target.value):set.delete(e.target.value);
+    e.target.closest('.check-chip')?.classList.toggle('checked',e.target.checked);
     state.visible=PAGE_SIZE;
     const box=$('.selected-box',screen);if(box)box.outerHTML=selectedSummaryHtml();
     const section=e.target.closest('.filter-section');
@@ -621,11 +646,21 @@ function bindScreen(){
     state.visible=PAGE_SIZE;render();
   }));
 
-  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='radar'||x==='new')setRoute('radar');
     else if(x==='alert')setRoute('radar');
+  }));
+  $('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
+    const x=b.dataset.homeProfile,p=store()?.profile?.get?.();
+    if(x==='edit'){
+      if(p)applyProfileToState(p);
+      setRoute('search');
+    }else if(x==='matches'){
+      state.radarTab='matches';
+      setRoute('radar');
+    }
   }));
   $$('[data-radar-action]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.radarAction;
@@ -645,9 +680,31 @@ function bindScreen(){
   $$('[data-radar-tab]',screen).forEach(b=>b.addEventListener('click',()=>{state.radarTab=b.dataset.radarTab;state.visible=PAGE_SIZE;render()}));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
-  $('#alertToggle',screen)?.addEventListener('click',()=>{
-    const legacy=$('#jobRadarAlerts');
-    if(legacy){legacy.click();setTimeout(render,600)}else toast('이 브라우저에서는 알림 설정을 사용할 수 없습니다.');
+  $('#alertToggle',screen)?.addEventListener('click',async()=>{
+    const btn=$('#alertToggle',screen);
+    if(btn)btn.disabled=true;
+    try{
+      const client=window.EduJobAlerts;
+      if(!client)throw new Error('client-unavailable');
+      const on=Boolean(store()?.alerts?.get?.()?.enabled);
+      if(on){
+        await client.unsubscribe();
+        toast('새 공고 알림을 껐습니다.');
+      }else{
+        await client.subscribe();
+        toast('내 조건 새 공고 알림을 켰습니다.');
+      }
+    }catch(e){
+      const code=String(e?.message||e);
+      if(code==='profile-required')toast('먼저 검색 조건을 저장해 주세요.');
+      else if(code==='ios-home-screen-required')toast('iPhone·iPad는 홈 화면에 추가한 뒤 알림을 켤 수 있습니다.');
+      else if(code==='permission-denied')toast('브라우저 알림 권한을 허용해 주세요.');
+      else if(code==='unsupported')toast('현재 브라우저는 웹 푸시 알림을 지원하지 않습니다.');
+      else toast('알림 설정을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    }finally{
+      if(btn)btn.disabled=false;
+      render();
+    }
   });
 
   $$('[data-saved-tab]',screen).forEach(b=>b.addEventListener('click',()=>{state.savedTab=b.dataset.savedTab;state.visible=PAGE_SIZE;render()}));

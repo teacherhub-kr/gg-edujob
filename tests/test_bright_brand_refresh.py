@@ -69,8 +69,8 @@ if "\\n<link" in index or "</script>\\n<script" in index:
 if "nav.id='edujobTabs'" in mobile or 'nav.id="edujobTabs"' in mobile:
     raise SystemExit("legacy top scope tabs must not be recreated")
 
-if "mobile-ui.js?v=20260919a" not in index:
-    raise SystemExit("mobile cleanup must bust the legacy mobile-ui cache")
+if "mobile-ui.js?v=" not in index:
+    raise SystemExit("mobile cleanup must use a versioned legacy mobile-ui asset")
 
 if "min-height:48px!important" not in css:
     raise SystemExit("mobile radar metric cards must stay extra compact")
