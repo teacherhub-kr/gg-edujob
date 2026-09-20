@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-21 02:23:40 KST",
+  "generatedAt": "2026-09-21 07:22:26 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-39-v3-metro-central-90d",
   "summary": {
-    "generatedAt": "2026-09-21 02:23:40 KST",
+    "generatedAt": "2026-09-21 07:22:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-39-v3-metro-central-90d",
-    "officialIdCount": 19583,
-    "datasetIdCountBefore": 21674,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "officialIdCount": 19580,
+    "datasetIdCountBefore": 21357,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 39,
     "totalSources": 39,
     "reconciledOffices": 39,
     "totalOffices": 39,
-    "scanId": "20260920T171755Z-35522984032-1"
+    "scanId": "20260920T221703Z-35539122665-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 343,
+      "officialIdCount": 340,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 343,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 343,
+      "inDatasetBefore": 339,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 340,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2155,15 +2155,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 343,
+      "officialIdCount": 340,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 343,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 343,
+      "inDatasetBefore": 339,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 340,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -4092,5 +4092,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260920T171755Z-35522984032-1"
+  "scanId": "20260920T221703Z-35539122665-1"
 }
