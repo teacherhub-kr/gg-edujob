@@ -10,8 +10,7 @@ migration = Path("supabase/migrations/20260918_create_push_subscriptions.sql").r
 subscribe = Path("supabase/functions/push-subscription/index.ts").read_text(encoding="utf-8")
 dispatch = Path("supabase/functions/push-dispatch/index.ts").read_text(encoding="utf-8")
 shared_alerts = Path("supabase/functions/_shared/alerts.ts").read_text(encoding="utf-8")
-radar = Path("job-radar.js").read_text(encoding="utf-8")
-unified_ui = Path("unified-ui.js").read_text(encoding="utf-8")
+app = Path("app.js").read_text(encoding="utf-8")
 workflow = Path(".github/workflows/job-alerts.yml").read_text(encoding="utf-8")
 
 required_client = {
@@ -34,9 +33,9 @@ if "ahghkusvbfwrdmrhkgwe.supabase.co/functions/v1/push-subscription" not in conf
 if "BIzLo7Ri325DU7t4-FUQ3T1TMRgRGn7iI8mw875ZpEHIHniQXOoUMRGHtoBCNknlcFUdFEx9i6mTlul8KVpBh1U" not in config:
     raise SystemExit("live VAPID public key missing")
 
-positions = [index.find(x) for x in ["user-store.js", "job-radar.js", "alert-config.js", "alert-client.js"]]
+positions = [index.find(x) for x in ["user-store.js", "alert-config.js", "app.js", "alert-client.js"]]
 if any(x < 0 for x in positions) or positions != sorted(positions):
-    raise SystemExit("push scripts must load after user store and radar in deterministic order")
+    raise SystemExit("push scripts must load after user store/config and after app in deterministic order")
 
 if 'rel="manifest"' not in index or "manifest.webmanifest" not in index:
     raise SystemExit("PWA manifest must be linked")
@@ -74,8 +73,5 @@ subject_contract = [
     "'사회·역사':/(^|\\s)(사회|역사|한국사|지리|윤리|도덕|통합사회)(\\s|$)/",
 ]
 for rule in subject_contract:
-    if rule not in unified_ui or rule not in radar or rule not in shared_alerts:
+    if rule not in app or rule not in shared_alerts:
         raise SystemExit("saved-profile subject matching drift: " + rule)
-for legacy in ("'사회':/", "'역사':/"):
-    if legacy not in radar or legacy not in shared_alerts:
-        raise SystemExit("legacy saved-profile subject compatibility missing: " + legacy)
