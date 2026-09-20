@@ -27,8 +27,8 @@ jobs:
       - name: Verify production app shell
         run: |
           grep -q 'id="appHeader"' index.html
-          grep -q 'app.css?v=20260920k' index.html
-          grep -q 'app.js?v=20260920m' index.html
+          grep -q 'app.css?v=20260920n' index.html
+          grep -q 'app.js?v=20260920n' index.html
           grep -q 'manifest.webmanifest' index.html
           ! grep -q 'edujob-final-ui' index.html
           ! grep -q 'mobile-ui.js' index.html
