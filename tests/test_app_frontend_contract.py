@@ -232,9 +232,8 @@ if "region-group" not in js or "region-group-body" not in js:
 # Saved conditions must drive the home page after the user applies them.
 for needle in [
     "const matches=p?[...profileMatches(p)]",
-    "const homeRows=p?matches:latest",
-    "내 저장 조건",
-    "내 조건 맞춤 공고",
+    "const newRows=p?[...newProfileRows(p)]",
+    "내 조건에 맞는 새 공고",
     "data-home-profile=\"edit\"",
     "data-home-profile=\"matches\"",
     "profileSignature",
