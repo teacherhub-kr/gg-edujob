@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-20 10:12:50 KST",
+  "generatedAt": "2026-09-21 02:23:40 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-39-v3-metro-central-90d",
   "summary": {
-    "generatedAt": "2026-09-20 10:12:50 KST",
+    "generatedAt": "2026-09-21 02:23:40 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-39-v3-metro-central-90d",
-    "officialIdCount": 19938,
-    "datasetIdCountBefore": 21782,
+    "officialIdCount": 19583,
+    "datasetIdCountBefore": 21674,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0,
@@ -15,7 +15,7 @@
     "totalSources": 39,
     "reconciledOffices": 39,
     "totalOffices": 39,
-    "scanId": "20260920T010748Z-35478805787-1"
+    "scanId": "20260920T171755Z-35522984032-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -27,17 +27,17 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 10063,
+      "officialIdCount": 9913,
       "coverageComplete": true,
-      "pagesScanned": 216,
+      "pagesScanned": 214,
       "accessErrors": 0,
       "boardHealth": [
         {
           "code": "A",
           "name": "기간제/사립교원",
-          "pagesScanned": 101,
-          "rawRows": 5050,
-          "acceptedRecentRows": 4940,
+          "pagesScanned": 100,
+          "rawRows": 5000,
+          "acceptedRecentRows": 4865,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -47,9 +47,9 @@
         {
           "code": "B",
           "name": "초중등시간강사",
-          "pagesScanned": 74,
-          "rawRows": 3700,
-          "acceptedRecentRows": 3558,
+          "pagesScanned": 73,
+          "rawRows": 3650,
+          "acceptedRecentRows": 3510,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -61,7 +61,7 @@
           "name": "교육공무직원",
           "pagesScanned": 26,
           "rawRows": 1300,
-          "acceptedRecentRows": 1179,
+          "acceptedRecentRows": 1163,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -73,7 +73,7 @@
           "name": "사립학교 교원정규채용",
           "pagesScanned": 4,
           "rawRows": 200,
-          "acceptedRecentRows": 73,
+          "acceptedRecentRows": 72,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -97,7 +97,7 @@
           "name": "자원봉사자",
           "pagesScanned": 8,
           "rawRows": 400,
-          "acceptedRecentRows": 296,
+          "acceptedRecentRows": 286,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -105,10 +105,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 10063,
+      "inDatasetBefore": 9913,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 10063,
+      "inDatasetAfter": 9913,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 383,
+      "officialIdCount": 343,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 383,
+      "inDatasetBefore": 343,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 383,
+      "inDatasetAfter": 343,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -138,9 +138,9 @@
       "boards": [
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
       ],
-      "officialIdCount": 2549,
+      "officialIdCount": 2515,
       "coverageComplete": true,
-      "pagesScanned": 258,
+      "pagesScanned": 255,
       "accessErrors": 0,
       "boardHealth": [
         {
@@ -152,8 +152,8 @@
           ],
           "requiredBoardCount": 2,
           "lookbackDays": 90,
-          "pagesScanned": 258,
-          "count": 2549,
+          "pagesScanned": 255,
+          "count": 2515,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -166,8 +166,8 @@
               "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
               "bbsId": "1981",
               "lookbackDays": 90,
-              "pagesScanned": 251,
-              "count": 2497,
+              "pagesScanned": 248,
+              "count": 2463,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -215,10 +215,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2549,
+      "inDatasetBefore": 2515,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2549,
+      "inDatasetAfter": 2515,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -233,7 +233,7 @@
         "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
         "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
       ],
-      "officialIdCount": 89,
+      "officialIdCount": 86,
       "coverageComplete": true,
       "pagesScanned": 21,
       "accessErrors": 0,
@@ -242,7 +242,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
           "pagesScanned": 4,
           "rawRows": 40,
-          "recentRows": 28,
+          "recentRows": 27,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -254,7 +254,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
           "pagesScanned": 5,
           "rawRows": 50,
-          "recentRows": 18,
+          "recentRows": 17,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -266,7 +266,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 32,
+          "recentRows": 31,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -299,10 +299,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 89,
+      "inDatasetBefore": 86,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 89,
+      "inDatasetAfter": 86,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -315,7 +315,7 @@
         "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
         "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
       ],
-      "officialIdCount": 211,
+      "officialIdCount": 203,
       "coverageComplete": true,
       "pagesScanned": 28,
       "accessErrors": 0,
@@ -336,7 +336,7 @@
           "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
           "pagesScanned": 3,
           "rawRows": 30,
-          "recentRows": 11,
+          "recentRows": 10,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -348,7 +348,7 @@
           "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
           "pagesScanned": 22,
           "rawRows": 220,
-          "recentRows": 208,
+          "recentRows": 200,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -357,10 +357,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 211,
+      "inDatasetBefore": 203,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 211,
+      "inDatasetAfter": 203,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -372,7 +372,7 @@
         "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
         "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
       ],
-      "officialIdCount": 271,
+      "officialIdCount": 263,
       "coverageComplete": true,
       "pagesScanned": 30,
       "accessErrors": 0,
@@ -381,7 +381,7 @@
           "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
           "pagesScanned": 27,
           "rawRows": 270,
-          "recentRows": 253,
+          "recentRows": 246,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -393,7 +393,7 @@
           "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879",
           "pagesScanned": 3,
           "rawRows": 30,
-          "recentRows": 18,
+          "recentRows": 17,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -402,10 +402,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 271,
+      "inDatasetBefore": 263,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 271,
+      "inDatasetAfter": 263,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -419,7 +419,7 @@
         "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
         "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
       ],
-      "officialIdCount": 330,
+      "officialIdCount": 323,
       "coverageComplete": true,
       "pagesScanned": 45,
       "accessErrors": 0,
@@ -428,7 +428,7 @@
           "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
           "pagesScanned": 34,
           "rawRows": 342,
-          "recentRows": 317,
+          "recentRows": 309,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -440,7 +440,7 @@
           "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5030&mi=8667",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 12,
+          "recentRows": 13,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -473,10 +473,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 330,
+      "inDatasetBefore": 323,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 330,
+      "inDatasetAfter": 323,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -494,16 +494,16 @@
         "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
         "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
       ],
-      "officialIdCount": 602,
+      "officialIdCount": 593,
       "coverageComplete": true,
-      "pagesScanned": 77,
+      "pagesScanned": 76,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "pagesScanned": 52,
           "rawRows": 520,
-          "recentRows": 505,
+          "recentRows": 498,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -525,9 +525,9 @@
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
-          "pagesScanned": 10,
-          "rawRows": 100,
-          "recentRows": 79,
+          "pagesScanned": 9,
+          "rawRows": 90,
+          "recentRows": 77,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -549,7 +549,7 @@
           "ignoredAsDuplicateMenuAlias": true,
           "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "aliasStableIdCount": 0,
-          "representativeStableIdCount": 505
+          "representativeStableIdCount": 498
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084",
@@ -565,7 +565,7 @@
           "ignoredAsDuplicateMenuAlias": true,
           "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "aliasStableIdCount": 0,
-          "representativeStableIdCount": 505
+          "representativeStableIdCount": 498
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13581&bbsId=8403",
@@ -604,10 +604,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 602,
+      "inDatasetBefore": 593,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 602,
+      "inDatasetAfter": 593,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -618,16 +618,16 @@
       "boards": [
         "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110"
       ],
-      "officialIdCount": 6,
+      "officialIdCount": 5,
       "coverageComplete": true,
-      "pagesScanned": 6,
+      "pagesScanned": 5,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110",
-          "pagesScanned": 6,
-          "rawRows": 60,
-          "recentRows": 6,
+          "pagesScanned": 5,
+          "rawRows": 50,
+          "recentRows": 5,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -636,10 +636,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 6,
+      "inDatasetBefore": 5,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 6,
+      "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -652,16 +652,16 @@
         "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
         "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
       ],
-      "officialIdCount": 485,
+      "officialIdCount": 473,
       "coverageComplete": true,
-      "pagesScanned": 56,
+      "pagesScanned": 55,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
-          "pagesScanned": 47,
-          "rawRows": 470,
-          "recentRows": 446,
+          "pagesScanned": 46,
+          "rawRows": 460,
+          "recentRows": 434,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -694,10 +694,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 485,
+      "inDatasetBefore": 473,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 485,
+      "inDatasetAfter": 473,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -710,9 +710,9 @@
         "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=11748&bbsId=11037",
         "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228"
       ],
-      "officialIdCount": 467,
+      "officialIdCount": 458,
       "coverageComplete": true,
-      "pagesScanned": 55,
+      "pagesScanned": 54,
       "accessErrors": 0,
       "boardHealth": [
         {
@@ -741,9 +741,9 @@
         },
         {
           "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
-          "pagesScanned": 49,
-          "rawRows": 491,
-          "recentRows": 465,
+          "pagesScanned": 48,
+          "rawRows": 481,
+          "recentRows": 456,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -752,10 +752,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 467,
+      "inDatasetBefore": 458,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 467,
+      "inDatasetAfter": 458,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -768,16 +768,16 @@
         "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
         "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
       ],
-      "officialIdCount": 655,
+      "officialIdCount": 644,
       "coverageComplete": true,
-      "pagesScanned": 128,
+      "pagesScanned": 126,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
-          "pagesScanned": 59,
-          "rawRows": 590,
-          "recentRows": 567,
+          "pagesScanned": 58,
+          "rawRows": 580,
+          "recentRows": 558,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -789,7 +789,7 @@
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
           "pagesScanned": 10,
           "rawRows": 100,
-          "recentRows": 88,
+          "recentRows": 86,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -799,9 +799,9 @@
         },
         {
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381",
-          "pagesScanned": 59,
-          "rawRows": 590,
-          "recentRows": 567,
+          "pagesScanned": 58,
+          "rawRows": 580,
+          "recentRows": 558,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -810,10 +810,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 655,
+      "inDatasetBefore": 644,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 655,
+      "inDatasetAfter": 644,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -825,16 +825,16 @@
         "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
         "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
       ],
-      "officialIdCount": 919,
+      "officialIdCount": 906,
       "coverageComplete": true,
-      "pagesScanned": 96,
+      "pagesScanned": 95,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-          "pagesScanned": 88,
-          "rawRows": 880,
-          "recentRows": 856,
+          "pagesScanned": 87,
+          "rawRows": 870,
+          "recentRows": 845,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -846,7 +846,7 @@
           "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 63,
+          "recentRows": 61,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -855,10 +855,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 919,
+      "inDatasetBefore": 906,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 919,
+      "inDatasetAfter": 906,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -869,7 +869,7 @@
       "boards": [
         "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851"
       ],
-      "officialIdCount": 15,
+      "officialIdCount": 14,
       "coverageComplete": true,
       "pagesScanned": 9,
       "accessErrors": 0,
@@ -878,7 +878,7 @@
           "url": "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851",
           "pagesScanned": 9,
           "rawRows": 90,
-          "recentRows": 15,
+          "recentRows": 14,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -887,10 +887,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 15,
+      "inDatasetBefore": 14,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 15,
+      "inDatasetAfter": 14,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -949,7 +949,7 @@
         "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=13663&bbsId=6933",
         "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=11382&bbsId=6532"
       ],
-      "officialIdCount": 72,
+      "officialIdCount": 70,
       "coverageComplete": true,
       "pagesScanned": 16,
       "accessErrors": 0,
@@ -958,7 +958,7 @@
           "url": "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?bbsId=5918&mi=11390",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 63,
+          "recentRows": 61,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1003,10 +1003,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 72,
+      "inDatasetBefore": 70,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 72,
+      "inDatasetAfter": 70,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1018,16 +1018,16 @@
         "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
         "https://www.goean.kr/goean/na/ntt/selectNttList.do?mi=4464&bbsId=2727"
       ],
-      "officialIdCount": 207,
+      "officialIdCount": 203,
       "coverageComplete": true,
-      "pagesScanned": 24,
+      "pagesScanned": 23,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
-          "pagesScanned": 20,
-          "rawRows": 200,
-          "recentRows": 179,
+          "pagesScanned": 19,
+          "rawRows": 190,
+          "recentRows": 175,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1048,10 +1048,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 207,
+      "inDatasetBefore": 203,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 207,
+      "inDatasetAfter": 203,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1065,7 +1065,7 @@
         "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?mi=10236&bbsId=5176",
         "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?mi=10231&bbsId=5173"
       ],
-      "officialIdCount": 9,
+      "officialIdCount": 8,
       "coverageComplete": true,
       "pagesScanned": 10,
       "accessErrors": 0,
@@ -1074,7 +1074,7 @@
           "url": "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?bbsId=5137&mi=10158",
           "pagesScanned": 5,
           "rawRows": 51,
-          "recentRows": 9,
+          "recentRows": 8,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1119,10 +1119,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9,
+      "inDatasetBefore": 8,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9,
+      "inDatasetAfter": 8,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1134,7 +1134,7 @@
         "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
         "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?mi=3546&bbsId=1871"
       ],
-      "officialIdCount": 148,
+      "officialIdCount": 141,
       "coverageComplete": true,
       "pagesScanned": 19,
       "accessErrors": 0,
@@ -1143,7 +1143,7 @@
           "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
           "pagesScanned": 17,
           "rawRows": 170,
-          "recentRows": 148,
+          "recentRows": 141,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1164,10 +1164,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 148,
+      "inDatasetBefore": 141,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 148,
+      "inDatasetAfter": 141,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1238,7 +1238,7 @@
         "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2386&bbsId=2220",
         "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2452&bbsId=2243"
       ],
-      "officialIdCount": 94,
+      "officialIdCount": 92,
       "coverageComplete": true,
       "pagesScanned": 17,
       "accessErrors": 0,
@@ -1247,7 +1247,7 @@
           "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 93,
+          "recentRows": 91,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1280,10 +1280,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 94,
+      "inDatasetBefore": 92,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 94,
+      "inDatasetAfter": 92,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1297,7 +1297,7 @@
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
       ],
-      "officialIdCount": 119,
+      "officialIdCount": 118,
       "coverageComplete": true,
       "pagesScanned": 23,
       "accessErrors": 0,
@@ -1318,7 +1318,7 @@
           "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 97,
+          "recentRows": 96,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1351,10 +1351,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 119,
+      "inDatasetBefore": 118,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 119,
+      "inDatasetAfter": 118,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1367,7 +1367,7 @@
         "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
         "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
       ],
-      "officialIdCount": 337,
+      "officialIdCount": 333,
       "coverageComplete": true,
       "pagesScanned": 39,
       "accessErrors": 0,
@@ -1376,7 +1376,7 @@
           "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?bbsId=4119&mi=7023",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 65,
+          "recentRows": 64,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1400,7 +1400,7 @@
           "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
           "pagesScanned": 29,
           "rawRows": 290,
-          "recentRows": 272,
+          "recentRows": 269,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1409,10 +1409,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 337,
+      "inDatasetBefore": 333,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 337,
+      "inDatasetAfter": 333,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1458,16 +1458,16 @@
         "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
         "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10788&bbsId=7179"
       ],
-      "officialIdCount": 450,
+      "officialIdCount": 447,
       "coverageComplete": true,
-      "pagesScanned": 54,
+      "pagesScanned": 53,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 95,
+          "recentRows": 93,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1477,9 +1477,9 @@
         },
         {
           "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
-          "pagesScanned": 37,
-          "rawRows": 370,
-          "recentRows": 345,
+          "pagesScanned": 36,
+          "rawRows": 360,
+          "recentRows": 344,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1512,10 +1512,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 450,
+      "inDatasetBefore": 447,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 450,
+      "inDatasetAfter": 447,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1528,16 +1528,16 @@
         "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
         "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
       ],
-      "officialIdCount": 746,
+      "officialIdCount": 734,
       "coverageComplete": true,
-      "pagesScanned": 83,
+      "pagesScanned": 82,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
           "pagesScanned": 12,
           "rawRows": 120,
-          "recentRows": 106,
+          "recentRows": 104,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1559,9 +1559,9 @@
         },
         {
           "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-          "pagesScanned": 65,
-          "rawRows": 651,
-          "recentRows": 626,
+          "pagesScanned": 64,
+          "rawRows": 641,
+          "recentRows": 616,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1570,10 +1570,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 746,
+      "inDatasetBefore": 734,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 746,
+      "inDatasetAfter": 734,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1586,16 +1586,16 @@
         "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
         "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116"
       ],
-      "officialIdCount": 189,
+      "officialIdCount": 185,
       "coverageComplete": true,
-      "pagesScanned": 24,
+      "pagesScanned": 23,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
           "pagesScanned": 5,
           "rawRows": 51,
-          "recentRows": 32,
+          "recentRows": 29,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1617,9 +1617,9 @@
         },
         {
           "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116",
-          "pagesScanned": 7,
-          "rawRows": 70,
-          "recentRows": 50,
+          "pagesScanned": 6,
+          "rawRows": 60,
+          "recentRows": 49,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1628,10 +1628,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 189,
+      "inDatasetBefore": 185,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 189,
+      "inDatasetAfter": 185,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1755,7 +1755,7 @@
       "boards": [
         "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 6,
+      "officialIdCount": 5,
       "coverageComplete": true,
       "pagesScanned": 2,
       "accessErrors": 0,
@@ -1763,8 +1763,8 @@
         {
           "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 2,
-          "rawRows": 7,
-          "recentRows": 6,
+          "rawRows": 6,
+          "recentRows": 5,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1775,10 +1775,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 6,
+      "inDatasetBefore": 5,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 6,
+      "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1823,7 +1823,7 @@
       "boards": [
         "https://jbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 44,
+      "officialIdCount": 43,
       "coverageComplete": true,
       "pagesScanned": 7,
       "accessErrors": 0,
@@ -1832,7 +1832,7 @@
           "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 7,
           "rawRows": 70,
-          "recentRows": 44,
+          "recentRows": 43,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1843,10 +1843,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 44,
+      "inDatasetBefore": 43,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 44,
+      "inDatasetAfter": 43,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1891,7 +1891,7 @@
       "boards": [
         "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 115,
+      "officialIdCount": 113,
       "coverageComplete": true,
       "pagesScanned": 14,
       "accessErrors": 0,
@@ -1900,7 +1900,7 @@
           "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 14,
           "rawRows": 140,
-          "recentRows": 115,
+          "recentRows": 113,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1911,10 +1911,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 115,
+      "inDatasetBefore": 113,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 115,
+      "inDatasetAfter": 113,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1925,16 +1925,16 @@
       "boards": [
         "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 81,
+      "officialIdCount": 77,
       "coverageComplete": true,
-      "pagesScanned": 11,
+      "pagesScanned": 10,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 11,
-          "rawRows": 110,
-          "recentRows": 81,
+          "pagesScanned": 10,
+          "rawRows": 100,
+          "recentRows": 77,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1945,10 +1945,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 81,
+      "inDatasetBefore": 77,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 81,
+      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -1959,7 +1959,7 @@
       "boards": [
         "https://dgedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 139,
+      "officialIdCount": 138,
       "coverageComplete": true,
       "pagesScanned": 16,
       "accessErrors": 0,
@@ -1968,7 +1968,7 @@
           "url": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 16,
           "rawRows": 160,
-          "recentRows": 139,
+          "recentRows": 138,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -1979,10 +1979,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 139,
+      "inDatasetBefore": 138,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 139,
+      "inDatasetAfter": 138,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2063,17 +2063,17 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 10063,
+      "officialIdCount": 9913,
       "coverageComplete": true,
-      "pagesScanned": 216,
+      "pagesScanned": 214,
       "accessErrors": 0,
       "boardHealth": [
         {
           "code": "A",
           "name": "기간제/사립교원",
-          "pagesScanned": 101,
-          "rawRows": 5050,
-          "acceptedRecentRows": 4940,
+          "pagesScanned": 100,
+          "rawRows": 5000,
+          "acceptedRecentRows": 4865,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2083,9 +2083,9 @@
         {
           "code": "B",
           "name": "초중등시간강사",
-          "pagesScanned": 74,
-          "rawRows": 3700,
-          "acceptedRecentRows": 3558,
+          "pagesScanned": 73,
+          "rawRows": 3650,
+          "acceptedRecentRows": 3510,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2097,7 +2097,7 @@
           "name": "교육공무직원",
           "pagesScanned": 26,
           "rawRows": 1300,
-          "acceptedRecentRows": 1179,
+          "acceptedRecentRows": 1163,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2109,7 +2109,7 @@
           "name": "사립학교 교원정규채용",
           "pagesScanned": 4,
           "rawRows": 200,
-          "acceptedRecentRows": 73,
+          "acceptedRecentRows": 72,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2133,7 +2133,7 @@
           "name": "자원봉사자",
           "pagesScanned": 8,
           "rawRows": 400,
-          "acceptedRecentRows": 296,
+          "acceptedRecentRows": 286,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2141,10 +2141,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 10063,
+      "inDatasetBefore": 9913,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 10063,
+      "inDatasetAfter": 9913,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2155,15 +2155,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 383,
+      "officialIdCount": 343,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 383,
+      "inDatasetBefore": 343,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 383,
+      "inDatasetAfter": 343,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2174,9 +2174,9 @@
       "boards": [
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
       ],
-      "officialIdCount": 2549,
+      "officialIdCount": 2515,
       "coverageComplete": true,
-      "pagesScanned": 258,
+      "pagesScanned": 255,
       "accessErrors": 0,
       "boardHealth": [
         {
@@ -2188,8 +2188,8 @@
           ],
           "requiredBoardCount": 2,
           "lookbackDays": 90,
-          "pagesScanned": 258,
-          "count": 2549,
+          "pagesScanned": 255,
+          "count": 2515,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -2202,8 +2202,8 @@
               "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
               "bbsId": "1981",
               "lookbackDays": 90,
-              "pagesScanned": 251,
-              "count": 2497,
+              "pagesScanned": 248,
+              "count": 2463,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -2251,10 +2251,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2549,
+      "inDatasetBefore": 2515,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2549,
+      "inDatasetAfter": 2515,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2269,7 +2269,7 @@
         "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
         "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
       ],
-      "officialIdCount": 89,
+      "officialIdCount": 86,
       "coverageComplete": true,
       "pagesScanned": 21,
       "accessErrors": 0,
@@ -2278,7 +2278,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
           "pagesScanned": 4,
           "rawRows": 40,
-          "recentRows": 28,
+          "recentRows": 27,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2290,7 +2290,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
           "pagesScanned": 5,
           "rawRows": 50,
-          "recentRows": 18,
+          "recentRows": 17,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2302,7 +2302,7 @@
           "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 32,
+          "recentRows": 31,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2335,10 +2335,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 89,
+      "inDatasetBefore": 86,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 89,
+      "inDatasetAfter": 86,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2351,7 +2351,7 @@
         "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
         "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
       ],
-      "officialIdCount": 211,
+      "officialIdCount": 203,
       "coverageComplete": true,
       "pagesScanned": 28,
       "accessErrors": 0,
@@ -2372,7 +2372,7 @@
           "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
           "pagesScanned": 3,
           "rawRows": 30,
-          "recentRows": 11,
+          "recentRows": 10,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2384,7 +2384,7 @@
           "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
           "pagesScanned": 22,
           "rawRows": 220,
-          "recentRows": 208,
+          "recentRows": 200,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2393,10 +2393,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 211,
+      "inDatasetBefore": 203,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 211,
+      "inDatasetAfter": 203,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2408,7 +2408,7 @@
         "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
         "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
       ],
-      "officialIdCount": 271,
+      "officialIdCount": 263,
       "coverageComplete": true,
       "pagesScanned": 30,
       "accessErrors": 0,
@@ -2417,7 +2417,7 @@
           "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
           "pagesScanned": 27,
           "rawRows": 270,
-          "recentRows": 253,
+          "recentRows": 246,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2429,7 +2429,7 @@
           "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879",
           "pagesScanned": 3,
           "rawRows": 30,
-          "recentRows": 18,
+          "recentRows": 17,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2438,10 +2438,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 271,
+      "inDatasetBefore": 263,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 271,
+      "inDatasetAfter": 263,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2455,7 +2455,7 @@
         "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
         "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
       ],
-      "officialIdCount": 330,
+      "officialIdCount": 323,
       "coverageComplete": true,
       "pagesScanned": 45,
       "accessErrors": 0,
@@ -2464,7 +2464,7 @@
           "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
           "pagesScanned": 34,
           "rawRows": 342,
-          "recentRows": 317,
+          "recentRows": 309,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2476,7 +2476,7 @@
           "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5030&mi=8667",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 12,
+          "recentRows": 13,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2509,10 +2509,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 330,
+      "inDatasetBefore": 323,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 330,
+      "inDatasetAfter": 323,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2530,16 +2530,16 @@
         "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
         "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
       ],
-      "officialIdCount": 602,
+      "officialIdCount": 593,
       "coverageComplete": true,
-      "pagesScanned": 77,
+      "pagesScanned": 76,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "pagesScanned": 52,
           "rawRows": 520,
-          "recentRows": 505,
+          "recentRows": 498,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2561,9 +2561,9 @@
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
-          "pagesScanned": 10,
-          "rawRows": 100,
-          "recentRows": 79,
+          "pagesScanned": 9,
+          "rawRows": 90,
+          "recentRows": 77,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2585,7 +2585,7 @@
           "ignoredAsDuplicateMenuAlias": true,
           "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "aliasStableIdCount": 0,
-          "representativeStableIdCount": 505
+          "representativeStableIdCount": 498
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084",
@@ -2601,7 +2601,7 @@
           "ignoredAsDuplicateMenuAlias": true,
           "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
           "aliasStableIdCount": 0,
-          "representativeStableIdCount": 505
+          "representativeStableIdCount": 498
         },
         {
           "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13581&bbsId=8403",
@@ -2640,10 +2640,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 602,
+      "inDatasetBefore": 593,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 602,
+      "inDatasetAfter": 593,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2654,16 +2654,16 @@
       "boards": [
         "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110"
       ],
-      "officialIdCount": 6,
+      "officialIdCount": 5,
       "coverageComplete": true,
-      "pagesScanned": 6,
+      "pagesScanned": 5,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110",
-          "pagesScanned": 6,
-          "rawRows": 60,
-          "recentRows": 6,
+          "pagesScanned": 5,
+          "rawRows": 50,
+          "recentRows": 5,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2672,10 +2672,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 6,
+      "inDatasetBefore": 5,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 6,
+      "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2688,16 +2688,16 @@
         "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
         "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
       ],
-      "officialIdCount": 485,
+      "officialIdCount": 473,
       "coverageComplete": true,
-      "pagesScanned": 56,
+      "pagesScanned": 55,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
-          "pagesScanned": 47,
-          "rawRows": 470,
-          "recentRows": 446,
+          "pagesScanned": 46,
+          "rawRows": 460,
+          "recentRows": 434,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2730,10 +2730,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 485,
+      "inDatasetBefore": 473,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 485,
+      "inDatasetAfter": 473,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2746,9 +2746,9 @@
         "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=11748&bbsId=11037",
         "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228"
       ],
-      "officialIdCount": 467,
+      "officialIdCount": 458,
       "coverageComplete": true,
-      "pagesScanned": 55,
+      "pagesScanned": 54,
       "accessErrors": 0,
       "boardHealth": [
         {
@@ -2777,9 +2777,9 @@
         },
         {
           "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
-          "pagesScanned": 49,
-          "rawRows": 491,
-          "recentRows": 465,
+          "pagesScanned": 48,
+          "rawRows": 481,
+          "recentRows": 456,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2788,10 +2788,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 467,
+      "inDatasetBefore": 458,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 467,
+      "inDatasetAfter": 458,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2804,16 +2804,16 @@
         "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
         "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
       ],
-      "officialIdCount": 655,
+      "officialIdCount": 644,
       "coverageComplete": true,
-      "pagesScanned": 128,
+      "pagesScanned": 126,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
-          "pagesScanned": 59,
-          "rawRows": 590,
-          "recentRows": 567,
+          "pagesScanned": 58,
+          "rawRows": 580,
+          "recentRows": 558,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2825,7 +2825,7 @@
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
           "pagesScanned": 10,
           "rawRows": 100,
-          "recentRows": 88,
+          "recentRows": 86,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2835,9 +2835,9 @@
         },
         {
           "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381",
-          "pagesScanned": 59,
-          "rawRows": 590,
-          "recentRows": 567,
+          "pagesScanned": 58,
+          "rawRows": 580,
+          "recentRows": 558,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2846,10 +2846,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 655,
+      "inDatasetBefore": 644,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 655,
+      "inDatasetAfter": 644,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2861,16 +2861,16 @@
         "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
         "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
       ],
-      "officialIdCount": 919,
+      "officialIdCount": 906,
       "coverageComplete": true,
-      "pagesScanned": 96,
+      "pagesScanned": 95,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-          "pagesScanned": 88,
-          "rawRows": 880,
-          "recentRows": 856,
+          "pagesScanned": 87,
+          "rawRows": 870,
+          "recentRows": 845,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2882,7 +2882,7 @@
           "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 63,
+          "recentRows": 61,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2891,10 +2891,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 919,
+      "inDatasetBefore": 906,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 919,
+      "inDatasetAfter": 906,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2905,7 +2905,7 @@
       "boards": [
         "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851"
       ],
-      "officialIdCount": 15,
+      "officialIdCount": 14,
       "coverageComplete": true,
       "pagesScanned": 9,
       "accessErrors": 0,
@@ -2914,7 +2914,7 @@
           "url": "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851",
           "pagesScanned": 9,
           "rawRows": 90,
-          "recentRows": 15,
+          "recentRows": 14,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2923,10 +2923,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 15,
+      "inDatasetBefore": 14,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 15,
+      "inDatasetAfter": 14,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2985,7 +2985,7 @@
         "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=13663&bbsId=6933",
         "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?mi=11382&bbsId=6532"
       ],
-      "officialIdCount": 72,
+      "officialIdCount": 70,
       "coverageComplete": true,
       "pagesScanned": 16,
       "accessErrors": 0,
@@ -2994,7 +2994,7 @@
           "url": "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?bbsId=5918&mi=11390",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 63,
+          "recentRows": 61,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3039,10 +3039,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 72,
+      "inDatasetBefore": 70,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 72,
+      "inDatasetAfter": 70,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3054,16 +3054,16 @@
         "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
         "https://www.goean.kr/goean/na/ntt/selectNttList.do?mi=4464&bbsId=2727"
       ],
-      "officialIdCount": 207,
+      "officialIdCount": 203,
       "coverageComplete": true,
-      "pagesScanned": 24,
+      "pagesScanned": 23,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
-          "pagesScanned": 20,
-          "rawRows": 200,
-          "recentRows": 179,
+          "pagesScanned": 19,
+          "rawRows": 190,
+          "recentRows": 175,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3084,10 +3084,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 207,
+      "inDatasetBefore": 203,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 207,
+      "inDatasetAfter": 203,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3101,7 +3101,7 @@
         "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?mi=10236&bbsId=5176",
         "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?mi=10231&bbsId=5173"
       ],
-      "officialIdCount": 9,
+      "officialIdCount": 8,
       "coverageComplete": true,
       "pagesScanned": 10,
       "accessErrors": 0,
@@ -3110,7 +3110,7 @@
           "url": "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?bbsId=5137&mi=10158",
           "pagesScanned": 5,
           "rawRows": 51,
-          "recentRows": 9,
+          "recentRows": 8,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3155,10 +3155,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9,
+      "inDatasetBefore": 8,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9,
+      "inDatasetAfter": 8,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3170,7 +3170,7 @@
         "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
         "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?mi=3546&bbsId=1871"
       ],
-      "officialIdCount": 148,
+      "officialIdCount": 141,
       "coverageComplete": true,
       "pagesScanned": 19,
       "accessErrors": 0,
@@ -3179,7 +3179,7 @@
           "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
           "pagesScanned": 17,
           "rawRows": 170,
-          "recentRows": 148,
+          "recentRows": 141,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3200,10 +3200,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 148,
+      "inDatasetBefore": 141,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 148,
+      "inDatasetAfter": 141,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3274,7 +3274,7 @@
         "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2386&bbsId=2220",
         "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2452&bbsId=2243"
       ],
-      "officialIdCount": 94,
+      "officialIdCount": 92,
       "coverageComplete": true,
       "pagesScanned": 17,
       "accessErrors": 0,
@@ -3283,7 +3283,7 @@
           "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 93,
+          "recentRows": 91,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3316,10 +3316,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 94,
+      "inDatasetBefore": 92,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 94,
+      "inDatasetAfter": 92,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3333,7 +3333,7 @@
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
         "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
       ],
-      "officialIdCount": 119,
+      "officialIdCount": 118,
       "coverageComplete": true,
       "pagesScanned": 23,
       "accessErrors": 0,
@@ -3354,7 +3354,7 @@
           "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 97,
+          "recentRows": 96,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3387,10 +3387,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 119,
+      "inDatasetBefore": 118,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 119,
+      "inDatasetAfter": 118,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3403,7 +3403,7 @@
         "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
         "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
       ],
-      "officialIdCount": 337,
+      "officialIdCount": 333,
       "coverageComplete": true,
       "pagesScanned": 39,
       "accessErrors": 0,
@@ -3412,7 +3412,7 @@
           "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?bbsId=4119&mi=7023",
           "pagesScanned": 8,
           "rawRows": 80,
-          "recentRows": 65,
+          "recentRows": 64,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3436,7 +3436,7 @@
           "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
           "pagesScanned": 29,
           "rawRows": 290,
-          "recentRows": 272,
+          "recentRows": 269,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3445,10 +3445,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 337,
+      "inDatasetBefore": 333,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 337,
+      "inDatasetAfter": 333,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3494,16 +3494,16 @@
         "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
         "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10788&bbsId=7179"
       ],
-      "officialIdCount": 450,
+      "officialIdCount": 447,
       "coverageComplete": true,
-      "pagesScanned": 54,
+      "pagesScanned": 53,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 95,
+          "recentRows": 93,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3513,9 +3513,9 @@
         },
         {
           "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
-          "pagesScanned": 37,
-          "rawRows": 370,
-          "recentRows": 345,
+          "pagesScanned": 36,
+          "rawRows": 360,
+          "recentRows": 344,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3548,10 +3548,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 450,
+      "inDatasetBefore": 447,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 450,
+      "inDatasetAfter": 447,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3564,16 +3564,16 @@
         "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
         "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
       ],
-      "officialIdCount": 746,
+      "officialIdCount": 734,
       "coverageComplete": true,
-      "pagesScanned": 83,
+      "pagesScanned": 82,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
           "pagesScanned": 12,
           "rawRows": 120,
-          "recentRows": 106,
+          "recentRows": 104,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3595,9 +3595,9 @@
         },
         {
           "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-          "pagesScanned": 65,
-          "rawRows": 651,
-          "recentRows": 626,
+          "pagesScanned": 64,
+          "rawRows": 641,
+          "recentRows": 616,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3606,10 +3606,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 746,
+      "inDatasetBefore": 734,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 746,
+      "inDatasetAfter": 734,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3622,16 +3622,16 @@
         "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
         "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116"
       ],
-      "officialIdCount": 189,
+      "officialIdCount": 185,
       "coverageComplete": true,
-      "pagesScanned": 24,
+      "pagesScanned": 23,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
           "pagesScanned": 5,
           "rawRows": 51,
-          "recentRows": 32,
+          "recentRows": 29,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3653,9 +3653,9 @@
         },
         {
           "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116",
-          "pagesScanned": 7,
-          "rawRows": 70,
-          "recentRows": 50,
+          "pagesScanned": 6,
+          "rawRows": 60,
+          "recentRows": 49,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3664,10 +3664,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 189,
+      "inDatasetBefore": 185,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 189,
+      "inDatasetAfter": 185,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3791,7 +3791,7 @@
       "boards": [
         "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 6,
+      "officialIdCount": 5,
       "coverageComplete": true,
       "pagesScanned": 2,
       "accessErrors": 0,
@@ -3799,8 +3799,8 @@
         {
           "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 2,
-          "rawRows": 7,
-          "recentRows": 6,
+          "rawRows": 6,
+          "recentRows": 5,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3811,10 +3811,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 6,
+      "inDatasetBefore": 5,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 6,
+      "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3859,7 +3859,7 @@
       "boards": [
         "https://jbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 44,
+      "officialIdCount": 43,
       "coverageComplete": true,
       "pagesScanned": 7,
       "accessErrors": 0,
@@ -3868,7 +3868,7 @@
           "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 7,
           "rawRows": 70,
-          "recentRows": 44,
+          "recentRows": 43,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3879,10 +3879,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 44,
+      "inDatasetBefore": 43,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 44,
+      "inDatasetAfter": 43,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3927,7 +3927,7 @@
       "boards": [
         "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 115,
+      "officialIdCount": 113,
       "coverageComplete": true,
       "pagesScanned": 14,
       "accessErrors": 0,
@@ -3936,7 +3936,7 @@
           "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 14,
           "rawRows": 140,
-          "recentRows": 115,
+          "recentRows": 113,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3947,10 +3947,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 115,
+      "inDatasetBefore": 113,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 115,
+      "inDatasetAfter": 113,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3961,16 +3961,16 @@
       "boards": [
         "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 81,
+      "officialIdCount": 77,
       "coverageComplete": true,
-      "pagesScanned": 11,
+      "pagesScanned": 10,
       "accessErrors": 0,
       "boardHealth": [
         {
           "url": "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 11,
-          "rawRows": 110,
-          "recentRows": 81,
+          "pagesScanned": 10,
+          "rawRows": 100,
+          "recentRows": 77,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -3981,10 +3981,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 81,
+      "inDatasetBefore": 77,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 81,
+      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3995,7 +3995,7 @@
       "boards": [
         "https://dgedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 139,
+      "officialIdCount": 138,
       "coverageComplete": true,
       "pagesScanned": 16,
       "accessErrors": 0,
@@ -4004,7 +4004,7 @@
           "url": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 16,
           "rawRows": 160,
-          "recentRows": 139,
+          "recentRows": 138,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -4015,10 +4015,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 139,
+      "inDatasetBefore": 138,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 139,
+      "inDatasetAfter": 138,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -4092,5 +4092,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260920T010748Z-35478805787-1"
+  "scanId": "20260920T171755Z-35522984032-1"
 }
