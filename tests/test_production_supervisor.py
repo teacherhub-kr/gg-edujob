@@ -53,6 +53,20 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(private_refresh_due(now - timedelta(hours=7), now, 6))
         self.assertFalse(private_refresh_due(now - timedelta(hours=5), now, 6))
 
+    def test_priority_contract_places_official_unified_backlog_before_fast(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        unified_guard = source.index(
+            "if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:"
+        )
+        fast_guard = source.index("elif fast_needed and not fast_status_running:")
+        self.assertLess(unified_guard, fast_guard)
+        self.assertIn(
+            "publish verified official jobs backlog before another Fast refresh",
+            source,
+        )
+
     def test_private_refresh_targets_are_dispatched_only_by_single_watchdog(self):
         from pathlib import Path
 
