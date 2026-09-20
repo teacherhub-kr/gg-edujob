@@ -646,13 +646,13 @@ function bindScreen(){
     state.visible=PAGE_SIZE;render();
   }));
 
-  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='radar'||x==='new')setRoute('radar');
     else if(x==='alert')setRoute('radar');
   }));
-  $('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home-profile]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.homeProfile,p=store()?.profile?.get?.();
     if(x==='edit'){
       if(p)applyProfileToState(p);
