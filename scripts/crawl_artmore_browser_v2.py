@@ -47,15 +47,17 @@ async def page_rows(page, region: str):
         location = ""
         if region == "서울":
             lm = re.search(r"서울(?:특별시)?\s+[^\s]+(?:구|군)(?:\s+[^\s]+){0,4}", text)
-        else:
+        elif region == "경기":
             lm = re.search(r"경기(?:도)?\s+[^\s]+(?:시|군)(?:\s+[^\s]+){0,4}", text)
+        else:
+            lm = re.search(r"인천(?:광역시)?\s+[^\s]+(?:구|군)(?:\s+[^\s]+){0,4}", text)
         if lm:
             location = lm.group(0).strip()
-        other = "경기" if region == "서울" else "서울"
         if not base.REGION_PATTERNS[region].search(text):
             continue
-        if base.REGION_PATTERNS[other].search(text):
-            raise RuntimeError(f"cross-metro contamination in {region}: {rid} {text[:180]}")
+        contaminants = [name for name, pattern in base.REGION_PATTERNS.items() if name != region and pattern.search(text)]
+        if contaminants:
+            raise RuntimeError(f"cross-metro contamination in {region} from {contaminants}: {rid} {text[:180]}")
         # ArtMore's current-only filter can still return individually ended rows.
         # Exclude those rows without aborting the entire regional surface, so one
         # stale/contradictory row cannot hide other current postings on the page.
