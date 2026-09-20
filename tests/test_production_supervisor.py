@@ -3,10 +3,12 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.production_supervisor import (
     KST,
+    PRIVATE_REFRESH_TARGETS,
     change_after_failure,
     circuit_blocked,
     consecutive_real_failures,
     detect_source_anomalies,
+    private_refresh_due,
     unified_publication_stale,
 )
 
@@ -44,6 +46,31 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(unified_publication_stale(jobs, None))
         self.assertFalse(unified_publication_stale(jobs, jobs))
         self.assertFalse(unified_publication_stale(None, unified))
+
+    def test_private_refresh_due_respects_source_age(self):
+        now = datetime(2026, 9, 20, 12, 0, tzinfo=KST)
+        self.assertTrue(private_refresh_due(None, now, 6))
+        self.assertTrue(private_refresh_due(now - timedelta(hours=7), now, 6))
+        self.assertFalse(private_refresh_due(now - timedelta(hours=5), now, 6))
+
+    def test_private_refresh_targets_are_dispatched_only_by_single_watchdog(self):
+        from pathlib import Path
+
+        watchdog = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        self.assertIn("startsWith(steps.gate.outputs.action, 'private-')", watchdog)
+        for key, spec in PRIVATE_REFRESH_TARGETS.items():
+            self.assertIn(f"{key}) workflow='{spec['workflow']}'", watchdog)
+        self.assertIn("private-artmore-promote) workflow='promote-artmore.yml'", watchdog)
+
+    def test_private_refresh_targets_keep_writer_workflows_dispatch_only(self):
+        from pathlib import Path
+
+        for spec in PRIVATE_REFRESH_TARGETS.values():
+            text = Path(".github/workflows", spec["workflow"]).read_text(encoding="utf-8")
+            trigger = text.split("permissions:", 1)[0]
+            self.assertIn("workflow_dispatch:", trigger)
+            self.assertNotIn("schedule:", trigger)
+            self.assertNotIn("workflow_run:", trigger)
 
     def test_cancelled_runs_do_not_count_as_failures(self):
         runs = [run("failure"), run("cancelled"), run("failure"), run("failure"), run("success")]
