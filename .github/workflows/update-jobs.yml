@@ -190,6 +190,7 @@ jobs:
           # Recover any newly appeared stable IDs, then re-run the affected publication guards.
           python scripts/update_collector_status.py --workflow fast --stage prepublish-delta --state running
           python scripts/reconcile_source_ids.py
+          python scripts/stamp_reconciliation_scan.py --reconciliation
           python scripts/resolve_support_links.py
           python scripts/verify_support_completeness.py
           python scripts/validate_reconciliation_policy_v3.py
