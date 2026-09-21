@@ -498,6 +498,26 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     return ""
 
 
+def schema_diagnostic(html: str, page_url: str) -> list[dict]:
+    """Return bounded structural evidence only; never emit recruitment content."""
+    soup = BeautifulSoup(html, "html.parser")
+    out = []
+    for table in soup.find_all("table")[:8]:
+        th = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in table.find_all("th")]
+        rows = []
+        for tr in table.find_all("tr")[:3]:
+            cells = tr.find_all(["th", "td"], recursive=False)
+            rows.append({
+                "cellCount": len(cells),
+                "tags": [c.name for c in cells],
+                "classes": [clean(" ".join(c.get("class") or [])) for c in cells],
+                "anchorCount": len(tr.find_all("a")),
+                "hasBDIdentity": bool(re.search(r"\\bBD\\d{6,}\\b", str(tr), re.I)),
+            })
+        out.append({"page": page_url, "headers": th[:12], "rows": rows})
+    return out
+
+
 def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int):
     all_rows = []
     seen_ids = set()
@@ -512,6 +532,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
     total_rows_hint = None
     current = board_url
     consecutive_old_pages = 0
+    diagnostic = []
 
     for page in range(1, max_pages + 1):
         try:
@@ -524,6 +545,8 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
             break
 
         parsed_rows, meta = parse_support_page(response.text, response.url, office, lookback_days)
+        if page == 1 and (urlparse(response.url).hostname or "").lower() == "bukbu.ice.go.kr":
+            diagnostic = schema_diagnostic(response.text, response.url)
         pages_scanned += 1
         raw_rows_total += int(meta.get("rawRows") or 0)
         explicit_empty = explicit_empty or bool(meta.get("explicitEmpty"))
@@ -582,6 +605,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
         "explicitEmpty": explicit_empty,
         "totalRowsHint": total_rows_hint,
         "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": diagnostic,
     }
 
 
