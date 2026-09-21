@@ -402,7 +402,9 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     # Reviewed stable pagination contracts first.
     host = (urlparse(current_url).hostname or "").lower()
     if host == "bukbu.ice.go.kr":
-        return query_page(current_url, "pageIndex", page + 1)
+        # The live Bukbu board paginates with page, not pageIndex.
+        # Preserve bbs_mst_idx/menu_idx and advance only the reviewed page key.
+        return query_page(current_url, "page", page + 1)
     if host == "dongbu.ice.go.kr":
         return f"https://dongbu.ice.go.kr/bbs/bbsMsgList.do?bcd=job_offer&pgno={page + 1}"
 
