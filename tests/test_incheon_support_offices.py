@@ -84,6 +84,43 @@ class IncheonSupportOfficeTests(unittest.TestCase):
         )
         self.assertTrue(rows[0]["detailLinkResolved"])
 
+    def test_bukbu_textless_anchor_uses_native_data_identity(self):
+        html = """
+        <html><body>
+        <table>
+          <tr><th>번호</th><th>기관명</th><th>제 목</th><th>등록일</th><th>마감일</th><th>조회수</th></tr>
+          <tr>
+            <td class="num">1</td>
+            <td class="subject">테스트중학교</td>
+            <td class="subject"><a href="#" data-mst="BM0000000049" data-idx="BD0000008175"></a>기간제교원 채용 공고(음악)</td>
+            <td class="date">2026-09-21</td><td>2026-09-25</td><td class="hit">3</td>
+          </tr>
+        </table>
+        </body></html>
+        """
+        office = {
+            "name": "인천북부교육지원청",
+            "url": "https://bukbu.ice.go.kr/",
+            "allowedHosts": ["bukbu.ice.go.kr"],
+            "regions": [],
+        }
+        rows, meta = support.parse_support_page(
+            html,
+            "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
+            office,
+            90,
+        )
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(
+            rows[0]["url"],
+            "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008175&menu_idx=86",
+        )
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:bukbu.ice.go.kr:data_idx:BD0000008175",
+        )
+
     def test_cross_source_duplicate_keeps_support_identity(self):
         central = {
             "province": "인천",
