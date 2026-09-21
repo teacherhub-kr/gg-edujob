@@ -457,18 +457,25 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
 
 
 def is_transient_all_empty(meta: dict, rows: list) -> bool:
-    """Return True only for the narrow two-board empty-page signature seen in transient ICE responses."""
-    if rows or meta.get("accessError") or meta.get("paginationRepeated"):
+    """Return True only for known whole-network transient empty/placeholder signatures."""
+    if rows or meta.get("paginationRepeated"):
         return False
     health = meta.get("boardHealth") or []
     if len(health) != len(REQUIRED_BOARDS):
         return False
-    return all(
+
+    empty_page = all(
         int(item.get("count") or 0) == 0
         and item.get("stopReason") == "empty-page"
         and not item.get("accessError")
         for item in health
     )
+    tiny_placeholder = all(
+        int(item.get("count") or 0) == 0
+        and "tiny ICE HTML placeholder" in str(item.get("accessError") or "")
+        for item in health
+    )
+    return empty_page or tiny_placeholder
 
 
 def scrape_incheon_with_transient_retry(
