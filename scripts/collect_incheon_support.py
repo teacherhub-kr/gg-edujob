@@ -234,7 +234,16 @@ def headers_for_table(table) -> list[str]:
         hs = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("th")]
         if len(hs) > len(best):
             best = hs
-    return best
+    if best:
+        return best
+
+    # Bukbu's legacy list can expose the header row with TD cells instead of
+    # TH cells. Accept it only when it matches a reviewed recruitment schema.
+    for tr in table.find_all("tr"):
+        cells = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("td", recursive=False)]
+        if len(cells) >= 4 and any(x in {"제목", "자료명"} for x in cells) and any("등록일" in x or "작성일" in x for x in cells):
+            return cells
+    return []
 
 
 def row_values(tr, headers: list[str]) -> dict:
