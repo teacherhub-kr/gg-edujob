@@ -324,7 +324,9 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
 
     for table in soup.find_all("table"):
         hs = headers_for_table(table)
-        if not hs or not any("제목" in h or "공고" in h for h in hs):
+        # Legacy Bukbu uses "자료명" for the recruitment-post title column.
+        # Accept only this reviewed schema alias; keep other tables excluded.
+        if not hs or not any("제목" in h or "공고" in h or "자료명" in h for h in hs):
             continue
         for tr in table.find_all("tr"):
             tds = tr.find_all("td", recursive=False)
@@ -354,7 +356,7 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
                     if x
                 )
                 legacy = re.search(r"\\b(BD\\d{6,})\\b", raw_row, re.I)
-                title_text = pick(values, "제목", "공고명")
+                title_text = pick(values, "제목", "공고명", "자료명")
                 parsed_page = urlparse(page_url)
                 q = parse_qs(parsed_page.query)
                 bbs = str((q.get("bbs_mst_idx") or [""])[0])
