@@ -363,11 +363,12 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
             if not tds:
                 continue
             values = row_values(tr, hs)
-            anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
+            anchors = list(tr.find_all("a"))
             candidates = []
+            explicit_title = pick(values, "제목", "공고명", "자료명")
             for anchor in anchors:
                 detail = exact_detail_from_anchor(page_url, anchor, office)
-                title = clean(anchor.get("title") or anchor.get_text(" ", strip=True))
+                title = clean(anchor.get("title") or anchor.get_text(" ", strip=True)) or explicit_title
                 if detail and len(title) >= 3:
                     candidates.append((len(title), title, detail))
 
