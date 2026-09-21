@@ -228,7 +228,10 @@ def discover_support_boards(office: dict) -> tuple[list[str], list[dict]]:
 def headers_for_table(table) -> list[str]:
     best = []
     for tr in table.find_all("tr"):
-        hs = [clean(x.get_text(" ", strip=True)) for x in tr.find_all("th")]
+        # Legacy ICE boards render semantic headers with visual whitespace
+        # (for example "제 목"). Normalize that presentation whitespace so
+        # schema matching remains exact without broadening the row parser.
+        hs = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("th")]
         if len(hs) > len(best):
             best = hs
     return best
