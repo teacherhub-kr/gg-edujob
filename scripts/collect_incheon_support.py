@@ -575,6 +575,39 @@ def schema_diagnostic(html: str, page_url: str) -> list[dict]:
     return out
 
 
+def pager_diagnostic(html: str) -> dict:
+    """Bounded structural pager evidence only; never emit recruitment content."""
+    soup = BeautifulSoup(html, "html.parser")
+    anchors = []
+    for a in soup.find_all("a")[-40:]:
+        label = clean(a.get_text(" ", strip=True))
+        href = clean(a.get("href"))
+        onclick = clean(a.get("onclick"))
+        if not (label.isdigit() or label.lower() in PAGER_WORDS or onclick or "page" in href.lower()):
+            continue
+        attrs = {
+            str(k): clean(v)
+            for k, v in a.attrs.items()
+            if str(k).lower() not in {"class", "style", "title"} and k not in {"href", "onclick"}
+        }
+        anchors.append({"label": label[:24], "href": href[:240], "onclick": onclick[:240], "attrs": attrs})
+        if len(anchors) >= 16:
+            break
+    forms = []
+    for form in soup.find_all("form")[:6]:
+        names = []
+        for inp in form.find_all(["input", "select"]):
+            name = clean(inp.get("name"))
+            if name and name not in names:
+                names.append(name)
+        forms.append({
+            "action": clean(form.get("action"))[:240],
+            "method": clean(form.get("method"))[:16],
+            "fieldNames": names[:24],
+        })
+    return {"anchors": anchors, "forms": forms}
+
+
 def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int):
     all_rows = []
     seen_ids = set()
@@ -590,6 +623,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
     current = board_url
     consecutive_old_pages = 0
     diagnostic = []
+    pager_diagnostic_data = {}
 
     for page in range(1, max_pages + 1):
         try:
@@ -602,8 +636,12 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
             break
 
         parsed_rows, meta = parse_support_page(response.text, response.url, office, lookback_days)
-        if page == 1 and (urlparse(response.url).hostname or "").lower() == "bukbu.ice.go.kr":
-            diagnostic = schema_diagnostic(response.text, response.url)
+        if page == 1:
+            host = (urlparse(response.url).hostname or "").lower()
+            if host == "bukbu.ice.go.kr":
+                diagnostic = schema_diagnostic(response.text, response.url)
+            elif host == "ganghwa.ice.go.kr":
+                pager_diagnostic_data = pager_diagnostic(response.text)
         pages_scanned += 1
         raw_rows_total += int(meta.get("rawRows") or 0)
         explicit_empty = explicit_empty or bool(meta.get("explicitEmpty"))
@@ -663,6 +701,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
         "totalRowsHint": total_rows_hint,
         "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
         "schemaDiagnostic": diagnostic,
+        "pagerDiagnostic": pager_diagnostic_data,
     }
 
 
