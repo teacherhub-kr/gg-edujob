@@ -231,7 +231,7 @@ def headers_for_table(table) -> list[str]:
         # Legacy ICE boards render semantic headers with visual whitespace
         # (for example "제 목"). Normalize that presentation whitespace so
         # schema matching remains exact without broadening the row parser.
-        hs = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("th")]
+        hs = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("th")]
         if len(hs) > len(best):
             best = hs
     if best:
@@ -240,7 +240,7 @@ def headers_for_table(table) -> list[str]:
     # Bukbu's legacy list can expose the header row with TD cells instead of
     # TH cells. Accept it only when it matches a reviewed recruitment schema.
     for tr in table.find_all("tr"):
-        cells = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("td", recursive=False)]
+        cells = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("td", recursive=False)]
         if len(cells) >= 4 and any(x in {"제목", "자료명"} for x in cells) and any("등록일" in x or "작성일" in x for x in cells):
             return cells
     return []
@@ -542,7 +542,7 @@ def schema_diagnostic(html: str, page_url: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     out = []
     for table in soup.find_all("table")[:8]:
-        th = [re.sub(r"\\s+", "", clean(x.get_text(" ", strip=True))) for x in table.find_all("th")]
+        th = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in table.find_all("th")]
         rows = []
         for tr in table.find_all("tr")[:3]:
             cells = tr.find_all(["th", "td"], recursive=False)
