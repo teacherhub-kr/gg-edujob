@@ -538,6 +538,16 @@ def schema_diagnostic(html: str, page_url: str) -> list[dict]:
                         "href": clean(a.get("href"))[:160],
                         "onclick": clean(a.get("onclick"))[:160],
                         "dataId": clean(a.get("data-id"))[:80],
+                        "attrs": {
+                            str(k): clean(v if isinstance(v, str) else " ".join(v))[:160]
+                            for k, v in a.attrs.items()
+                            if str(k).lower() not in {"class", "style", "title"}
+                        },
+                        "parentAttrs": {
+                            str(k): clean(v if isinstance(v, str) else " ".join(v))[:160]
+                            for k, v in (a.parent.attrs if a.parent else {}).items()
+                            if str(k).lower() not in {"class", "style"}
+                        },
                     }
                     for a in tr.find_all("a")[:2]
                 ],
