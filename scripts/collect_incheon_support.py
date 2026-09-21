@@ -368,11 +368,32 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
                     )
                     if x
                 )
-                legacy = re.search(r"\\b(BD\\d{6,})\\b", raw_row, re.I)
                 title_text = pick(values, "제목", "공고명", "자료명")
                 parsed_page = urlparse(page_url)
                 q = parse_qs(parsed_page.query)
                 bbs = str((q.get("bbs_mst_idx") or [""])[0])
+
+                # Reviewed live Bukbu evidence shows one anchor per data row but
+                # not every response exposes the BD identity as visible row text.
+                # Inspect the row's native link attributes/call arguments for the
+                # source identity; never synthesize an identity from row number.
+                legacy = re.search(r"\\b(BD\\d{6,})\\b", raw_row, re.I)
+                if not legacy:
+                    for anchor in tr.find_all("a"):
+                        native = " ".join(
+                            clean(x)
+                            for x in (
+                                anchor.get("href"),
+                                anchor.get("onclick"),
+                                anchor.get("data-url"),
+                                anchor.get("data-href"),
+                                anchor.get("data-id"),
+                            )
+                            if x
+                        )
+                        legacy = re.search(r"\\b(BD\\d{6,})\\b", native, re.I)
+                        if legacy:
+                            break
                 if legacy and bbs and len(title_text) >= 3:
                     dq = {"bbs_mst_idx": bbs, "data_idx": legacy.group(1).upper()}
                     if q.get("menu_idx"):
@@ -512,6 +533,14 @@ def schema_diagnostic(html: str, page_url: str) -> list[dict]:
                 "tags": [c.name for c in cells],
                 "classes": [clean(" ".join(c.get("class") or [])) for c in cells],
                 "anchorCount": len(tr.find_all("a")),
+                "anchorShapes": [
+                    {
+                        "href": clean(a.get("href"))[:160],
+                        "onclick": clean(a.get("onclick"))[:160],
+                        "dataId": clean(a.get("data-id"))[:80],
+                    }
+                    for a in tr.find_all("a")[:2]
+                ],
                 "hasBDIdentity": bool(re.search(r"\\bBD\\d{6,}\\b", str(tr), re.I)),
             })
         out.append({"page": page_url, "headers": th[:12], "rows": rows})
