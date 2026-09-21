@@ -324,9 +324,13 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
 
     for table in soup.find_all("table"):
         hs = headers_for_table(table)
-        # Legacy Bukbu uses "자료명" for the recruitment-post title column.
-        # Accept only this reviewed schema alias; keep other tables excluded.
-        if not hs or not any("제목" in h or "공고" in h or "자료명" in h for h in hs):
+        # Reviewed ICE legacy aliases: Bukbu renders the recruitment title
+        # as "제 목" (normalized to 제목) and some responses label it 자료명.
+        # Do not require a single modern schema; require a known title alias.
+        if not hs or not any(
+            h in {"제목", "자료명"} or "제목" in h or "공고명" in h
+            for h in hs
+        ):
             continue
         for tr in table.find_all("tr"):
             tds = tr.find_all("td", recursive=False)
