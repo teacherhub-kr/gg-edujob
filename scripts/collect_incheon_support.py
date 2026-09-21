@@ -510,6 +510,12 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
         return query_page(current_url, "pageIndex", page + 1)
     if host == "dongbu.ice.go.kr":
         return f"https://dongbu.ice.go.kr/bbs/bbsMsgList.do?bcd=job_offer&pgno={page + 1}"
+    if host == "ganghwa.ice.go.kr":
+        # Reviewed live contract: pager anchors call
+        # act_page('/open/recruiting.asp','list','N') and the list form exposes
+        # a native "page" field. Preserve the canonical board URL and advance
+        # only that source-native page parameter.
+        return query_page(current_url, "page", page + 1)
 
     wanted = str(page + 1)
     for anchor in soup.find_all("a", href=True):
