@@ -270,6 +270,24 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
     data_id = clean(anchor.get("data-id"))
     parsed_page = urlparse(page_url)
     query_page = parse_qs(parsed_page.query)
+
+    # Bukbu's legacy list can encode the native BD... identity only inside
+    # a javascript/onclick row link. Recover that source-native key rather
+    # than synthesizing an unstable row number.
+    if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
+        raw = " ".join((clean(anchor.get("href")), clean(anchor.get("onclick"))))
+        legacy = re.search(r"\\b(BD\\d{6,})\\b", raw, re.I)
+        if legacy and query_page.get("bbs_mst_idx"):
+            query = {
+                "bbs_mst_idx": query_page["bbs_mst_idx"][0],
+                "data_idx": legacy.group(1).upper(),
+            }
+            if query_page.get("menu_idx"):
+                query["menu_idx"] = query_page["menu_idx"][0]
+            return urlunparse(
+                (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(query), "")
+            )
+
     if data_id and query_page.get("bbs_mst_idx"):
         query = {
             "bbs_mst_idx": query_page["bbs_mst_idx"][0],
@@ -405,9 +423,8 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     # Reviewed stable pagination contracts first.
     host = (urlparse(current_url).hostname or "").lower()
     if host == "bukbu.ice.go.kr":
-        # The live Bukbu board paginates with page, not pageIndex.
-        # Preserve bbs_mst_idx/menu_idx and advance only the reviewed page key.
-        return query_page(current_url, "page", page + 1)
+        # The live Bukbu list exposes pageIndex in its canonical list URL.
+        return query_page(current_url, "pageIndex", page + 1)
     if host == "dongbu.ice.go.kr":
         return f"https://dongbu.ice.go.kr/bbs/bbsMsgList.do?bcd=job_offer&pgno={page + 1}"
 
