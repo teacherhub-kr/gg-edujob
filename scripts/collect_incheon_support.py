@@ -285,7 +285,10 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
     if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
         data_mst = clean(anchor.get("data-mst"))
         data_idx = clean(anchor.get("data-idx"))
-        if re.fullmatch(r"BM\\d{10}", data_mst, re.I) and re.fullmatch(r"BD\\d{10}", data_idx, re.I):
+        # ICE native keys are a two-letter prefix plus a zero-padded numeric
+        # sequence; the live board currently uses 10 digits but older reviewed
+        # fixtures are shorter. Validate the native shape without inventing IDs.
+        if re.fullmatch(r"BM\\d{6,}", data_mst, re.I) and re.fullmatch(r"BD\\d{6,}", data_idx, re.I):
             query = {"bbs_mst_idx": data_mst.upper(), "data_idx": data_idx.upper()}
             menu = clean(anchor.get("data-menu")) or str((query_page.get("menu_idx") or [""])[0])
             if menu:
