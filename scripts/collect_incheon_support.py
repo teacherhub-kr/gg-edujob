@@ -894,6 +894,30 @@ def main() -> int:
     incomplete = [item["status"]["name"] for item in results if not item["status"].get("coverageComplete")]
     if incomplete:
         report = write_report(results, 0, 0, args.lookback_days, merged=False)
+        for item in results:
+            status = item["status"]
+            if status.get("coverageComplete"):
+                continue
+            compact = {
+                "name": status.get("name"),
+                "boards": status.get("boards"),
+                "pagesScanned": status.get("pagesScanned"),
+                "rawRows": status.get("rawRows"),
+                "boardHealth": [
+                    {
+                        "url": meta.get("url"),
+                        "pagesScanned": meta.get("pagesScanned"),
+                        "rawRows": meta.get("rawRows"),
+                        "coverageComplete": meta.get("coverageComplete"),
+                        "accessError": meta.get("accessError"),
+                        "crossedLookback": meta.get("crossedLookback"),
+                        "naturalEnd": meta.get("naturalEnd"),
+                        "pagerDiagnostic": meta.get("pagerDiagnostic"),
+                    }
+                    for meta in status.get("boardHealth", [])
+                ],
+            }
+            print("INCOMPLETE_OFFICE " + json.dumps(compact, ensure_ascii=False))
         raise SystemExit(
             "Incheon support-office coverage incomplete: "
             + ", ".join(incomplete)
