@@ -280,6 +280,20 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
     parsed_page = urlparse(page_url)
     query_page = parse_qs(parsed_page.query)
 
+    # Live Bukbu contract (2026-09-21): the list anchor is href="#" and
+    # carries the source-native identity in data-mst/data-idx.
+    if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
+        data_mst = clean(anchor.get("data-mst"))
+        data_idx = clean(anchor.get("data-idx"))
+        if re.fullmatch(r"BM\\d{10}", data_mst, re.I) and re.fullmatch(r"BD\\d{10}", data_idx, re.I):
+            query = {"bbs_mst_idx": data_mst.upper(), "data_idx": data_idx.upper()}
+            menu = clean(anchor.get("data-menu")) or str((query_page.get("menu_idx") or [""])[0])
+            if menu:
+                query["menu_idx"] = menu
+            return urlunparse(
+                (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(query), "")
+            )
+
     # Bukbu's legacy list can encode the native BD... identity only inside
     # a javascript/onclick row link. Recover that source-native key rather
     # than synthesizing an unstable row number.
