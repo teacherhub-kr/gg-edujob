@@ -175,6 +175,9 @@ def fetch_with_one_explicit_retry(url: str):
         except Exception as exc:
             last_error = exc
             if attempt == 0:
+                # A tiny ICE HTTP-200 placeholder can be tied to the current
+                # cookie/connection state. Retry once from a fresh session.
+                reset_session()
                 time.sleep(0.8)
     raise last_error
 
