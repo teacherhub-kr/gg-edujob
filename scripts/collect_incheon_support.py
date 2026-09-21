@@ -338,6 +338,35 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
                 title = clean(anchor.get("title") or anchor.get_text(" ", strip=True))
                 if detail and len(title) >= 3:
                     candidates.append((len(title), title, detail))
+
+            # Bukbu's list renders the title as plain table text in some responses
+            # while the native BD... detail identity lives in a row-level onclick.
+            # Keep the source-native identity and use the explicit title column.
+            if not candidates and (urlparse(page_url).hostname or "").lower() == "bukbu.ice.go.kr":
+                raw_row = " ".join(
+                    clean(x)
+                    for x in (
+                        tr.get("onclick"),
+                        tr.get("data-url"),
+                        tr.get("data-href"),
+                        str(tr),
+                    )
+                    if x
+                )
+                legacy = re.search(r"\\b(BD\\d{6,})\\b", raw_row, re.I)
+                title_text = pick(values, "제목", "공고명")
+                parsed_page = urlparse(page_url)
+                q = parse_qs(parsed_page.query)
+                bbs = str((q.get("bbs_mst_idx") or [""])[0])
+                if legacy and bbs and len(title_text) >= 3:
+                    dq = {"bbs_mst_idx": bbs, "data_idx": legacy.group(1).upper()}
+                    if q.get("menu_idx"):
+                        dq["menu_idx"] = q["menu_idx"][0]
+                    detail = urlunparse(
+                        (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(dq), "")
+                    )
+                    candidates.append((len(title_text), title_text, detail))
+
             if not candidates:
                 continue
             _, title, detail = max(candidates)
