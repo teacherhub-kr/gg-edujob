@@ -154,6 +154,16 @@ def fetch(url: str):
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
+
+    # ICE occasionally returns a tiny HTTP-200 placeholder (observed as ~77 bytes)
+    # instead of the recruitment list. Treat that as a transient transport failure,
+    # never as authoritative "zero postings", so the existing bounded fresh-session
+    # retry contract can recover it and still fail closed if retries are exhausted.
+    content_type = (response.headers.get("Content-Type") or "").lower()
+    if "text/html" in content_type and len(response.content or b"") < 256:
+        raise requests.RequestException(
+            f"tiny ICE HTML placeholder: status={response.status_code} bytes={len(response.content or b'')}"
+        )
     return response
 
 
