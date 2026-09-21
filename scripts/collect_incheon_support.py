@@ -288,7 +288,7 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
         # ICE native keys are a two-letter prefix plus a zero-padded numeric
         # sequence; the live board currently uses 10 digits but older reviewed
         # fixtures are shorter. Validate the native shape without inventing IDs.
-        if re.fullmatch(r"BM\\d{6,}", data_mst, re.I) and re.fullmatch(r"BD\\d{6,}", data_idx, re.I):
+        if re.fullmatch(r"BM\d{6,}", data_mst, re.I) and re.fullmatch(r"BD\d{6,}", data_idx, re.I):
             query = {"bbs_mst_idx": data_mst.upper(), "data_idx": data_idx.upper()}
             menu = clean(anchor.get("data-menu")) or str((query_page.get("menu_idx") or [""])[0])
             if menu:
@@ -302,7 +302,7 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
     # than synthesizing an unstable row number.
     if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
         raw = " ".join((clean(anchor.get("href")), clean(anchor.get("onclick"))))
-        legacy = re.search(r"\\b(BD\\d{6,})\\b", raw, re.I)
+        legacy = re.search(r"\b(BD\d{6,})\b", raw, re.I)
         if legacy and query_page.get("bbs_mst_idx"):
             query = {
                 "bbs_mst_idx": query_page["bbs_mst_idx"][0],
@@ -395,7 +395,7 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
                 # not every response exposes the BD identity as visible row text.
                 # Inspect the row's native link attributes/call arguments for the
                 # source identity; never synthesize an identity from row number.
-                legacy = re.search(r"\\b(BD\\d{6,})\\b", raw_row, re.I)
+                legacy = re.search(r"\b(BD\d{6,})\b", raw_row, re.I)
                 if not legacy:
                     for anchor in tr.find_all("a"):
                         native = " ".join(
@@ -409,7 +409,7 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
                             )
                             if x
                         )
-                        legacy = re.search(r"\\b(BD\\d{6,})\\b", native, re.I)
+                        legacy = re.search(r"\b(BD\d{6,})\b", native, re.I)
                         if legacy:
                             break
                 if legacy and bbs and len(title_text) >= 3:
@@ -569,7 +569,7 @@ def schema_diagnostic(html: str, page_url: str) -> list[dict]:
                     }
                     for a in tr.find_all("a")[:2]
                 ],
-                "hasBDIdentity": bool(re.search(r"\\bBD\\d{6,}\\b", str(tr), re.I)),
+                "hasBDIdentity": bool(re.search(r"\bBD\d{6,}\b", str(tr), re.I)),
             })
         out.append({"page": page_url, "headers": th[:12], "rows": rows})
     return out
