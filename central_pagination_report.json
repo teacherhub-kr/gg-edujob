@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-22 17:04:44 KST",
+  "generatedAt": "2026-09-22 22:21:44 KST",
   "policy": "central sources fail closed structurally on every semantic detail row/card; parsedStableIdCount proves traversal, while stableIdCount mirrors the primary collector's actual-recruitment population by excluding result/selection notices with the shared EXCLUDE_WORDS policy; repeated full pages remain failures",
   "sources": [
     {
       "name": "경기도교육청 통합 구인구직",
       "province": "경기",
-      "parsedStableIdCount": 739,
-      "stableIdCount": 738,
+      "parsedStableIdCount": 744,
+      "stableIdCount": 743,
       "excludedNonRecruitmentCount": 1,
       "complete": true,
       "categories": [
@@ -14,9 +14,9 @@
           "code": "A",
           "name": "기간제/사립교원",
           "pagesScanned": 6,
-          "rawRows": 228,
-          "parsedStableIdCount": 227,
-          "stableIdCount": 227,
+          "rawRows": 234,
+          "parsedStableIdCount": 233,
+          "stableIdCount": 233,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -99,9 +99,9 @@
           "code": "F",
           "name": "자원봉사자",
           "pagesScanned": 3,
-          "rawRows": 66,
-          "parsedStableIdCount": 65,
-          "stableIdCount": 65,
+          "rawRows": 65,
+          "parsedStableIdCount": 64,
+          "stableIdCount": 64,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -117,11 +117,11 @@
     {
       "name": "서울교육일자리포털",
       "province": "서울",
-      "parsedStableIdCount": 343,
-      "stableIdCount": 343,
+      "parsedStableIdCount": 346,
+      "stableIdCount": 346,
       "excludedNonRecruitmentCount": 0,
       "pagesScanned": 8,
-      "rawRows": 343,
+      "rawRows": 346,
       "terminalEvidence": "empty-page",
       "accessError": false,
       "parseError": false,
@@ -133,5 +133,5 @@
     }
   ],
   "complete": true,
-  "scanId": "20260922T073155Z-35696575701-1"
+  "scanId": "20260922T124745Z-35725165884-1"
 }

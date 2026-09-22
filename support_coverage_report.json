@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T08:31:23.935632+00:00",
+  "generatedAt": "2026-09-22T13:49:22.339506+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "gyeonggiTotal": 25,
@@ -9,10 +9,10 @@
     "warnings": []
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6673,
-    "gyeonggiTotal": 6673,
-    "seoulExact": 454,
-    "seoulTotal": 454
+    "gyeonggiExact": 6554,
+    "gyeonggiTotal": 6554,
+    "seoulExact": 445,
+    "seoulTotal": 445
   },
   "provinces": {
     "gyeonggi": {
@@ -109,7 +109,7 @@
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
           ],
-          "count": 201,
+          "count": 202,
           "rawRows": 280,
           "ok": true,
           "state": "complete",
@@ -144,7 +144,7 @@
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
               "pagesScanned": 22,
               "rawRows": 220,
-              "recentRows": 198,
+              "recentRows": 199,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -209,8 +209,8 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 324,
-          "rawRows": 452,
+          "count": 327,
+          "rawRows": 462,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -218,9 +218,9 @@
           "boardHealth": [
             {
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
-              "pagesScanned": 33,
-              "rawRows": 332,
-              "recentRows": 308,
+              "pagesScanned": 34,
+              "rawRows": 342,
+              "recentRows": 311,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -265,7 +265,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 45,
+          "pagesScanned": 46,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-39-source-reconciliation"
         },
@@ -605,7 +605,7 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 919,
+          "count": 920,
           "rawRows": 960,
           "ok": true,
           "state": "complete",
@@ -616,7 +616,7 @@
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
               "pagesScanned": 88,
               "rawRows": 880,
-              "recentRows": 851,
+              "recentRows": 852,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1282,7 +1282,7 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 746,
+          "count": 748,
           "rawRows": 841,
           "ok": true,
           "state": "complete",
@@ -1305,7 +1305,7 @@
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
               "pagesScanned": 6,
               "rawRows": 60,
-              "recentRows": 14,
+              "recentRows": 15,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1317,7 +1317,7 @@
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
               "pagesScanned": 65,
               "rawRows": 651,
-              "recentRows": 622,
+              "recentRows": 623,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
