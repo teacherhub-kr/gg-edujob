@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-21T07:53:09+09:00",
+  "generatedAt": "2026-09-22T17:32:58+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
-  "canonicalOfficialJobs": 21358,
+  "canonicalOfficialJobs": 22026,
   "canonicalFoundationOfficialJobs": 3,
   "canonicalPrivateJobs": 4385,
-  "selectedCanonicalOfficialJobs": 2955,
+  "selectedCanonicalOfficialJobs": 3244,
   "selectedFoundationOfficialJobs": 2,
-  "selectedOfficialJobs": 2957,
-  "selectedPrivateJobs": 4317,
-  "publishedJobs": 7268,
+  "selectedOfficialJobs": 3246,
+  "selectedPrivateJobs": 4311,
+  "publishedJobs": 7553,
   "perFeed": {
-    "official": 2957,
-    "private": 4311
+    "official": 3246,
+    "private": 4307
   },
   "privateSources": {
     "lessoninfo": {
@@ -25,7 +25,7 @@
       "lastVerifiedAt": "2026-09-15T10:55:00+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 229
+      "displayedAsPrivate": 231
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -59,12 +59,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 33,
-      "count": 33,
+      "candidateCount": 30,
+      "count": 30,
       "lastVerifiedAt": "2026-09-15T09:59:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 33
+      "displayedAsPrivate": 30
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -72,12 +72,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 10,
-      "count": 10,
+      "candidateCount": 8,
+      "count": 8,
       "lastVerifiedAt": "2026-09-15T10:35:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 10
+      "displayedAsPrivate": 8
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -98,16 +98,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 2,
-      "count": 2,
+      "candidateCount": 1,
+      "count": 1,
       "lastVerifiedAt": "2026-09-15T10:47:52+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 2
+      "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 19580,
-  "explicitOfficialAliasGroupsMerged": 6,
+  "protectedOfficialIds": 19776,
+  "explicitOfficialAliasGroupsMerged": 4,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
