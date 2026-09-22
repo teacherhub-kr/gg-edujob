@@ -23,7 +23,7 @@ SUPPORT_OFFICES = [
     {
         "key": "nambu",
         "name": "인천남부교육지원청",
-        "url": "https://nambuice.go.kr/",
+        "url": "https://nambu.ice.go.kr/Main.do",
         "allowedHosts": ["nambu.ice.go.kr", "nambuice.go.kr"],
         "boardUrls": [],
         "autoDiscover": True,
