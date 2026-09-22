@@ -620,14 +620,23 @@ def pager_diagnostic(html: str) -> dict:
             "controlValues": control_values,
         })
     script_evidence = []
+    script_sources = []
     for script in soup.find_all("script"):
+        src = clean(script.get("src"))
+        if src:
+            script_sources.append(src[:240])
         raw = str(script.string or script.get_text(" ", strip=False) or "")
         pos = raw.find("act_page")
         if pos >= 0:
             script_evidence.append(re.sub(r"\\s+", " ", raw[max(0, pos - 180):pos + 700]).strip())
             if len(script_evidence) >= 3:
                 break
-    return {"anchors": anchors, "forms": forms, "scriptEvidence": script_evidence}
+    return {
+        "anchors": anchors,
+        "forms": forms,
+        "scriptEvidence": script_evidence,
+        "scriptSources": script_sources[:24],
+    }
 
 
 def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int):
