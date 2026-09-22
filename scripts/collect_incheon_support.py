@@ -706,6 +706,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
     consecutive_old_pages = 0
     diagnostic = []
     pager_diagnostic_data = {}
+    page_progress = []
 
     for page in range(1, max_pages + 1):
         try:
@@ -718,6 +719,21 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
             break
 
         parsed_rows, meta = parse_support_page(response.text, response.url, office, lookback_days)
+        response_host = (urlparse(response.url).hostname or "").lower()
+        if response_host == "ganghwa.ice.go.kr":
+            board_form = BeautifulSoup(response.text, "html.parser").find("form", attrs={"name": "boardForm"})
+            observed_page = ""
+            if board_form is not None:
+                page_input = board_form.find(attrs={"name": "page"})
+                observed_page = clean(page_input.get("value")) if page_input is not None else ""
+            page_progress.append({
+                "requestedPage": page,
+                "requestMethod": clean(getattr(getattr(response, "request", None), "method", "")),
+                "finalUrl": clean(response.url)[:240],
+                "redirectStatuses": [int(x.status_code) for x in list(response.history or [])[:6]],
+                "observedPage": observed_page,
+                "detailIdSample": list(meta.get("detailIds") or [])[:2],
+            })
         if page == 1:
             host = (urlparse(response.url).hostname or "").lower()
             if host == "bukbu.ice.go.kr":
@@ -784,6 +800,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
         "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
         "schemaDiagnostic": diagnostic,
         "pagerDiagnostic": pager_diagnostic_data,
+        "pageProgress": page_progress,
     }
 
 
@@ -995,6 +1012,7 @@ def main() -> int:
                         "crossedLookback": meta.get("crossedLookback"),
                         "naturalEnd": meta.get("naturalEnd"),
                         "pagerDiagnostic": meta.get("pagerDiagnostic"),
+                        "pageProgress": meta.get("pageProgress"),
                     }
                     for meta in status.get("boardHealth", [])
                 ],
