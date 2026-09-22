@@ -159,6 +159,11 @@ def guess_type(title: str) -> str:
 
 def _normalize_response(response):
     response.raise_for_status()
+    content_type = str(response.headers.get("Content-Type") or "").lower()
+    if "text/html" in content_type and len(response.content or b"") < 256:
+        raise requests.RequestException(
+            f"tiny ICE HTML placeholder: status={response.status_code} bytes={len(response.content or b'')}"
+        )
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
     return response
