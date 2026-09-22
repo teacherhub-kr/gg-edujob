@@ -606,12 +606,28 @@ def pager_diagnostic(html: str) -> dict:
             name = clean(inp.get("name"))
             if name and name not in names:
                 names.append(name)
+        control_values = {}
+        for inp in form.find_all(["input", "select"]):
+            name = clean(inp.get("name"))
+            if name in {"num", "pNum", "nNum", "ptype", "cmode", "cstep", "page", "path_url"}:
+                control_values[name] = clean(inp.get("value"))[:120]
         forms.append({
+            "name": clean(form.get("name"))[:80],
+            "id": clean(form.get("id"))[:80],
             "action": clean(form.get("action"))[:240],
             "method": clean(form.get("method"))[:16],
             "fieldNames": names[:24],
+            "controlValues": control_values,
         })
-    return {"anchors": anchors, "forms": forms}
+    script_evidence = []
+    for script in soup.find_all("script"):
+        raw = str(script.string or script.get_text(" ", strip=False) or "")
+        pos = raw.find("act_page")
+        if pos >= 0:
+            script_evidence.append(re.sub(r"\\s+", " ", raw[max(0, pos - 180):pos + 700]).strip())
+            if len(script_evidence) >= 3:
+                break
+    return {"anchors": anchors, "forms": forms, "scriptEvidence": script_evidence}
 
 
 def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int):
