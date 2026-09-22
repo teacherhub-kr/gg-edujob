@@ -361,6 +361,38 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
         )
 
     raw = " ".join((href, clean(anchor.get("onclick"))))
+
+    # Live Ganghwa contract (2026-09-22): row links call
+    # act_view('/open/recruiting.asp','4220','view','N','4219').
+    # The second argument is the source-native post number. Preserve the
+    # exact view-state parameters in a canonical URL representation so each
+    # row has a stable identity even though the site itself submits by POST.
+    if (parsed_page.hostname or "").lower() == "ganghwa.ice.go.kr":
+        view = re.search(
+            r"act_view\(\s*['\"]([^'\"]+)['\"]\s*,\s*['\"](\d+)['\"]\s*,\s*['\"]view['\"]\s*,\s*['\"]([^'\"]*)['\"]\s*,\s*['\"]([^'\"]*)['\"]\s*\)",
+            raw,
+            re.I,
+        )
+        if view:
+            target, num, p_num, n_num = view.groups()
+            absolute = urljoin(page_url, target)
+            if allowed_host(absolute, office):
+                parsed = urlparse(absolute)
+                query = {
+                    "num": num,
+                    "ptype": "view",
+                    "cmode": "mc",
+                    "cstep": "0302000000",
+                    "path_url": parsed.path,
+                }
+                if p_num:
+                    query["pNum"] = p_num
+                if n_num:
+                    query["nNum"] = n_num
+                return urlunparse(
+                    (parsed.scheme, parsed.netloc, parsed.path, "", urlencode(query), "")
+                )
+
     quoted = re.findall(r"['\"]([^'\"]+)['\"]", raw)
     for item in quoted:
         if "/" not in item:
