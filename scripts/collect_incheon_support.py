@@ -739,6 +739,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
             if host == "bukbu.ice.go.kr":
                 diagnostic = schema_diagnostic(response.text, response.url)
             elif host == "ganghwa.ice.go.kr":
+                diagnostic = schema_diagnostic(response.text, response.url)
                 pager_diagnostic_data = pager_diagnostic(response.text)
         pages_scanned += 1
         raw_rows_total += int(meta.get("rawRows") or 0)
@@ -1011,6 +1012,7 @@ def main() -> int:
                         "accessError": meta.get("accessError"),
                         "crossedLookback": meta.get("crossedLookback"),
                         "naturalEnd": meta.get("naturalEnd"),
+                        "schemaDiagnostic": meta.get("schemaDiagnostic"),
                         "pagerDiagnostic": meta.get("pagerDiagnostic"),
                         "pageProgress": meta.get("pageProgress"),
                     }
