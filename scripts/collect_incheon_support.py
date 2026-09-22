@@ -157,12 +157,47 @@ def guess_type(title: str) -> str:
     return "기타"
 
 
-def fetch(url: str):
-    response = SESSION.get(url, timeout=(8, 25), allow_redirects=True)
+def _normalize_response(response):
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
     return response
+
+
+def fetch(url: str):
+    return _normalize_response(
+        SESSION.get(url, timeout=(8, 25), allow_redirects=True)
+    )
+
+
+def ganghwa_page_form(page: int) -> dict[str, str]:
+    return {
+        "num": "",
+        "pNum": "",
+        "nNum": "",
+        "ptype": "list",
+        "cmode": "mc",
+        "cstep": "0302000000",
+        "page": str(page),
+        "path_url": "/open/recruiting.asp",
+        "sfield": "",
+        "sword": "",
+    }
+
+
+def fetch_board_page(url: str, office: dict, page: int):
+    host = (urlparse(url).hostname or "").lower()
+    if host == "ganghwa.ice.go.kr" and page > 1:
+        return _normalize_response(
+            SESSION.post(
+                "https://ganghwa.ice.go.kr/open/recruiting.asp",
+                data=ganghwa_page_form(page),
+                headers={"Referer": "https://ganghwa.ice.go.kr/open/recruiting.asp"},
+                timeout=(8, 25),
+                allow_redirects=True,
+            )
+        )
+    return fetch(url)
 
 
 def allowed_host(url: str, office: dict) -> bool:
@@ -511,11 +546,10 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     if host == "dongbu.ice.go.kr":
         return f"https://dongbu.ice.go.kr/bbs/bbsMsgList.do?bcd=job_offer&pgno={page + 1}"
     if host == "ganghwa.ice.go.kr":
-        # Reviewed live contract: pager anchors call
-        # act_page('/open/recruiting.asp','list','N') and the list form exposes
-        # a native "page" field. Preserve the canonical board URL and advance
-        # only that source-native page parameter.
-        return query_page(current_url, "page", page + 1)
+        # Reviewed live contract: act_page() submits boardForm as POST with
+        # ptype=list and page=N to /open/recruiting.asp. Keep the canonical
+        # board URL here; fetch_board_page() performs that POST for page > 1.
+        return "https://ganghwa.ice.go.kr/open/recruiting.asp"
 
     wanted = str(page + 1)
     for anchor in soup.find_all("a", href=True):
@@ -675,7 +709,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
 
     for page in range(1, max_pages + 1):
         try:
-            response = fetch(current)
+            response = fetch_board_page(current, office, page)
         except Exception as exc:
             access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
             break
