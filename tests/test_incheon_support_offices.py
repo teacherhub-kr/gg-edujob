@@ -121,6 +121,40 @@ class IncheonSupportOfficeTests(unittest.TestCase):
             "ice-support:bukbu.ice.go.kr:data_idx:BD0000008175",
         )
 
+    def test_ganghwa_act_view_keeps_native_num_identity(self):
+        html = """
+        <html><body>
+        <table>
+          <tr><th>번호</th><th>제목</th><th>소속기관</th><th>마감일자</th><th>작성일</th><th>조회수</th></tr>
+          <tr>
+            <td>4220</td>
+            <td><a href="javascript:act_view('/open/recruiting.asp','4220','view','N','4219');">기간제교원 채용 공고(음악)</a></td>
+            <td>강화중학교</td><td>2026-09-30</td><td>26.09.22</td><td>10</td>
+          </tr>
+        </table>
+        </body></html>
+        """
+        office = {
+            "name": "인천강화교육지원청",
+            "url": "https://ganghwa.ice.go.kr/",
+            "allowedHosts": ["ganghwa.ice.go.kr"],
+            "regions": [],
+        }
+        rows, meta = support.parse_support_page(
+            html,
+            "https://ganghwa.ice.go.kr/open/recruiting.asp",
+            office,
+            90,
+        )
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertIn("num=4220", rows[0]["url"])
+        self.assertIn("ptype=view", rows[0]["url"])
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:ganghwa.ice.go.kr:num:4220",
+        )
+
     def test_cross_source_duplicate_keeps_support_identity(self):
         central = {
             "province": "인천",
