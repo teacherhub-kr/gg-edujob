@@ -631,11 +631,28 @@ def pager_diagnostic(html: str) -> dict:
             script_evidence.append(re.sub(r"\\s+", " ", raw[max(0, pos - 180):pos + 700]).strip())
             if len(script_evidence) >= 3:
                 break
+    external_script_evidence = []
+    for src in script_sources[:12]:
+        if "board_action_control.js" not in src:
+            continue
+        try:
+            absolute = urljoin("https://ganghwa.ice.go.kr/open/recruiting.asp", src)
+            response = SESSION.get(absolute, timeout=20)
+            response.raise_for_status()
+            raw = response.text
+            pos = raw.find("act_page")
+            if pos >= 0:
+                external_script_evidence.append(
+                    re.sub(r"\s+", " ", raw[max(0, pos - 220):pos + 900]).strip()
+                )
+        except Exception as exc:
+            external_script_evidence.append(f"fetch-error:{type(exc).__name__}:{str(exc)[:120]}")
     return {
         "anchors": anchors,
         "forms": forms,
         "scriptEvidence": script_evidence,
         "scriptSources": script_sources[:24],
+        "externalScriptEvidence": external_script_evidence[:3],
     }
 
 
