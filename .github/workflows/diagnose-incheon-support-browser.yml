@@ -1,0 +1,34 @@
+name: Diagnose Incheon Nambu Seobu browser routes
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/diagnose_incheon_support_browser.py'
+      - '.github/workflows/diagnose-incheon-support-browser.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install diagnostic browser
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+      - name: Run read-only browser diagnostic
+        run: python scripts/diagnose_incheon_support_browser.py
+      - name: Upload diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: incheon-support-browser-diagnostic-${{ github.run_id }}
+          path: incheon_support_browser_diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
