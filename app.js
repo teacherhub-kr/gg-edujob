@@ -9,8 +9,17 @@ const HOME_LIMIT=10;
 const SUBJECT_LIMIT=24;
 const ROUTES=new Set(['home','search','radar','saved','me']);
 const APP_URL='https://teacherhub-kr.github.io/gg-edujob/';
+const INSTALL_DISMISS_KEY='edujob.installPrompt.dismissed.v1';
 const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);
+const isIOSDevice=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isAndroidDevice=()=>/android/i.test(navigator.userAgent||'');
+const isStandaloneApp=()=>window.matchMedia?.('(display-mode: standalone)').matches===true||navigator.standalone===true;
+const pushReady=()=>pushCapable()&&(!isIOSDevice()||isStandaloneApp());
 const chromeIntentUrl=()=>`intent://teacherhub-kr.github.io/gg-edujob/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(APP_URL)};end`;
+let deferredInstallPrompt=null;
+const installDismissed=()=>{try{return localStorage.getItem(INSTALL_DISMISS_KEY)==='1'}catch(e){return false}};
+const dismissInstallPrompt=()=>{try{localStorage.setItem(INSTALL_DISMISS_KEY,'1')}catch(e){}};
+const shouldShowInstallCard=()=>!isStandaloneApp()&&!installDismissed();
 const copyAppUrl=async()=>{
   try{
     if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(APP_URL);return true}
@@ -78,6 +87,48 @@ const subjectHay=(j)=>` ${norm([j.subject,j.title,j.schoolLevel,j.type].filter(B
 const matchesSubject=(j,label)=>SUBJECT_RULES[label]?.test(subjectHay(j))===true;
 const sourceKinds=(j)=>new Set([j?.feedKind==='private'?'민간':'공식',...(arr(j?.alsoSeenOn).length?['민간']:[])]);
 const categorySet=(j)=>new Set(arr(j?.categories));
+
+const installCardHtml=()=>{
+  if(!shouldShowInstallCard())return '';
+  if(isIOSDevice()){
+    return `<section class="install-card install-card-ios" aria-label="에듀잡 홈 화면 추가 안내">
+      <button type="button" class="install-dismiss" data-install-dismiss aria-label="설치 안내 닫기">×</button>
+      <div class="install-card-head">
+        <img src="edujob-icon.svg" width="52" height="52" alt="" aria-hidden="true">
+        <div><strong>에듀잡을 홈 화면에 추가하세요</strong><p>앱처럼 바로 열고, 새 공고 알림도 받을 수 있습니다.</p></div>
+      </div>
+      <div class="ios-install-steps">
+        <span><b>1</b>브라우저의 <strong>공유</strong> 메뉴 열기</span>
+        <span><b>2</b><strong>홈 화면에 추가</strong> 선택</span>
+        <span><b>3</b>홈 화면의 <strong>에듀잡</strong>으로 실행</span>
+      </div>
+      <small>iPhone·iPad 알림은 홈 화면에 추가한 에듀잡 앱에서 켤 수 있습니다.</small>
+    </section>`;
+  }
+  const canPrompt=Boolean(deferredInstallPrompt);
+  return `<section class="install-card install-card-android" aria-label="에듀잡 앱 설치 안내">
+    <button type="button" class="install-dismiss" data-install-dismiss aria-label="설치 안내 닫기">×</button>
+    <div class="install-card-head">
+      <img src="edujob-icon.svg" width="52" height="52" alt="" aria-hidden="true">
+      <div><strong>에듀잡을 앱처럼 사용하세요</strong><p>홈 화면에서 바로 열고 새 공고를 더 빠르게 확인할 수 있습니다.</p></div>
+    </div>
+    ${canPrompt
+      ?'<button type="button" class="install-primary-btn" id="appInstallBtn">에듀잡 앱 설치</button>'
+      :'<div class="install-manual-note">브라우저 메뉴에서 <strong>앱 설치</strong> 또는 <strong>홈 화면에 추가</strong>를 선택하세요.</div>'}
+  </section>`;
+};
+
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();
+  deferredInstallPrompt=event;
+  if(!state.loading&&state.route==='home')render();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  dismissInstallPrompt();
+  toast('에듀잡이 홈 화면에 설치되었습니다.');
+  if(!state.loading)render();
+});
 
 const icon=(name)=>{
   const c='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
@@ -481,7 +532,7 @@ const homeHtml=()=>{
   const latest=[...active].sort((a,b)=>b.registered-a.registered);
   const matches=p?[...profileMatches(p)].sort((a,b)=>b.registered-a.registered):[];
   const newRows=p?[...newProfileRows(p)].sort((a,b)=>b.registered-a.registered):[];
-  return `<section class="home-radar calm personalized">
+  return `${installCardHtml()}<section class="home-radar calm personalized">
     <div class="radar-top"><div><h2><span class="radar-heading-icon">${icon('radar')}</span>내 채용 레이더</h2><p>${p?'한 번 저장한 조건을 기준으로 필요한 공고만 먼저 보여드립니다.':'원하는 조건을 한 번 저장하면 다음부터 홈이 내 채용 화면으로 바뀝니다.'}</p></div><div class="radar-mascot"><img src="assets/mascot.png?v=20260920b" width="70" height="70" alt="수도권에듀잡 마스코트" loading="lazy"><span>좋은 기회가<br>기다리고 있어요!</span></div></div>
     ${p?`<div class="home-saved-profile"><div><span>내 조건</span><strong>${esc(profileSummary(p))}</strong></div><button type="button" data-home-profile="edit">수정</button></div>`:''}
     <div class="metric-grid calm">
@@ -533,7 +584,8 @@ const profileSummary=(p)=>{
 
 const radarHtml=()=>{
   const p=store()?.profile?.get?.(),a=store()?.alerts?.get?.()||{enabled:false};
-  const pushOk=pushCapable();
+  const pushOk=pushReady();
+  const iosNeedsInstall=isIOSDevice()&&!isStandaloneApp();
   const matches=p?profileMatches(p):[];
   const newMatches=state.radarMode==='new'&&state.radarNewKeys instanceof Set
     ?matches.filter(r=>state.radarNewKeys.has(r.key))
@@ -548,8 +600,10 @@ const radarHtml=()=>{
       '<div class="empty-state"><strong>저장된 조건이 없습니다.</strong><p>공고검색에서 원하는 조건을 선택한 뒤 저장해 주세요.</p></div>'}</div>`
       :`${state.radarMode==='new'?'<div class="radar-result-head"><strong>지난 확인 이후 새 공고 '+rows.length.toLocaleString()+'건</strong><button type="button" data-radar-all>전체 맞춤공고</button></div>':''}${jobsListHtml(rows,state.visible,{emptyText:state.radarMode==='new'?'지난 확인 이후 새로 들어온 맞춤 공고가 없습니다.':'저장 조건에 맞는 모집 중 공고가 없습니다.'})}`
     }
-    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>${pushOk?'새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.':'현재 브라우저에서는 웹 푸시를 사용할 수 없습니다.'}</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
-    ${pushOk?'':`<div class="push-browser-guide"><strong>Chrome에서 열어 알림을 켜주세요.</strong><p>네이버·카카오 등 앱 안 브라우저에서는 알림 기능이 제한될 수 있습니다.</p><div class="push-browser-actions"><button type="button" class="chrome-open-btn" data-open-chrome>Chrome에서 열기</button><button type="button" class="url-copy-btn" data-copy-app-url>주소 복사</button></div></div>`}
+    <div class="alert-card"><div class="alert-copy">${icon('bell')}<div><strong>알림 설정</strong><p>${pushOk?'새로운 공고가 등록되면 저장한 조건 기준으로 알려드립니다.':iosNeedsInstall?'iPhone·iPad는 홈 화면에 추가한 에듀잡 앱에서 알림을 사용할 수 있습니다.':'현재 브라우저에서는 웹 푸시를 사용할 수 없습니다.'}</p></div></div><button type="button" class="switch ${a.enabled?'on':''}" id="alertToggle" aria-label="알림 ${a.enabled?'켜짐':'꺼짐'}"></button></div>
+    ${pushOk?'':iosNeedsInstall
+      ?`<div class="push-browser-guide ios-push-guide"><strong>먼저 홈 화면에 에듀잡을 추가하세요.</strong><p>브라우저의 공유 메뉴 → 홈 화면에 추가 → 홈 화면의 에듀잡 실행 → 알림 켜기 순서입니다.</p></div>`
+      :`<div class="push-browser-guide"><strong>Chrome에서 열어 알림을 켜주세요.</strong><p>네이버·카카오 등 앱 안 브라우저에서는 알림 기능이 제한될 수 있습니다.</p><div class="push-browser-actions"><button type="button" class="chrome-open-btn" data-open-chrome>Chrome에서 열기</button><button type="button" class="url-copy-btn" data-copy-app-url>주소 복사</button></div></div>`}
   </section>`;
 };
 
@@ -689,7 +743,33 @@ function bindScreen(){
     writeSnapshot(p);
     setRoute('radar');
   };
-  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+    dismissInstallPrompt();
+    render();
+  }));
+  $('#appInstallBtn',screen)?.addEventListener('click',async()=>{
+    const prompt=deferredInstallPrompt;
+    if(!prompt){
+      toast('브라우저 메뉴에서 앱 설치 또는 홈 화면에 추가를 선택해 주세요.');
+      return;
+    }
+    try{
+      await prompt.prompt();
+      const choice=await prompt.userChoice;
+      deferredInstallPrompt=null;
+      if(choice?.outcome==='accepted'){
+        dismissInstallPrompt();
+        toast('에듀잡 설치를 시작했습니다.');
+      }else{
+        toast('설치를 취소했습니다. 나중에 다시 설치할 수 있습니다.');
+      }
+    }catch(e){
+      toast('설치 창을 열지 못했습니다. 브라우저 메뉴에서 홈 화면에 추가해 주세요.');
+    }
+    render();
+  }));
+
+  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='new')openNewRadar();
@@ -742,7 +822,11 @@ function bindScreen(){
   }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
-  $$('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+    if(isIOSDevice()){
+      toast('iPhone에서는 홈 화면에 추가한 에듀잡 앱에서 알림을 켜주세요.');
+      return;
+    }
     location.href=chromeIntentUrl();
   }));
   $$('[data-copy-app-url]',screen).forEach(btn=>btn.addEventListener('click',async()=>{
@@ -769,7 +853,7 @@ function bindScreen(){
       if(code==='profile-required')toast('먼저 검색 조건을 저장해 주세요.');
       else if(code==='ios-home-screen-required')toast('iPhone·iPad는 홈 화면에 추가한 뒤 알림을 켤 수 있습니다.');
       else if(code==='permission-denied')toast('브라우저 알림 권한을 허용해 주세요.');
-      else if(code==='unsupported')toast('현재 브라우저에서는 알림을 사용할 수 없습니다. Chrome에서 열어주세요.');
+      else if(code==='unsupported')toast(isIOSDevice()?'iPhone·iPad는 홈 화면에 추가한 에듀잡 앱에서 알림을 켜주세요.':'현재 브라우저에서는 알림을 사용할 수 없습니다. Chrome에서 열어주세요.');
       else toast('알림 설정을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.');
     }finally{
       if(btn)btn.disabled=false;
@@ -856,6 +940,9 @@ async function loadData(){
   }
 }
 
+if('serviceWorker'in navigator){
+  navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+}
 installIcons();
 installStaticEvents();
 if(!location.hash)history.replaceState(null,'','#/home');
