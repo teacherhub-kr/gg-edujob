@@ -3,6 +3,7 @@ from __future__ import annotations
 import json, re
 from pathlib import Path
 from urllib.parse import urljoin
+from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright
 
 TARGETS=[
@@ -93,6 +94,14 @@ def main():
       pass
     item["anchorsAfter"]=anchors[:220]
     item["networkSignals"]=list({x["url"]:x for x in net}.values())[-220:]
+    if t["key"]=="seobu":
+     try:
+      req=Request("https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",headers={"User-Agent":"Mozilla/5.0"})
+      with urlopen(req,timeout=30) as resp:
+       body=resp.read()
+       item["seobuSystemCaProbe"]={"status":getattr(resp,"status",0),"finalUrl":resp.geturl(),"length":len(body),"sample":body[:240].decode("utf-8",errors="replace")}
+     except Exception as exc:
+      item["seobuSystemCaProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:500]}"}
     if t["key"]=="nambu":
      try:
       cfg_url="https://nambu.ice.go.kr/cms/json/config/getBoardConfigDataByBoardCode.act?boardcode=0gVhzY"
