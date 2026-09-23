@@ -6,7 +6,8 @@
     snapshot:'edujob.jobRadar.snapshot.v1',
     favorites:'edujob.jobRadar.favorites.v1',
     alerts:'edujob.alerts.v1',
-    recent:'edujob.recentJobs.v1'
+    recent:'edujob.recentJobs.v1',
+    installPrompt:'edujob.installPrompt.dismissed.v1'
   };
 
   const parse=(raw,fallback=null)=>{try{return raw?JSON.parse(raw):fallback}catch(e){return fallback}};
@@ -57,6 +58,11 @@
       get:()=>local.get(KEYS.recent,[]),
       set:value=>{local.set(KEYS.recent,Array.isArray(value)?value.slice(0,50):[]);emit('recent');api.syncAccountSoon()},
       clear:()=>{local.remove(KEYS.recent);emit('recent');api.syncAccountSoon()}
+    },
+    installPrompt:{
+      dismissed:()=>Boolean(local.get(KEYS.installPrompt,false)),
+      dismiss:()=>local.set(KEYS.installPrompt,true),
+      reset:()=>local.remove(KEYS.installPrompt)
     },
     exportState:()=>({
       version:1,
