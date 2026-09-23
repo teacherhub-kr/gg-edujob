@@ -96,6 +96,31 @@ def main():
     item["networkSignals"]=list({x["url"]:x for x in net}.values())[-220:]
     if t["key"]=="seobu":
      try:
+      direct_url="https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
+      direct=page.goto(direct_url,wait_until="domcontentloaded",timeout=60000)
+      page.wait_for_timeout(1000)
+      item["seobuDirectStatus"]=direct.status if direct else 0
+      item["seobuDirectUrl"]=page.url
+      pager=[]
+      for a in page.locator("a").all():
+       try:
+        txt=clean(a.inner_text(timeout=300))
+        href=clean(a.get_attribute("href"))
+        if txt and (txt.isdigit() or re.search(r"다음|이전|next|prev|>|<",txt,re.I) or "__doPostBack" in href):
+         pager.append({"text":txt[:80],"href":href[:700]})
+       except Exception:
+        pass
+      item["seobuPagerAnchors"]=pager[:120]
+      rows=[]
+      for a in page.locator('a[href*="read.aspx?board_code=4674"]').all():
+       try:
+        rows.append({"text":clean(a.inner_text(timeout=300))[:300],"href":clean(a.get_attribute("href"))[:700]})
+       except Exception:
+        pass
+      item["seobuRowLinks"]=rows[:40]
+     except Exception as exc:
+      item["errors"].append(f"seobu-direct:{type(exc).__name__}:{str(exc)[:500]}")
+     try:
       req=Request("https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",headers={"User-Agent":"Mozilla/5.0"})
       with urlopen(req,timeout=30) as resp:
        body=resp.read()
