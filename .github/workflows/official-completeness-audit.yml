@@ -24,8 +24,13 @@ jobs:
           python-version: '3.12'
       - name: Install collector dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Preserve the published candidate for omission accounting
-        run: cp jobs.json /tmp/production_jobs.json
+      - name: Verify snapshot-bound completeness classification
+        run: python -m unittest tests.test_verify_published_scan_completeness
+      - name: Preserve the published scan evidence for omission accounting
+        run: |
+          cp jobs.json /tmp/production_jobs.json
+          cp source_id_ledger.json /tmp/production_source_id_ledger.json
+          cp source_reconciliation_report.json /tmp/production_source_reconciliation_report.json
       - name: Require all mandatory regional registries and runtime regions
         run: python scripts/verify_required_regions.py
       - name: Independently prove central pagination and Gyeonggi 90-day traversal
@@ -36,43 +41,14 @@ jobs:
         run: python scripts/merge_incheon_official.py --check-only --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
       - name: Reconcile the current official registry without publishing
         run: python scripts/reconcile_source_ids.py
-      - name: Fail if the published production dataset omitted a current official ID
-        env:
-          PYTHONPATH: scripts
+      - name: Verify published-scan completeness and report live freshness delta
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          from source_registry import official_source_count
-
-          report=json.loads(Path('source_reconciliation_report.json').read_text(encoding='utf-8'))
-          summary=report.get('summary') or {}
-          expected=official_source_count()
-          total=int(summary.get('totalSources') or 0)
-          reconciled=int(summary.get('reconciledSources') or 0)
-          missing_before=int(summary.get('missingBefore') or 0)
-          missing_after=int(summary.get('missingAfter') or 0)
-          incomplete=report.get('incompleteSources') or []
-
-          if total != expected or reconciled != total or incomplete:
-              raise SystemExit(
-                  f'Registry reconciliation incomplete: expected={expected}, total={total}, '
-                  f'reconciled={reconciled}, incomplete={incomplete}'
-              )
-          if missing_after != 0:
-              raise SystemExit(f'Reconciliation itself still has missing official IDs: {missing_after}')
-          if missing_before != 0:
-              raise SystemExit(
-                  f'Published production omitted {missing_before} official IDs before local read-only recovery'
-              )
-          print(json.dumps({
-              'state':'complete',
-              'registeredOfficialSources': expected,
-              'officialIdCount': summary.get('officialIdCount'),
-              'missingBefore': missing_before,
-              'missingAfter': missing_after,
-          }, ensure_ascii=False))
-          PY
+          python scripts/verify_published_scan_completeness.py \
+            --published-jobs /tmp/production_jobs.json \
+            --published-ledger /tmp/production_source_id_ledger.json \
+            --published-report /tmp/production_source_reconciliation_report.json \
+            --live-ledger source_id_ledger.json \
+            --live-report source_reconciliation_report.json
       - name: Require independent central/reconciliation agreement
         run: python scripts/verify_central_reconciliation_consistency.py
       - name: Require both Incheon boards to remain complete
@@ -97,5 +73,6 @@ jobs:
             central_pagination_report.json
             gyeonggi_central_90d_report.json
             incheon_official_report.json
+            published_scan_completeness_report.json
           if-no-files-found: warn
           retention-days: 14
