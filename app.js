@@ -743,7 +743,7 @@ function bindScreen(){
     writeSnapshot(p);
     setRoute('radar');
   };
-  $('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     dismissInstallPrompt();
     render();
   }));
@@ -767,9 +767,9 @@ function bindScreen(){
       toast('설치 창을 열지 못했습니다. 브라우저 메뉴에서 홈 화면에 추가해 주세요.');
     }
     render();
-  }));
+  });
 
-  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='new')openNewRadar();
