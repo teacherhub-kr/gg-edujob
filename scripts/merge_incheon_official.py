@@ -145,7 +145,7 @@ def bootstrap_board_session(board: dict) -> dict:
             "rawBodySample": body[:256].decode("utf-8", errors="backslashreplace"),
             "rawBodyHex": body[:128].hex(),
             "responseHeaders": {
-                key: value for key, value in response.headers.items()
+                key: value for key, value in getattr(response, "headers", {}).items()
                 if key.lower() in {"server", "content-length", "content-type", "location", "cache-control", "date"}
             },
         }
@@ -426,7 +426,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "rawBodySample": body[:256].decode("utf-8", errors="backslashreplace"),
                 "rawBodyHex": body[:128].hex(),
                 "responseHeaders": {
-                    key: value for key, value in response.headers.items()
+                    key: value for key, value in getattr(response, "headers", {}).items()
                     if key.lower() in {"server", "content-length", "content-type", "location", "cache-control", "date"}
                 },
                 "bootstrap": bootstrap_evidence,
