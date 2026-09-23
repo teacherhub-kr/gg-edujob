@@ -45,6 +45,8 @@ AFTERSCHOOL_LIST_URL = "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.d
 AFTERSCHOOL_DETAIL_PATH = "/afterschool/na/ntt/selectNttInfo.do"
 AFTERSCHOOL_BBS_ID = "1534"
 AFTERSCHOOL_MI = "10571"
+OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr")
+LAW_META_REFRESH_TARGET = "url=https://www.ice.go.kr/law/main.do"
 
 REQUIRED_BOARDS = (
     {
@@ -214,6 +216,43 @@ def fetch_with_one_explicit_retry(url: str):
     raise last_error
 
 
+def is_law_meta_refresh(response) -> bool:
+    body = (getattr(response, "content", b"") or b"").decode("utf-8", errors="ignore").lower()
+    return "<meta" in body and "http-equiv=\"refresh\"" in body and LAW_META_REFRESH_TARGET in body
+
+
+def with_host(url: str, host: str) -> str:
+    parsed = urlparse(url)
+    return urlunparse((parsed.scheme, host, parsed.path, parsed.params, parsed.query, parsed.fragment))
+
+
+def try_official_fetch_aliases(page_url: str, board: dict, lookback_days: int):
+    evidence = []
+    for host in OFFICIAL_FETCH_ALIASES:
+        reset_session()
+        alias_url = with_host(page_url, host)
+        try:
+            response = fetch_with_one_explicit_retry(alias_url)
+            rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
+            body = response.content or b""
+            item = {
+                "host": host,
+                "finalUrl": str(response.url or ""),
+                "contentLength": len(body),
+                "rawRows": int(meta.get("rawRows") or 0),
+                "lawMetaRefresh": is_law_meta_refresh(response),
+            }
+            evidence.append(item)
+            if meta.get("rawRows"):
+                return response, rows, meta, {"attempted": True, "success": True, "trials": evidence}
+        except Exception as exc:
+            evidence.append({
+                "host": host,
+                "error": f"{type(exc).__name__}: {str(exc)[:160]}",
+            })
+    return None, [], {}, {"attempted": True, "success": False, "trials": evidence}
+
+
 def table_headers(table):
     best = []
     for row in table.find_all("tr"):
@@ -377,6 +416,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     stop_reason = ""
     access_error = ""
     empty_page_evidence = {}
+    alias_fallback_evidence = {}
 
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
@@ -403,6 +443,13 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             except Exception as exc:
                 access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
                 break
+
+        if page == 1 and meta["rawRows"] == 0 and is_law_meta_refresh(response):
+            alias_response, alias_rows, alias_meta, alias_fallback_evidence = try_official_fetch_aliases(
+                page_url, board, lookback_days
+            )
+            if alias_response is not None and alias_meta.get("rawRows"):
+                response, rows, meta = alias_response, alias_rows, alias_meta
 
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
@@ -470,6 +517,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "paginationRepeated": stop_reason == "repeated-page",
         "stopReason": stop_reason,
         "emptyPageEvidence": empty_page_evidence,
+        "aliasFallback": alias_fallback_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
         "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
     }
