@@ -135,12 +135,19 @@ def bootstrap_board_session(board: dict) -> dict:
             headers={"Referer": "https://www.ice.go.kr/"},
         )
         response.raise_for_status()
+        body = response.content or b""
         return {
             "attempted": True,
             "ok": True,
             "status": int(response.status_code),
-            "contentLength": len(response.content or b""),
+            "contentLength": len(body),
             "finalUrl": str(response.url or ""),
+            "rawBodySample": body[:256].decode("utf-8", errors="backslashreplace"),
+            "rawBodyHex": body[:128].hex(),
+            "responseHeaders": {
+                key: value for key, value in response.headers.items()
+                if key.lower() in {"server", "content-length", "content-type", "location", "cache-control", "date"}
+            },
         }
     except Exception as exc:
         return {
@@ -410,11 +417,18 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 all_rows.append(row)
 
         if meta["rawRows"] == 0:
+            body = response.content or b""
             empty_page_evidence = {
                 "finalUrl": str(response.url or ""),
-                "contentLength": len(response.content or b""),
+                "contentLength": len(body),
                 "contentType": str(response.headers.get("content-type") or ""),
                 "pageTextSample": clean(meta.get("pageText") or "")[:600],
+                "rawBodySample": body[:256].decode("utf-8", errors="backslashreplace"),
+                "rawBodyHex": body[:128].hex(),
+                "responseHeaders": {
+                    key: value for key, value in response.headers.items()
+                    if key.lower() in {"server", "content-length", "content-type", "location", "cache-control", "date"}
+                },
                 "bootstrap": bootstrap_evidence,
             }
             stop_reason = "empty-page"
