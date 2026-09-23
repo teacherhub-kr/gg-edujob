@@ -8,6 +8,11 @@ on:
       - 'scripts/audit_m0_maintenance_freeze.py'
       - 'scripts/production_supervisor.py'
       - 'tests/test_production_supervisor.py'
+      - 'app.js'
+      - 'app.css'
+      - 'index.html'
+      - 'manifest.webmanifest'
+      - 'tests/test_pwa_install_onboarding.py'
 
 permissions:
   contents: read
@@ -27,3 +32,7 @@ jobs:
         run: python -m unittest tests.test_production_supervisor
       - name: Verify snapshot-bound completeness logic
         run: python -m unittest tests.test_verify_published_scan_completeness
+      - name: Verify PWA install onboarding contract
+        run: |
+          node --check app.js
+          python -m unittest tests.test_pwa_install_onboarding
