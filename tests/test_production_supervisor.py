@@ -11,6 +11,7 @@ from scripts.production_supervisor import (
     latest_verified_production_success,
     private_refresh_due,
     registry_contract_status,
+    recovery_fallback_available,
     unified_publication_stale,
     watchdog_schedule_lag,
 )
@@ -217,6 +218,30 @@ class ProductionSupervisorTests(unittest.TestCase):
         )
         self.assertFalse(blocked)
         self.assertEqual(failures, 3)
+
+    def test_recovery_fallback_available_when_no_recent_recovery_failure(self):
+        now = datetime(2026, 9, 16, 21, 0, tzinfo=KST)
+        runs = [run("success", 8)]
+        available, reason, failures = recovery_fallback_available(runs, now)
+        self.assertTrue(available)
+        self.assertEqual(reason, "recovery-available")
+        self.assertEqual(failures, 0)
+
+    def test_recovery_fallback_respects_recent_failure_backoff(self):
+        now = datetime(2026, 9, 16, 21, 0, tzinfo=KST)
+        runs = [run("failure", 1), run("success", 5)]
+        available, reason, failures = recovery_fallback_available(runs, now)
+        self.assertFalse(available)
+        self.assertEqual(reason, "recovery-recent-failure-backoff")
+        self.assertEqual(failures, 1)
+
+    def test_fast_circuit_has_recovery_failover_contract(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn("production_stale_for_p0", source)
+        self.assertIn("recovery_fallback_available(", source)
+        self.assertIn("use Recovery as alternative verified production path on a fresh runner", source)
 
     def test_source_drop_is_conservative(self):
         previous = {
