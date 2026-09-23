@@ -473,8 +473,10 @@
         "allowedHosts": [
           "seobu.ice.go.kr"
         ],
-        "boardUrls": [],
-        "autoDiscover": true
+        "boardUrls": [
+          "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
+        ],
+        "autoDiscover": false
       },
       {
         "key": "ganghwa",
