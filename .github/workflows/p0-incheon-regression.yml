@@ -110,3 +110,32 @@ jobs:
           assert all(int(x.get('count') or 0) > 0 for x in health),health
           print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY
+
+      - name: Diagnose official ICE alias hosts
+        env:
+          PYTHONPATH: scripts
+        run: |
+          python - <<'PY'
+          from scripts import merge_incheon_official as ice
+          evidence=[]
+          for board in ice.REQUIRED_BOARDS:
+              board_result=[]
+              for host in ice.OFFICIAL_FETCH_ALIASES:
+                  ice.reset_session()
+                  url=ice.with_host(ice.with_page(board['url'],1),host)
+                  try:
+                      response=ice.fetch_with_one_explicit_retry(url)
+                      rows,meta=ice.parse_table_rows(response.text,response.url,14,board)
+                      board_result.append({
+                          'host':host,
+                          'status':response.status_code,
+                          'contentLength':len(response.content or b''),
+                          'rawRows':int(meta.get('rawRows') or 0),
+                          'lawMetaRefresh':ice.is_law_meta_refresh(response),
+                          'finalUrl':str(response.url or ''),
+                      })
+                  except Exception as exc:
+                      board_result.append({'host':host,'error':f'{type(exc).__name__}: {exc}'})
+              evidence.append({'bbsId':board['bbsId'],'results':board_result})
+          print('ICE_ALIAS_DIAGNOSTIC',evidence)
+          PY
