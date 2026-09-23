@@ -255,6 +255,35 @@ def circuit_blocked(
     return now - latest_failure < backoff, failures, latest_failure
 
 
+def recovery_fallback_available(
+    runs: list[dict[str, Any]],
+    now: datetime,
+    *,
+    allow_probe_after_change: bool = False,
+) -> tuple[bool, str, int]:
+    """Return whether Recovery may serve as a fresh-runner alternative after Fast circuit opens."""
+    blocked, failures, _ = circuit_blocked(
+        "recovery",
+        runs,
+        now,
+        allow_probe_after_change=allow_probe_after_change,
+    )
+    if blocked:
+        return False, "recovery-circuit-open", failures
+
+    latest = latest_completed(runs)
+    latest_time = completed_at(latest)
+    if (
+        not allow_probe_after_change
+        and latest
+        and latest.get("conclusion") in REAL_FAILURES
+        and latest_time
+        and now - latest_time < timedelta(hours=3)
+    ):
+        return False, "recovery-recent-failure-backoff", failures
+    return True, "recovery-available", failures
+
+
 def source_map(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {
         str(src.get("name")): src
@@ -550,12 +579,36 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                 allow_probe_after_change=collector_changes_after_success > 0,
             )
             if blocked:
-                action = "skip-fast-circuit-open"
-                circuit = "fast"
-                reason = (
-                    f"Fast circuit open after {failures} real failures; "
-                    f"last failure={latest_failure.isoformat() if latest_failure else None}"
+                production_stale_for_p0 = (
+                    production_success_age is None
+                    or production_success_age > P0_STALE_AFTER
                 )
+                recovery_available = False
+                recovery_gate = "production-not-p0-stale"
+                recovery_failures = 0
+                if production_stale_for_p0:
+                    recovery_available, recovery_gate, recovery_failures = recovery_fallback_available(
+                        all_runs["recovery"],
+                        now,
+                        allow_probe_after_change=recovery_contract_changed_after_failure,
+                    )
+
+                if recovery_available:
+                    action = "recovery"
+                    reason = (
+                        f"Fast circuit open after {failures} real failures; "
+                        "use Recovery as alternative verified production path on a fresh runner; "
+                        f"lastFastFailure={latest_failure.isoformat() if latest_failure else None}"
+                    )
+                else:
+                    action = "skip-fast-circuit-open"
+                    circuit = "fast"
+                    reason = (
+                        f"Fast circuit open after {failures} real failures; "
+                        f"last failure={latest_failure.isoformat() if latest_failure else None}; "
+                        f"recoveryFallback={recovery_gate}; "
+                        f"recoveryFailures={recovery_failures}"
+                    )
             else:
                 action = "fast"
                 reason = (
