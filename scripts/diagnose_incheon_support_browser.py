@@ -93,6 +93,14 @@ def main():
       pass
     item["anchorsAfter"]=anchors[:220]
     item["networkSignals"]=list({x["url"]:x for x in net}.values())[-220:]
+    if t["key"]=="nambu":
+     try:
+      cfg_url="https://nambu.ice.go.kr/cms/json/config/getBoardConfigDataByBoardCode.act?boardcode=0gVhzY"
+      cfg=page.request.get(cfg_url,timeout=30000)
+      item["nambuConfigStatus"]=cfg.status
+      item["nambuConfigBody"]=cfg.text()[:12000]
+     except Exception as exc:
+      item["errors"].append(f"nambu-config:{type(exc).__name__}:{str(exc)[:180]}")
     item["ok"]=bool(r and r.status<500)
    except Exception as e:
     item["errors"].append(f"{type(e).__name__}: {e}")
