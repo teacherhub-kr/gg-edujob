@@ -9,7 +9,6 @@ const HOME_LIMIT=10;
 const SUBJECT_LIMIT=24;
 const ROUTES=new Set(['home','search','radar','saved','me']);
 const APP_URL='https://teacherhub-kr.github.io/gg-edujob/';
-const INSTALL_DISMISS_KEY='edujob.installPrompt.dismissed.v1';
 const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);
 const isIOSDevice=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroidDevice=()=>/android/i.test(navigator.userAgent||'');
@@ -17,8 +16,8 @@ const isStandaloneApp=()=>window.matchMedia?.('(display-mode: standalone)').matc
 const pushReady=()=>pushCapable()&&(!isIOSDevice()||isStandaloneApp());
 const chromeIntentUrl=()=>`intent://teacherhub-kr.github.io/gg-edujob/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(APP_URL)};end`;
 let deferredInstallPrompt=null;
-const installDismissed=()=>{try{return localStorage.getItem(INSTALL_DISMISS_KEY)==='1'}catch(e){return false}};
-const dismissInstallPrompt=()=>{try{localStorage.setItem(INSTALL_DISMISS_KEY,'1')}catch(e){}};
+const installDismissed=()=>Boolean(store()?.installPrompt?.dismissed?.());
+const dismissInstallPrompt=()=>store()?.installPrompt?.dismiss?.();
 const shouldShowInstallCard=()=>!isStandaloneApp()&&!installDismissed();
 const copyAppUrl=async()=>{
   try{
