@@ -320,6 +320,146 @@ def seoul_seq(tr):
     return ""
 
 
+
+def support_norm(value):
+    return re.sub(r"[^0-9a-z가-힣]+", "", clean(str(value or "")).lower())
+
+
+def seoul_detail_anchor_for_seq(tr, seq):
+    """Return the anchor that actually opens this SEN job_seq detail row."""
+    seq = str(seq or "")
+    if not seq:
+        return None
+    for a in tr.find_all("a"):
+        raw = " ".join((a.get("href", "") or "", a.get("onclick", "") or ""))
+        if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", raw, re.I):
+            return a
+        if re.search(rf"job_seq\s*[=,'\"() ]+{re.escape(seq)}(?:\D|$)", raw, re.I):
+            return a
+        if re.search(rf"JOV11\.do[^\n]*?(?:job_seq\D*)?{re.escape(seq)}(?:\D|$)", raw, re.I):
+            return a
+    return None
+
+
+def seoul_row_values(table, tr):
+    """Map a SEN row using the best matching-width header row."""
+    tds = tr.find_all("td")
+    if not tds:
+        return {}
+    candidates = []
+    for hr in table.find_all("tr"):
+        if hr is tr:
+            break
+        ths = hr.find_all("th")
+        if not ths:
+            continue
+        names = [clean(x.get_text(" ", strip=True)) for x in ths]
+        if len(names) != len(tds):
+            continue
+        score = sum(
+            any(k in h for k in ("제목", "학교", "기관", "직종", "분야", "등록일", "작성일", "마감"))
+            for h in names
+        )
+        candidates.append((score, names))
+    names = max(candidates, key=lambda x: x[0])[1] if candidates else headers(table)
+    return row_vals(tr, names)
+
+
+def seoul_items_from_soup(soup):
+    """Parse SEN list rows conservatively without guessing registration dates."""
+    items = []
+    dates = []
+    expected_table = False
+    candidate_rows = 0
+    got_table = False
+    for table in soup.find_all("table"):
+        hs = headers(table)
+        if not hs:
+            continue
+        if not any(
+            any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자"))
+            for h in hs
+        ):
+            continue
+        got_table = True
+        expected_table = True
+        for tr in table.find_all("tr"):
+            if not tr.find_all("td"):
+                continue
+            candidate_rows += 1
+            seq = seoul_seq(tr)
+            if not seq:
+                continue
+            vals = seoul_row_values(table, tr)
+            detail_anchor = seoul_detail_anchor_for_seq(tr, seq)
+            anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
+            title = clean(detail_anchor.get_text(" ", strip=True) if detail_anchor else "")
+            if not title:
+                title = first_of(vals, ["제목", "공고명"])
+            if not title:
+                title = clean(max((a.get_text(" ", strip=True) for a in anchors), key=len, default=""))
+            registered = date_norm(first_of(vals, ["등록일", "작성일"]))
+            items.append((seq, title, registered, vals, bool(detail_anchor)))
+            if registered:
+                dates.append(registered)
+    return items, dates, expected_table, candidate_rows, got_table
+
+
+def support_job_type(raw, title):
+    text = f"{raw or ''} {title or ''}"
+    if re.search(r"자원봉사|봉사자", text):
+        return "자원봉사"
+    if re.search(r"교육공무직|기간제근로|조리실무|돌봄전담|대체인력", text):
+        return "교육공무직/기간제근로자"
+    if re.search(r"시간강사|강사|시간제", text):
+        return "시간강사/강사"
+    if re.search(r"기간제|계약제|교원|교사", text):
+        return "기간제교원"
+    return "기타"
+
+
+def support_school_level(raw, school, title):
+    text = f"{raw or ''} {school or ''} {title or ''}"
+    if re.search(r"특수학교", text):
+        return "특수학교"
+    if re.search(r"유치원|병설유", text):
+        return "유치원"
+    if re.search(r"초등학교|\b초\b", text):
+        return "초등학교"
+    if re.search(r"중학교|\b중\b", text):
+        return "중학교"
+    if re.search(r"고등학교|\b고\b", text):
+        return "고등학교"
+    if re.search(r"교육지원청|교육청", text):
+        return "교육행정기관"
+    return "기타"
+
+
+def malformed_seoul_support_row(job):
+    """Known malformed SEN support rows must never remain publishable."""
+    if job.get("province") != "서울" or job.get("sourceType") != "교육지원청 개별 게시판":
+        return False
+    jid = str(job.get("id") or "")
+    if not (jid.startswith("sen-complete-") or jid.startswith("sen-office-")):
+        return False
+    title = support_norm(job.get("title"))
+    school = support_norm(job.get("school"))
+    source = support_norm(job.get("source"))
+    registered = clean(job.get("registered", ""))
+    return (
+        not registered
+        or not title
+        or (school and title == school)
+        or (source and title == source)
+    )
+
+
+def purge_malformed_seoul_support_rows():
+    before = len(JOBS)
+    JOBS[:] = [j for j in JOBS if not malformed_seoul_support_row(j)]
+    return before - len(JOBS)
+
+
 def seoul_page(board, page, prefer_post=False):
     params = {"pageIndex": page}
     if prefer_post:
@@ -342,6 +482,7 @@ def seoul_board(src):
     consecutive_old_pages = 0
     use_post = False
     ended_on_structural_empty = False
+    parse_incomplete = 0
 
     for page in range(1, MAX_PAGES + 1):
         r = seoul_page(board, page, use_post)
@@ -349,88 +490,32 @@ def seoul_board(src):
             use_post = True
             r = seoul_page(board, page, True)
         if not r:
-            access_error = True  # any pagination request failure makes traversal incomplete
+            access_error = True
             break
+
         soup = BeautifulSoup(r.text, "html.parser")
         txt = clean(soup.get_text(" ", strip=True))
         if re.search(r"총\s*0\s*건|전체\s*0\s*건|데이터가\s*없습니다|조회된\s*데이터가\s*없|등록된\s*자료가\s*없", txt):
             explicit_empty = True
 
-        items = []
-        dates = []
-        page_has_expected_table = False
-        page_candidate_rows = 0
-        for table in soup.find_all("table"):
-            hs = headers(table)
-            if not hs:
-                continue
-            if not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
-                continue
-            got_table = True
-            page_has_expected_table = True
-            for tr in table.find_all("tr"):
-                if not tr.find_all("td"):
-                    continue
-                page_candidate_rows += 1
-                seq = seoul_seq(tr)
-                if not seq:
-                    continue
-                vals = row_vals(tr, hs)
-                anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
-                title = clean(max((a.get_text(" ", strip=True) for a in anchors), key=len, default=""))
-                if not title:
-                    title = first_of(vals, ["제목", "공고명", "분야1", "분야"])
-                registered = date_norm(first_of(vals, ["등록일", "작성일"]))
-                if not registered:
-                    ds = all_dates(clean(tr.get_text(" ", strip=True)))
-                    today_s = NOW.strftime("%Y/%m/%d")
-                    plausible = [d for d in ds if d and d <= today_s]
-                    registered = plausible[-1] if plausible else ""
-                items.append((seq, title, registered, vals))
-                if registered:
-                    dates.append(registered)
-
+        items, dates, page_has_expected_table, page_candidate_rows, page_got_table = seoul_items_from_soup(soup)
+        got_table = got_table or page_got_table
         sig = tuple(x[0] for x in items)
+
         if sig and sig in seen_page_sigs:
             if not use_post:
-                # GET can ignore pageIndex. Re-fetch this SAME page with POST and process
-                # it now; continuing would silently skip the current page.
+                # Some SEN boards ignore GET pageIndex. Retry this exact page with POST.
                 use_post = True
                 r2 = seoul_page(board, page, True)
                 if r2:
                     soup2 = BeautifulSoup(r2.text, "html.parser")
-                    post_items = []
-                    post_dates = []
-                    for table in soup2.find_all("table"):
-                        hs = headers(table)
-                        if not hs:
-                            continue
-                        if not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
-                            continue
-                        got_table = True
-                        for tr in table.find_all("tr"):
-                            if not tr.find_all("td"):
-                                continue
-                            seq = seoul_seq(tr)
-                            if not seq:
-                                continue
-                            vals = row_vals(tr, hs)
-                            anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
-                            title = clean(max((a.get_text(" ", strip=True) for a in anchors), key=len, default=""))
-                            if not title:
-                                title = first_of(vals, ["제목", "공고명", "분야1", "분야"])
-                            registered = date_norm(first_of(vals, ["등록일", "작성일"]))
-                            if not registered:
-                                ds = all_dates(clean(tr.get_text(" ", strip=True)))
-                                today_s = NOW.strftime("%Y/%m/%d")
-                                plausible = [d for d in ds if d and d <= today_s]
-                                registered = plausible[-1] if plausible else ""
-                            post_items.append((seq, title, registered, vals))
-                            if registered:
-                                post_dates.append(registered)
+                    post_items, post_dates, post_expected, post_candidates, post_got = seoul_items_from_soup(soup2)
                     post_sig = tuple(x[0] for x in post_items)
+                    got_table = got_table or post_got
                     if post_sig and post_sig not in seen_page_sigs:
                         items, dates, sig = post_items, post_dates, post_sig
+                        page_has_expected_table = post_expected
+                        page_candidate_rows = post_candidates
                     else:
                         repeat = True
                         break
@@ -441,15 +526,18 @@ def seoul_board(src):
             else:
                 repeat = True
                 break
+
         if sig:
             seen_page_sigs.add(sig)
         pages += 1
         if not items:
-            ended_on_structural_empty = bool(explicit_empty or (page_has_expected_table and page_candidate_rows == 0))
+            ended_on_structural_empty = bool(
+                explicit_empty or (page_has_expected_table and page_candidate_rows == 0)
+            )
             break
         raw_rows += len(items)
 
-        for seq, title, registered, vals in items:
+        for seq, title, registered, vals, has_detail_anchor in items:
             if seq in seen:
                 continue
             seen.add(seq)
@@ -457,18 +545,49 @@ def seoul_board(src):
                 continue
             if len(title) < 3 or EXCLUDE_WORDS.search(title):
                 continue
-            school = first_of(vals, ["학교명", "기관명", "작성자"]) or school_from_title(title) or src["name"]
+
+            school = (
+                first_of(vals, ["학교명", "기관명", "작성자"])
+                or school_from_title(title)
+                or src["name"]
+            )
+            title_norm = support_norm(title)
+            title_school_collision = bool(school and title_norm == support_norm(school))
+            title_office_collision = bool(src["name"] and title_norm == support_norm(src["name"]))
+            if not registered or not has_detail_anchor or title_school_collision or title_office_collision:
+                parse_incomplete += 1
+                continue
+
+            raw_type = first_of(vals, ["직종", "고용형태", "구분"])
+            raw_level = first_of(vals, ["학교급별", "학교급", "대상"])
+            subject = " / ".join(
+                x for x in (first_of(vals, ["분야1"]), first_of(vals, ["분야2"])) if x
+            ) or first_of(vals, ["분야(과목)", "분야", "과목"])
             open_url = urljoin(board, "/FUS/JO/JOV11.do")
             out.append({
-                "id": f"sen-complete-{urlparse(board).hostname}-{seq}", "province": "서울",
-                "school": school, "title": title, "subject": " / ".join(x for x in (first_of(vals,["분야1"]), first_of(vals,["분야2"])) if x),
+                "id": f"sen-complete-{urlparse(board).hostname}-{seq}",
+                "province": "서울",
+                "school": school,
+                "title": title,
+                "subject": subject,
                 "region": next((x for x in src.get("regions", []) if x in f"{title} {school}"), ""),
-                "regions": src.get("regions", []), "type": "기타", "schoolLevel": "기타",
-                "applyStart": registered, "applyEnd": date_norm(first_of(vals, ["마감일", "접수마감일"])),
-                "workStart": "", "workEnd": "", "registered": registered, "headcount": "",
-                "source": src["name"], "checkedSources": [src["name"]], "sourceType": "교육지원청 개별 게시판",
-                "url": f"{open_url}?job_seq={seq}", "boardUrl": board,
-                "openMethod": "POST", "openUrl": open_url, "openParams": {"job_seq": seq},
+                "regions": src.get("regions", []),
+                "type": support_job_type(raw_type, title),
+                "schoolLevel": support_school_level(raw_level, school, title),
+                "applyStart": registered,
+                "applyEnd": date_norm(first_of(vals, ["마감일", "접수마감일"])),
+                "workStart": "",
+                "workEnd": "",
+                "registered": registered,
+                "headcount": "",
+                "source": src["name"],
+                "checkedSources": [src["name"]],
+                "sourceType": "교육지원청 개별 게시판",
+                "url": f"{open_url}?job_seq={seq}",
+                "boardUrl": board,
+                "openMethod": "POST",
+                "openUrl": open_url,
+                "openParams": {"job_seq": seq},
             })
 
         if dates and all(definitely_old(x) for x in dates):
@@ -480,14 +599,27 @@ def seoul_board(src):
             break
         time.sleep(0.03)
 
-    complete = (not access_error) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
+    complete = (
+        (not access_error)
+        and (pages < MAX_PAGES)
+        and (crossed_old or ended_on_structural_empty)
+        and parse_incomplete == 0
+    )
     return out, {
-        "url": board, "pagesScanned": pages, "rawRows": raw_rows, "recentRows": len(out),
-        "paginationRepeated": repeat, "accessError": access_error, "explicitEmpty": explicit_empty,
-        "naturalEnd": ended_on_structural_empty, "gotTable": got_table, "crossedLookback": crossed_old, "coverageComplete": complete,
+        "url": board,
+        "pagesScanned": pages,
+        "rawRows": raw_rows,
+        "recentRows": len(out),
+        "paginationRepeated": repeat,
+        "accessError": access_error,
+        "explicitEmpty": explicit_empty,
+        "naturalEnd": ended_on_structural_empty,
+        "gotTable": got_table,
+        "crossedLookback": crossed_old,
+        "seoulOfficeParseIncomplete": parse_incomplete,
+        "coverageComplete": complete,
         "paginationMethod": "POST" if use_post else "GET",
     }
-
 
 def key(j):
     title = re.sub(r"[^0-9a-z가-힣]+", "", clean(j.get("title", "")).lower())
@@ -529,6 +661,7 @@ def status_from_board(name, url, rows, metas):
     pages = sum(m.get("pagesScanned", 0) for m in metas)
     any_access = any(m.get("accessError") for m in metas)
     any_repeat = any(m.get("paginationRepeated") for m in metas)
+    parse_incomplete = sum(int(m.get("seoulOfficeParseIncomplete") or 0) for m in metas)
     complete = bool(metas) and all(m.get("coverageComplete") for m in metas)
     genuine_empty = raw == 0 and bool(metas) and all(m.get("explicitEmpty") for m in metas)
     if genuine_empty:
@@ -537,6 +670,8 @@ def status_from_board(name, url, rows, metas):
         state, ok, msg = "error", False, "공식 게시판 접근 실패"
     elif any_repeat:
         state, ok, msg = "warning", False, "페이지 매개변수 반복 감지 · 완전수집 확인 필요"
+    elif parse_incomplete:
+        state, ok, msg = "warning", False, f"서울 지원청 행 파싱 불완전 {parse_incomplete}건"
     elif complete:
         state, ok, msg = "complete", True, f"최근 {LOOKBACK_DAYS}일 범위 완전수집"
     elif raw > 0:
@@ -546,7 +681,7 @@ def status_from_board(name, url, rows, metas):
     return {
         "name": name, "url": url, "boards": [m["url"] for m in metas], "count": len(rows),
         "rawRows": raw, "pagesScanned": pages, "ok": ok, "state": state, "message": msg,
-        "coverageComplete": complete, "boardHealth": metas,
+        "coverageComplete": complete, "seoulOfficeParseIncomplete": parse_incomplete, "boardHealth": metas,
     }
 
 
@@ -577,12 +712,14 @@ def main():
         additions.extend(rows)
         seoul_status.append(status_from_board(src["name"], src.get("boardUrl", ""), rows, [meta]))
 
+    malformed_removed = purge_malformed_seoul_support_rows()
     added = merge(production_filter(additions))
     PAYLOAD.setdefault("sources", {}).setdefault("gyeonggi", {})["supportOffices"] = gg_status
     PAYLOAD.setdefault("sources", {}).setdefault("seoul", {})["supportOffices"] = seoul_status
     PAYLOAD["supportCompleteness"] = {
         "lookbackDays": LOOKBACK_DAYS,
         "newlyRecoveredJobs": added,
+        "malformedSeoulSupportRowsRemoved": malformed_removed,
         "gyeonggiComplete": sum(1 for x in gg_status if x.get("coverageComplete")),
         "seoulComplete": sum(1 for x in seoul_status if x.get("coverageComplete")),
         "gyeonggiTotal": len(gg_status), "seoulTotal": len(seoul_status),
