@@ -111,7 +111,22 @@ def main():
       list_url="https://nambu.ice.go.kr/cms/json/board/getFrontBoardList.do?boardconfigidx=39&startnum=0&limitnum=30&searchdatestart=&searchdatelast=&searchtype=&searchtxt=&searchtype1=&searchtype2="
       listing=page.request.get(list_url,timeout=30000)
       item["nambuListStatus"]=listing.status
-      item["nambuListBody"]=listing.text()[:30000]
+      raw_listing=listing.text()
+      item["nambuListBody"]=raw_listing[:3000]
+      try:
+       parsed=json.loads(raw_listing)
+       rows=parsed.get("resultData") or []
+       item["nambuListSummary"]={
+        "count":len(rows),
+        "keys":sorted({k for row in rows[:5] if isinstance(row,dict) for k in row.keys()}),
+        "rows":[{
+          k:(clean(v)[:500] if not isinstance(v,(dict,list)) else v)
+          for k,v in row.items()
+          if k.lower() not in {"boardcontent","content","boardreply","boardattachfile"}
+        } for row in rows[:5] if isinstance(row,dict)]
+       }
+      except Exception as exc:
+       item["nambuListParseError"]=f"{type(exc).__name__}: {str(exc)[:300]}"
      except Exception as exc:
       item["errors"].append(f"nambu-config:{type(exc).__name__}:{str(exc)[:180]}")
     item["ok"]=bool(r and r.status<500)
