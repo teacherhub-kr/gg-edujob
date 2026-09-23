@@ -99,6 +99,10 @@ def main():
       cfg=page.request.get(cfg_url,timeout=30000)
       item["nambuConfigStatus"]=cfg.status
       item["nambuConfigBody"]=cfg.text()[:12000]
+      list_url="https://nambu.ice.go.kr/cms/json/board/getFrontBoardList.do?boardconfigidx=39&startnum=0&limitnum=30&searchdatestart=&searchdatelast=&searchtype=&searchtxt=&searchtype1=&searchtype2="
+      listing=page.request.get(list_url,timeout=30000)
+      item["nambuListStatus"]=listing.status
+      item["nambuListBody"]=listing.text()[:30000]
      except Exception as exc:
       item["errors"].append(f"nambu-config:{type(exc).__name__}:{str(exc)[:180]}")
     item["ok"]=bool(r and r.status<500)
