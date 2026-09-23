@@ -24,6 +24,13 @@ from typing import Any
 KST = timezone(timedelta(hours=9))
 ACTIVE_STATES = {"queued", "in_progress", "waiting", "requested", "pending"}
 REAL_FAILURES = {"failure", "timed_out", "startup_failure"}
+FAST_REFRESH_AFTER = timedelta(hours=3, minutes=15)
+P0_STALE_AFTER = timedelta(hours=6)
+WATCHDOG_LIVENESS_AFTER = timedelta(hours=1, minutes=30)
+WATCHDOG_WORKFLOW = "fast-refresh-watchdog.yml"
+REQUIRED_REGISTRY_MINIMUMS = {"gyeonggi": 26, "seoul": 12, "incheon": 1}
+INCHEON_REQUIRED_BOARD_IDS = {"1981", "1534"}
+
 CORE_TARGETS = {
     "fast": "update-jobs.yml",
     "recovery": "recover-missing-jobs.yml",
@@ -104,6 +111,94 @@ def parse_time(value: Any) -> datetime | None:
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=KST)
     return dt.astimezone(KST)
+
+
+def registry_contract_status(
+    registry: dict[str, Any], jobs_payload: dict[str, Any]
+) -> tuple[bool, dict[str, Any]]:
+    """Validate the minimum official-source registry contract used by production.
+
+    This deliberately checks more than the three top-level region keys:
+    each mandatory region needs a valid central source, the known source-network
+    floor must be present, Incheon's two mandatory boards must be registered,
+    and the published dataset must agree with the current registry count.
+    """
+    reasons: list[str] = []
+    breakdown: dict[str, int] = {}
+
+    for key, minimum in REQUIRED_REGISTRY_MINIMUMS.items():
+        group = registry.get(key) if isinstance(registry, dict) else None
+        if not isinstance(group, dict):
+            reasons.append(f"{key}:missing-group")
+            breakdown[key] = 0
+            continue
+        central = group.get("central")
+        support = group.get("supportOffices") or []
+        if not isinstance(central, dict) or not str(central.get("url") or "").startswith("https://"):
+            reasons.append(f"{key}:invalid-central")
+            central_count = 0
+        else:
+            central_count = 1
+        if not isinstance(support, list):
+            reasons.append(f"{key}:invalid-support-list")
+            support = []
+        count = central_count + len(support)
+        breakdown[key] = count
+        if count < minimum:
+            reasons.append(f"{key}:source-count={count}<minimum={minimum}")
+
+    incheon = registry.get("incheon") if isinstance(registry, dict) else None
+    incheon_central = incheon.get("central") if isinstance(incheon, dict) else None
+    registered_boards = {
+        str(item.get("bbsId") or "")
+        for item in ((incheon_central or {}).get("requiredBoards") or [])
+        if isinstance(item, dict)
+    }
+    missing_incheon = sorted(INCHEON_REQUIRED_BOARD_IDS - registered_boards)
+    if missing_incheon:
+        reasons.append("incheon:missing-required-boards=" + ",".join(missing_incheon))
+
+    total = sum(breakdown.values())
+    try:
+        published = int(jobs_payload.get("officialSourceCount") or 0)
+    except Exception:
+        published = 0
+    if published <= 0:
+        reasons.append("published:officialSourceCount-missing")
+    elif published != total:
+        reasons.append(f"published:officialSourceCount={published}!=registry={total}")
+
+    details = {
+        "breakdown": breakdown,
+        "totalOfficialSources": total,
+        "publishedOfficialSourceCount": published or None,
+        "reasons": reasons,
+    }
+    return not reasons, details
+
+
+def latest_verified_production_success(
+    collector_status: dict[str, Any],
+) -> tuple[datetime | None, str | None]:
+    candidates: list[tuple[datetime, str]] = []
+    if not isinstance(collector_status, dict):
+        return None, None
+    for key in ("fast", "recovery"):
+        item = collector_status.get(key)
+        if not isinstance(item, dict):
+            continue
+        success_at = parse_time(item.get("lastSuccessAt"))
+        if success_at is not None:
+            candidates.append((success_at, key))
+    if not candidates:
+        return None, None
+    return max(candidates, key=lambda item: item[0])
+
+
+def watchdog_schedule_lag(previous_completed_at: datetime | None, now: datetime) -> bool:
+    if previous_completed_at is None:
+        return True
+    return now - previous_completed_at > WATCHDOG_LIVENESS_AFTER
 
 
 def completed_at(run: dict[str, Any] | None) -> datetime | None:
@@ -295,6 +390,16 @@ def previous_reconciliation_report() -> dict[str, Any] | None:
 
 def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     all_runs = {key: gh_runs(repo, filename) for key, filename in TARGETS.items()}
+    watchdog_runs = gh_runs(repo, WATCHDOG_WORKFLOW)
+    previous_watchdog = latest_completed(watchdog_runs)
+    previous_watchdog_at = completed_at(previous_watchdog)
+    watchdog_lag = watchdog_schedule_lag(previous_watchdog_at, now)
+    watchdog_previous_age_hours = (
+        round((now - previous_watchdog_at).total_seconds() / 3600, 2)
+        if previous_watchdog_at is not None
+        else None
+    )
+
     active = [
         key
         for key in CORE_TARGETS
@@ -313,15 +418,17 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     success_age = now - success_at if success_at else None
     running_age = now - updated_at if updated_at else None
     state = str(fast.get("state") or "")
-
-    registry = load_json("sources.json", {})
-    required_registry = (
-        {"gyeonggi", "seoul", "incheon"} <= set(registry)
-        if isinstance(registry, dict)
-        else False
+    production_success_at, production_success_path = latest_verified_production_success(root)
+    production_success_age = (
+        now - production_success_at if production_success_at is not None else None
     )
 
+    registry = load_json("sources.json", {})
+    jobs_payload = load_json("jobs.json", {})
+    required_registry, registry_details = registry_contract_status(registry, jobs_payload)
+
     validation_paths = [
+        "sources.json",
         ".github/workflows/update-jobs.yml",
         "scripts/scrape_jobs.py",
         "scripts/repair_gyeonggi_support.py",
@@ -400,7 +507,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         fast_needed = (
             not required_registry
             or success_at is None
-            or success_age > timedelta(hours=3, minutes=15)
+            or success_age > FAST_REFRESH_AFTER
             or collector_changes_after_success > 0
         )
         fast_status_running = (
@@ -640,16 +747,33 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                             action = "skip-private-backoff"
                             reason = "private refreshes are temporarily backed off: " + ",".join(skipped_private)
 
+    if action == "fast" and watchdog_lag:
+        reason += (
+            "; watchdog previous completed run is stale: "
+            f"ageHours={watchdog_previous_age_hours}"
+        )
+
     fast_failures = failure_state["fast"]["consecutiveRealFailures"]
     stale_hours = (
         round(success_age.total_seconds() / 3600, 2) if success_age is not None else None
     )
-    p0_incident = bool(
-        not required_registry
-        or (success_age is not None and success_age > timedelta(hours=6))
-        or (success_at is None)
-        or (circuit == "fast")
+    production_stale_hours = (
+        round(production_success_age.total_seconds() / 3600, 2)
+        if production_success_age is not None
+        else None
     )
+    p0_reasons: list[str] = []
+    if not required_registry:
+        p0_reasons.append("registry-contract-incomplete")
+    if production_success_at is None:
+        p0_reasons.append("no-verified-production-success")
+    elif production_success_age is not None and production_success_age > P0_STALE_AFTER:
+        p0_reasons.append("verified-production-stale>6h")
+    if circuit == "fast" and (
+        production_success_age is None or production_success_age > P0_STALE_AFTER
+    ):
+        p0_reasons.append("fast-circuit-open-without-fresh-alternative")
+    p0_incident = bool(p0_reasons)
 
     workflow_count = len(list(Path(".github/workflows").glob("*.yml"))) + len(
         list(Path(".github/workflows").glob("*.yaml"))
@@ -660,9 +784,22 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "action": action,
         "reason": reason,
         "requiredRegistryComplete": required_registry,
+        "registryDetails": registry_details,
         "fastState": state,
         "fastLastSuccessAt": fast.get("lastSuccessAt"),
         "fastSuccessAgeHours": stale_hours,
+        "fastRefreshAfterHours": round(FAST_REFRESH_AFTER.total_seconds() / 3600, 2),
+        "p0StaleAfterHours": round(P0_STALE_AFTER.total_seconds() / 3600, 2),
+        "productionLastVerifiedAt": (
+            production_success_at.isoformat() if production_success_at else None
+        ),
+        "productionVerifiedBy": production_success_path,
+        "productionVerifiedAgeHours": production_stale_hours,
+        "watchdogPreviousCompletedAt": (
+            previous_watchdog_at.isoformat() if previous_watchdog_at else None
+        ),
+        "watchdogPreviousCompletedAgeHours": watchdog_previous_age_hours,
+        "watchdogScheduleLag": watchdog_lag,
         "collectorChangesAfterSuccess": collector_changes_after_success,
         "recoveryWorkflowCommitAt": recovery_workflow_time.isoformat() if recovery_workflow_time else None,
         "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
@@ -674,6 +811,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "failureState": failure_state,
         "sourceAnomalies": anomalies,
         "p0Incident": p0_incident,
+        "p0Reasons": p0_reasons,
         "jobsCommitAt": jobs_time.isoformat() if jobs_time else None,
         "unifiedCommitAt": unified_time.isoformat() if unified_time else None,
         "workflowCount": workflow_count,
@@ -745,8 +883,16 @@ def manage_issues(repo: str, state: dict[str, Any], now: datetime) -> None:
                 f"- action: `{state['action']}`\n"
                 f"- reason: {state['reason']}\n"
                 f"- registryComplete: `{state['requiredRegistryComplete']}`\n"
+                f"- registryDetails: `{json.dumps(state.get('registryDetails') or {}, ensure_ascii=False)}`\n"
                 f"- fastLastSuccessAt: `{state['fastLastSuccessAt']}`\n"
                 f"- fastSuccessAgeHours: `{state['fastSuccessAgeHours']}`\n"
+                f"- productionLastVerifiedAt: `{state.get('productionLastVerifiedAt')}`\n"
+                f"- productionVerifiedBy: `{state.get('productionVerifiedBy')}`\n"
+                f"- productionVerifiedAgeHours: `{state.get('productionVerifiedAgeHours')}`\n"
+                f"- watchdogPreviousCompletedAt: `{state.get('watchdogPreviousCompletedAt')}`\n"
+                f"- watchdogPreviousCompletedAgeHours: `{state.get('watchdogPreviousCompletedAgeHours')}`\n"
+                f"- watchdogScheduleLag: `{state.get('watchdogScheduleLag')}`\n"
+                f"- p0Reasons: `{json.dumps(state.get('p0Reasons') or [], ensure_ascii=False)}`\n"
                 f"- fastConsecutiveRealFailures: `{state['fastFailures']}`\n\n"
                 "The watchdog keeps last-known-good production data in place. "
                 "Automatic retries are circuit-broken after repeated real failures; "
@@ -794,6 +940,8 @@ def manage_issues(repo: str, state: dict[str, Any], now: datetime) -> None:
                 f"- required registry complete: `{state['requiredRegistryComplete']}`\n"
                 f"- fast last success: `{state['fastLastSuccessAt']}`\n"
                 f"- fast age hours: `{state['fastSuccessAgeHours']}`\n"
+                f"- verified production: `{state.get('productionVerifiedBy')}` at `{state.get('productionLastVerifiedAt')}` (ageHours=`{state.get('productionVerifiedAgeHours')}`)\n"
+                f"- watchdog schedule lag: `{state.get('watchdogScheduleLag')}` (previousCompletedAgeHours=`{state.get('watchdogPreviousCompletedAgeHours')}`)\n"
                 f"- source anomalies: `{len(state.get('sourceAnomalies') or [])}`\n"
                 f"- workflow files: `{state['workflowCount']}`\n"
                 f"- failure counters: `{json.dumps(failures, ensure_ascii=False)}`\n\n"

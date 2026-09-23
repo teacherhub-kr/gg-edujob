@@ -8,8 +8,11 @@ from scripts.production_supervisor import (
     circuit_blocked,
     consecutive_real_failures,
     detect_source_anomalies,
+    latest_verified_production_success,
     private_refresh_due,
+    registry_contract_status,
     unified_publication_stale,
+    watchdog_schedule_lag,
 )
 
 
@@ -46,6 +49,95 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(unified_publication_stale(jobs, None))
         self.assertFalse(unified_publication_stale(jobs, jobs))
         self.assertFalse(unified_publication_stale(None, unified))
+
+    def test_registry_contract_requires_full_metro_source_network(self):
+        registry = {
+            "gyeonggi": {
+                "central": {"url": "https://example.test/gyeonggi"},
+                "supportOffices": [{} for _ in range(25)],
+            },
+            "seoul": {
+                "central": {"url": "https://example.test/seoul"},
+                "supportOffices": [{} for _ in range(11)],
+            },
+            "incheon": {
+                "central": {
+                    "url": "https://example.test/incheon",
+                    "requiredBoards": [{"bbsId": "1981"}, {"bbsId": "1534"}],
+                },
+                "supportOffices": [],
+            },
+        }
+        ok, details = registry_contract_status(registry, {"officialSourceCount": 39})
+        self.assertTrue(ok)
+        self.assertEqual(details["breakdown"], {"gyeonggi": 26, "seoul": 12, "incheon": 1})
+        self.assertEqual(details["totalOfficialSources"], 39)
+        self.assertEqual(details["reasons"], [])
+
+    def test_registry_contract_rejects_missing_incheon_board(self):
+        registry = {
+            "gyeonggi": {
+                "central": {"url": "https://example.test/gyeonggi"},
+                "supportOffices": [{} for _ in range(25)],
+            },
+            "seoul": {
+                "central": {"url": "https://example.test/seoul"},
+                "supportOffices": [{} for _ in range(11)],
+            },
+            "incheon": {
+                "central": {
+                    "url": "https://example.test/incheon",
+                    "requiredBoards": [{"bbsId": "1981"}],
+                },
+                "supportOffices": [],
+            },
+        }
+        ok, details = registry_contract_status(registry, {"officialSourceCount": 39})
+        self.assertFalse(ok)
+        self.assertTrue(any("missing-required-boards=1534" in x for x in details["reasons"]))
+
+    def test_registry_contract_rejects_published_count_mismatch(self):
+        registry = {
+            "gyeonggi": {
+                "central": {"url": "https://example.test/gyeonggi"},
+                "supportOffices": [{} for _ in range(25)],
+            },
+            "seoul": {
+                "central": {"url": "https://example.test/seoul"},
+                "supportOffices": [{} for _ in range(11)],
+            },
+            "incheon": {
+                "central": {
+                    "url": "https://example.test/incheon",
+                    "requiredBoards": [{"bbsId": "1981"}, {"bbsId": "1534"}],
+                },
+                "supportOffices": [],
+            },
+        }
+        ok, details = registry_contract_status(registry, {"officialSourceCount": 38})
+        self.assertFalse(ok)
+        self.assertTrue(any("officialSourceCount=38!=registry=39" in x for x in details["reasons"]))
+
+    def test_latest_verified_production_success_accepts_recovery_path(self):
+        status = {
+            "fast": {"lastSuccessAt": "2026-09-20T07:00:00+09:00"},
+            "recovery": {"lastSuccessAt": "2026-09-20T08:00:00+09:00"},
+        }
+        when, path = latest_verified_production_success(status)
+        self.assertEqual(path, "recovery")
+        self.assertEqual(when, datetime(2026, 9, 20, 8, 0, tzinfo=KST))
+
+    def test_watchdog_schedule_lag_uses_ninety_minute_guard(self):
+        now = datetime(2026, 9, 20, 12, 0, tzinfo=KST)
+        self.assertFalse(watchdog_schedule_lag(now - timedelta(minutes=89), now))
+        self.assertTrue(watchdog_schedule_lag(now - timedelta(minutes=91), now))
+        self.assertTrue(watchdog_schedule_lag(None, now))
+
+    def test_supervisor_treats_registry_changes_as_fast_revalidation_input(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn('"sources.json",', source)
 
     def test_private_refresh_due_respects_source_age(self):
         now = datetime(2026, 9, 20, 12, 0, tzinfo=KST)
