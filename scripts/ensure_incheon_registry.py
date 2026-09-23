@@ -4,9 +4,9 @@
 Incheon has one metropolitan-office logical source backed by two mandatory citywide boards, plus
 five education support offices: Nambu, Bukbu, Dongbu, Seobu and Ganghwa.
 
-For Nambu and Seobu, only the official homepage is pinned because a stable recruitment-board path
-has not been independently verified. Production discovers a recruitment link from the official
-homepage and fails closed if it cannot prove one. We intentionally do not invent a guessed URL.
+Nambu remains discovery-only until its CMS JSON board contract is fully proven. Seobu's official
+recruitment list is independently verified at /bseobu/list.aspx?board_code=4674. We intentionally
+do not invent guessed URLs; unproven offices remain fail-closed.
 """
 from __future__ import annotations
 
@@ -51,8 +51,8 @@ SUPPORT_OFFICES = [
         "name": "인천서부교육지원청",
         "url": "https://seobu.ice.go.kr/",
         "allowedHosts": ["seobu.ice.go.kr"],
-        "boardUrls": [],
-        "autoDiscover": True,
+        "boardUrls": ["https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"],
+        "autoDiscover": False,
     },
     {
         "key": "ganghwa",
