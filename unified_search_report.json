@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-23T22:56:19+09:00",
+  "generatedAt": "2026-09-24T07:13:09+09:00",
   "policy": "unified-search-v3-multi-private-strong-evidence-only",
-  "canonicalOfficialJobs": 21700,
+  "canonicalOfficialJobs": 21572,
   "canonicalFoundationOfficialJobs": 3,
   "canonicalPrivateJobs": 4385,
-  "selectedCanonicalOfficialJobs": 3403,
+  "selectedCanonicalOfficialJobs": 3158,
   "selectedFoundationOfficialJobs": 0,
-  "selectedOfficialJobs": 3403,
-  "selectedPrivateJobs": 4308,
-  "publishedJobs": 7707,
+  "selectedOfficialJobs": 3158,
+  "selectedPrivateJobs": 4303,
+  "publishedJobs": 7457,
   "perFeed": {
-    "official": 3403,
-    "private": 4304
+    "official": 3158,
+    "private": 4299
   },
   "privateSources": {
     "lessoninfo": {
@@ -33,12 +33,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1,
-      "count": 1,
+      "candidateCount": 0,
+      "count": 0,
       "lastVerifiedAt": "2026-09-13T07:31:10+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
-      "displayedAsPrivate": 1
+      "displayedAsPrivate": 0
     },
     "jobteacher": {
       "name": "잡티처",
@@ -59,12 +59,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 30,
-      "count": 30,
+      "candidateCount": 27,
+      "count": 27,
       "lastVerifiedAt": "2026-09-15T09:59:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 30
+      "displayedAsPrivate": 27
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -72,12 +72,12 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 6,
-      "count": 6,
+      "candidateCount": 5,
+      "count": 5,
       "lastVerifiedAt": "2026-09-15T10:35:55+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 6
+      "displayedAsPrivate": 5
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -106,7 +106,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 19739,
+  "protectedOfficialIds": 19377,
   "explicitOfficialAliasGroupsMerged": 4,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,

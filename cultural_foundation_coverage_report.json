@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T22:56:25+09:00",
+  "generatedAt": "2026-09-24T07:13:12+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 49,
@@ -22,7 +22,7 @@
   "failedAvailableComponents": [],
   "currentMappedBySource": {
     "official": 0,
-    "cleaneye": 1,
+    "cleaneye": 0,
     "artmore": 0,
     "ancf": 0,
     "lessoninfo-discovery": 16
@@ -808,14 +808,14 @@
       "municipality": "화성시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     }
   ]
 }
