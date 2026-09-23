@@ -9,6 +9,7 @@ class PwaInstallOnboardingTests(unittest.TestCase):
         cls.css = Path("app.css").read_text(encoding="utf-8")
         cls.index = Path("index.html").read_text(encoding="utf-8")
         cls.manifest = Path("manifest.webmanifest").read_text(encoding="utf-8")
+        cls.icon = Path("edujob-icon.svg").read_text(encoding="utf-8")
 
     def test_install_prompt_is_platform_aware(self):
         self.assertIn("beforeinstallprompt", self.app)
@@ -43,6 +44,13 @@ class PwaInstallOnboardingTests(unittest.TestCase):
         self.assertIn(".install-card{", self.css)
         self.assertIn(".ios-install-steps{", self.css)
         self.assertIn(".install-primary-btn{", self.css)
+
+    def test_new_brand_logo_drives_home_screen_icon(self):
+        self.assertIn("승인된 신형 수도권에듀잡 로고", self.icon)
+        self.assertIn("data:image/png;base64,", self.icon)
+        self.assertIn("edujob-icon.svg?v=20260923new1", self.manifest)
+        self.assertIn('rel="apple-touch-icon"', self.index)
+        self.assertIn("assets/logo-mark.png?v=20260923new1", self.index)
 
 
 if __name__ == "__main__":
