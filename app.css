@@ -1294,3 +1294,109 @@ a{color:inherit;text-decoration:none}
   color:#365b83;
   padding:0 14px;
 }
+
+
+/* PWA install onboarding */
+.install-card{
+  position:relative;
+  margin:0 0 14px;
+  padding:16px;
+  border:1px solid #cfe0f2;
+  border-radius:16px;
+  background:linear-gradient(135deg,#f7fbff 0%,#eef6ff 100%);
+  box-shadow:0 8px 24px rgba(43,124,243,.08);
+}
+.install-card-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-right:26px;
+}
+.install-card-head img{
+  flex:0 0 auto;
+  border-radius:13px;
+  box-shadow:0 4px 12px rgba(23,50,77,.12);
+}
+.install-card-head strong{
+  display:block;
+  color:#183b63;
+  font-size:var(--fs-md);
+  line-height:1.35;
+}
+.install-card-head p{
+  margin:4px 0 0;
+  color:#61758d;
+  font-size:var(--fs-xs);
+  line-height:1.5;
+}
+.install-dismiss{
+  position:absolute;
+  top:8px;
+  right:9px;
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#718297;
+  font-size:22px;
+  line-height:28px;
+}
+.install-primary-btn{
+  width:100%;
+  min-height:44px;
+  margin-top:13px;
+  border:0;
+  border-radius:12px;
+  background:var(--brand);
+  color:#fff;
+  font-size:var(--fs-sm);
+  font-weight:900;
+}
+.install-manual-note{
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:11px;
+  background:#fff;
+  color:#516981;
+  font-size:var(--fs-xs);
+  line-height:1.5;
+}
+.ios-install-steps{
+  display:grid;
+  gap:7px;
+  margin:13px 0 9px;
+}
+.ios-install-steps span{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:34px;
+  padding:7px 10px;
+  border-radius:10px;
+  background:#fff;
+  color:#415d78;
+  font-size:var(--fs-xs);
+  line-height:1.4;
+}
+.ios-install-steps b{
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 22px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#e7f1ff;
+  color:#1f6dd0;
+  font-size:11px;
+}
+.install-card > small{
+  display:block;
+  color:#6a7e94;
+  font-size:11px;
+  line-height:1.45;
+}
+.ios-push-guide{
+  border-color:#cfe0f2;
+  background:#f7fbff;
+}
