@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T22:51:09+09:00",
+  "generatedAt": "2026-09-23T12:23:36+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 49,
@@ -21,10 +21,10 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 2,
-    "cleaneye": 2,
+    "official": 0,
+    "cleaneye": 1,
     "artmore": 0,
-    "ancf": 1,
+    "ancf": 0,
     "lessoninfo-discovery": 16
   },
   "coverageGapCount": 0,
@@ -487,15 +487,15 @@
       "region": "경기",
       "municipality": "광주시",
       "sourceCounts": {
-        "official": 2,
+        "official": 0,
         "cleaneye": 0,
         "artmore": 0,
-        "ancf": 1,
+        "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:guri",
@@ -680,14 +680,14 @@
       "municipality": "오산시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:yongin",
