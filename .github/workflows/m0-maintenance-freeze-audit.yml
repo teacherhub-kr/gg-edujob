@@ -25,3 +25,5 @@ jobs:
         run: python scripts/audit_m0_maintenance_freeze.py
       - name: Verify unattended supervisor safety logic
         run: python -m unittest tests.test_production_supervisor
+      - name: Verify snapshot-bound completeness logic
+        run: python -m unittest tests.test_verify_published_scan_completeness
