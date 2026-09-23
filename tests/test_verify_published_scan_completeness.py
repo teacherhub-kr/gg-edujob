@@ -54,7 +54,7 @@ class PublishedScanCompletenessTests(unittest.TestCase):
         published_ids = {"goe-central:1", "ice-central:10"}
         live_ids = published_ids | {"goe-central:2"}
         published_jobs = {
-            "jobs": [job(x) for x in sorted(published_ids)],
+            "jobs": [job(x) for x in sorted(published_ids)] * 50,
             "sourceReconciliation": {
                 "officialIdCount": 2,
                 "missingAfter": 0,
