@@ -164,6 +164,11 @@ def main():
   browser.close()
  Path("incheon_support_browser_diagnostic.json").write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps(out,ensure_ascii=False))
+ for item in out.get("targets",[]):
+  if item.get("key")=="nambu" and item.get("nambuListSummary"):
+   print("NAMBU_SUMMARY "+json.dumps(item["nambuListSummary"],ensure_ascii=False))
+  if item.get("key")=="seobu" and item.get("seobuSystemCaProbe"):
+   print("SEOBU_SYSTEM_CA "+json.dumps(item["seobuSystemCaProbe"],ensure_ascii=False))
  return 0
 
 if __name__=="__main__":
