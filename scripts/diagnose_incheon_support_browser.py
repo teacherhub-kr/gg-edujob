@@ -182,7 +182,19 @@ def main():
             })
           except Exception:
            pass
-         item["nambuDetailLinkProbe"]={"boardidx":first_idx,"subject":first_subject[:300],"matches":matches[:20]}
+         detail_probe={"boardidx":first_idx,"subject":first_subject[:300],"matches":matches[:20]}
+         try:
+          detail_link=page.locator(f'a.cmsBoardListReadLink[data-boardidx="{first_idx}"]').first
+          if detail_link.count():
+           before_url=page.url
+           detail_link.click(timeout=3000)
+           page.wait_for_timeout(1200)
+           detail_probe["clickBeforeUrl"]=before_url
+           detail_probe["clickAfterUrl"]=page.url
+           detail_probe["clickBodySample"]=clean(page.locator("body").inner_text(timeout=1500))[:1200]
+         except Exception as exc:
+          detail_probe["clickError"]=f"{type(exc).__name__}: {str(exc)[:300]}"
+         item["nambuDetailLinkProbe"]=detail_probe
        except Exception as exc:
         item["nambuDetailLinkProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:300]}"}
       except Exception as exc:
