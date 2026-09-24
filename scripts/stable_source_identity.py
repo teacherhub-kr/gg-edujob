@@ -83,11 +83,15 @@ def canonical_source_id(job) -> str:
             query = parse_qs(parsed.query)
             for key in (
                 "data_idx", "msg_seq", "nttSn", "idx", "seq", "no", "num",
-                "uid", "boardSeq", "board_seq", "serial", "sn",
+                "uid", "boardSeq", "board_seq", "board_idx", "serial", "sn",
             ):
                 value = str((query.get(key) or [""])[0]).strip()
                 if re.fullmatch(r"[A-Za-z0-9_-]{2,80}", value):
                     return f"ice-support:{host}:{key}:{value}"
+            if host == "nambu.ice.go.kr":
+                match = re.search(r"/BO/R/(\d+)/N/N(?:$|/)", parsed.fragment)
+                if match:
+                    return f"ice-support:{host}:boardidx:{match.group(1)}"
             # Legacy support-office boards are not uniform. Once the collector has
             # resolved an exact detail URL, a digest of that permanent URL is a
             # stable source-native identity and is safer than title similarity.

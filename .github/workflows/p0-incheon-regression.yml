@@ -107,18 +107,8 @@ jobs:
           # Use the production collector path as the live contract. A raw HTML/CSS
           # diagnostic probe is intentionally not a merge gate because official sites
           # can vary markup or bot handling while the collector remains healthy.
-          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
-          health=report.get('boardHealth') or []
-          assert report.get('coverageComplete') is True,report
-          assert len(health) == 2,health
-          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
-          assert all(int(x.get('count') or 0) > 0 for x in health),health
-          print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
-          PY
+          # Probe support offices first so a transient central-board outage never
+          # hides support-office diagnostics. Both gates are still mandatory.
           python scripts/collect_incheon_support.py --check-only --lookback-days 14 --max-pages 10
           python - <<'PY'
           import json
@@ -130,4 +120,16 @@ jobs:
               '인천남부교육지원청','인천북부교육지원청','인천동부교육지원청','인천서부교육지원청','인천강화교육지원청'
           },report
           print('five-office live probe ok',[(x.get('name'),x.get('count'),x.get('pagesScanned')) for x in report.get('offices',[])])
+          PY
+          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
+          health=report.get('boardHealth') or []
+          assert report.get('coverageComplete') is True,report
+          assert len(health) == 2,health
+          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
+          assert all(int(x.get('count') or 0) > 0 for x in health),health
+          print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY

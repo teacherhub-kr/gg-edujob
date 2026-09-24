@@ -154,6 +154,16 @@ def fetch(url: str):
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
+
+    # ICE occasionally returns a tiny HTTP-200 placeholder (observed as ~77 bytes)
+    # instead of the recruitment list. Treat that as a transient transport failure,
+    # never as authoritative "zero postings", so the existing bounded fresh-session
+    # retry contract can recover it and still fail closed if retries are exhausted.
+    content_type = (response.headers.get("Content-Type") or "").lower()
+    if "text/html" in content_type and len(response.content or b"") < 256:
+        raise requests.RequestException(
+            f"tiny ICE HTML placeholder: status={response.status_code} bytes={len(response.content or b'')}"
+        )
     return response
 
 
@@ -165,6 +175,9 @@ def fetch_with_one_explicit_retry(url: str):
         except Exception as exc:
             last_error = exc
             if attempt == 0:
+                # A tiny ICE HTTP-200 placeholder can be tied to the current
+                # cookie/connection state. Retry once from a fresh session.
+                reset_session()
                 time.sleep(0.8)
     raise last_error
 
@@ -444,18 +457,25 @@ def scrape_incheon_central(lookback_days: int = 90, max_pages: int = 1000, check
 
 
 def is_transient_all_empty(meta: dict, rows: list) -> bool:
-    """Return True only for the narrow two-board empty-page signature seen in transient ICE responses."""
-    if rows or meta.get("accessError") or meta.get("paginationRepeated"):
+    """Return True only for known whole-network transient empty/placeholder signatures."""
+    if rows or meta.get("paginationRepeated"):
         return False
     health = meta.get("boardHealth") or []
     if len(health) != len(REQUIRED_BOARDS):
         return False
-    return all(
+
+    empty_page = all(
         int(item.get("count") or 0) == 0
         and item.get("stopReason") == "empty-page"
         and not item.get("accessError")
         for item in health
     )
+    tiny_placeholder = all(
+        int(item.get("count") or 0) == 0
+        and "tiny ICE HTML placeholder" in str(item.get("accessError") or "")
+        for item in health
+    )
+    return empty_page or tiny_placeholder
 
 
 def scrape_incheon_with_transient_retry(

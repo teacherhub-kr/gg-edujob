@@ -15,8 +15,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html as html_lib
 import json
 import re
+import shutil
+import subprocess
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -157,12 +160,52 @@ def guess_type(title: str) -> str:
     return "기타"
 
 
-def fetch(url: str):
-    response = SESSION.get(url, timeout=(8, 25), allow_redirects=True)
+def _normalize_response(response):
     response.raise_for_status()
+    content_type = str(response.headers.get("Content-Type") or "").lower()
+    if "text/html" in content_type and len(response.content or b"") < 256:
+        raise requests.RequestException(
+            f"tiny ICE HTML placeholder: status={response.status_code} bytes={len(response.content or b'')}"
+        )
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
     return response
+
+
+def fetch(url: str):
+    return _normalize_response(
+        SESSION.get(url, timeout=(8, 25), allow_redirects=True)
+    )
+
+
+def ganghwa_page_form(page: int) -> dict[str, str]:
+    return {
+        "num": "",
+        "pNum": "",
+        "nNum": "",
+        "ptype": "list",
+        "cmode": "mc",
+        "cstep": "0302000000",
+        "page": str(page),
+        "path_url": "/open/recruiting.asp",
+        "sfield": "",
+        "sword": "",
+    }
+
+
+def fetch_board_page(url: str, office: dict, page: int):
+    host = (urlparse(url).hostname or "").lower()
+    if host == "ganghwa.ice.go.kr" and page > 1:
+        return _normalize_response(
+            SESSION.post(
+                "https://ganghwa.ice.go.kr/open/recruiting.asp",
+                data=ganghwa_page_form(page),
+                headers={"Referer": "https://ganghwa.ice.go.kr/open/recruiting.asp"},
+                timeout=(8, 25),
+                allow_redirects=True,
+            )
+        )
+    return fetch(url)
 
 
 def allowed_host(url: str, office: dict) -> bool:
@@ -228,10 +271,22 @@ def discover_support_boards(office: dict) -> tuple[list[str], list[dict]]:
 def headers_for_table(table) -> list[str]:
     best = []
     for tr in table.find_all("tr"):
-        hs = [clean(x.get_text(" ", strip=True)) for x in tr.find_all("th")]
+        # Legacy ICE boards render semantic headers with visual whitespace
+        # (for example "제 목"). Normalize that presentation whitespace so
+        # schema matching remains exact without broadening the row parser.
+        hs = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("th")]
         if len(hs) > len(best):
             best = hs
-    return best
+    if best:
+        return best
+
+    # Bukbu's legacy list can expose the header row with TD cells instead of
+    # TH cells. Accept it only when it matches a reviewed recruitment schema.
+    for tr in table.find_all("tr"):
+        cells = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in tr.find_all("td", recursive=False)]
+        if len(cells) >= 4 and any(x in {"제목", "자료명"} for x in cells) and any("등록일" in x or "작성일" in x for x in cells):
+            return cells
+    return []
 
 
 def row_values(tr, headers: list[str]) -> dict:
@@ -267,6 +322,41 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
     data_id = clean(anchor.get("data-id"))
     parsed_page = urlparse(page_url)
     query_page = parse_qs(parsed_page.query)
+
+    # Live Bukbu contract (2026-09-21): the list anchor is href="#" and
+    # carries the source-native identity in data-mst/data-idx.
+    if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
+        data_mst = clean(anchor.get("data-mst"))
+        data_idx = clean(anchor.get("data-idx"))
+        # ICE native keys are a two-letter prefix plus a zero-padded numeric
+        # sequence; the live board currently uses 10 digits but older reviewed
+        # fixtures are shorter. Validate the native shape without inventing IDs.
+        if re.fullmatch(r"BM\d{6,}", data_mst, re.I) and re.fullmatch(r"BD\d{6,}", data_idx, re.I):
+            query = {"bbs_mst_idx": data_mst.upper(), "data_idx": data_idx.upper()}
+            menu = clean(anchor.get("data-menu")) or str((query_page.get("menu_idx") or [""])[0])
+            if menu:
+                query["menu_idx"] = menu
+            return urlunparse(
+                (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(query), "")
+            )
+
+    # Bukbu's legacy list can encode the native BD... identity only inside
+    # a javascript/onclick row link. Recover that source-native key rather
+    # than synthesizing an unstable row number.
+    if (parsed_page.hostname or "").lower() == "bukbu.ice.go.kr":
+        raw = " ".join((clean(anchor.get("href")), clean(anchor.get("onclick"))))
+        legacy = re.search(r"\b(BD\d{6,})\b", raw, re.I)
+        if legacy and query_page.get("bbs_mst_idx"):
+            query = {
+                "bbs_mst_idx": query_page["bbs_mst_idx"][0],
+                "data_idx": legacy.group(1).upper(),
+            }
+            if query_page.get("menu_idx"):
+                query["menu_idx"] = query_page["menu_idx"][0]
+            return urlunparse(
+                (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(query), "")
+            )
+
     if data_id and query_page.get("bbs_mst_idx"):
         query = {
             "bbs_mst_idx": query_page["bbs_mst_idx"][0],
@@ -279,6 +369,38 @@ def exact_detail_from_anchor(page_url: str, anchor, office: dict) -> str:
         )
 
     raw = " ".join((href, clean(anchor.get("onclick"))))
+
+    # Live Ganghwa contract (2026-09-22): row links call
+    # act_view('/open/recruiting.asp','4220','view','N','4219').
+    # The second argument is the source-native post number. Preserve the
+    # exact view-state parameters in a canonical URL representation so each
+    # row has a stable identity even though the site itself submits by POST.
+    if (parsed_page.hostname or "").lower() == "ganghwa.ice.go.kr":
+        view = re.search(
+            r"act_view\(\s*['\"]([^'\"]+)['\"]\s*,\s*['\"](\d+)['\"]\s*,\s*['\"]view['\"]\s*,\s*['\"]([^'\"]*)['\"]\s*,\s*['\"]([^'\"]*)['\"]\s*\)",
+            raw,
+            re.I,
+        )
+        if view:
+            target, num, p_num, n_num = view.groups()
+            absolute = urljoin(page_url, target)
+            if allowed_host(absolute, office):
+                parsed = urlparse(absolute)
+                query = {
+                    "num": num,
+                    "ptype": "view",
+                    "cmode": "mc",
+                    "cstep": "0302000000",
+                    "path_url": parsed.path,
+                }
+                if p_num:
+                    query["pNum"] = p_num
+                if n_num:
+                    query["nNum"] = n_num
+                return urlunparse(
+                    (parsed.scheme, parsed.netloc, parsed.path, "", urlencode(query), "")
+                )
+
     quoted = re.findall(r"['\"]([^'\"]+)['\"]", raw)
     for item in quoted:
         if "/" not in item:
@@ -303,20 +425,77 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
 
     for table in soup.find_all("table"):
         hs = headers_for_table(table)
-        if not hs or not any("제목" in h or "공고" in h for h in hs):
+        # Reviewed ICE legacy aliases: Bukbu renders the recruitment title
+        # as "제 목" (normalized to 제목) and some responses label it 자료명.
+        # Do not require a single modern schema; require a known title alias.
+        if not hs or not any(
+            h in {"제목", "자료명"} or "제목" in h or "공고명" in h
+            for h in hs
+        ):
             continue
         for tr in table.find_all("tr"):
             tds = tr.find_all("td", recursive=False)
             if not tds:
                 continue
             values = row_values(tr, hs)
-            anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
+            anchors = list(tr.find_all("a"))
             candidates = []
+            explicit_title = pick(values, "제목", "공고명", "자료명")
             for anchor in anchors:
                 detail = exact_detail_from_anchor(page_url, anchor, office)
-                title = clean(anchor.get("title") or anchor.get_text(" ", strip=True))
+                title = clean(anchor.get("title") or anchor.get_text(" ", strip=True)) or explicit_title
                 if detail and len(title) >= 3:
                     candidates.append((len(title), title, detail))
+
+            # Bukbu's list renders the title as plain table text in some responses
+            # while the native BD... detail identity lives in a row-level onclick.
+            # Keep the source-native identity and use the explicit title column.
+            if not candidates and (urlparse(page_url).hostname or "").lower() == "bukbu.ice.go.kr":
+                raw_row = " ".join(
+                    clean(x)
+                    for x in (
+                        tr.get("onclick"),
+                        tr.get("data-url"),
+                        tr.get("data-href"),
+                        str(tr),
+                    )
+                    if x
+                )
+                title_text = pick(values, "제목", "공고명", "자료명")
+                parsed_page = urlparse(page_url)
+                q = parse_qs(parsed_page.query)
+                bbs = str((q.get("bbs_mst_idx") or [""])[0])
+
+                # Reviewed live Bukbu evidence shows one anchor per data row but
+                # not every response exposes the BD identity as visible row text.
+                # Inspect the row's native link attributes/call arguments for the
+                # source identity; never synthesize an identity from row number.
+                legacy = re.search(r"\b(BD\d{6,})\b", raw_row, re.I)
+                if not legacy:
+                    for anchor in tr.find_all("a"):
+                        native = " ".join(
+                            clean(x)
+                            for x in (
+                                anchor.get("href"),
+                                anchor.get("onclick"),
+                                anchor.get("data-url"),
+                                anchor.get("data-href"),
+                                anchor.get("data-id"),
+                            )
+                            if x
+                        )
+                        legacy = re.search(r"\b(BD\d{6,})\b", native, re.I)
+                        if legacy:
+                            break
+                if legacy and bbs and len(title_text) >= 3:
+                    dq = {"bbs_mst_idx": bbs, "data_idx": legacy.group(1).upper()}
+                    if q.get("menu_idx"):
+                        dq["menu_idx"] = q["menu_idx"][0]
+                    detail = urlunparse(
+                        (parsed_page.scheme, parsed_page.netloc, "/bbs/data/view.do", "", urlencode(dq), "")
+                    )
+                    candidates.append((len(title_text), title_text, detail))
+
             if not candidates:
                 continue
             _, title, detail = max(candidates)
@@ -391,6 +570,326 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
     }
 
 
+
+NAMBU_LIST_URL = "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"
+NAMBU_API_URL = "https://nambu.ice.go.kr/cms/json/board/getFrontBoardList.do"
+NAMBU_BOARD_CONFIG_IDX = "39"
+SEOBU_LIST_URL = "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
+
+
+def nambu_detail_url(boardidx: str) -> str:
+    boardidx = clean(boardidx)
+    if not boardidx.isdigit():
+        return ""
+    return f"https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/{boardidx}/N/N"
+
+
+def parse_nambu_json_rows(items: list[dict], office: dict, lookback_days: int):
+    rows = []
+    raw_rows = 0
+    page_dates = []
+    detail_ids = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        boardidx = clean(item.get("boardidx") or item.get("boardidx2"))
+        title = clean(html_lib.unescape(str(item.get("boardsubject") or "")))
+        registered = date_norm(item.get("boardwdate") or "")
+        if not boardidx or not title:
+            continue
+        raw_rows += 1
+        if registered:
+            page_dates.append(registered)
+        detail = nambu_detail_url(boardidx)
+        if detail:
+            detail_ids.append(detail)
+        if registered and not recent_enough(registered, lookback_days):
+            continue
+        if not detail or EXCLUDE_WORDS.search(title) or not JOB_WORDS.search(title):
+            continue
+        school = school_from_title(title) or office["name"]
+        row = {
+            "id": "ice-support-" + hashlib.sha1(detail.encode("utf-8")).hexdigest()[:20],
+            "province": "인천",
+            "school": school,
+            "title": title,
+            "subject": "",
+            "region": "",
+            "regions": list(office.get("regions") or []),
+            "type": guess_type(title),
+            "schoolLevel": guess_level(school, title),
+            "applyStart": registered,
+            "applyEnd": "",
+            "workStart": "",
+            "workEnd": "",
+            "registered": registered,
+            "headcount": "",
+            "source": office["name"],
+            "checkedSources": [office["name"]],
+            "sourceType": "교육지원청 개별 게시판",
+            "sourceNetwork": "incheon-support",
+            "url": detail,
+            "boardUrl": NAMBU_LIST_URL,
+            "detailLinkResolved": True,
+            "sourceNativeId": boardidx,
+        }
+        sid = canonical_source_id(row)
+        if sid:
+            row["sourceIdentity"] = sid
+        if is_support_population_job(row, as_of=NOW):
+            rows.append(row)
+    return rows, {
+        "rawRows": raw_rows,
+        "pageDates": page_dates,
+        "detailIds": detail_ids,
+    }
+
+
+def crawl_nambu_json(office: dict, lookback_days: int, max_pages: int):
+    all_rows = []
+    seen_ids = set()
+    seen_page_signatures = set()
+    pages_scanned = 0
+    raw_rows_total = 0
+    access_error = ""
+    pagination_repeated = False
+    crossed_lookback = False
+    natural_end = False
+    consecutive_old_pages = 0
+    page_progress = []
+    page_size = 30
+
+    # Establish the official-site session first; the CMS JSON endpoint is the
+    # same first-party data source the public SPA uses.
+    try:
+        SESSION.get(
+            "https://nambu.ice.go.kr/Main.do",
+            timeout=(8, 25),
+            allow_redirects=False,
+        )
+    except Exception:
+        pass
+
+    for page in range(1, max_pages + 1):
+        start = (page - 1) * page_size
+        params = {
+            "boardconfigidx": NAMBU_BOARD_CONFIG_IDX,
+            "startnum": str(start),
+            "limitnum": str(page_size),
+            "searchdatestart": "",
+            "searchdatelast": "",
+            "searchtype": "",
+            "searchtxt": "",
+            "searchtype1": "",
+            "searchtype2": "",
+        }
+        try:
+            response = SESSION.get(
+                NAMBU_API_URL,
+                params=params,
+                headers={
+                    "Referer": NAMBU_LIST_URL,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json, text/javascript, */*; q=0.01",
+                },
+                timeout=(8, 25),
+                allow_redirects=True,
+            )
+            response.raise_for_status()
+            if (urlparse(response.url).hostname or "").lower() != "nambu.ice.go.kr":
+                raise requests.RequestException(f"unexpected Nambu API redirect: {response.url}")
+            payload = response.json()
+            if payload.get("resultState") != "success":
+                raise requests.RequestException(f"Nambu API state={payload.get('resultState')}")
+            items = payload.get("resultData") or []
+            if not isinstance(items, list):
+                raise requests.RequestException("Nambu API resultData is not a list")
+        except Exception as exc:
+            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            break
+
+        pages_scanned += 1
+        parsed_rows, meta = parse_nambu_json_rows(items, office, lookback_days)
+        raw_rows_total += int(meta.get("rawRows") or 0)
+        signature = tuple(meta.get("detailIds") or [])
+        if signature and signature in seen_page_signatures:
+            pagination_repeated = True
+            break
+        if signature:
+            seen_page_signatures.add(signature)
+
+        for row in parsed_rows:
+            sid = canonical_source_id(row) or row.get("id", "")
+            if sid and sid not in seen_ids:
+                seen_ids.add(sid)
+                all_rows.append(row)
+
+        dates = [x for x in meta.get("pageDates", []) if x]
+        page_progress.append({
+            "requestedPage": page,
+            "startnum": start,
+            "rawRows": int(meta.get("rawRows") or 0),
+            "detailIdSample": list(meta.get("detailIds") or [])[:2],
+        })
+        if dates and all(definitely_old(x, lookback_days) for x in dates):
+            consecutive_old_pages += 1
+        else:
+            consecutive_old_pages = 0
+        if consecutive_old_pages >= 2:
+            crossed_lookback = True
+            break
+        if len(items) < page_size:
+            natural_end = True
+            break
+        time.sleep(0.05)
+    else:
+        access_error = f"emergency page ceiling reached: {max_pages}"
+
+    complete = bool(
+        not access_error
+        and not pagination_repeated
+        and (crossed_lookback or natural_end)
+        and raw_rows_total > 0
+    )
+    return all_rows, {
+        "url": NAMBU_LIST_URL,
+        "collector": "nambu-first-party-json",
+        "pagesScanned": pages_scanned,
+        "rawRows": raw_rows_total,
+        "recentRows": len(all_rows),
+        "coverageComplete": complete,
+        "accessError": access_error,
+        "paginationRepeated": pagination_repeated,
+        "crossedLookback": crossed_lookback,
+        "naturalEnd": natural_end,
+        "explicitEmpty": False,
+        "totalRowsHint": None,
+        "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": [],
+        "pagerDiagnostic": {},
+        "pageProgress": page_progress,
+    }
+
+
+def chrome_executable() -> str:
+    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        path = shutil.which(name)
+        if path:
+            return path
+    return ""
+
+
+def fetch_seobu_rendered(url: str) -> str:
+    chrome = chrome_executable()
+    if not chrome:
+        raise RuntimeError("verified browser transport unavailable for Seobu TLS chain")
+    proc = subprocess.run(
+        [
+            chrome,
+            "--headless=new",
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--no-sandbox",
+            "--dump-dom",
+            url,
+        ],
+        capture_output=True,
+        text=True,
+        timeout=50,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"Seobu browser transport failed rc={proc.returncode}: {clean(proc.stderr)[:180]}")
+    rendered = str(proc.stdout or "")
+    if len(rendered) < 1000 or "board_code=4674" not in rendered:
+        raise RuntimeError(f"Seobu browser transport returned incomplete DOM bytes={len(rendered)}")
+    return rendered
+
+
+def crawl_seobu_browser(office: dict, lookback_days: int, max_pages: int):
+    all_rows = []
+    seen_ids = set()
+    seen_page_signatures = set()
+    pages_scanned = 0
+    raw_rows_total = 0
+    access_error = ""
+    pagination_repeated = False
+    crossed_lookback = False
+    natural_end = False
+    consecutive_old_pages = 0
+    page_progress = []
+
+    for page in range(1, max_pages + 1):
+        current = query_page(SEOBU_LIST_URL, "page", page)
+        try:
+            rendered = fetch_seobu_rendered(current)
+        except Exception as exc:
+            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            break
+
+        parsed_rows, meta = parse_support_page(rendered, current, office, lookback_days)
+        pages_scanned += 1
+        raw_rows_total += int(meta.get("rawRows") or 0)
+        signature = tuple(meta.get("detailIds") or [])
+        if signature and signature in seen_page_signatures:
+            pagination_repeated = True
+            break
+        if signature:
+            seen_page_signatures.add(signature)
+
+        for row in parsed_rows:
+            sid = canonical_source_id(row) or row.get("id", "")
+            if sid and sid not in seen_ids:
+                seen_ids.add(sid)
+                all_rows.append(row)
+
+        dates = [x for x in meta.get("pageDates", []) if x]
+        page_progress.append({
+            "requestedPage": page,
+            "rawRows": int(meta.get("rawRows") or 0),
+            "detailIdSample": list(meta.get("detailIds") or [])[:2],
+        })
+        if dates and all(definitely_old(x, lookback_days) for x in dates):
+            consecutive_old_pages += 1
+        else:
+            consecutive_old_pages = 0
+        if consecutive_old_pages >= 2:
+            crossed_lookback = True
+            break
+
+        nxt = next_page_url(meta["soup"], current, page, office)
+        if not nxt:
+            natural_end = True
+            break
+        time.sleep(0.05)
+    else:
+        access_error = f"emergency page ceiling reached: {max_pages}"
+
+    complete = bool(
+        not access_error
+        and not pagination_repeated
+        and (crossed_lookback or natural_end)
+        and raw_rows_total > 0
+    )
+    return all_rows, {
+        "url": SEOBU_LIST_URL,
+        "collector": "seobu-verified-headless-chrome",
+        "pagesScanned": pages_scanned,
+        "rawRows": raw_rows_total,
+        "recentRows": len(all_rows),
+        "coverageComplete": complete,
+        "accessError": access_error,
+        "paginationRepeated": pagination_repeated,
+        "crossedLookback": crossed_lookback,
+        "naturalEnd": natural_end,
+        "explicitEmpty": False,
+        "totalRowsHint": None,
+        "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": [],
+        "pagerDiagnostic": {},
+        "pageProgress": page_progress,
+    }
+
+
 def query_page(url: str, key: str, page: int) -> str:
     parsed = urlparse(url)
     q = parse_qs(parsed.query, keep_blank_values=True)
@@ -402,9 +901,15 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     # Reviewed stable pagination contracts first.
     host = (urlparse(current_url).hostname or "").lower()
     if host == "bukbu.ice.go.kr":
+        # The live Bukbu list exposes pageIndex in its canonical list URL.
         return query_page(current_url, "pageIndex", page + 1)
     if host == "dongbu.ice.go.kr":
         return f"https://dongbu.ice.go.kr/bbs/bbsMsgList.do?bcd=job_offer&pgno={page + 1}"
+    if host == "ganghwa.ice.go.kr":
+        # Reviewed live contract: act_page() submits boardForm as POST with
+        # ptype=list and page=N to /open/recruiting.asp. Keep the canonical
+        # board URL here; fetch_board_page() performs that POST for page > 1.
+        return "https://ganghwa.ice.go.kr/open/recruiting.asp"
 
     wanted = str(page + 1)
     for anchor in soup.find_all("a", href=True):
@@ -432,6 +937,119 @@ def next_page_url(soup, current_url: str, page: int, office: dict) -> str:
     return ""
 
 
+def schema_diagnostic(html: str, page_url: str) -> list[dict]:
+    """Return bounded structural evidence only; never emit recruitment content."""
+    soup = BeautifulSoup(html, "html.parser")
+    out = []
+    for table in soup.find_all("table")[:8]:
+        th = [re.sub(r"\s+", "", clean(x.get_text(" ", strip=True))) for x in table.find_all("th")]
+        rows = []
+        for tr in table.find_all("tr")[:3]:
+            cells = tr.find_all(["th", "td"], recursive=False)
+            rows.append({
+                "cellCount": len(cells),
+                "tags": [c.name for c in cells],
+                "classes": [clean(" ".join(c.get("class") or [])) for c in cells],
+                "anchorCount": len(tr.find_all("a")),
+                "anchorShapes": [
+                    {
+                        "href": clean(a.get("href"))[:160],
+                        "onclick": clean(a.get("onclick"))[:160],
+                        "dataId": clean(a.get("data-id"))[:80],
+                        "attrs": {
+                            str(k): clean(v if isinstance(v, str) else " ".join(v))[:160]
+                            for k, v in a.attrs.items()
+                            if str(k).lower() not in {"class", "style", "title"}
+                        },
+                        "parentAttrs": {
+                            str(k): clean(v if isinstance(v, str) else " ".join(v))[:160]
+                            for k, v in (a.parent.attrs if a.parent else {}).items()
+                            if str(k).lower() not in {"class", "style"}
+                        },
+                    }
+                    for a in tr.find_all("a")[:2]
+                ],
+                "hasBDIdentity": bool(re.search(r"\bBD\d{6,}\b", str(tr), re.I)),
+            })
+        out.append({"page": page_url, "headers": th[:12], "rows": rows})
+    return out
+
+
+def pager_diagnostic(html: str) -> dict:
+    """Bounded structural pager evidence only; never emit recruitment content."""
+    soup = BeautifulSoup(html, "html.parser")
+    anchors = []
+    for a in soup.find_all("a")[-40:]:
+        label = clean(a.get_text(" ", strip=True))
+        href = clean(a.get("href"))
+        onclick = clean(a.get("onclick"))
+        if not (label.isdigit() or label.lower() in PAGER_WORDS or onclick or "page" in href.lower()):
+            continue
+        attrs = {
+            str(k): clean(v)
+            for k, v in a.attrs.items()
+            if str(k).lower() not in {"class", "style", "title"} and k not in {"href", "onclick"}
+        }
+        anchors.append({"label": label[:24], "href": href[:240], "onclick": onclick[:240], "attrs": attrs})
+        if len(anchors) >= 16:
+            break
+    forms = []
+    for form in soup.find_all("form")[:6]:
+        names = []
+        for inp in form.find_all(["input", "select"]):
+            name = clean(inp.get("name"))
+            if name and name not in names:
+                names.append(name)
+        control_values = {}
+        for inp in form.find_all(["input", "select"]):
+            name = clean(inp.get("name"))
+            if name in {"num", "pNum", "nNum", "ptype", "cmode", "cstep", "page", "path_url"}:
+                control_values[name] = clean(inp.get("value"))[:120]
+        forms.append({
+            "name": clean(form.get("name"))[:80],
+            "id": clean(form.get("id"))[:80],
+            "action": clean(form.get("action"))[:240],
+            "method": clean(form.get("method"))[:16],
+            "fieldNames": names[:24],
+            "controlValues": control_values,
+        })
+    script_evidence = []
+    script_sources = []
+    for script in soup.find_all("script"):
+        src = clean(script.get("src"))
+        if src:
+            script_sources.append(src[:240])
+        raw = str(script.string or script.get_text(" ", strip=False) or "")
+        pos = raw.find("act_page")
+        if pos >= 0:
+            script_evidence.append(re.sub(r"\\s+", " ", raw[max(0, pos - 180):pos + 700]).strip())
+            if len(script_evidence) >= 3:
+                break
+    external_script_evidence = []
+    for src in script_sources[:12]:
+        if "board_action_control.js" not in src:
+            continue
+        try:
+            absolute = urljoin("https://ganghwa.ice.go.kr/open/recruiting.asp", src)
+            response = SESSION.get(absolute, timeout=20)
+            response.raise_for_status()
+            raw = response.text
+            pos = raw.find("act_page")
+            if pos >= 0:
+                external_script_evidence.append(
+                    re.sub(r"\s+", " ", raw[max(0, pos - 220):pos + 900]).strip()
+                )
+        except Exception as exc:
+            external_script_evidence.append(f"fetch-error:{type(exc).__name__}:{str(exc)[:120]}")
+    return {
+        "anchors": anchors,
+        "forms": forms,
+        "scriptEvidence": script_evidence,
+        "scriptSources": script_sources[:24],
+        "externalScriptEvidence": external_script_evidence[:3],
+    }
+
+
 def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int):
     all_rows = []
     seen_ids = set()
@@ -446,10 +1064,13 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
     total_rows_hint = None
     current = board_url
     consecutive_old_pages = 0
+    diagnostic = []
+    pager_diagnostic_data = {}
+    page_progress = []
 
     for page in range(1, max_pages + 1):
         try:
-            response = fetch(current)
+            response = fetch_board_page(current, office, page)
         except Exception as exc:
             access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
             break
@@ -458,6 +1079,28 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
             break
 
         parsed_rows, meta = parse_support_page(response.text, response.url, office, lookback_days)
+        response_host = (urlparse(response.url).hostname or "").lower()
+        if response_host == "ganghwa.ice.go.kr":
+            board_form = BeautifulSoup(response.text, "html.parser").find("form", attrs={"name": "boardForm"})
+            observed_page = ""
+            if board_form is not None:
+                page_input = board_form.find(attrs={"name": "page"})
+                observed_page = clean(page_input.get("value")) if page_input is not None else ""
+            page_progress.append({
+                "requestedPage": page,
+                "requestMethod": clean(getattr(getattr(response, "request", None), "method", "")),
+                "finalUrl": clean(response.url)[:240],
+                "redirectStatuses": [int(x.status_code) for x in list(response.history or [])[:6]],
+                "observedPage": observed_page,
+                "detailIdSample": list(meta.get("detailIds") or [])[:2],
+            })
+        if page == 1:
+            host = (urlparse(response.url).hostname or "").lower()
+            if host == "bukbu.ice.go.kr":
+                diagnostic = schema_diagnostic(response.text, response.url)
+            elif host == "ganghwa.ice.go.kr":
+                diagnostic = schema_diagnostic(response.text, response.url)
+                pager_diagnostic_data = pager_diagnostic(response.text)
         pages_scanned += 1
         raw_rows_total += int(meta.get("rawRows") or 0)
         explicit_empty = explicit_empty or bool(meta.get("explicitEmpty"))
@@ -516,30 +1159,75 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
         "explicitEmpty": explicit_empty,
         "totalRowsHint": total_rows_hint,
         "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": diagnostic,
+        "pagerDiagnostic": pager_diagnostic_data,
+        "pageProgress": page_progress,
     }
 
 
 def crawl_office(office: dict, lookback_days: int, max_pages: int):
+    office_key = str(office.get("key") or "")
     candidates, discovery = discover_support_boards(office)
-    attempts = []
-    for board in candidates:
-        rows, meta = crawl_board(board, office, lookback_days, max_pages)
-        attempts.append((rows, meta))
+    if office_key == "nambu":
+        rows, meta = crawl_nambu_json(office, lookback_days, max_pages)
+        candidates = [NAMBU_LIST_URL]
+        attempts = [(rows, meta)]
         if meta.get("coverageComplete"):
             return rows, {
                 "name": office["name"],
                 "url": office.get("url", ""),
-                "boards": [board],
+                "boards": candidates,
                 "count": len(rows),
                 "rawRows": int(meta.get("rawRows") or 0),
                 "pagesScanned": int(meta.get("pagesScanned") or 0),
                 "ok": True,
-                "state": "complete" if rows else "empty",
-                "message": f"최근 {lookback_days}일 범위 공식 채용게시판 완전수집",
+                "state": "complete",
+                "message": f"최근 {lookback_days}일 범위 공식 CMS 구인정보 완전수집",
                 "coverageComplete": True,
                 "boardHealth": [meta],
                 "discoveryEvidence": discovery,
             }
+    elif office_key == "seobu":
+        rows, meta = crawl_seobu_browser(office, lookback_days, max_pages)
+        candidates = [SEOBU_LIST_URL]
+        attempts = [(rows, meta)]
+        if meta.get("coverageComplete"):
+            return rows, {
+                "name": office["name"],
+                "url": office.get("url", ""),
+                "boards": candidates,
+                "count": len(rows),
+                "rawRows": int(meta.get("rawRows") or 0),
+                "pagesScanned": int(meta.get("pagesScanned") or 0),
+                "ok": True,
+                "state": "complete",
+                "message": f"최근 {lookback_days}일 범위 공식 구인게시판 완전수집",
+                "coverageComplete": True,
+                "boardHealth": [meta],
+                "discoveryEvidence": discovery,
+            }
+    else:
+        attempts = []
+
+    if office_key not in {"nambu", "seobu"}:
+        for board in candidates:
+            rows, meta = crawl_board(board, office, lookback_days, max_pages)
+            attempts.append((rows, meta))
+            if meta.get("coverageComplete"):
+                return rows, {
+                    "name": office["name"],
+                    "url": office.get("url", ""),
+                    "boards": [board],
+                    "count": len(rows),
+                    "rawRows": int(meta.get("rawRows") or 0),
+                    "pagesScanned": int(meta.get("pagesScanned") or 0),
+                    "ok": True,
+                    "state": "complete" if rows else "empty",
+                    "message": f"최근 {lookback_days}일 범위 공식 채용게시판 완전수집",
+                    "coverageComplete": True,
+                    "boardHealth": [meta],
+                    "discoveryEvidence": discovery,
+                }
 
     metas = [meta for _rows, meta in attempts]
     reason = "공식 채용 게시판을 발견하지 못함" if not candidates else "공식 채용 게시판 완전수집을 증명하지 못함"
@@ -708,6 +1396,32 @@ def main() -> int:
     incomplete = [item["status"]["name"] for item in results if not item["status"].get("coverageComplete")]
     if incomplete:
         report = write_report(results, 0, 0, args.lookback_days, merged=False)
+        for item in results:
+            status = item["status"]
+            if status.get("coverageComplete"):
+                continue
+            compact = {
+                "name": status.get("name"),
+                "boards": status.get("boards"),
+                "pagesScanned": status.get("pagesScanned"),
+                "rawRows": status.get("rawRows"),
+                "boardHealth": [
+                    {
+                        "url": meta.get("url"),
+                        "pagesScanned": meta.get("pagesScanned"),
+                        "rawRows": meta.get("rawRows"),
+                        "coverageComplete": meta.get("coverageComplete"),
+                        "accessError": meta.get("accessError"),
+                        "crossedLookback": meta.get("crossedLookback"),
+                        "naturalEnd": meta.get("naturalEnd"),
+                        "schemaDiagnostic": meta.get("schemaDiagnostic"),
+                        "pagerDiagnostic": meta.get("pagerDiagnostic"),
+                        "pageProgress": meta.get("pageProgress"),
+                    }
+                    for meta in status.get("boardHealth", [])
+                ],
+            }
+            print("INCOMPLETE_OFFICE " + json.dumps(compact, ensure_ascii=False))
         raise SystemExit(
             "Incheon support-office coverage incomplete: "
             + ", ".join(incomplete)

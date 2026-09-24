@@ -84,6 +84,132 @@ class IncheonSupportOfficeTests(unittest.TestCase):
         )
         self.assertTrue(rows[0]["detailLinkResolved"])
 
+    def test_bukbu_textless_anchor_uses_native_data_identity(self):
+        html = """
+        <html><body>
+        <table>
+          <tr><th>번호</th><th>기관명</th><th>제 목</th><th>등록일</th><th>마감일</th><th>조회수</th></tr>
+          <tr>
+            <td class="num">1</td>
+            <td class="subject">테스트중학교</td>
+            <td class="subject"><a href="#" data-mst="BM0000000049" data-idx="BD0000008175"></a>기간제교원 채용 공고(음악)</td>
+            <td class="date">2026-09-21</td><td>2026-09-25</td><td class="hit">3</td>
+          </tr>
+        </table>
+        </body></html>
+        """
+        office = {
+            "name": "인천북부교육지원청",
+            "url": "https://bukbu.ice.go.kr/",
+            "allowedHosts": ["bukbu.ice.go.kr"],
+            "regions": [],
+        }
+        rows, meta = support.parse_support_page(
+            html,
+            "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
+            office,
+            90,
+        )
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(
+            rows[0]["url"],
+            "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008175&menu_idx=86",
+        )
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:bukbu.ice.go.kr:data_idx:BD0000008175",
+        )
+
+    def test_ganghwa_act_view_keeps_native_num_identity(self):
+        html = """
+        <html><body>
+        <table>
+          <tr><th>번호</th><th>제목</th><th>소속기관</th><th>마감일자</th><th>작성일</th><th>조회수</th></tr>
+          <tr>
+            <td>4220</td>
+            <td><a href="javascript:act_view('/open/recruiting.asp','4220','view','N','4219');">기간제교원 채용 공고(음악)</a></td>
+            <td>강화중학교</td><td>2026-09-30</td><td>26.09.22</td><td>10</td>
+          </tr>
+        </table>
+        </body></html>
+        """
+        office = {
+            "name": "인천강화교육지원청",
+            "url": "https://ganghwa.ice.go.kr/",
+            "allowedHosts": ["ganghwa.ice.go.kr"],
+            "regions": [],
+        }
+        rows, meta = support.parse_support_page(
+            html,
+            "https://ganghwa.ice.go.kr/open/recruiting.asp",
+            office,
+            90,
+        )
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertIn("num=4220", rows[0]["url"])
+        self.assertIn("ptype=view", rows[0]["url"])
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:ganghwa.ice.go.kr:num:4220",
+        )
+
+    def test_nambu_json_contract_keeps_boardidx_and_exact_spa_detail(self):
+        office = {
+            "key": "nambu",
+            "name": "인천남부교육지원청",
+            "url": "https://nambu.ice.go.kr/Main.do",
+            "regions": [],
+        }
+        items = [{
+            "boardconfigidx": "39",
+            "boardidx": "49535",
+            "boardsubject": "인천하늘초등학교 학교폭력 책임교사 수업시수 경감을 위한 수업 전담 강사 채용 공고",
+            "boardwdate": "2026-09-23 16:15:23.0",
+        }]
+        rows, meta = support.parse_nambu_json_rows(items, office, 90)
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["school"], "인천하늘초등학교")
+        self.assertEqual(
+            rows[0]["url"],
+            "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49535/N/N",
+        )
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:nambu.ice.go.kr:boardidx:49535",
+        )
+
+    def test_seobu_native_board_idx_identity(self):
+        row = {
+            "province": "인천",
+            "sourceType": "교육지원청 개별 게시판",
+            "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_code=4674&board_idx=159256",
+        }
+        self.assertEqual(
+            canonical_source_id(row),
+            "ice-support:seobu.ice.go.kr:board_idx:159256",
+        )
+
+    def test_seobu_board_is_pinned_in_registry(self):
+        data = json.loads(Path("sources.json").read_text(encoding="utf-8"))
+        office = next(x for x in data["incheon"]["supportOffices"] if x["key"] == "seobu")
+        self.assertEqual(
+            office["boardUrls"],
+            ["https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"],
+        )
+        self.assertFalse(office["autoDiscover"])
+
+    def test_nambu_board_is_pinned_in_registry(self):
+        data = json.loads(Path("sources.json").read_text(encoding="utf-8"))
+        office = next(x for x in data["incheon"]["supportOffices"] if x["key"] == "nambu")
+        self.assertEqual(
+            office["boardUrls"],
+            ["https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"],
+        )
+        self.assertFalse(office["autoDiscover"])
+
     def test_cross_source_duplicate_keeps_support_identity(self):
         central = {
             "province": "인천",
