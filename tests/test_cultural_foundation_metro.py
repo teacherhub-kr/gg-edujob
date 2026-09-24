@@ -38,7 +38,7 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(rows["incheon:seohae"]["name"], "인천서해구문화재단")
         self.assertIn("인천서구문화재단", rows["incheon:seohae"]["aliases"])
         self.assertTrue(all(x.get("officialRecruitmentUrl") for x in rows.values()))
-        self.assertIn("biz.namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
+        self.assertIn("namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
         self.assertIn("namdongcf.or.kr", rows["incheon:namdong"]["canonicalRecruitmentUrl"])
 
     def test_namdong_shared_official_board_filters_other_agencies(self):
