@@ -103,6 +103,22 @@ def main():
        item["seobuChromeProbe"]={"returncode":cp.returncode,"stdoutLength":len(cp.stdout),"hasRecruitBoard":("board_code=4674" in cp.stdout and "구인" in cp.stdout),"stderr":clean(cp.stderr)[:1200]}
       except Exception as exc:
        item["seobuChromeProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:500]}"}
+      try:
+       sys_browser=pw.chromium.launch(executable_path=chrome,headless=True,args=["--no-sandbox"])
+       sys_page=sys_browser.new_page(locale="ko-KR")
+       sys_resp=sys_page.goto("https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",wait_until="domcontentloaded",timeout=45000)
+       sys_page.wait_for_timeout(1200)
+       sys_body=clean(sys_page.locator("body").inner_text(timeout=3000))
+       item["seobuSystemChromePlaywright"]={
+        "status":sys_resp.status if sys_resp else 0,
+        "url":sys_page.url,
+        "bodyLength":len(sys_body),
+        "hasRecruitment":("구인" in sys_body and "채용" in sys_body),
+        "rowCount":sys_page.locator('a[href*="read.aspx?board_code=4674"]').count()
+       }
+       sys_browser.close()
+      except Exception as exc:
+       item["seobuSystemChromePlaywright"]={"error":f"{type(exc).__name__}: {str(exc)[:500]}"}
      try:
       direct_url="https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       direct=page.goto(direct_url,wait_until="domcontentloaded",timeout=60000)
@@ -194,6 +210,26 @@ def main():
            detail_probe["clickBodySample"]=clean(page.locator("body").inner_text(timeout=1500))[:1200]
          except Exception as exc:
           detail_probe["clickError"]=f"{type(exc).__name__}: {str(exc)[:300]}"
+         detail_net=[]
+         try:
+          def detail_record(resp):
+           u=str(resp.url or "")
+           if "board" in u.lower() or "content" in u.lower() or "json" in u.lower():
+            detail_net.append({"url":u,"status":resp.status,"contentType":resp.headers.get("content-type","")})
+          page.on("response",detail_record)
+          detail_link=page.locator(f'a.cmsBoardListReadLink[data-boardidx="{first_idx}"]').first
+          if not detail_link.count():
+           detail_link=page.get_by_text(first_subject,exact=True).first
+          if detail_link.count():
+           before_url=page.url
+           detail_link.click(timeout=5000)
+           page.wait_for_timeout(1800)
+           detail_probe["rowClickBeforeUrl"]=before_url
+           detail_probe["rowClickAfterUrl"]=page.url
+           detail_probe["rowClickNetwork"]=list({x["url"]:x for x in detail_net}.values())[-80:]
+          page.remove_listener("response",detail_record)
+         except Exception as exc:
+          detail_probe["rowClickError"]=f"{type(exc).__name__}: {str(exc)[:300]}"
          item["nambuDetailLinkProbe"]=detail_probe
        except Exception as exc:
         item["nambuDetailLinkProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:300]}"}
@@ -218,7 +254,7 @@ def main():
   if item.get("key")=="seobu":
    if item.get("seobuSystemCaProbe"):
     print("SEOBU_SYSTEM_CA "+json.dumps(item["seobuSystemCaProbe"],ensure_ascii=False))
-   print("SEOBU_CHROME "+json.dumps({"executable":item.get("chromeExecutable"),"probe":item.get("seobuChromeProbe"),"directStatus":item.get("seobuDirectStatus"),"directUrl":item.get("seobuDirectUrl"),"rows":item.get("seobuRowLinks",[])[:8],"pager":item.get("seobuPagerAnchors",[])[:20]},ensure_ascii=False))
+   print("SEOBU_CHROME "+json.dumps({"executable":item.get("chromeExecutable"),"probe":item.get("seobuChromeProbe"),"playwright":item.get("seobuSystemChromePlaywright"),"directStatus":item.get("seobuDirectStatus"),"directUrl":item.get("seobuDirectUrl"),"rows":item.get("seobuRowLinks",[])[:8],"pager":item.get("seobuPagerAnchors",[])[:20]},ensure_ascii=False))
  return 0
 
 if __name__=="__main__":
