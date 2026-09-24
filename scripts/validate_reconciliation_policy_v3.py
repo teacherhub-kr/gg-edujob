@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the existing reconciliation guard under the three-region/39-source policy.
+"""Run the existing reconciliation guard under the three-region/44-source policy.
 
 The first deployment legitimately adds a new official region to a baseline that had zero Incheon
 rows. Keep the legacy 10% shape guard for Seoul/Gyeonggi, and widen only the total-growth allowance
@@ -10,7 +10,7 @@ from pathlib import Path
 
 import validate_reconciliation_policy as base
 
-base.POLICY = "stable-id-39-v3-metro-central-90d"
+base.POLICY = "stable-id-44-v4-metro-support-90d"
 
 
 def _jobs(path):
