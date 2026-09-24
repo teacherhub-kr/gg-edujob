@@ -4,9 +4,9 @@
 Incheon has one metropolitan-office logical source backed by two mandatory citywide boards, plus
 five education support offices: Nambu, Bukbu, Dongbu, Seobu and Ganghwa.
 
-Nambu remains discovery-only until its CMS JSON board contract is fully proven. Seobu's official
-recruitment list is independently verified at /bseobu/list.aspx?board_code=4674. We intentionally
-do not invent guessed URLs; unproven offices remain fail-closed.
+Nambu uses the official first-party CMS JobInformation board (boardconfigidx=39) rendered at
+/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0. Seobu uses the independently verified official
+/bseobu/list.aspx?board_code=4674 recruitment board. Both retain exact source-native detail IDs.
 """
 from __future__ import annotations
 
@@ -25,8 +25,8 @@ SUPPORT_OFFICES = [
         "name": "인천남부교육지원청",
         "url": "https://nambu.ice.go.kr/Main.do",
         "allowedHosts": ["nambu.ice.go.kr", "nambuice.go.kr"],
-        "boardUrls": [],
-        "autoDiscover": True,
+        "boardUrls": ["https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"],
+        "autoDiscover": False,
     },
     {
         "key": "bukbu",
