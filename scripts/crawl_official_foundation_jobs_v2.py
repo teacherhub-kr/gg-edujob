@@ -67,6 +67,7 @@ GENERIC_OFFICIAL_HOSTS={
     "ysfac.or.kr","www.ysfac.or.kr",
     "bpcf.or.kr","www.bpcf.or.kr",
     "namdongcf.or.kr","www.namdongcf.or.kr",
+    "biz.namdong.go.kr","namdong.go.kr","www.namdong.go.kr",
     "seohae.go.kr","www.seohae.go.kr","isel.seo.incheon.kr",
     "naruart.or.kr","www.naruart.or.kr",
     "idfac.or.kr","www.idfac.or.kr",
@@ -94,6 +95,14 @@ def container_text(anchor)->str:
             return text[:1800]
         node=node.parent
     return base.normalize_space(anchor.get_text(" ",strip=True))
+
+
+def candidate_belongs_to_foundation(foundation,text:str)->bool:
+    if str(foundation.get("id") or "")!="incheon:namdong":
+        return True
+    haystack=base.normalize_space(text).replace(" ","")
+    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
+    return any(base.normalize_space(x).replace(" ","") in haystack for x in aliases if base.normalize_space(x))
 
 
 def detail_identity(url:str)->str:
@@ -133,6 +142,8 @@ def list_detail_candidates(session,foundation,board_url):
         if absolute.rstrip("/")==r.url.rstrip("/"):
             continue
         context=container_text(a)
+        if not candidate_belongs_to_foundation(foundation,title+" "+context):
+            continue
         reg=base.parse_date_text(context)
         if reg:
             dated_list_rows+=1
@@ -193,7 +204,7 @@ def generic_official_rows(session,foundation,board_url):
                 "detailUrl":detail.url,
                 "boardUrl":board_response.url,
                 "detailLinkVerified":True,
-                "detailLinkReason":"official-foundation-exact-detail",
+                "detailLinkReason":"official-local-government-exact-detail" if fid in {"incheon:seohae","incheon:namdong"} else "official-foundation-exact-detail",
                 "transportVerified":True,
             })
         except Exception as exc:
@@ -203,8 +214,11 @@ def generic_official_rows(session,foundation,board_url):
     board_text=base.normalize_space(soup.get_text(" ",strip=True))
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
     identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in board_text.replace(" ","") for x in aliases)
-    if str(foundation.get("id") or "")=="incheon:seohae":
+    fid=str(foundation.get("id") or "")
+    if fid=="incheon:seohae":
         identity_ok=identity_ok or "채용소식" in board_text
+    if fid=="incheon:namdong":
+        identity_ok=identity_ok or ("타기관" in board_text and ("채용" in board_text or "공고" in board_text))
     if not identity_ok:
         raise RuntimeError("official board did not prove foundation/local-government identity")
     return jobs,{
