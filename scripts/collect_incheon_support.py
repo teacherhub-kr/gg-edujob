@@ -15,8 +15,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html as html_lib
 import json
 import re
+import shutil
+import subprocess
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -567,6 +570,326 @@ def parse_support_page(html: str, page_url: str, office: dict, lookback_days: in
     }
 
 
+
+NAMBU_LIST_URL = "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"
+NAMBU_API_URL = "https://nambu.ice.go.kr/cms/json/board/getFrontBoardList.do"
+NAMBU_BOARD_CONFIG_IDX = "39"
+SEOBU_LIST_URL = "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
+
+
+def nambu_detail_url(boardidx: str) -> str:
+    boardidx = clean(boardidx)
+    if not boardidx.isdigit():
+        return ""
+    return f"https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/{boardidx}/N/N"
+
+
+def parse_nambu_json_rows(items: list[dict], office: dict, lookback_days: int):
+    rows = []
+    raw_rows = 0
+    page_dates = []
+    detail_ids = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        boardidx = clean(item.get("boardidx") or item.get("boardidx2"))
+        title = clean(html_lib.unescape(str(item.get("boardsubject") or "")))
+        registered = date_norm(item.get("boardwdate") or "")
+        if not boardidx or not title:
+            continue
+        raw_rows += 1
+        if registered:
+            page_dates.append(registered)
+        detail = nambu_detail_url(boardidx)
+        if detail:
+            detail_ids.append(detail)
+        if registered and not recent_enough(registered, lookback_days):
+            continue
+        if not detail or EXCLUDE_WORDS.search(title) or not JOB_WORDS.search(title):
+            continue
+        school = school_from_title(title) or office["name"]
+        row = {
+            "id": "ice-support-" + hashlib.sha1(detail.encode("utf-8")).hexdigest()[:20],
+            "province": "인천",
+            "school": school,
+            "title": title,
+            "subject": "",
+            "region": "",
+            "regions": list(office.get("regions") or []),
+            "type": guess_type(title),
+            "schoolLevel": guess_level(school, title),
+            "applyStart": registered,
+            "applyEnd": "",
+            "workStart": "",
+            "workEnd": "",
+            "registered": registered,
+            "headcount": "",
+            "source": office["name"],
+            "checkedSources": [office["name"]],
+            "sourceType": "교육지원청 개별 게시판",
+            "sourceNetwork": "incheon-support",
+            "url": detail,
+            "boardUrl": NAMBU_LIST_URL,
+            "detailLinkResolved": True,
+            "sourceNativeId": boardidx,
+        }
+        sid = canonical_source_id(row)
+        if sid:
+            row["sourceIdentity"] = sid
+        if is_support_population_job(row, as_of=NOW):
+            rows.append(row)
+    return rows, {
+        "rawRows": raw_rows,
+        "pageDates": page_dates,
+        "detailIds": detail_ids,
+    }
+
+
+def crawl_nambu_json(office: dict, lookback_days: int, max_pages: int):
+    all_rows = []
+    seen_ids = set()
+    seen_page_signatures = set()
+    pages_scanned = 0
+    raw_rows_total = 0
+    access_error = ""
+    pagination_repeated = False
+    crossed_lookback = False
+    natural_end = False
+    consecutive_old_pages = 0
+    page_progress = []
+    page_size = 30
+
+    # Establish the official-site session first; the CMS JSON endpoint is the
+    # same first-party data source the public SPA uses.
+    try:
+        SESSION.get(
+            "https://nambu.ice.go.kr/Main.do",
+            timeout=(8, 25),
+            allow_redirects=False,
+        )
+    except Exception:
+        pass
+
+    for page in range(1, max_pages + 1):
+        start = (page - 1) * page_size
+        params = {
+            "boardconfigidx": NAMBU_BOARD_CONFIG_IDX,
+            "startnum": str(start),
+            "limitnum": str(page_size),
+            "searchdatestart": "",
+            "searchdatelast": "",
+            "searchtype": "",
+            "searchtxt": "",
+            "searchtype1": "",
+            "searchtype2": "",
+        }
+        try:
+            response = SESSION.get(
+                NAMBU_API_URL,
+                params=params,
+                headers={
+                    "Referer": NAMBU_LIST_URL,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json, text/javascript, */*; q=0.01",
+                },
+                timeout=(8, 25),
+                allow_redirects=True,
+            )
+            response.raise_for_status()
+            if (urlparse(response.url).hostname or "").lower() != "nambu.ice.go.kr":
+                raise requests.RequestException(f"unexpected Nambu API redirect: {response.url}")
+            payload = response.json()
+            if payload.get("resultState") != "success":
+                raise requests.RequestException(f"Nambu API state={payload.get('resultState')}")
+            items = payload.get("resultData") or []
+            if not isinstance(items, list):
+                raise requests.RequestException("Nambu API resultData is not a list")
+        except Exception as exc:
+            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            break
+
+        pages_scanned += 1
+        parsed_rows, meta = parse_nambu_json_rows(items, office, lookback_days)
+        raw_rows_total += int(meta.get("rawRows") or 0)
+        signature = tuple(meta.get("detailIds") or [])
+        if signature and signature in seen_page_signatures:
+            pagination_repeated = True
+            break
+        if signature:
+            seen_page_signatures.add(signature)
+
+        for row in parsed_rows:
+            sid = canonical_source_id(row) or row.get("id", "")
+            if sid and sid not in seen_ids:
+                seen_ids.add(sid)
+                all_rows.append(row)
+
+        dates = [x for x in meta.get("pageDates", []) if x]
+        page_progress.append({
+            "requestedPage": page,
+            "startnum": start,
+            "rawRows": int(meta.get("rawRows") or 0),
+            "detailIdSample": list(meta.get("detailIds") or [])[:2],
+        })
+        if dates and all(definitely_old(x, lookback_days) for x in dates):
+            consecutive_old_pages += 1
+        else:
+            consecutive_old_pages = 0
+        if consecutive_old_pages >= 2:
+            crossed_lookback = True
+            break
+        if len(items) < page_size:
+            natural_end = True
+            break
+        time.sleep(0.05)
+    else:
+        access_error = f"emergency page ceiling reached: {max_pages}"
+
+    complete = bool(
+        not access_error
+        and not pagination_repeated
+        and (crossed_lookback or natural_end)
+        and raw_rows_total > 0
+    )
+    return all_rows, {
+        "url": NAMBU_LIST_URL,
+        "collector": "nambu-first-party-json",
+        "pagesScanned": pages_scanned,
+        "rawRows": raw_rows_total,
+        "recentRows": len(all_rows),
+        "coverageComplete": complete,
+        "accessError": access_error,
+        "paginationRepeated": pagination_repeated,
+        "crossedLookback": crossed_lookback,
+        "naturalEnd": natural_end,
+        "explicitEmpty": False,
+        "totalRowsHint": None,
+        "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": [],
+        "pagerDiagnostic": {},
+        "pageProgress": page_progress,
+    }
+
+
+def chrome_executable() -> str:
+    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        path = shutil.which(name)
+        if path:
+            return path
+    return ""
+
+
+def fetch_seobu_rendered(url: str) -> str:
+    chrome = chrome_executable()
+    if not chrome:
+        raise RuntimeError("verified browser transport unavailable for Seobu TLS chain")
+    proc = subprocess.run(
+        [
+            chrome,
+            "--headless=new",
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--no-sandbox",
+            "--dump-dom",
+            url,
+        ],
+        capture_output=True,
+        text=True,
+        timeout=50,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"Seobu browser transport failed rc={proc.returncode}: {clean(proc.stderr)[:180]}")
+    rendered = str(proc.stdout or "")
+    if len(rendered) < 1000 or "board_code=4674" not in rendered:
+        raise RuntimeError(f"Seobu browser transport returned incomplete DOM bytes={len(rendered)}")
+    return rendered
+
+
+def crawl_seobu_browser(office: dict, lookback_days: int, max_pages: int):
+    all_rows = []
+    seen_ids = set()
+    seen_page_signatures = set()
+    pages_scanned = 0
+    raw_rows_total = 0
+    access_error = ""
+    pagination_repeated = False
+    crossed_lookback = False
+    natural_end = False
+    consecutive_old_pages = 0
+    page_progress = []
+
+    for page in range(1, max_pages + 1):
+        current = query_page(SEOBU_LIST_URL, "page", page)
+        try:
+            rendered = fetch_seobu_rendered(current)
+        except Exception as exc:
+            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            break
+
+        parsed_rows, meta = parse_support_page(rendered, current, office, lookback_days)
+        pages_scanned += 1
+        raw_rows_total += int(meta.get("rawRows") or 0)
+        signature = tuple(meta.get("detailIds") or [])
+        if signature and signature in seen_page_signatures:
+            pagination_repeated = True
+            break
+        if signature:
+            seen_page_signatures.add(signature)
+
+        for row in parsed_rows:
+            sid = canonical_source_id(row) or row.get("id", "")
+            if sid and sid not in seen_ids:
+                seen_ids.add(sid)
+                all_rows.append(row)
+
+        dates = [x for x in meta.get("pageDates", []) if x]
+        page_progress.append({
+            "requestedPage": page,
+            "rawRows": int(meta.get("rawRows") or 0),
+            "detailIdSample": list(meta.get("detailIds") or [])[:2],
+        })
+        if dates and all(definitely_old(x, lookback_days) for x in dates):
+            consecutive_old_pages += 1
+        else:
+            consecutive_old_pages = 0
+        if consecutive_old_pages >= 2:
+            crossed_lookback = True
+            break
+
+        nxt = next_page_url(meta["soup"], current, page, office)
+        if not nxt:
+            natural_end = True
+            break
+        time.sleep(0.05)
+    else:
+        access_error = f"emergency page ceiling reached: {max_pages}"
+
+    complete = bool(
+        not access_error
+        and not pagination_repeated
+        and (crossed_lookback or natural_end)
+        and raw_rows_total > 0
+    )
+    return all_rows, {
+        "url": SEOBU_LIST_URL,
+        "collector": "seobu-verified-headless-chrome",
+        "pagesScanned": pages_scanned,
+        "rawRows": raw_rows_total,
+        "recentRows": len(all_rows),
+        "coverageComplete": complete,
+        "accessError": access_error,
+        "paginationRepeated": pagination_repeated,
+        "crossedLookback": crossed_lookback,
+        "naturalEnd": natural_end,
+        "explicitEmpty": False,
+        "totalRowsHint": None,
+        "latestRegistered": max((x.get("registered", "") for x in all_rows), default=""),
+        "schemaDiagnostic": [],
+        "pagerDiagnostic": {},
+        "pageProgress": page_progress,
+    }
+
+
 def query_page(url: str, key: str, page: int) -> str:
     parsed = urlparse(url)
     q = parse_qs(parsed.query, keep_blank_values=True)
@@ -843,26 +1166,68 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
 
 
 def crawl_office(office: dict, lookback_days: int, max_pages: int):
+    office_key = str(office.get("key") or "")
     candidates, discovery = discover_support_boards(office)
-    attempts = []
-    for board in candidates:
-        rows, meta = crawl_board(board, office, lookback_days, max_pages)
-        attempts.append((rows, meta))
+    if office_key == "nambu":
+        rows, meta = crawl_nambu_json(office, lookback_days, max_pages)
+        candidates = [NAMBU_LIST_URL]
+        attempts = [(rows, meta)]
         if meta.get("coverageComplete"):
             return rows, {
                 "name": office["name"],
                 "url": office.get("url", ""),
-                "boards": [board],
+                "boards": candidates,
                 "count": len(rows),
                 "rawRows": int(meta.get("rawRows") or 0),
                 "pagesScanned": int(meta.get("pagesScanned") or 0),
                 "ok": True,
-                "state": "complete" if rows else "empty",
-                "message": f"최근 {lookback_days}일 범위 공식 채용게시판 완전수집",
+                "state": "complete",
+                "message": f"최근 {lookback_days}일 범위 공식 CMS 구인정보 완전수집",
                 "coverageComplete": True,
                 "boardHealth": [meta],
                 "discoveryEvidence": discovery,
             }
+    elif office_key == "seobu":
+        rows, meta = crawl_seobu_browser(office, lookback_days, max_pages)
+        candidates = [SEOBU_LIST_URL]
+        attempts = [(rows, meta)]
+        if meta.get("coverageComplete"):
+            return rows, {
+                "name": office["name"],
+                "url": office.get("url", ""),
+                "boards": candidates,
+                "count": len(rows),
+                "rawRows": int(meta.get("rawRows") or 0),
+                "pagesScanned": int(meta.get("pagesScanned") or 0),
+                "ok": True,
+                "state": "complete",
+                "message": f"최근 {lookback_days}일 범위 공식 구인게시판 완전수집",
+                "coverageComplete": True,
+                "boardHealth": [meta],
+                "discoveryEvidence": discovery,
+            }
+    else:
+        attempts = []
+
+    if office_key not in {"nambu", "seobu"}:
+        for board in candidates:
+            rows, meta = crawl_board(board, office, lookback_days, max_pages)
+            attempts.append((rows, meta))
+            if meta.get("coverageComplete"):
+                return rows, {
+                    "name": office["name"],
+                    "url": office.get("url", ""),
+                    "boards": [board],
+                    "count": len(rows),
+                    "rawRows": int(meta.get("rawRows") or 0),
+                    "pagesScanned": int(meta.get("pagesScanned") or 0),
+                    "ok": True,
+                    "state": "complete" if rows else "empty",
+                    "message": f"최근 {lookback_days}일 범위 공식 채용게시판 완전수집",
+                    "coverageComplete": True,
+                    "boardHealth": [meta],
+                    "discoveryEvidence": discovery,
+                }
 
     metas = [meta for _rows, meta in attempts]
     reason = "공식 채용 게시판을 발견하지 못함" if not candidates else "공식 채용 게시판 완전수집을 증명하지 못함"
