@@ -175,6 +175,10 @@ jobs:
           python scripts/verify_central_pagination.py
           python scripts/stamp_reconciliation_scan.py --central
           python scripts/verify_central_reconciliation_consistency.py
+          # Mark the completion time only after the full reconciliation and its
+          # independent consistency checks succeed. This marker exists only inside
+          # the current job, so it can never be reused across workflow runs.
+          date -u +%s > /tmp/fast_reconciliation_completed_epoch
 
       - name: Verify current support traversal and exact links after reconciliation
         run: |
@@ -186,12 +190,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Re-read every registered official source immediately before publication.
-          # The earlier reconciliation can become stale while detail/support verification runs.
-          # Recover any newly appeared stable IDs, then re-run the affected publication guards.
+          # A second full 44-source crawl immediately after a successful full reconciliation
+          # can exceed the Fast job budget and make publication staler rather than safer.
+          # Reuse only a proof completed in this same job within the last 10 minutes.
+          # If the marker is missing or older, fail closed to the full re-read.
           python scripts/update_collector_status.py --workflow fast --stage prepublish-delta --state running
-          python scripts/reconcile_source_ids.py
-          python scripts/stamp_reconciliation_scan.py --reconciliation
+          reuse_recent_reconciliation=0
+          if [ -f /tmp/fast_reconciliation_completed_epoch ]; then
+            now_epoch="$(date -u +%s)"
+            completed_epoch="$(cat /tmp/fast_reconciliation_completed_epoch)"
+            if [[ "$completed_epoch" =~ ^[0-9]+$ ]]; then
+              age_seconds=$((now_epoch-completed_epoch))
+              if [ "$age_seconds" -ge 0 ] && [ "$age_seconds" -le 600 ]; then
+                reuse_recent_reconciliation=1
+                echo "Reusing same-run verified reconciliation proof: age=$age_seconds seconds"
+              fi
+            fi
+          fi
+          if [ "$reuse_recent_reconciliation" -ne 1 ]; then
+            echo "Reconciliation proof missing/stale; performing full pre-publication re-read."
+            python scripts/reconcile_source_ids.py
+            python scripts/stamp_reconciliation_scan.py --reconciliation
+          fi
           python scripts/resolve_support_links.py
           python scripts/verify_support_completeness.py
           python scripts/validate_reconciliation_policy_v3.py
