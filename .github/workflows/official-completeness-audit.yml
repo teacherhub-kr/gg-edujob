@@ -37,8 +37,10 @@ jobs:
         run: |
           python scripts/verify_central_pagination.py
           python scripts/verify_gyeonggi_central_90d.py
-      - name: Independently prove both mandatory Incheon official boards
-        run: python scripts/merge_incheon_official.py --check-only --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
+      - name: Independently prove complete Incheon official network
+        run: |
+          python scripts/merge_incheon_official.py --check-only --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
+          python scripts/collect_incheon_support.py --check-only --lookback-days 90
       - name: Reconcile the current official registry without publishing
         run: python scripts/reconcile_source_ids.py
       - name: Verify published-scan completeness and report live freshness delta
@@ -51,7 +53,7 @@ jobs:
             --live-report source_reconciliation_report.json
       - name: Require independent central/reconciliation agreement
         run: python scripts/verify_central_reconciliation_consistency.py
-      - name: Require both Incheon boards to remain complete
+      - name: Require complete Incheon central and five-office proof
         run: |
           python - <<'PY'
           import json
@@ -62,6 +64,10 @@ jobs:
           if r.get('coverageComplete') is not True or complete != {'1981','1534'}:
               raise SystemExit(f'Incheon mandatory-board proof incomplete: {r}')
           print('Incheon two-board completeness proof passed')
+          support=json.loads(Path('incheon_support_report.json').read_text(encoding='utf-8'))
+          if support.get('officeCount') != 5 or support.get('completeOffices') != 5:
+              raise SystemExit(f'Incheon support-office proof incomplete: {support}')
+          print('Incheon five-office completeness proof passed')
           PY
       - name: Upload independent completeness evidence
         if: always()
@@ -73,6 +79,7 @@ jobs:
             central_pagination_report.json
             gyeonggi_central_90d_report.json
             incheon_official_report.json
+            incheon_support_report.json
             published_scan_completeness_report.json
           if-no-files-found: warn
           retention-days: 14
