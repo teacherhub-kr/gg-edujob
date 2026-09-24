@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, re
+import json, re, shutil, subprocess
 from pathlib import Path
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
@@ -95,6 +95,14 @@ def main():
     item["anchorsAfter"]=anchors[:220]
     item["networkSignals"]=list({x["url"]:x for x in net}.values())[-220:]
     if t["key"]=="seobu":
+     chrome=shutil.which("google-chrome") or shutil.which("google-chrome-stable") or shutil.which("chromium") or shutil.which("chromium-browser")
+     item["chromeExecutable"]=chrome or ""
+     if chrome:
+      try:
+       cp=subprocess.run([chrome,"--headless=new","--disable-gpu","--no-sandbox","--dump-dom","https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"],capture_output=True,text=True,timeout=45)
+       item["seobuChromeProbe"]={"returncode":cp.returncode,"stdoutLength":len(cp.stdout),"hasRecruitBoard":("board_code=4674" in cp.stdout and "구인" in cp.stdout),"stderr":clean(cp.stderr)[:1200]}
+      except Exception as exc:
+       item["seobuChromeProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:500]}"}
      try:
       direct_url="https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       direct=page.goto(direct_url,wait_until="domcontentloaded",timeout=60000)
@@ -195,8 +203,10 @@ def main():
   if item.get("key")=="nambu" and item.get("nambuListSummary"):
    print("NAMBU_SUMMARY "+json.dumps(item["nambuListSummary"],ensure_ascii=False))
    print("NAMBU_DETAIL_LINK "+json.dumps(item.get("nambuDetailLinkProbe") or {},ensure_ascii=False))
-  if item.get("key")=="seobu" and item.get("seobuSystemCaProbe"):
-   print("SEOBU_SYSTEM_CA "+json.dumps(item["seobuSystemCaProbe"],ensure_ascii=False))
+  if item.get("key")=="seobu":
+   if item.get("seobuSystemCaProbe"):
+    print("SEOBU_SYSTEM_CA "+json.dumps(item["seobuSystemCaProbe"],ensure_ascii=False))
+   print("SEOBU_CHROME "+json.dumps({"executable":item.get("chromeExecutable"),"probe":item.get("seobuChromeProbe"),"directStatus":item.get("seobuDirectStatus"),"directUrl":item.get("seobuDirectUrl"),"rows":item.get("seobuRowLinks",[])[:8],"pager":item.get("seobuPagerAnchors",[])[:20]},ensure_ascii=False))
  return 0
 
 if __name__=="__main__":
