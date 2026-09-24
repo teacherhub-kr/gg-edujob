@@ -150,6 +150,26 @@ def main():
           if k.lower() not in {"boardcontent","content","boardreply","boardattachfile"}
         } for row in rows[:5] if isinstance(row,dict)]
        }
+       try:
+        if rows:
+         first_subject=clean(rows[0].get("boardsubject"))
+         first_idx=clean(rows[0].get("boardidx"))
+         page.goto("https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0",wait_until="domcontentloaded",timeout=60000)
+         page.wait_for_timeout(2500)
+         matches=[]
+         for a in page.locator("a").all():
+          try:
+           txt=clean(a.inner_text(timeout=300))
+           href=clean(a.get_attribute("href"))
+           onclick=clean(a.get_attribute("onclick"))
+           raw=" ".join([txt,href,onclick])
+           if (first_idx and first_idx in raw) or (first_subject and first_subject[:20] in txt):
+            matches.append({"text":txt[:300],"href":href[:800],"onclick":onclick[:800]})
+          except Exception:
+           pass
+         item["nambuDetailLinkProbe"]={"boardidx":first_idx,"subject":first_subject[:300],"matches":matches[:20]}
+       except Exception as exc:
+        item["nambuDetailLinkProbe"]={"error":f"{type(exc).__name__}: {str(exc)[:300]}"}
       except Exception as exc:
        item["nambuListParseError"]=f"{type(exc).__name__}: {str(exc)[:300]}"
      except Exception as exc:
@@ -167,6 +187,7 @@ def main():
  for item in out.get("targets",[]):
   if item.get("key")=="nambu" and item.get("nambuListSummary"):
    print("NAMBU_SUMMARY "+json.dumps(item["nambuListSummary"],ensure_ascii=False))
+   print("NAMBU_DETAIL_LINK "+json.dumps(item.get("nambuDetailLinkProbe") or {},ensure_ascii=False))
   if item.get("key")=="seobu" and item.get("seobuSystemCaProbe"):
    print("SEOBU_SYSTEM_CA "+json.dumps(item["seobuSystemCaProbe"],ensure_ascii=False))
  return 0
