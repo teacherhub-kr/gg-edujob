@@ -38,6 +38,17 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(rows["incheon:seohae"]["name"], "인천서해구문화재단")
         self.assertIn("인천서구문화재단", rows["incheon:seohae"]["aliases"])
         self.assertTrue(all(x.get("officialRecruitmentUrl") for x in rows.values()))
+        self.assertIn("biz.namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
+        self.assertIn("namdongcf.or.kr", rows["incheon:namdong"]["canonicalRecruitmentUrl"])
+
+    def test_namdong_shared_official_board_filters_other_agencies(self):
+        foundation = {
+            "id": "incheon:namdong",
+            "name": "남동문화재단",
+            "aliases": ["(재)남동문화재단", "재단법인 남동문화재단"],
+        }
+        self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
+        self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
