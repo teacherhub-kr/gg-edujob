@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T16:56:22.214557+00:00",
+  "generatedAt": "2026-09-24T21:43:54.553939+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6336,
-    "gyeonggiTotal": 6336,
-    "seoulExact": 426,
-    "seoulTotal": 426
+    "gyeonggiExact": 6334,
+    "gyeonggiTotal": 6334,
+    "seoulExact": 424,
+    "seoulTotal": 424
   },
   "provinces": {
     "gyeonggi": {
@@ -607,8 +607,8 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 908,
-          "rawRows": 940,
+          "count": 909,
+          "rawRows": 950,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -616,9 +616,9 @@
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-              "pagesScanned": 85,
-              "rawRows": 850,
-              "recentRows": 837,
+              "pagesScanned": 86,
+              "rawRows": 860,
+              "recentRows": 838,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -639,7 +639,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 94,
+          "pagesScanned": 95,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -2490,7 +2490,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20260925011113",
+                  "/js/include.js?v=20260925060454",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
