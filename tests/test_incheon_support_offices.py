@@ -155,6 +155,61 @@ class IncheonSupportOfficeTests(unittest.TestCase):
             "ice-support:ganghwa.ice.go.kr:num:4220",
         )
 
+    def test_nambu_json_contract_keeps_boardidx_and_exact_spa_detail(self):
+        office = {
+            "key": "nambu",
+            "name": "인천남부교육지원청",
+            "url": "https://nambu.ice.go.kr/Main.do",
+            "regions": [],
+        }
+        items = [{
+            "boardconfigidx": "39",
+            "boardidx": "49535",
+            "boardsubject": "인천하늘초등학교 학교폭력 책임교사 수업시수 경감을 위한 수업 전담 강사 채용 공고",
+            "boardwdate": "2026-09-23 16:15:23.0",
+        }]
+        rows, meta = support.parse_nambu_json_rows(items, office, 90)
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["school"], "인천하늘초등학교")
+        self.assertEqual(
+            rows[0]["url"],
+            "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49535/N/N",
+        )
+        self.assertEqual(
+            canonical_source_id(rows[0]),
+            "ice-support:nambu.ice.go.kr:boardidx:49535",
+        )
+
+    def test_seobu_native_board_idx_identity(self):
+        row = {
+            "province": "인천",
+            "sourceType": "교육지원청 개별 게시판",
+            "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_code=4674&board_idx=159256",
+        }
+        self.assertEqual(
+            canonical_source_id(row),
+            "ice-support:seobu.ice.go.kr:board_idx:159256",
+        )
+
+    def test_seobu_board_is_pinned_in_registry(self):
+        data = json.loads(Path("sources.json").read_text(encoding="utf-8"))
+        office = next(x for x in data["incheon"]["supportOffices"] if x["key"] == "seobu")
+        self.assertEqual(
+            office["boardUrls"],
+            ["https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"],
+        )
+        self.assertFalse(office["autoDiscover"])
+
+    def test_nambu_board_is_pinned_in_registry(self):
+        data = json.loads(Path("sources.json").read_text(encoding="utf-8"))
+        office = next(x for x in data["incheon"]["supportOffices"] if x["key"] == "nambu")
+        self.assertEqual(
+            office["boardUrls"],
+            ["https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"],
+        )
+        self.assertFalse(office["autoDiscover"])
+
     def test_cross_source_duplicate_keeps_support_identity(self):
         central = {
             "province": "인천",
