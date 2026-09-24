@@ -21,6 +21,7 @@ on:
       - 'tests/test_incheon_transient_retry.py'
       - 'tests/test_incheon_support_offices.py'
       - 'tests/test_verify_jobs_incheon_support.py'
+      - 'tests/test_collector_status_identity_binding.py'
   workflow_dispatch:
 
 permissions:
@@ -43,7 +44,7 @@ jobs:
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support
+        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
