@@ -70,6 +70,10 @@ jobs:
           assert "grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'official_source_count' scripts/reconcile_source_ids.py" not in fast
+          assert '/tmp/fast_reconciliation_completed_epoch' in fast
+          assert 'age_seconds' in fast
+          assert '[ "$age_seconds" -le 600 ]' in fast
+          assert 'Reconciliation proof missing/stale; performing full pre-publication re-read.' in fast
           print('Fast/recovery transition safety ok')
           PY
       - name: Materialize three-region registry in the test checkout
