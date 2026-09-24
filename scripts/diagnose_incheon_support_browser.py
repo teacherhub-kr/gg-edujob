@@ -164,7 +164,14 @@ def main():
            onclick=clean(a.get_attribute("onclick"))
            raw=" ".join([txt,href,onclick])
            if (first_idx and first_idx in raw) or (first_subject and first_subject[:20] in txt):
-            matches.append({"text":txt[:300],"href":href[:800],"onclick":onclick[:800]})
+            matches.append({
+             "text":txt[:300],
+             "href":href[:800],
+             "onclick":onclick[:800],
+             "attrs":{str(k):clean(v if isinstance(v,str) else " ".join(v))[:800] for k,v in a.evaluate("(el)=>Object.fromEntries(Array.from(el.attributes).map(a=>[a.name,a.value]))").items()},
+             "parent":a.evaluate("(el)=>el.parentElement ? el.parentElement.outerHTML.slice(0,1800) : ''"),
+             "grandparent":a.evaluate("(el)=>el.parentElement&&el.parentElement.parentElement ? el.parentElement.parentElement.outerHTML.slice(0,2600) : ''")
+            })
           except Exception:
            pass
          item["nambuDetailLinkProbe"]={"boardidx":first_idx,"subject":first_subject[:300],"matches":matches[:20]}
