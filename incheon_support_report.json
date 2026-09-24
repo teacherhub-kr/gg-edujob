@@ -1,0 +1,930 @@
+{
+  "generatedAt": "2026-09-25 01:11:20 KST",
+  "lookbackDays": 90,
+  "officeCount": 5,
+  "completeOffices": 5,
+  "merged": true,
+  "newlyAddedJobs": 251,
+  "crossSourceDuplicatesCollapsed": 76,
+  "offices": [
+    {
+      "name": "인천남부교육지원청",
+      "url": "https://nambu.ice.go.kr/Main.do",
+      "boards": [
+        "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"
+      ],
+      "count": 44,
+      "rawRows": 120,
+      "pagesScanned": 4,
+      "ok": true,
+      "state": "complete",
+      "message": "최근 90일 범위 공식 CMS 구인정보 완전수집",
+      "coverageComplete": true,
+      "boardHealth": [
+        {
+          "url": "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0",
+          "collector": "nambu-first-party-json",
+          "pagesScanned": 4,
+          "rawRows": 120,
+          "recentRows": 44,
+          "coverageComplete": true,
+          "accessError": "",
+          "paginationRepeated": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "explicitEmpty": false,
+          "totalRowsHint": null,
+          "latestRegistered": "2026/09/23",
+          "schemaDiagnostic": [],
+          "pagerDiagnostic": {},
+          "pageProgress": [
+            {
+              "requestedPage": 1,
+              "startnum": 0,
+              "rawRows": 30,
+              "detailIdSample": [
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49535/N/N",
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49533/N/N"
+              ]
+            },
+            {
+              "requestedPage": 2,
+              "startnum": 30,
+              "rawRows": 30,
+              "detailIdSample": [
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49303/N/N",
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49290/N/N"
+              ]
+            },
+            {
+              "requestedPage": 3,
+              "startnum": 60,
+              "rawRows": 30,
+              "detailIdSample": [
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49099/N/N",
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49088/N/N"
+              ]
+            },
+            {
+              "requestedPage": 4,
+              "startnum": 90,
+              "rawRows": 30,
+              "detailIdSample": [
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48881/N/N",
+                "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48853/N/N"
+              ]
+            }
+          ]
+        }
+      ],
+      "discoveryEvidence": [
+        {
+          "url": "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0",
+          "kind": "registry-seed"
+        }
+      ]
+    },
+    {
+      "name": "인천북부교육지원청",
+      "url": "https://bukbu.ice.go.kr/",
+      "boards": [
+        "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
+      ],
+      "count": 82,
+      "rawRows": 110,
+      "pagesScanned": 11,
+      "ok": true,
+      "state": "complete",
+      "message": "최근 90일 범위 공식 채용게시판 완전수집",
+      "coverageComplete": true,
+      "boardHealth": [
+        {
+          "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
+          "pagesScanned": 11,
+          "rawRows": 110,
+          "recentRows": 82,
+          "coverageComplete": true,
+          "accessError": "",
+          "paginationRepeated": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "explicitEmpty": false,
+          "totalRowsHint": null,
+          "latestRegistered": "2026/09/23",
+          "schemaDiagnostic": [
+            {
+              "page": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
+              "headers": [
+                "번호",
+                "기관명",
+                "제목",
+                "등록일",
+                "마감일",
+                "조회수"
+              ],
+              "rows": [
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "th",
+                    "th",
+                    "th",
+                    "th",
+                    "th",
+                    "th"
+                  ],
+                  "classes": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "anchorCount": 0,
+                  "anchorShapes": [],
+                  "hasBDIdentity": false
+                },
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td"
+                  ],
+                  "classes": [
+                    "num",
+                    "subject",
+                    "subject",
+                    "date",
+                    "",
+                    "hit"
+                  ],
+                  "anchorCount": 1,
+                  "anchorShapes": [
+                    {
+                      "href": "#",
+                      "onclick": "",
+                      "dataId": "",
+                      "attrs": {
+                        "href": "#",
+                        "data-mst": "BM0000000049",
+                        "data-idx": "BD0000008177",
+                        "data-menu": ""
+                      },
+                      "parentAttrs": {}
+                    }
+                  ],
+                  "hasBDIdentity": true
+                },
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td"
+                  ],
+                  "classes": [
+                    "num",
+                    "subject",
+                    "subject",
+                    "date",
+                    "",
+                    "hit"
+                  ],
+                  "anchorCount": 1,
+                  "anchorShapes": [
+                    {
+                      "href": "#",
+                      "onclick": "",
+                      "dataId": "",
+                      "attrs": {
+                        "href": "#",
+                        "data-mst": "BM0000000049",
+                        "data-idx": "BD0000008176",
+                        "data-menu": ""
+                      },
+                      "parentAttrs": {}
+                    }
+                  ],
+                  "hasBDIdentity": true
+                }
+              ]
+            }
+          ],
+          "pagerDiagnostic": {},
+          "pageProgress": []
+        }
+      ],
+      "discoveryEvidence": [
+        {
+          "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
+          "kind": "registry-seed"
+        }
+      ]
+    },
+    {
+      "name": "인천동부교육지원청",
+      "url": "https://dongbu.ice.go.kr/",
+      "boards": [
+        "https://dongbu.ice.go.kr/participation/job_offer.jsp"
+      ],
+      "count": 1,
+      "rawRows": 30,
+      "pagesScanned": 3,
+      "ok": true,
+      "state": "complete",
+      "message": "최근 90일 범위 공식 채용게시판 완전수집",
+      "coverageComplete": true,
+      "boardHealth": [
+        {
+          "url": "https://dongbu.ice.go.kr/participation/job_offer.jsp",
+          "pagesScanned": 3,
+          "rawRows": 30,
+          "recentRows": 1,
+          "coverageComplete": true,
+          "accessError": "",
+          "paginationRepeated": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "explicitEmpty": false,
+          "totalRowsHint": 263,
+          "latestRegistered": "2026/08/26",
+          "schemaDiagnostic": [],
+          "pagerDiagnostic": {},
+          "pageProgress": []
+        }
+      ],
+      "discoveryEvidence": [
+        {
+          "url": "https://dongbu.ice.go.kr/participation/job_offer.jsp",
+          "kind": "registry-seed"
+        }
+      ]
+    },
+    {
+      "name": "인천서부교육지원청",
+      "url": "https://seobu.ice.go.kr/",
+      "boards": [
+        "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
+      ],
+      "count": 136,
+      "rawRows": 160,
+      "pagesScanned": 16,
+      "ok": true,
+      "state": "complete",
+      "message": "최근 90일 범위 공식 구인게시판 완전수집",
+      "coverageComplete": true,
+      "boardHealth": [
+        {
+          "url": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",
+          "collector": "seobu-verified-headless-chrome",
+          "pagesScanned": 16,
+          "rawRows": 160,
+          "recentRows": 136,
+          "coverageComplete": true,
+          "accessError": "",
+          "paginationRepeated": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "explicitEmpty": false,
+          "totalRowsHint": null,
+          "latestRegistered": "2026/09/23",
+          "schemaDiagnostic": [],
+          "pagerDiagnostic": {},
+          "pageProgress": [
+            {
+              "requestedPage": 1,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159256&page=1&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159250&page=1&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 2,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159215&page=2&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159205&page=2&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 3,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159171&page=3&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159168&page=3&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 4,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159112&page=4&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159093&page=4&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 5,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159065&page=5&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159064&page=5&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 6,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159036&page=6&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159023&page=6&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 7,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158985&page=7&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158975&page=7&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 8,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158930&page=8&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158928&page=8&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 9,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158865&page=9&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158864&page=9&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 10,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158826&page=10&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158825&page=10&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 11,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158786&page=11&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158773&page=11&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 12,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158729&page=12&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158722&page=12&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 13,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158678&page=13&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158675&page=13&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 14,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158640&page=14&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158638&page=14&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 15,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158616&page=15&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158607&page=15&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 16,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158550&page=16&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158547&page=16&board_code=4674&g1="
+              ]
+            }
+          ]
+        }
+      ],
+      "discoveryEvidence": [
+        {
+          "url": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",
+          "kind": "registry-seed"
+        }
+      ]
+    },
+    {
+      "name": "인천강화교육지원청",
+      "url": "https://ganghwa.ice.go.kr/",
+      "boards": [
+        "https://ganghwa.ice.go.kr/open/recruiting.asp"
+      ],
+      "count": 64,
+      "rawRows": 90,
+      "pagesScanned": 9,
+      "ok": true,
+      "state": "complete",
+      "message": "최근 90일 범위 공식 채용게시판 완전수집",
+      "coverageComplete": true,
+      "boardHealth": [
+        {
+          "url": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+          "pagesScanned": 9,
+          "rawRows": 90,
+          "recentRows": 64,
+          "coverageComplete": true,
+          "accessError": "",
+          "paginationRepeated": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "explicitEmpty": false,
+          "totalRowsHint": 3139,
+          "latestRegistered": "2026/09/23",
+          "schemaDiagnostic": [
+            {
+              "page": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "headers": [
+                "번호",
+                "제목",
+                "소속기관",
+                "마감일자",
+                "작성일",
+                "조회수"
+              ],
+              "rows": [
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "th",
+                    "th",
+                    "th",
+                    "th",
+                    "th",
+                    "th"
+                  ],
+                  "classes": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "anchorCount": 0,
+                  "anchorShapes": [],
+                  "hasBDIdentity": false
+                },
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td"
+                  ],
+                  "classes": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "anchorCount": 1,
+                  "anchorShapes": [
+                    {
+                      "href": "javascript:act_view('/open/recruiting.asp','4221','view','N','4220');",
+                      "onclick": "",
+                      "dataId": "",
+                      "attrs": {
+                        "href": "javascript:act_view('/open/recruiting.asp','4221','view','N','4220');"
+                      },
+                      "parentAttrs": {}
+                    }
+                  ],
+                  "hasBDIdentity": false
+                },
+                {
+                  "cellCount": 6,
+                  "tags": [
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td",
+                    "td"
+                  ],
+                  "classes": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "anchorCount": 1,
+                  "anchorShapes": [
+                    {
+                      "href": "javascript:act_view('/open/recruiting.asp','4220','view','4221','4219');",
+                      "onclick": "",
+                      "dataId": "",
+                      "attrs": {
+                        "href": "javascript:act_view('/open/recruiting.asp','4220','view','4221','4219');"
+                      },
+                      "parentAttrs": {}
+                    }
+                  ],
+                  "hasBDIdentity": false
+                }
+              ]
+            }
+          ],
+          "pagerDiagnostic": {
+            "anchors": [
+              {
+                "label": "〈〈",
+                "href": "javascript:act_page('/open/recruiting.asp','list','1')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "1",
+                "href": "#",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "2",
+                "href": "javascript:act_page('/open/recruiting.asp','list','2')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "3",
+                "href": "javascript:act_page('/open/recruiting.asp','list','3')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "4",
+                "href": "javascript:act_page('/open/recruiting.asp','list','4')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "5",
+                "href": "javascript:act_page('/open/recruiting.asp','list','5')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "6",
+                "href": "javascript:act_page('/open/recruiting.asp','list','6')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "7",
+                "href": "javascript:act_page('/open/recruiting.asp','list','7')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "8",
+                "href": "javascript:act_page('/open/recruiting.asp','list','8')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "9",
+                "href": "javascript:act_page('/open/recruiting.asp','list','9')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "10",
+                "href": "javascript:act_page('/open/recruiting.asp','list','10')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "〉",
+                "href": "javascript:act_page('/open/recruiting.asp','list','11')",
+                "onclick": "",
+                "attrs": {}
+              },
+              {
+                "label": "〉〉",
+                "href": "javascript:act_page('/open/recruiting.asp','list','314')",
+                "onclick": "",
+                "attrs": {}
+              }
+            ],
+            "forms": [
+              {
+                "name": "searchForm",
+                "id": "",
+                "action": "",
+                "method": "",
+                "fieldNames": [
+                  "num",
+                  "ptype",
+                  "cmode",
+                  "cstep",
+                  "path_url",
+                  "sfield",
+                  "sword"
+                ],
+                "controlValues": {
+                  "num": "",
+                  "ptype": "",
+                  "cmode": "mc",
+                  "cstep": "0302000000",
+                  "path_url": "/open/recruiting.asp"
+                }
+              },
+              {
+                "name": "boardForm",
+                "id": "",
+                "action": "",
+                "method": "",
+                "fieldNames": [
+                  "num",
+                  "pNum",
+                  "nNum",
+                  "ptype",
+                  "cmode",
+                  "cstep",
+                  "page",
+                  "path_url",
+                  "sfield",
+                  "sword"
+                ],
+                "controlValues": {
+                  "num": "",
+                  "pNum": "",
+                  "nNum": "",
+                  "ptype": "",
+                  "cmode": "mc",
+                  "cstep": "0302000000",
+                  "page": "1",
+                  "path_url": "/open/recruiting.asp"
+                }
+              }
+            ],
+            "scriptEvidence": [],
+            "scriptSources": [
+              "/js/jquery-latest.min.js",
+              "/js/jquery.bxslider.min.js",
+              "/js/include.js?v=20260925011113",
+              "/js/board_action_control.js",
+              "/js/homeFunction.js"
+            ],
+            "externalScriptEvidence": [
+              "ptype) { document.boardForm.ptype.value = ptype; document.boardForm.action = url; document.boardForm.target = '_self'; document.boardForm.method = 'post'; document.boardForm.submit(); }; function act_page(url, ptype, page) { document.boardForm.ptype.value = ptype; document.boardForm.page.value = page; document.boardForm.action = url; document.boardForm.target = '_self'; document.boardForm.method = 'post'; document.boardForm.submit(); }; function act_search(url, ptype, page) { document.searchForm.ptype.value = ptype; document.searchForm.action = url; document.searchForm.target = '_self'; document.searchForm.method = 'post'; document.searchForm.submit(); }; function act_view(url, num, ptype, p_num, n_num) { document.boardForm.num.value = num; document.boardForm.pNum.value = p_num; document.boardForm.nNum.value = n_num; document.boardForm.ptype.value = ptype; document.boardForm.action = url; document.boardForm.target = '_self'; document.boardForm.method = 'post'; document.boardForm.submit(); }; function pro"
+            ]
+          },
+          "pageProgress": [
+            {
+              "requestedPage": 1,
+              "requestMethod": "GET",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "1",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4221&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4220",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4220&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4221&nNum=4219"
+              ]
+            },
+            {
+              "requestedPage": 2,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "2",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4211&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4212&nNum=4210",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4210&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4211&nNum=4209"
+              ]
+            },
+            {
+              "requestedPage": 3,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "3",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4199&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4200&nNum=4198",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4198&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4199&nNum=4197"
+              ]
+            },
+            {
+              "requestedPage": 4,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "4",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4189&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4190&nNum=4188",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4188&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4189&nNum=4186"
+              ]
+            },
+            {
+              "requestedPage": 5,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "5",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4178&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4179&nNum=4177",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4177&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4178&nNum=4176"
+              ]
+            },
+            {
+              "requestedPage": 6,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "6",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4168&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4169&nNum=4167",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4167&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4168&nNum=4166"
+              ]
+            },
+            {
+              "requestedPage": 7,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "7",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4158&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4159&nNum=4157",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4157&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4158&nNum=4156"
+              ]
+            },
+            {
+              "requestedPage": 8,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "8",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4148&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4149&nNum=4147",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4147&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4148&nNum=4146"
+              ]
+            },
+            {
+              "requestedPage": 9,
+              "requestMethod": "POST",
+              "finalUrl": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+              "redirectStatuses": [],
+              "observedPage": "9",
+              "detailIdSample": [
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4138&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4139&nNum=4137",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4137&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4138&nNum=4136"
+              ]
+            }
+          ]
+        }
+      ],
+      "discoveryEvidence": [
+        {
+          "url": "https://ganghwa.ice.go.kr/open/recruiting.asp",
+          "kind": "registry-seed"
+        }
+      ]
+    }
+  ],
+  "sample": [
+    {
+      "source": "인천남부교육지원청",
+      "sourceIdentity": "ice-support:nambu.ice.go.kr:boardidx:49535",
+      "school": "인천하늘초등학교",
+      "title": "인천하늘초등학교 학교폭력 책임교사 수업시수 경감을 위한 수업 전담 강사 채용 공고",
+      "registered": "2026/09/23",
+      "url": "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49535/N/N"
+    },
+    {
+      "source": "인천남부교육지원청",
+      "sourceIdentity": "ice-support:nambu.ice.go.kr:boardidx:49533",
+      "school": "인천남부교육지원청",
+      "title": "(인천주안북초)기간제특수교사(유,초,중등(일반교과) 정교사 가능-자격확대) 채용 공고(3차)",
+      "registered": "2026/09/23",
+      "url": "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49533/N/N"
+    },
+    {
+      "source": "인천남부교육지원청",
+      "sourceIdentity": "ice-support:nambu.ice.go.kr:boardidx:49523",
+      "school": "서화초등학교",
+      "title": "2026년 서화초등학교 늘봄행정실무사(기간제 근로자) 채용 공고",
+      "registered": "2026/09/22",
+      "url": "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49523/N/N"
+    },
+    {
+      "source": "인천북부교육지원청",
+      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008177",
+      "school": "계양중학교",
+      "title": "2026학년도 계양중 특수 시간(협력)강사 채용 공고",
+      "registered": "2026/09/23",
+      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008177&menu_idx=86"
+    },
+    {
+      "source": "인천북부교육지원청",
+      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008176",
+      "school": "인천작전초등학교",
+      "title": "인천작전초등학교 영양(교)사 단기 채용 공고 [종일제강사 ...",
+      "registered": "2026/09/22",
+      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008176&menu_idx=86"
+    },
+    {
+      "source": "인천북부교육지원청",
+      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008175",
+      "school": "인천동수초등학교",
+      "title": "초등돌봄교실 특수교육대상 학생 활동 지원 자원봉사자 위촉 ...",
+      "registered": "2026/09/21",
+      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008175&menu_idx=86"
+    },
+    {
+      "source": "인천동부교육지원청",
+      "sourceIdentity": "ice-support:dongbu.ice.go.kr:msg_seq:6971",
+      "school": "인천부현동초등학교",
+      "title": "2026년 인천부현동초등학교 교무행정실무사(기간제 근로자) 채용 공고",
+      "registered": "2026/08/26",
+      "url": "https://dongbu.ice.go.kr/bbs/bbsMsgDetail.do?msg_seq=6971&bcd=job_offer"
+    },
+    {
+      "source": "인천서부교육지원청",
+      "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159256",
+      "school": "인천서부교육지원청",
+      "title": "인천청람초 학교폭력 담당교사 시수 경감을 위한 시간강사 채용(45시간)",
+      "registered": "2026/09/23",
+      "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159256&page=1&board_code=4674&g1="
+    },
+    {
+      "source": "인천서부교육지원청",
+      "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159250",
+      "school": "인천완정초등학교",
+      "title": "2026학년 인천완정초등학교 초등방과후돌봄(늘봄학교) 특수교육대상학생 교육활동 보조인력(자원봉사자) 모집 공고",
+      "registered": "2026/09/22",
+      "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159250&page=1&board_code=4674&g1="
+    },
+    {
+      "source": "인천서부교육지원청",
+      "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159249",
+      "school": "인천초은초등학교",
+      "title": "인천초은초등학교 도서관 봉사활동자 모집 공고",
+      "registered": "2026/09/22",
+      "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159249&page=1&board_code=4674&g1="
+    },
+    {
+      "source": "인천강화교육지원청",
+      "sourceIdentity": "ice-support:ganghwa.ice.go.kr:num:4221",
+      "school": "명신초등학교",
+      "title": "2학기 현장체험학습 보조인력 구인 NEW",
+      "registered": "2026/09/23",
+      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4221&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4220"
+    },
+    {
+      "source": "인천강화교육지원청",
+      "sourceIdentity": "ice-support:ganghwa.ice.go.kr:num:4220",
+      "school": "송해초등학교",
+      "title": "[긴급]2026학년도 2학기 송해초등학교 급식배식원 채용 공고",
+      "registered": "2026/09/22",
+      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4220&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4221&nNum=4219"
+    },
+    {
+      "source": "인천강화교육지원청",
+      "sourceIdentity": "ice-support:ganghwa.ice.go.kr:num:4219",
+      "school": "강화중학교",
+      "title": "2026학년도 2학기 강화중학교 학교폭력 책임교원 시수 경감을 위한 시간강사 채용 공고",
+      "registered": "2026/09/21",
+      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4219&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4220&nNum=4218"
+    }
+  ]
+}
