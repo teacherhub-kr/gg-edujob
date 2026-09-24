@@ -6,7 +6,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 REGISTRY = Path("cultural_foundation_registry.json")
-EXPECTED = {"서울": 24, "경기": 25}
+EXPECTED = {"서울": 24, "경기": 25, "인천": 6}
 
 
 def main() -> int:
@@ -57,6 +57,8 @@ def main() -> int:
         errors.append("scope.seoul mismatch")
     if int(declared.get("gyeonggi") or 0) != EXPECTED["경기"]:
         errors.append("scope.gyeonggi mismatch")
+    if int(declared.get("incheon") or 0) != EXPECTED["인천"]:
+        errors.append("scope.incheon mismatch")
 
     report = {
         "healthy": not errors,
