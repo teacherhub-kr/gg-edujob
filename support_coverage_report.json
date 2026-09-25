@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T14:23:37.505583+00:00",
+  "generatedAt": "2026-09-25T19:11:35.813708+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6334,
-    "gyeonggiTotal": 6334,
-    "seoulExact": 424,
-    "seoulTotal": 424
+    "gyeonggiExact": 6330,
+    "gyeonggiTotal": 6330,
+    "seoulExact": 423,
+    "seoulTotal": 423
   },
   "provinces": {
     "gyeonggi": {
@@ -166,7 +166,7 @@
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
           ],
-          "count": 257,
+          "count": 256,
           "rawRows": 290,
           "ok": true,
           "state": "complete",
@@ -177,7 +177,7 @@
               "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
               "pagesScanned": 26,
               "rawRows": 260,
-              "recentRows": 243,
+              "recentRows": 242,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -211,8 +211,8 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 323,
-          "rawRows": 442,
+          "count": 322,
+          "rawRows": 432,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -220,9 +220,9 @@
           "boardHealth": [
             {
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
-              "pagesScanned": 33,
-              "rawRows": 332,
-              "recentRows": 307,
+              "pagesScanned": 32,
+              "rawRows": 322,
+              "recentRows": 306,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -267,7 +267,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 44,
+          "pagesScanned": 43,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -608,7 +608,7 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
           "count": 909,
-          "rawRows": 950,
+          "rawRows": 940,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -616,8 +616,8 @@
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-              "pagesScanned": 86,
-              "rawRows": 860,
+              "pagesScanned": 85,
+              "rawRows": 850,
               "recentRows": 838,
               "paginationRepeated": false,
               "accessError": false,
@@ -639,7 +639,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 95,
+          "pagesScanned": 94,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1507,9 +1507,9 @@
           "boards": [
             "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 6,
-          "rawRows": 7,
-          "seoulOfficeParseIncomplete": 6,
+          "count": 5,
+          "rawRows": 6,
+          "seoulOfficeParseIncomplete": 5,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1517,8 +1517,8 @@
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 7,
-              "recentRows": 6,
+              "rawRows": 6,
+              "recentRows": 5,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2490,7 +2490,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20260925224024",
+                  "/js/include.js?v=20260926033243",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
