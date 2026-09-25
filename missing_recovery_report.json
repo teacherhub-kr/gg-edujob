@@ -1,14 +1,14 @@
 {
   "summary": {
     "freshCount": 18501,
-    "previousCount": 21348,
+    "previousCount": 21349,
     "mergedCount": 21329,
     "carriedForward": 2828,
-    "officialIdProtected": 19699,
-    "officialIdCarryForward": 1123,
+    "officialIdProtected": 19698,
+    "officialIdCarryForward": 1121,
     "enrichedFromPrevious": 6498,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-09-25 17:26 KST"
+    "generatedAt": "2026-09-25 22:44 KST"
   },
   "carried": [
     {
@@ -547,7 +547,7 @@
       "registered": "2026/09/21",
       "applyEnd": "2026/09/25",
       "sourceIdentity": "seoul-central:110739",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110739"
     },
     {
@@ -745,7 +745,7 @@
       "registered": "2026/09/18",
       "applyEnd": "2026/09/25",
       "sourceIdentity": "seoul-central:110708",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110708"
     },
     {
