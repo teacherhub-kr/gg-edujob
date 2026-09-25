@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 18502,
-    "previousCount": 21354,
-    "mergedCount": 21328,
-    "carriedForward": 2826,
-    "officialIdProtected": 19698,
-    "officialIdCarryForward": 1121,
-    "enrichedFromPrevious": 6475,
+    "freshCount": 18501,
+    "previousCount": 21348,
+    "mergedCount": 21329,
+    "carriedForward": 2828,
+    "officialIdProtected": 19699,
+    "officialIdCarryForward": 1123,
+    "enrichedFromPrevious": 6498,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-09-25 06:08 KST"
+    "generatedAt": "2026-09-25 17:26 KST"
   },
   "carried": [
     {
@@ -542,6 +542,17 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "서울언남초등학교",
+      "title": "2026학년도 언남초등학교 돌봄교실 아침돌봄 봉사자 모집",
+      "registered": "2026/09/21",
+      "applyEnd": "2026/09/25",
+      "sourceIdentity": "seoul-central:110739",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110739"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "서울특별시남부교육지원청",
       "title": "10/1-10/2 선유중 사회 시간강사 채용",
       "registered": "2026/09/21",
@@ -725,6 +736,17 @@
       "sourceIdentity": "goe-central:60546",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60546"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "솔샘중학교",
+      "title": "2026학년도 교육공무직(조리실무사)대체 채용",
+      "registered": "2026/09/18",
+      "applyEnd": "2026/09/25",
+      "sourceIdentity": "seoul-central:110708",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110708"
     },
     {
       "province": "서울",
@@ -26753,6 +26775,17 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=53159"
     },
     {
+      "province": "인천",
+      "source": "인천북부교육지원청",
+      "school": "북부교육지원청",
+      "title": "2026년 하반기 인천 방과후·돌봄(늘봄학교) 프로그램 개인위...",
+      "registered": "2026/07/14",
+      "applyEnd": "2026/07/14",
+      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008098",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008098&menu_idx=86"
+    },
+    {
       "province": "서울",
       "source": "중부교육지원청",
       "school": "서울혜화초등학교병설유치원",
@@ -26784,17 +26817,6 @@
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15058",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15058"
-    },
-    {
-      "province": "인천",
-      "source": "인천북부교육지원청",
-      "school": "북부교육지원청",
-      "title": "2026년 하반기 인천 방과후·돌봄(늘봄학교) 프로그램 개인위...",
-      "registered": "2026/07/14",
-      "applyEnd": "",
-      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008098",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008098&menu_idx=86"
     },
     {
       "province": "서울",

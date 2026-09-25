@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-25 06:16:23 KST",
+  "generatedAt": "2026-09-25 17:34:34 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-09-25 06:16:23 KST",
+    "generatedAt": "2026-09-25 17:34:34 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 19699,
-    "datasetIdCountBefore": 21424,
+    "officialIdCount": 19698,
+    "datasetIdCountBefore": 21425,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0,
@@ -15,7 +15,7 @@
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20260924T211148Z-36055452329-1"
+    "scanId": "20260925T082951Z-36109660145-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -27,7 +27,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9819,
+      "officialIdCount": 9820,
       "coverageComplete": true,
       "pagesScanned": 211,
       "accessErrors": 0,
@@ -37,7 +37,7 @@
           "name": "기간제/사립교원",
           "pagesScanned": 100,
           "rawRows": 5000,
-          "acceptedRecentRows": 4882,
+          "acceptedRecentRows": 4883,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -105,10 +105,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9819,
+      "inDatasetBefore": 9820,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9819,
+      "inDatasetAfter": 9820,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 374,
+      "officialIdCount": 372,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 374,
+      "inDatasetBefore": 372,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 374,
+      "inDatasetAfter": 372,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -881,7 +881,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260925064313",
+              "/js/include.js?v=20260925180142",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2840,7 +2840,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9819,
+      "officialIdCount": 9820,
       "coverageComplete": true,
       "pagesScanned": 211,
       "accessErrors": 0,
@@ -2850,7 +2850,7 @@
           "name": "기간제/사립교원",
           "pagesScanned": 100,
           "rawRows": 5000,
-          "acceptedRecentRows": 4882,
+          "acceptedRecentRows": 4883,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2918,10 +2918,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9819,
+      "inDatasetBefore": 9820,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9819,
+      "inDatasetAfter": 9820,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2932,15 +2932,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 374,
+      "officialIdCount": 372,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 374,
+      "inDatasetBefore": 372,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 374,
+      "inDatasetAfter": 372,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3694,7 +3694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260925064313",
+              "/js/include.js?v=20260925180142",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5646,5 +5646,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20260924T211148Z-36055452329-1"
+  "scanId": "20260925T082951Z-36109660145-1"
 }
