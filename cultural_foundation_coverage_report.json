@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-26T19:32:23+09:00",
+  "generatedAt": "2026-09-27T00:57:33+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
-  "registryInstitutions": 49,
-  "officialBoardsConfigured": 2,
+  "registryInstitutions": 55,
+  "officialBoardsConfigured": 8,
   "officialCoverageComplete": false,
   "componentAvailable": {
     "official": true,
@@ -815,6 +815,102 @@
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": false,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:metropolitan",
+      "foundationName": "인천문화재단",
+      "region": "인천",
+      "municipality": "인천광역시",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:jemulpo",
+      "foundationName": "제물포문화재단",
+      "region": "인천",
+      "municipality": "제물포구",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "foundationName": "인천서해구문화재단",
+      "region": "인천",
+      "municipality": "서해구",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:yeonsu",
+      "foundationName": "연수문화재단",
+      "region": "인천",
+      "municipality": "연수구",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:bupyeong",
+      "foundationName": "부평구문화재단",
+      "region": "인천",
+      "municipality": "부평구",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
+      "coverageOutcome": "no-current-crosscheck-signal"
+    },
+    {
+      "foundationRegistryId": "incheon:namdong",
+      "foundationName": "남동문화재단",
+      "region": "인천",
+      "municipality": "남동구",
+      "sourceCounts": {
+        "official": 0,
+        "cleaneye": 0,
+        "artmore": 0,
+        "ancf": 0,
+        "lessoninfo-discovery": 0
+      },
+      "currentStrongSignals": 0,
+      "officialBoardConfigured": true,
       "coverageOutcome": "no-current-crosscheck-signal"
     }
   ]
