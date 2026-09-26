@@ -12,7 +12,7 @@ const APP_URL='https://teacherhub-kr.github.io/gg-edujob/';
 const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);
 const isIOSDevice=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroidDevice=()=>/android/i.test(navigator.userAgent||'');
-const isAndroidInAppBrowser=()=>isAndroidDevice()&&(/(?:;\\s*wv\\)|\\bwv\\b|KAKAOTALK|NAVER|FBAN|FBAV|Instagram|Line\\/)/i.test(navigator.userAgent||''));
+const isAndroidInAppBrowser=()=>isAndroidDevice()&&(/(?:\bwv\b|KAKAOTALK|NAVER|FBAN|FBAV|Instagram|Line\/)/i.test(navigator.userAgent||''));
 const isStandaloneApp=()=>window.matchMedia?.('(display-mode: standalone)').matches===true||navigator.standalone===true;
 const pushReady=()=>pushCapable()&&(!isIOSDevice()||isStandaloneApp());
 const chromeIntentUrl=()=>`intent://teacherhub-kr.github.io/gg-edujob/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(APP_URL)};end`;
