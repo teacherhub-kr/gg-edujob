@@ -2,13 +2,12 @@ name: Official visibility latency audit
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '12 * * * *'
   pull_request:
     paths:
       - 'scripts/measure_visibility_latency.py'
       - 'tests/test_visibility_latency.py'
       - '.github/workflows/visibility-latency-audit.yml'
+      - '.github/workflows/fast-refresh-watchdog.yml'
 
 permissions:
   contents: read
