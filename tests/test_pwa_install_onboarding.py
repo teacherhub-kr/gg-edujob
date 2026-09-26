@@ -34,8 +34,10 @@ class PwaInstallOnboardingTests(unittest.TestCase):
         self.assertIn("isAndroidInAppBrowser", self.app)
         self.assertIn("KAKAOTALK", self.app)
         self.assertIn("Chrome에서 설치하기", self.app)
-        self.assertIn("data-open-chrome", self.app)
-        self.assertIn("chromeIntentUrl", self.app)
+        self.assertIn("data-install-chrome", self.app)
+        self.assertIn("chromeInstallIntentUrl", self.app)
+        self.assertIn("installHandoffRequested", self.app)
+        self.assertIn("?install=1", self.app)
 
     def test_service_worker_registration_is_not_alert_config_dependent(self):
         self.assertIn("navigator.serviceWorker.register('./sw.js'", self.app)
@@ -45,7 +47,7 @@ class PwaInstallOnboardingTests(unittest.TestCase):
 
     def test_cache_busts_install_onboarding_assets(self):
         self.assertIn("app.css?v=20260923pwa1", self.index)
-        self.assertIn("app.js?v=20260926pwa2", self.index)
+        self.assertIn("app.js?v=20260926pwa3", self.index)
 
     def test_install_card_styles_exist(self):
         self.assertIn(".install-card{", self.css)
