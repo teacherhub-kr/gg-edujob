@@ -2,6 +2,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import Mock
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -57,9 +58,22 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             "기간제근로자 채용 공고",
             "대표이사 공개모집 공고",
             "구립합창단 단원 추가모집 공고",
+            "성북문화재단 성북구립미술관 아르바이트(운영보조) 모집 공고",
         ]
         for title in included:
             self.assertTrue(crawler.official_position_title(title), title)
+
+    def test_seongbuk_official_board_uses_compatible_cache_header(self):
+        row = next(x for x in self.registry["institutions"] if x["id"] == "seoul:seongbuk")
+        self.assertIn("sbculture.or.kr/culture/bbs/BMSR00034/list.do", row["officialRecruitmentUrl"])
+        response = Mock(status_code=200, encoding="utf-8")
+        response.raise_for_status.return_value = None
+        session = Mock()
+        session.get.return_value = response
+        crawler.resilient_request(session, row["officialRecruitmentUrl"])
+        self.assertEqual(session.get.call_args.kwargs["headers"]["Cache-Control"], "no-cache")
+        crawler.resilient_request(session, "https://www.jcf.or.kr/main/inform/job.jsp")
+        self.assertEqual(session.get.call_args.kwargs["headers"]["Cache-Control"], "no-cache, no-store, max-age=0")
 
     def test_position_scope_excludes_program_participants_and_results(self):
         excluded = [
