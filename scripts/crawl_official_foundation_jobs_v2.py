@@ -18,7 +18,12 @@ def make_session():
     s=requests.Session(); s.mount("https://",HTTPAdapter(max_retries=RETRY)); s.mount("http://",HTTPAdapter(max_retries=RETRY)); return s
 
 def resilient_request(session,url):
-    r=session.get(url,timeout=25,headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},allow_redirects=True); r.raise_for_status()
+    headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"}
+    # Seongbuk's official CMS returns 404 for no-store, even though the same
+    # recruitment board responds normally with a standard no-cache request.
+    if (urlparse(url).hostname or "").lower() in {"sbculture.or.kr","www.sbculture.or.kr"}:
+        headers["Cache-Control"]="no-cache"
+    r=session.get(url,timeout=25,headers=headers,allow_redirects=True); r.raise_for_status()
     if not r.encoding or r.encoding.lower()=="iso-8859-1": r.encoding=r.apparent_encoding or "utf-8"
     return r
 
@@ -54,7 +59,8 @@ RECRUITMENT_RE=re.compile(
     r"(?:문화예술|예술교육|교육)\s*(?:전문)?\s*강사\s*(?:채용|모집)|강사\s*(?:채용|모집)|"
     r"(?:대표이사|임원|이사|감사)\s*(?:공개)?\s*모집|인력\s*(?:채용|모집)|"
     r"(?:합창단|예술단|교향악단|오케스트라)\s*(?:단원|연주자)\s*(?:추가)?\s*모집|"
-    r"(?:성악|음악|예술)\s*지도자\s*(?:채용|모집)",
+    r"(?:성악|음악|예술)\s*지도자\s*(?:채용|모집)|"
+    r"아르바이트(?:\([^)]*\))?\s*모집",
     re.I,
 )
 NON_POSITION_RE=re.compile(
@@ -75,6 +81,7 @@ GENERIC_OFFICIAL_HOSTS={
     "nyjcf.or.kr","www.nyjcf.or.kr",
     "ypcf.or.kr","www.ypcf.or.kr",
     "ggcf.kr","www.ggcf.kr",
+    "sbculture.or.kr","www.sbculture.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
@@ -234,6 +241,47 @@ def generic_official_rows(session,foundation,board_url):
     }
 
 
+def seongbuk_rows(session,foundation,board_url):
+    """Traverse the dated Seongbuk list through the full 120-day detail window."""
+    jobs=[]; seen_pages=set(); checked=[]; boundary=False
+    today=datetime.now(KST).date()
+    for page in range(1,61):
+        separator="&" if "?" in board_url else "?"
+        url=board_url if page==1 else f"{board_url}{separator}pageIndex={page}"
+        response,soup,candidates,_=list_detail_candidates(session,foundation,url)
+        records=[]
+        for tr in soup.select("tr"):
+            cells=tr.find_all("td",recursive=False)
+            if len(cells)<6 or not cells[0].get_text(" ",strip=True).isdigit():
+                continue
+            posted=base.parse_date_text(cells[5].get_text(" ",strip=True))
+            if not posted:
+                raise RuntimeError("Seongbuk recruitment row has no registration date")
+            records.append((cells[0].get_text(" ",strip=True),posted))
+        if not records:
+            raise RuntimeError("Seongbuk recruitment pagination has no dated rows")
+        signature=tuple(number for number,_ in records)
+        if signature in seen_pages:
+            raise RuntimeError("Seongbuk recruitment pagination repeated a page")
+        seen_pages.add(signature); checked.append(response.url)
+        recent=[date for _,date in records if date>=today-base.timedelta(days=120)]
+        if recent:
+            found,page_meta=generic_official_rows(session,foundation,url)
+            if page_meta.get("detailErrors"):
+                raise RuntimeError("Seongbuk recruitment detail fetch was incomplete")
+            jobs.extend(found)
+        if not recent:
+            boundary=True; break
+    if not boundary:
+        raise RuntimeError("Seongbuk recruitment 120-day boundary was not reached")
+    identities=[job["sourceIdentity"] for job in jobs]
+    if len(identities)!=len(set(identities)):
+        raise RuntimeError("Seongbuk recruitment pages contain duplicate source identities")
+    return jobs,{"adapter":"seongbuk-dated-pages-v1","surfacesChecked":checked,
+                 "pagesScanned":len(checked),"crossedLookback":True,
+                 "publishedCurrentJobs":len(jobs),"identityVerified":True}
+
+
 def main():
     generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; session=make_session(); base.request=resilient_request
     jobs=[]; errors=[]; unsupported=[]; board_results=[]
@@ -243,6 +291,8 @@ def main():
             if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
             elif host=="sfac.saramin.co.kr":
                 found,meta=sfac_rows(session,foundation,board_url); careerlink=sfac_careerlink_probe(session); meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]; meta["secondarySurfaces"]=[careerlink]; meta["adapterStatus"]="implemented"
+            elif str(foundation.get("id"))=="seoul:seongbuk" and host in {"sbculture.or.kr","www.sbculture.or.kr"}:
+                found,meta=seongbuk_rows(session,foundation,board_url)
             elif host in GENERIC_OFFICIAL_HOSTS:
                 found,meta=generic_official_rows(session,foundation,board_url)
             else:
