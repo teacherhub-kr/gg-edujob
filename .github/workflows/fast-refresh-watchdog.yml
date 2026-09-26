@@ -73,6 +73,18 @@ jobs:
             "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/dispatches" \
             -f ref=main
           echo "Dispatched ${workflow} for action=${ACTION}."
+      - name: Measure official visibility latency
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/measure_visibility_latency.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --window-hours 48 \
+            --slo-hours 4 \
+            --output /tmp/visibility_latency_report.json
+
       - name: Show supervisor decision
         if: always()
         shell: bash
