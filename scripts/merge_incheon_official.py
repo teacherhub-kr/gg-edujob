@@ -141,6 +141,7 @@ def bootstrap_board_session(board: dict) -> dict:
             "status": int(response.status_code),
             "contentLength": len(response.content or b""),
             "finalUrl": str(response.url or ""),
+            "response": response_diagnostics(response),
         }
     except Exception as exc:
         return {
@@ -154,6 +155,36 @@ def bootstrap_board_session(board: dict) -> dict:
 
 def clean(value) -> str:
     return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def response_diagnostics(response) -> dict:
+    """Record bounded ICE transport evidence without cookie values or body content."""
+    body = response.content or b""
+    headers = getattr(response, "headers", {})
+    redirect = re.search(
+        rb'<meta\s+http-equiv=["\']refresh["\']\s+content=["\'][^"\']*url=([^"\']+)',
+        body[:512], re.IGNORECASE,
+    )
+    redirect_url = urlparse(redirect.group(1).decode("ascii", "replace")) if redirect else None
+    return {
+        "status": response.status_code,
+        "contentLength": len(body),
+        "bodySha256": hashlib.sha256(body).hexdigest(),
+        "metaRefreshTarget": (
+            f"{redirect_url.scheme}://{redirect_url.netloc}{redirect_url.path}"[:160]
+            if redirect_url else ""
+        ),
+        "headers": {
+            name: str(headers.get(name, ""))[:160]
+            for name in ("content-type", "server", "via", "x-cache", "cache-control")
+            if headers.get(name)
+        },
+        "setCookieNames": sorted(set(re.findall(r"(?:^|,\s*)([A-Za-z0-9_-]+)=", headers.get("set-cookie", ""))))[:12],
+        "redirectHistory": [
+            {"status": item.status_code, "path": urlparse(item.url).path}
+            for item in getattr(response, "history", [])[:5]
+        ],
+    }
 
 
 def date_norm(value) -> str:
@@ -370,6 +401,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     stop_reason = ""
     access_error = ""
     empty_page_evidence = {}
+    first_page_evidence = {}
 
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
@@ -387,7 +419,9 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         # visit the matching official landing page once, then retry the exact
         # list URL once. A still-empty retry remains fail-closed.
         bootstrap_evidence = {}
+        first_response_diagnostics = {}
         if page == 1 and meta["rawRows"] == 0 and len(response.content or b"") <= 256:
+            first_response_diagnostics = response_diagnostics(response)
             reset_session()
             bootstrap_evidence = bootstrap_board_session(board)
             try:
@@ -396,6 +430,8 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             except Exception as exc:
                 access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
                 break
+        if page == 1:
+            first_page_evidence = response_diagnostics(response)
 
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
@@ -415,6 +451,8 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "contentLength": len(response.content or b""),
                 "contentType": str(response.headers.get("content-type") or ""),
                 "pageTextSample": clean(meta.get("pageText") or "")[:600],
+                "firstResponse": first_response_diagnostics,
+                "finalResponse": response_diagnostics(response),
                 "bootstrap": bootstrap_evidence,
             }
             stop_reason = "empty-page"
@@ -456,6 +494,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "paginationRepeated": stop_reason == "repeated-page",
         "stopReason": stop_reason,
         "emptyPageEvidence": empty_page_evidence,
+        "firstPageResponse": first_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
         "sampleIds": [canonical_source_id(job) or job.get("id", "") for job in all_rows[:5]],
     }
@@ -650,13 +689,12 @@ def main() -> int:
         raise SystemExit(f"No Incheon official recruitment rows parsed: {meta}")
     if meta.get("accessError") or meta.get("paginationRepeated"):
         raise SystemExit(f"Incheon official traversal is not trustworthy: {meta}")
+    if not meta.get("coverageComplete"):
+        raise SystemExit(f"Incheon official lookback traversal incomplete: {meta}")
     if args.check_only:
         write_report(meta, rows, merged=False)
         print(json.dumps(meta, ensure_ascii=False))
         return 0
-    if not meta.get("coverageComplete"):
-        raise SystemExit(f"Incheon official lookback traversal incomplete: {meta}")
-
     merge_into_jobs(rows, meta)
     write_report(meta, rows, merged=True)
     print(json.dumps(meta, ensure_ascii=False))
