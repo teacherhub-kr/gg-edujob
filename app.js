@@ -790,7 +790,7 @@ function bindScreen(){
     render();
   });
 
-  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='new')openNewRadar();
@@ -843,10 +843,10 @@ function bindScreen(){
   }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
-  $('[data-install-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-install-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     location.href=chromeInstallIntentUrl();
   }));
-  $('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     if(isIOSDevice()){
       toast('iPhone에서는 홈 화면에 추가한 에듀잡 앱에서 알림을 켜주세요.');
       return;
