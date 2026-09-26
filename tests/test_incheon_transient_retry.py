@@ -31,6 +31,29 @@ def meta_for(count=0, stop_reason="empty-page", access_error=""):
 
 
 class IncheonTransientRetryTests(unittest.TestCase):
+    def test_diagnostics_identify_law_redirect_without_cookie_values(self):
+        class Response:
+            status_code = 200
+            url = "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981"
+            content = b'<meta http-equiv="refresh" content="0;url=https://www.ice.go.kr/law/main.do">'
+            headers = {"content-type": "text/html", "set-cookie": "SESSION=secret; Path=/"}
+            history = []
+
+        evidence = ice.response_diagnostics(Response())
+        self.assertEqual(evidence["metaRefreshTarget"], "https://www.ice.go.kr/law/main.do")
+        self.assertEqual(evidence["setCookieNames"], ["SESSION"])
+        self.assertNotIn("secret", str(evidence))
+
+    @patch.object(ice, "registry_is_complete", return_value=True)
+    @patch.object(ice, "scrape_incheon_with_transient_retry")
+    @patch.object(ice, "SOURCES_PATH")
+    def test_check_only_rejects_partial_board_coverage(self, sources_path, scrape, registry):
+        sources_path.read_text.return_value = '{"incheon": {}}'
+        scrape.return_value = ([{"id": "ice-central-123"}], meta_for(count=1) | {"coverageComplete": False})
+        with patch("sys.argv", ["merge_incheon_official.py", "--check-only"]):
+            with self.assertRaisesRegex(SystemExit, "traversal incomplete"):
+                ice.main()
+
     def test_bootstrap_uses_board_landing_page_and_records_evidence(self):
         class Response:
             status_code = 200
