@@ -119,12 +119,19 @@ def workflow_stats(runs: list[dict], cutoff: datetime) -> dict[str, dict]:
         durations = []
         success = 0
         failures = 0
+        rerun_attempts = 0
         for run in items:
             created = parse_time(run.get("created_at"))
             started = parse_time(run.get("run_started_at")) or created
             completed = parse_time(run.get("updated_at"))
-            if created and started:
+            attempt = int(run.get("run_attempt") or 1)
+            # GitHub keeps the original created_at on a re-run, so created->started
+            # is not queue time for attempt > 1. Exclude those samples rather than
+            # fabricating multi-hour queue latency.
+            if attempt <= 1 and created and started:
                 queues.append(max(0.0, (started - created).total_seconds() / 60))
+            elif attempt > 1:
+                rerun_attempts += 1
             if started and completed:
                 durations.append(max(0.0, (completed - started).total_seconds() / 60))
             if run.get("conclusion") == "success":
@@ -135,6 +142,7 @@ def workflow_stats(runs: list[dict], cutoff: datetime) -> dict[str, dict]:
             "runs": len(items),
             "successes": success,
             "failures": failures,
+            "rerunAttempts": rerun_attempts,
             "queueMinutes": stats(queues),
             "durationMinutes": stats(durations),
         }
@@ -159,6 +167,57 @@ def completion_gaps_hours(successes: list[tuple[datetime, dict]], cutoff: dateti
             continue
         gaps.append((cur_time - prev_time).total_seconds() / 3600)
     return gaps
+
+
+def schedule_gaps_minutes(runs: list[dict], name: str, cutoff: datetime) -> list[float]:
+    scheduled = sorted(
+        (
+            parse_time(run.get("created_at"))
+            for run in runs
+            if run.get("name") == name and run.get("event") == "schedule"
+        ),
+        key=lambda x: x or datetime.min.replace(tzinfo=timezone.utc),
+    )
+    scheduled = [x for x in scheduled if x is not None]
+    gaps = []
+    for prev, cur in zip(scheduled, scheduled[1:]):
+        if cur < cutoff:
+            continue
+        gaps.append((cur - prev).total_seconds() / 60)
+    return gaps
+
+
+def fast_to_visible_samples(
+    fast_successes: list[tuple[datetime, dict]],
+    unified_successes: list[tuple[datetime, dict]],
+    pages_successes: list[tuple[datetime, dict]],
+    cutoff: datetime,
+) -> list[dict]:
+    samples = []
+    for fast_time, fast_run in fast_successes:
+        if fast_time < cutoff:
+            continue
+        unified = next_success(unified_successes, fast_time, max_wait=timedelta(hours=2))
+        if not unified:
+            continue
+        unified_time, unified_run = unified
+        pages = next_success(pages_successes, unified_time, max_wait=timedelta(minutes=20))
+        if not pages:
+            continue
+        pages_time, pages_run = pages
+        samples.append({
+            "fastRunId": fast_run.get("id"),
+            "fastRunNumber": fast_run.get("run_number"),
+            "unifiedRunId": unified_run.get("id"),
+            "pagesRunId": pages_run.get("id"),
+            "fastCompletedAt": fast_time.isoformat(),
+            "unifiedCompletedAt": unified_time.isoformat(),
+            "pagesCompletedAt": pages_time.isoformat(),
+            "fastToUnifiedMinutes": round((unified_time - fast_time).total_seconds() / 60, 2),
+            "unifiedToPagesMinutes": round((pages_time - unified_time).total_seconds() / 60, 2),
+            "fastToPagesMinutes": round((pages_time - fast_time).total_seconds() / 60, 2),
+        })
+    return samples
 
 
 def load_ledger(path: str | Path) -> dict:
@@ -255,20 +314,29 @@ def build_report(
     pages = completed_successes(runs, PAGES_NAME)
 
     fast_gaps = completion_gaps_hours(fast, cutoff)
+    watchdog_gaps = schedule_gaps_minutes(runs, "Production operations watchdog", cutoff)
     entries, batches = first_seen_samples(ledger, cutoff)
     samples = visibility_samples(entries, unified, pages)
+    delivery_samples = fast_to_visible_samples(fast, unified, pages, cutoff)
     detected_to_unified = [x["detectedToUnifiedMinutes"] for x in samples]
     detected_to_pages = [x["detectedToPagesMinutes"] for x in samples]
+    fast_to_pages = [x["fastToPagesMinutes"] for x in delivery_samples]
 
     gap_stats = stats(fast_gaps)
+    watchdog_gap_stats = stats(watchdog_gaps)
     detected_pages_stats = stats(detected_to_pages)
+    fast_to_pages_stats = stats(fast_to_pages)
     p95_gap = gap_stats.get("p95")
-    p95_detected_pages = detected_pages_stats.get("p95")
+    p95_fast_to_pages = fast_to_pages_stats.get("p95")
 
     proxy = None
     status = "insufficient-data"
-    if p95_gap is not None and p95_detected_pages is not None and len(fast_gaps) >= 3:
-        proxy = round(float(p95_gap) + float(p95_detected_pages) / 60, 2)
+    if p95_gap is not None and p95_fast_to_pages is not None and len(fast_gaps) >= 3:
+        # A post that appears immediately after one verified Fast publication may
+        # wait until the next successful Fast, then only needs the small
+        # Fast-completion -> Unified -> Pages tail. Do not double-count the
+        # firstSeen->Fast-completion portion of the next run.
+        proxy = round(float(p95_gap) + float(p95_fast_to_pages) / 60, 2)
         status = "pass" if proxy < slo_hours else "fail"
 
     provinces = Counter(x["province"] or "unknown" for x in entries)
@@ -279,12 +347,13 @@ def build_report(
         "measurementLimits": {
             "officialRegistrationTimestamp": "Most official sources expose date-only registration values; exact official-posted-to-firstSeen latency is not asserted.",
             "firstSeen": "source_id_ledger firstSeen is the first independent stable-ID observation, not necessarily the exact instant the official site published.",
-            "sloProxy": "p95 interval between successful Fast publications plus p95 firstSeen-to-Pages lag; conservative operational proxy, not a fabricated official timestamp.",
+            "sloProxy": "p95 interval between successful Fast publications plus p95 Fast-completion-to-Pages tail; conservative operational proxy, not a fabricated official timestamp.",
         },
         "workflowStats": wf,
         "observationCadence": {
             "successfulFastPublicationGapHours": gap_stats,
             "successfulFastRunsConsidered": len(fast),
+            "watchdogScheduleGapMinutes": watchdog_gap_stats,
         },
         "newOfficialIds": {
             "count": len(entries),
@@ -296,6 +365,11 @@ def build_report(
             "detectedToUnifiedMinutes": stats(detected_to_unified),
             "detectedToPagesMinutes": detected_pages_stats,
             "sample": samples[-20:],
+        },
+        "verifiedPublicationTail": {
+            "matchedFastRuns": len(delivery_samples),
+            "fastToPagesMinutes": fast_to_pages_stats,
+            "sample": delivery_samples[-20:],
         },
         "fourHourVisibilitySloProxy": {
             "targetHours": slo_hours,
@@ -344,7 +418,9 @@ def main() -> int:
         "generatedAt": report["generatedAt"],
         "newOfficialIds": report["newOfficialIds"]["count"],
         "fastGapP95Hours": report["observationCadence"]["successfulFastPublicationGapHours"]["p95"],
+        "watchdogScheduleGapP95Minutes": report["observationCadence"]["watchdogScheduleGapMinutes"]["p95"],
         "detectedToPagesP95Minutes": report["detectedToVisible"]["detectedToPagesMinutes"]["p95"],
+        "fastToPagesP95Minutes": report["verifiedPublicationTail"]["fastToPagesMinutes"]["p95"],
         "sloProxy": report["fourHourVisibilitySloProxy"],
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))
