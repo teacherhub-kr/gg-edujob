@@ -31,8 +31,9 @@ def sfac_rows(session,foundation,url):
         if title: break
     if not title:
         m=re.search(r"(서울문화재단[^\n]{0,120}(?:채용|모집|공고)[^\n]{0,120})",text); title=base.normalize_space(m.group(1)) if m else ""
-    registered=base.parse_date_text(text[:2500]) or base.detail_registered(soup,None); today=datetime.now(KST).date(); apply_end=base.extract_apply_end(text,registered)
-    active=bool(title and registered and registered<=today and (not apply_end or apply_end>=today)) and not base.RESULT_RE.search(title)
+    raw_registered=base.parse_date_text(text[:2500]) or base.detail_registered(soup,None); today=datetime.now(KST).date(); apply_end=base.extract_apply_end(text,raw_registered)
+    registered=raw_registered if raw_registered and raw_registered<=today and (not apply_end or raw_registered<=apply_end) else None
+    active=bool(title and registered and (not apply_end or apply_end>=today)) and not base.RESULT_RE.search(title)
     rows=[]
     if active:
         stable=hashlib.sha1(f"{url}|{title}|{registered.isoformat()}".encode()).hexdigest()[:18]; fid=str(foundation.get("id") or "")
