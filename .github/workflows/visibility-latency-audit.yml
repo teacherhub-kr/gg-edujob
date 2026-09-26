@@ -1,0 +1,50 @@
+name: Official visibility latency audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/measure_visibility_latency.py'
+      - 'tests/test_visibility_latency.py'
+      - '.github/workflows/visibility-latency-audit.yml'
+      - '.github/workflows/fast-refresh-watchdog.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: official-visibility-latency-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Unit test latency accounting
+        run: python -m unittest tests.test_visibility_latency
+      - name: Measure recent official visibility latency
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          args=()
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            args+=(--enforce)
+          fi
+          python scripts/measure_visibility_latency.py             --repo "${GITHUB_REPOSITORY}"             --window-hours 48             --slo-hours 4             "${args[@]}"
+      - name: Upload latency evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-visibility-latency-${{ github.run_id }}-${{ github.run_attempt }}
+          path: visibility_latency_report.json
+          if-no-files-found: error
+          retention-days: 14
