@@ -75,6 +75,30 @@ class VisibilityLatencyTests(unittest.TestCase):
             1,
         )
 
+    def test_rerun_attempt_is_not_misclassified_as_queue_delay(self):
+        runs = [
+            {
+                "id": 1,
+                "name": "Production operations watchdog",
+                "event": "schedule",
+                "run_attempt": 2,
+                "conclusion": "success",
+                "created_at": "2026-09-26T00:00:00Z",
+                "run_started_at": "2026-09-26T04:00:00Z",
+                "updated_at": "2026-09-26T04:01:00Z",
+            }
+        ]
+        report = build_report(
+            ledger={"entries": {}},
+            runs=runs,
+            now=datetime(2026, 9, 26, 5, 0, tzinfo=timezone.utc),
+            window_hours=24,
+            slo_hours=4,
+        )
+        watchdog = report["workflowStats"]["Production operations watchdog"]
+        self.assertEqual(watchdog["rerunAttempts"], 1)
+        self.assertEqual(watchdog["queueMinutes"]["count"], 0)
+
     def test_report_does_not_invent_official_timestamp(self):
         report = build_report(
             ledger={"entries": {}},
