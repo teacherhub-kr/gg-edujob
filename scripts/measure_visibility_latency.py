@@ -348,7 +348,13 @@ def main() -> int:
         "sloProxy": report["fourHourVisibilitySloProxy"],
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))
-    if args.enforce and report["fourHourVisibilitySloProxy"]["status"] == "fail":
+    slo = report["fourHourVisibilitySloProxy"]
+    if slo["status"] == "fail":
+        print(
+            "::warning title=Official visibility SLO proxy exceeded::"
+            f"proxyP95Hours={slo['proxyP95Hours']} targetHours={slo['targetHours']}"
+        )
+    if args.enforce and slo["status"] == "fail":
         return 2
     return 0
 
