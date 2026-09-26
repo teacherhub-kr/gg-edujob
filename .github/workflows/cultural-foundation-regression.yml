@@ -1,0 +1,53 @@
+name: Cultural foundation metro regression
+
+on:
+  pull_request:
+    paths:
+      - 'cultural_foundation_registry.json'
+      - 'verified_foundation_official_sources.json'
+      - 'scripts/crawl_official_foundation_jobs.py'
+      - 'scripts/crawl_official_foundation_jobs_v2.py'
+      - 'scripts/validate_cultural_foundation_registry.py'
+      - 'tests/test_cultural_foundation_metro.py'
+      - '.github/workflows/cultural-foundation-regression.yml'
+      - '.github/workflows/cultural-foundation-coverage.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Static compile
+        run: |
+          python -m py_compile scripts/crawl_official_foundation_jobs.py scripts/crawl_official_foundation_jobs_v2.py scripts/validate_cultural_foundation_registry.py
+      - name: Verify 55-foundation registry and position scope
+        run: |
+          PYTHONPATH=scripts python -m unittest tests.test_cultural_foundation_metro
+          python scripts/validate_cultural_foundation_registry.py
+      - name: Live-read configured official recruitment boards
+        run: python scripts/crawl_official_foundation_jobs_v2.py
+      - name: Require all configured boards supported and healthy
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('official_foundation_report.json').read_text(encoding='utf-8'))
+          assert r.get('healthy') is True, r
+          assert r.get('policy') == 'official-foundation-primary-fail-closed-v7-metro-generic', r
+          assert not (r.get('unsupportedConfiguredBoards') or []), r
+          configured=int(r.get('officialBoardsConfigured') or 0)
+          checked=int(r.get('supportedBoardsChecked') or 0)
+          assert configured == checked, (configured,checked,r)
+          assert configured >= 8, r
+          print('official foundation board live proof ok',configured,'boards',r.get('jobs'),'current jobs')
+          PY
