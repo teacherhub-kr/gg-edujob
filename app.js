@@ -762,7 +762,7 @@ function bindScreen(){
     writeSnapshot(p);
     setRoute('radar');
   };
-  $('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     dismissInstallPrompt();
     clearInstallHandoff();
     render();
