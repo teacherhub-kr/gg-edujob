@@ -35,7 +35,9 @@ class PwaInstallOnboardingTests(unittest.TestCase):
         self.assertIn("KAKAOTALK", self.app)
         self.assertIn("Chrome에서 설치하기", self.app)
         self.assertIn("data-install-chrome", self.app)
-        self.assertIn("chromeInstallIntentUrl", self.app)\n        self.assertIn("installHandoffRequested", self.app)\n        self.assertIn("?install=1", self.app)
+        self.assertIn("chromeInstallIntentUrl", self.app)
+        self.assertIn("installHandoffRequested", self.app)
+        self.assertIn("?install=1", self.app)
 
     def test_service_worker_registration_is_not_alert_config_dependent(self):
         self.assertIn("navigator.serviceWorker.register('./sw.js'", self.app)
