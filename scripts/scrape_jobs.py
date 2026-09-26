@@ -510,15 +510,19 @@ def seoul_detail_anchor_for_seq(tr, seq):
     seq = str(seq or "")
     if not seq:
         return None
+    matched = []
     for a in tr.find_all("a"):
         raw = " ".join((a.get("href", "") or "", a.get("onclick", "") or ""))
         if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"job_seq\s*[=,'\"() ]+{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"JOV11\.do[^\n]*?(?:job_seq\D*)?{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
-    return None
+            matched.append(a)
+    # Both institution and subject cells can link to the same ID; subject is last.
+    return matched[-1] if matched else None
 
 
 def seoul_row_values(table, tr):

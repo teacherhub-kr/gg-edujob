@@ -320,6 +320,59 @@ def seoul_seq(tr):
     return ""
 
 
+def seoul_detail_title(tr, seq):
+    """Use the link bound to this job ID, never the longest institution link."""
+    matched = []
+    for anchor in tr.find_all("a"):
+        action = " ".join((anchor.get("href", "") or "", anchor.get("onclick", "") or ""))
+        if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", action, re.I):
+            matched.append(clean(anchor.get_text(" ", strip=True)))
+    # SEN links both the institution and the subject to the same detail ID.
+    # The subject is the final linked cell in the listing.
+    return matched[-1] if matched else ""
+
+
+def seoul_values(table, tr):
+    """Select the header row matching the data row's actual column count."""
+    cells = tr.find_all("td")
+    candidates = []
+    for row in table.find_all("tr"):
+        if row is tr:
+            break
+        labels = [clean(th.get_text(" ", strip=True)) for th in row.find_all("th")]
+        if len(labels) == len(cells):
+            score = sum(any(k in label for k in ("제목", "학교", "기관", "분야", "등록일", "마감")) for label in labels)
+            candidates.append((score, labels))
+    labels = max(candidates, key=lambda item: item[0])[1] if candidates else headers(table)
+    return row_vals(tr, labels)
+
+
+def seoul_items(soup):
+    items, dates, expected_table, candidate_rows, incomplete = [], [], False, 0, 0
+    for table in soup.find_all("table"):
+        hs = headers(table)
+        if not hs or not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
+            continue
+        expected_table = True
+        for tr in table.find_all("tr"):
+            if not tr.find_all("td"):
+                continue
+            candidate_rows += 1
+            seq = seoul_seq(tr)
+            if not seq:
+                continue
+            vals = seoul_values(table, tr)
+            title = seoul_detail_title(tr, seq) or first_of(vals, ["제목", "공고명"])
+            registered = date_norm(first_of(vals, ["등록일", "작성일"]))
+            school = first_of(vals, ["학교명", "기관명", "작성자"])
+            if not title or not registered or (school and clean(title) == clean(school)):
+                incomplete += 1
+                continue
+            items.append((seq, title, registered, vals))
+            dates.append(registered)
+    return items, dates, expected_table, candidate_rows, incomplete
+
+
 def seoul_page(board, page, prefer_post=False):
     params = {"pageIndex": page}
     if prefer_post:
@@ -342,6 +395,7 @@ def seoul_board(src):
     consecutive_old_pages = 0
     use_post = False
     ended_on_structural_empty = False
+    parse_incomplete = 0
 
     for page in range(1, MAX_PAGES + 1):
         r = seoul_page(board, page, use_post)
@@ -356,39 +410,9 @@ def seoul_board(src):
         if re.search(r"총\s*0\s*건|전체\s*0\s*건|데이터가\s*없습니다|조회된\s*데이터가\s*없|등록된\s*자료가\s*없", txt):
             explicit_empty = True
 
-        items = []
-        dates = []
-        page_has_expected_table = False
-        page_candidate_rows = 0
-        for table in soup.find_all("table"):
-            hs = headers(table)
-            if not hs:
-                continue
-            if not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
-                continue
-            got_table = True
-            page_has_expected_table = True
-            for tr in table.find_all("tr"):
-                if not tr.find_all("td"):
-                    continue
-                page_candidate_rows += 1
-                seq = seoul_seq(tr)
-                if not seq:
-                    continue
-                vals = row_vals(tr, hs)
-                anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
-                title = clean(max((a.get_text(" ", strip=True) for a in anchors), key=len, default=""))
-                if not title:
-                    title = first_of(vals, ["제목", "공고명", "분야1", "분야"])
-                registered = date_norm(first_of(vals, ["등록일", "작성일"]))
-                if not registered:
-                    ds = all_dates(clean(tr.get_text(" ", strip=True)))
-                    today_s = NOW.strftime("%Y/%m/%d")
-                    plausible = [d for d in ds if d and d <= today_s]
-                    registered = plausible[-1] if plausible else ""
-                items.append((seq, title, registered, vals))
-                if registered:
-                    dates.append(registered)
+        items, dates, page_has_expected_table, page_candidate_rows, bad = seoul_items(soup)
+        parse_incomplete += bad
+        got_table |= page_has_expected_table
 
         sig = tuple(x[0] for x in items)
         if sig and sig in seen_page_sigs:
@@ -399,35 +423,9 @@ def seoul_board(src):
                 r2 = seoul_page(board, page, True)
                 if r2:
                     soup2 = BeautifulSoup(r2.text, "html.parser")
-                    post_items = []
-                    post_dates = []
-                    for table in soup2.find_all("table"):
-                        hs = headers(table)
-                        if not hs:
-                            continue
-                        if not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
-                            continue
-                        got_table = True
-                        for tr in table.find_all("tr"):
-                            if not tr.find_all("td"):
-                                continue
-                            seq = seoul_seq(tr)
-                            if not seq:
-                                continue
-                            vals = row_vals(tr, hs)
-                            anchors = [a for a in tr.find_all("a") if clean(a.get_text(" ", strip=True))]
-                            title = clean(max((a.get_text(" ", strip=True) for a in anchors), key=len, default=""))
-                            if not title:
-                                title = first_of(vals, ["제목", "공고명", "분야1", "분야"])
-                            registered = date_norm(first_of(vals, ["등록일", "작성일"]))
-                            if not registered:
-                                ds = all_dates(clean(tr.get_text(" ", strip=True)))
-                                today_s = NOW.strftime("%Y/%m/%d")
-                                plausible = [d for d in ds if d and d <= today_s]
-                                registered = plausible[-1] if plausible else ""
-                            post_items.append((seq, title, registered, vals))
-                            if registered:
-                                post_dates.append(registered)
+                    post_items, post_dates, post_table, _, post_bad = seoul_items(soup2)
+                    got_table |= post_table
+                    parse_incomplete += post_bad
                     post_sig = tuple(x[0] for x in post_items)
                     if post_sig and post_sig not in seen_page_sigs:
                         items, dates, sig = post_items, post_dates, post_sig
@@ -445,7 +443,7 @@ def seoul_board(src):
             seen_page_sigs.add(sig)
         pages += 1
         if not items:
-            ended_on_structural_empty = bool(explicit_empty or (page_has_expected_table and page_candidate_rows == 0))
+            ended_on_structural_empty = bool((explicit_empty or (page_has_expected_table and page_candidate_rows == 0)) and not parse_incomplete)
             break
         raw_rows += len(items)
 
@@ -480,12 +478,12 @@ def seoul_board(src):
             break
         time.sleep(0.03)
 
-    complete = (not access_error) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
+    complete = (not access_error) and not parse_incomplete and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
     return out, {
         "url": board, "pagesScanned": pages, "rawRows": raw_rows, "recentRows": len(out),
         "paginationRepeated": repeat, "accessError": access_error, "explicitEmpty": explicit_empty,
         "naturalEnd": ended_on_structural_empty, "gotTable": got_table, "crossedLookback": crossed_old, "coverageComplete": complete,
-        "paginationMethod": "POST" if use_post else "GET",
+        "paginationMethod": "POST" if use_post else "GET", "seoulOfficeParseIncomplete": parse_incomplete,
     }
 
 
