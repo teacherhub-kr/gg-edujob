@@ -16,10 +16,23 @@ const isAndroidInAppBrowser=()=>isAndroidDevice()&&(/(?:\bwv\b|KAKAOTALK|NAVER|F
 const isStandaloneApp=()=>window.matchMedia?.('(display-mode: standalone)').matches===true||navigator.standalone===true;
 const pushReady=()=>pushCapable()&&(!isIOSDevice()||isStandaloneApp());
 const chromeIntentUrl=()=>`intent://teacherhub-kr.github.io/gg-edujob/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(APP_URL)};end`;
+const chromeInstallIntentUrl=()=>{
+  const installUrl=`${APP_URL}?install=1`;
+  return `intent://teacherhub-kr.github.io/gg-edujob/?install=1#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(installUrl)};end`;
+};
 let deferredInstallPrompt=null;
+const installHandoffRequested=()=>{try{return new URLSearchParams(location.search).get('install')==='1'}catch(e){return false}};
+const clearInstallHandoff=()=>{
+  if(!installHandoffRequested())return;
+  try{
+    const url=new URL(location.href);
+    url.searchParams.delete('install');
+    history.replaceState(null,'',`${url.pathname}${url.search}${url.hash}`);
+  }catch(e){}
+};
 const installDismissed=()=>Boolean(store()?.installPrompt?.dismissed?.());
 const dismissInstallPrompt=()=>store()?.installPrompt?.dismiss?.();
-const shouldShowInstallCard=()=>!isStandaloneApp()&&!installDismissed();
+const shouldShowInstallCard=()=>!isStandaloneApp()&&(installHandoffRequested()||!installDismissed());
 const copyAppUrl=async()=>{
   try{
     if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(APP_URL);return true}
@@ -116,8 +129,10 @@ const installCardHtml=()=>{
     ${canPrompt
       ?'<button type="button" class="install-primary-btn" id="appInstallBtn">에듀잡 앱 설치</button>'
       :useChromeHandoff
-        ?'<button type="button" class="install-primary-btn" data-open-chrome>Chrome에서 설치하기</button><div class="install-manual-note">Chrome으로 이동한 뒤 표시되는 <strong>에듀잡 앱 설치</strong> 버튼을 눌러주세요.</div>'
-        :'<div class="install-manual-note">브라우저 메뉴에서 <strong>앱 설치</strong> 또는 <strong>홈 화면에 추가</strong>를 선택하세요.</div>'}
+        ?'<button type="button" class="install-primary-btn" data-install-chrome>Chrome에서 설치하기</button><div class="install-manual-note">Chrome으로 이동한 뒤 표시되는 <strong>에듀잡 앱 설치</strong> 버튼을 눌러주세요.</div>'
+        :installHandoffRequested()
+          ?'<div class="install-manual-note"><strong>설치 버튼을 준비 중입니다.</strong> 잠시 뒤에도 버튼이 나타나지 않으면 Chrome 오른쪽 위 <strong>⋮ → 앱 설치</strong>를 선택하세요.</div>'
+          :'<div class="install-manual-note">브라우저 메뉴에서 <strong>앱 설치</strong> 또는 <strong>홈 화면에 추가</strong>를 선택하세요.</div>'}
   </section>`;
 };
 
@@ -129,6 +144,7 @@ window.addEventListener('beforeinstallprompt',event=>{
 window.addEventListener('appinstalled',()=>{
   deferredInstallPrompt=null;
   dismissInstallPrompt();
+  clearInstallHandoff();
   toast('에듀잡이 홈 화면에 설치되었습니다.');
   if(!state.loading)render();
 });
@@ -746,8 +762,9 @@ function bindScreen(){
     writeSnapshot(p);
     setRoute('radar');
   };
-  $$('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $('[data-install-dismiss]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     dismissInstallPrompt();
+    clearInstallHandoff();
     render();
   }));
   $('#appInstallBtn',screen)?.addEventListener('click',async()=>{
@@ -769,10 +786,11 @@ function bindScreen(){
     }catch(e){
       toast('설치 창을 열지 못했습니다. 브라우저 메뉴에서 홈 화면에 추가해 주세요.');
     }
+    clearInstallHandoff();
     render();
   });
 
-  $$('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
+  $('[data-home]',screen).forEach(b=>b.addEventListener('click',()=>{
     const x=b.dataset.home;
     if(x==='saved')setRoute('saved');
     else if(x==='new')openNewRadar();
@@ -825,7 +843,10 @@ function bindScreen(){
   }));
   $('#conditionEdit',screen)?.addEventListener('click',()=>{const p=store()?.profile?.get?.();if(p)applyProfileToState(p);setRoute('search')});
   $('#conditionDelete',screen)?.addEventListener('click',()=>{if(!confirm('저장한 검색 조건을 삭제할까요?'))return;store()?.profile?.remove?.();store()?.snapshot?.remove?.();toast('저장 조건을 삭제했습니다.');render()});
-  $$('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+  $('[data-install-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
+    location.href=chromeInstallIntentUrl();
+  }));
+  $('[data-open-chrome]',screen).forEach(btn=>btn.addEventListener('click',()=>{
     if(isIOSDevice()){
       toast('iPhone에서는 홈 화면에 추가한 에듀잡 앱에서 알림을 켜주세요.');
       return;
