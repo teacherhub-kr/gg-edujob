@@ -55,7 +55,7 @@ class VisibilityLatencyTests(unittest.TestCase):
                     "province": "경기",
                     "source": "테스트",
                     "registered": "2026/09/26",
-                    "firstSeen": "2026-09-26 21:59:00 KST",
+                    "firstSeen": "2026-09-26 20:59:00 KST",
                 }
             }
         }
