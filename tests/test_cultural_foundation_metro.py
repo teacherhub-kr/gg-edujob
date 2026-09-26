@@ -73,6 +73,22 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         for title in excluded:
             self.assertFalse(crawler.official_position_title(title), title)
 
+    def test_nsart_stale_list_rows_are_not_fetched_as_current(self):
+        today = crawler.base.date(2026, 9, 26)
+        self.assertFalse(
+            crawler.base.nsart_candidate_in_window(
+                {"registered": crawler.base.date(2026, 5, 1)},
+                today,
+            )
+        )
+        self.assertTrue(
+            crawler.base.nsart_candidate_in_window(
+                {"registered": crawler.base.date(2026, 9, 7)},
+                today,
+            )
+        )
+        self.assertTrue(crawler.base.nsart_candidate_in_window({"registered": None}, today))
+
     def test_native_detail_identity_prefers_query_id(self):
         self.assertEqual(
             crawler.detail_identity("https://www.jcf.or.kr/main/bbs/bbsMsgDetail.do?bcd=recruit&msg_seq=118"),
