@@ -389,7 +389,7 @@ for needle in [
     'id="searchTop"',
     'id="bottomNav"',
     'app.css?v=20260923pwa1',
-    'app.js?v=20260923pwa1',
+    'app.js?v=20260926pwa3',
     'alert-client.js?v=20260920c',
     'manifest.webmanifest',
 ]:
@@ -424,11 +424,11 @@ for needle in [
 ]:
     if needle not in css:
         raise SystemExit(f"chrome handoff style missing: {needle}")
-for needle in ["app.css?v=20260923pwa1","app.js?v=20260923pwa1"]:
+for needle in ["app.css?v=20260923pwa1","app.js?v=20260926pwa3"]:
     if needle not in html:
         raise SystemExit(f"chrome handoff cache-bust missing from app preview: {needle}")
 index_html=Path("index.html").read_text(encoding="utf-8")
-for needle in ["app.css?v=20260923pwa1","app.js?v=20260923pwa1"]:
+for needle in ["app.css?v=20260923pwa1","app.js?v=20260926pwa3"]:
     if needle not in index_html:
         raise SystemExit(f"chrome handoff cache-bust missing from production shell: {needle}")
 

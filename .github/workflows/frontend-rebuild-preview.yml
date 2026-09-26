@@ -28,7 +28,7 @@ jobs:
         run: |
           grep -q 'id="appHeader"' index.html
           grep -q 'app.css?v=20260923pwa1' index.html
-          grep -q 'app.js?v=20260923pwa1' index.html
+          grep -q 'app.js?v=20260926pwa3' index.html
           grep -q 'manifest.webmanifest' index.html
           ! grep -q 'edujob-final-ui' index.html
           ! grep -q 'mobile-ui.js' index.html

@@ -13,12 +13,15 @@ on:
       - 'scripts/verify_central_reconciliation_consistency.py'
       - 'scripts/verify_support_completeness.py'
       - 'scripts/validate_reconciliation_policy_v3.py'
+      - 'scripts/verify_jobs.py'
       - '.github/workflows/update-jobs.yml'
       - '.github/workflows/recover-missing-jobs.yml'
       - '.github/workflows/p0-incheon-regression.yml'
       - '.github/workflows/official-completeness-audit.yml'
       - 'tests/test_incheon_transient_retry.py'
       - 'tests/test_incheon_support_offices.py'
+      - 'tests/test_verify_jobs_incheon_support.py'
+      - 'tests/test_collector_status_identity_binding.py'
   workflow_dispatch:
 
 permissions:
@@ -37,11 +40,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Static compile
         run: |
-          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py
+          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py scripts/verify_jobs.py
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices
+        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
@@ -68,6 +71,10 @@ jobs:
           assert "grep -q 'consecutive_old_pages >= 2' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'if registered and not recent_enough(registered, 90)' scripts/scrape_jobs.py" not in fast
           assert "grep -q 'official_source_count' scripts/reconcile_source_ids.py" not in fast
+          assert '/tmp/fast_reconciliation_completed_epoch' in fast
+          assert 'age_seconds' in fast
+          assert '[ "$age_seconds" -le 600 ]' in fast
+          assert 'Reconciliation proof missing/stale; performing full pre-publication re-read.' in fast
           print('Fast/recovery transition safety ok')
           PY
       - name: Materialize three-region registry in the test checkout

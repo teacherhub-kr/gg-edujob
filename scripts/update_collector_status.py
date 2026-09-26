@@ -80,8 +80,26 @@ def stable_source_id(job):
 
 
 def current_stable_ids(payload):
+    """Return every stable official identity represented by the current dataset.
+
+    Reconciliation may merge duplicate postings while preserving additional official source
+    occurrences in sourceIdentities. Publication health must honor those explicit identities
+    exactly as reconcile_source_ids.py does, otherwise a fully reconciled candidate can be
+    rejected after deduplication even though no official occurrence is missing.
+    """
     jobs = payload.get("jobs", []) if isinstance(payload, dict) else []
-    return {sid for sid in (stable_source_id(j) for j in jobs if isinstance(j, dict)) if sid}
+    ids = set()
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        sid = stable_source_id(job)
+        if sid:
+            ids.add(sid)
+        for extra in job.get("sourceIdentities") or []:
+            extra = str(extra or "").strip()
+            if extra:
+                ids.add(extra)
+    return ids
 
 
 def current_support_link_evidence(payload):
