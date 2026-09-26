@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-26 19:30:55 KST",
+  "generatedAt": "2026-09-27 00:56:05 KST",
   "policy": "central sources fail closed structurally on every semantic detail row/card; parsedStableIdCount proves traversal, while stableIdCount mirrors the primary collector's actual-recruitment population by excluding result/selection notices with the shared EXCLUDE_WORDS policy; repeated full pages remain failures",
   "sources": [
     {
       "name": "경기도교육청 통합 구인구직",
       "province": "경기",
-      "parsedStableIdCount": 674,
-      "stableIdCount": 673,
+      "parsedStableIdCount": 672,
+      "stableIdCount": 671,
       "excludedNonRecruitmentCount": 1,
       "complete": true,
       "categories": [
@@ -14,9 +14,9 @@
           "code": "A",
           "name": "기간제/사립교원",
           "pagesScanned": 6,
-          "rawRows": 211,
-          "parsedStableIdCount": 210,
-          "stableIdCount": 210,
+          "rawRows": 209,
+          "parsedStableIdCount": 208,
+          "stableIdCount": 208,
           "excludedNonRecruitmentCount": 0,
           "terminalEvidence": "explicit-empty-state",
           "accessError": false,
@@ -117,11 +117,11 @@
     {
       "name": "서울교육일자리포털",
       "province": "서울",
-      "parsedStableIdCount": 365,
-      "stableIdCount": 365,
+      "parsedStableIdCount": 355,
+      "stableIdCount": 355,
       "excludedNonRecruitmentCount": 0,
       "pagesScanned": 9,
-      "rawRows": 365,
+      "rawRows": 355,
       "terminalEvidence": "empty-page",
       "accessError": false,
       "parseError": false,
@@ -133,5 +133,5 @@
     }
   ],
   "complete": true,
-  "scanId": "20260926T095303Z-36231737871-1"
+  "scanId": "20260926T151759Z-36248764414-1"
 }
