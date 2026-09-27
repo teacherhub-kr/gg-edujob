@@ -264,6 +264,15 @@ def generic_official_rows(session,foundation,board_url):
         try:
             detail=resilient_request(session,str(meta["url"]))
             detail_soup=BeautifulSoup(detail.text,"html.parser")
+            detail_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
+            if BLOCK_PAGE_RE.search(detail.text[:4000]) or BLOCK_PAGE_RE.search(detail_text[:4000]):
+                raise RuntimeError("official detail returned an access-control page")
+            if JS_SHELL_RE.search(detail.text) and len(detail_text)<100:
+                raise RuntimeError("official detail returned an unrendered JavaScript shell")
+            list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
+            title_prefix=list_title.replace(" ","")[:20]
+            if not detail_text or (title_prefix and title_prefix not in detail_text.replace(" ","")):
+                raise RuntimeError("official detail does not contain its recruitment title")
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
                 continue
