@@ -106,6 +106,10 @@ GENERIC_OFFICIAL_HOSTS={
     "bcf.or.kr","www.bcf.or.kr",
     "ayac.saramin.co.kr",
     "pcfac.or.kr","www.pcfac.or.kr",
+    "swcf.or.kr","www.swcf.or.kr",
+    "guro.go.kr","www.guro.go.kr",
+    "guri.go.kr","www.guri.go.kr",
+    "hanam.go.kr","www.hanam.go.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
@@ -129,8 +133,16 @@ def container_text(anchor)->str:
     return base.normalize_space(anchor.get_text(" ",strip=True))
 
 
+SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
+    "incheon:namdong",
+    "seoul:guro",
+    "gyeonggi:guri",
+    "gyeonggi:hanam",
+}
+
+
 def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "")!="incheon:namdong":
+    if str(foundation.get("id") or "") not in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
