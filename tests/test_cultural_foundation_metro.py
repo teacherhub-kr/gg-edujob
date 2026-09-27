@@ -115,6 +115,20 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 9, 26), today))
         self.assertTrue(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 10, 1), today))
 
+    def test_ifac_go_view_uses_exact_official_detail_and_title_period(self):
+        title="재단법인 인천문화재단 감사(비상임) 모집 공고(9.21.~10.6.)"
+        anchor=BeautifulSoup(
+            '<a href="#none" onclick="goView(\'236088\', \'\');"><dl class="title"><dd>'
+            +title+'</dd></dl></a>',"html.parser").a
+        board="https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232"
+        self.assertTrue(crawler.official_position_title(title))
+        self.assertEqual(crawler.ifac_detail_url(anchor,board),
+                         "https://ifac.or.kr/bbs/view.do?bbsSn=236088&key=m2501152808232")
+        self.assertEqual(crawler.ifac_title_deadline(title,crawler.base.date(2026,9,21)),
+                         crawler.base.date(2026,10,6))
+        anchor['onclick']="goView('../../bad', '');"
+        self.assertIsNone(crawler.ifac_detail_url(anchor,board))
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
