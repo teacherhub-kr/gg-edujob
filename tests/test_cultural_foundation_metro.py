@@ -188,6 +188,15 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             "boardId:13000",
         )
 
+    def test_board_navigation_cannot_be_published_as_detail(self):
+        self.assertFalse(crawler.official_position_title("채용공고"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.swcf.or.kr/?p=116", "https://www.swcf.or.kr/?p=116&bxPage=1"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.ydpcf.or.kr/board.do?bid=3&p=1", "https://www.ydpcf.or.kr/board.do?bid=3"))
+        self.assertTrue(crawler.looks_like_detail_url(
+            "https://ypcf.or.kr/recruit", "https://ypcf.or.kr/recruit/?bmode=view&idx=174131299"))
+
 
 if __name__ == "__main__":
     unittest.main()
