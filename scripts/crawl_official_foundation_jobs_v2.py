@@ -83,7 +83,7 @@ GENERIC_OFFICIAL_HOSTS={
     "songpafac.or.kr","www.songpafac.or.kr",
     "recruit.incruit.com",
     "gmcf.incruit.com",
-    "gmcf.or.kr","www.gmcf.or.kr",
+    "gmcf.or.kr","www.gmcf.or.kr","m.gmcf.or.kr",
     "gcf.or.kr","www.gcf.or.kr",
     "yjcf.or.kr","www.yjcf.or.kr",
     "artic.or.kr","www.artic.or.kr",
@@ -104,7 +104,7 @@ GENERIC_OFFICIAL_HOSTS={
     "artgy.or.kr","www.artgy.or.kr",
     "gcart.or.kr","www.gcart.or.kr",
     "bcf.or.kr","www.bcf.or.kr",
-    "ayac.saramin.co.kr",
+    "ayac.saramin.co.kr","ayac.or.kr","www.ayac.or.kr",
     "pcfac.or.kr","www.pcfac.or.kr",
     "swcf.or.kr","www.swcf.or.kr",
     "guro.go.kr","www.guro.go.kr",
@@ -147,7 +147,6 @@ SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "gyeonggi:hanam",
     "gyeonggi:seongnam",
     "gyeonggi:paju",
-    "seoul:dongjak",
 }
 
 
