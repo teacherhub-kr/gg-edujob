@@ -146,6 +146,15 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(private_refresh_due(now - timedelta(hours=7), now, 6))
         self.assertFalse(private_refresh_due(now - timedelta(hours=5), now, 6))
 
+    def test_blocked_official_audit_leaves_private_refresh_slot_available(self):
+        from scripts.production_supervisor import PRIVATE_REFRESH_IDLE_ACTIONS
+
+        self.assertIn("skip-recovery-backoff", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertIn("skip-completeness-circuit-open", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertNotIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertNotIn("completeness", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertNotIn("unified", PRIVATE_REFRESH_IDLE_ACTIONS)
+
     def test_priority_contract_places_official_unified_backlog_before_fast(self):
         from pathlib import Path
 
