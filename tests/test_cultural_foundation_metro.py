@@ -50,6 +50,29 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
         self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
 
+    def test_new_shared_municipal_boards_filter_unrelated_posts(self):
+        for fid, name, unrelated in (
+            ("seoul:guro", "구로문화재단", "구로구청 일반임기제 채용 공고"),
+            ("gyeonggi:hanam", "하남문화재단", "하남시 기간제근로자 채용 공고"),
+        ):
+            foundation = {"id": fid, "name": name, "aliases": [f"(재){name}"]}
+            self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, f"{name} 직원 채용"))
+            self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
+            self.assertFalse(crawler.foundation_owned_board_host(foundation, "https://www.hanam.go.kr/www/"))
+
+    def test_initial_rollout_uses_only_eight_selected_new_boards(self):
+        baseline = {
+            "seoul:metropolitan",
+            "incheon:metropolitan", "incheon:jemulpo", "incheon:seohae",
+            "incheon:yeonsu", "incheon:bupyeong", "incheon:namdong",
+        }
+        first_batch = {
+            "seoul:gangnam", "seoul:gwanak", "seoul:guro", "seoul:yangcheon",
+            "seoul:yeongdeungpo", "gyeonggi:suwon", "gyeonggi:yangpyeong", "gyeonggi:hanam",
+        }
+        configured = {x["id"] for x in self.registry["institutions"] if x.get("officialRecruitmentUrl")}
+        self.assertEqual(configured, baseline | first_batch)
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
