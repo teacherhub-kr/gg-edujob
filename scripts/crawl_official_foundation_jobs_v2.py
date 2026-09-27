@@ -82,6 +82,7 @@ GENERIC_OFFICIAL_HOSTS={
     "nowonarts.kr","www.nowonarts.kr",
     "songpafac.or.kr","www.songpafac.or.kr",
     "recruit.incruit.com",
+    "gmcf.incruit.com",
     "gmcf.or.kr","www.gmcf.or.kr",
     "gcf.or.kr","www.gcf.or.kr",
     "yjcf.or.kr","www.yjcf.or.kr",
