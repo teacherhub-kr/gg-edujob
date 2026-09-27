@@ -109,6 +109,12 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "lacks an explicit empty state"):
                 crawler.sfac_careerlink_probe(None)
 
+    def test_recent_post_without_deadline_is_not_verified_open(self):
+        today = crawler.base.date(2026, 9, 27)
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 9, 26), today))
+        self.assertTrue(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 10, 1), today))
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
