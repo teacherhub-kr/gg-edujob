@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from bs4 import BeautifulSoup
+from unittest.mock import patch
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -94,6 +95,13 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         session = SimpleNamespace(get=lambda *args, **kwargs: response)
         with self.assertRaisesRegex(RuntimeError, "downgraded"):
             crawler.resilient_request(session, "https://ypcf.or.kr/recruit")
+
+    def test_secondary_sfac_board_requires_explicit_empty_text(self):
+        response = SimpleNamespace(url="https://sfac.careerlink.kr/", status_code=200,
+                                   text="<html><body>서울문화재단 채용</body></html>")
+        with patch.object(crawler, "resilient_request", return_value=response):
+            with self.assertRaisesRegex(RuntimeError, "lacks an explicit empty state"):
+                crawler.sfac_careerlink_probe(None)
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
