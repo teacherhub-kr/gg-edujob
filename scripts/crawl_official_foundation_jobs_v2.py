@@ -154,6 +154,8 @@ def verify_board_surface(soup, foundation, response, candidates):
 
 def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
+    if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}:
+        return False
     if not title or base.RESULT_RE.search(title) or NON_POSITION_RE.search(title):
         return False
     return bool(RECRUITMENT_RE.search(title))
@@ -215,6 +217,18 @@ def detail_identity(url:str)->str:
     return "url:"+hashlib.sha1(url.encode()).hexdigest()[:20]
 
 
+def looks_like_detail_url(board_url:str, candidate_url:str)->bool:
+    board=urlparse(board_url); candidate=urlparse(candidate_url)
+    if board.path.rstrip("/")!=candidate.path.rstrip("/"):
+        return True
+    query=parse_qs(candidate.query)
+    if any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")):
+        return True
+    if query.get("bmode")==["view"] or query.get("proc_type")==["view"]:
+        return True
+    return False
+
+
 def list_detail_candidates(session,foundation,board_url):
     r=resilient_request(session,board_url)
     soup=BeautifulSoup(r.text,"html.parser")
@@ -237,6 +251,8 @@ def list_detail_candidates(session,foundation,board_url):
         if host not in allowed:
             continue
         if absolute.rstrip("/")==r.url.rstrip("/"):
+            continue
+        if not looks_like_detail_url(r.url,absolute):
             continue
         context=container_text(a)
         shared_board=fid=="seoul:dongjak" and board_host=="culture.seoul.go.kr"
