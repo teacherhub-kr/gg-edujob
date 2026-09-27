@@ -217,7 +217,9 @@
       ],
       "homepage": "https://www.idfac.or.kr/",
       "officialRecruitmentUrl": "https://www.idfac.or.kr/bbs/board.php?bo_table=job",
-      "enabled": true
+      "enabled": true,
+      "verifiedFallbackRecruitmentUrl": "https://culture.seoul.go.kr/culture/bbs/B0000002/list.do?menuNo=200052&pageIndex=1",
+      "verifiedFallbackRole": "secondary-official-mirror"
     },
     {
       "id": "seoul:mapo",
@@ -440,7 +442,7 @@
         "재단법인 광명문화재단"
       ],
       "homepage": "https://www.gmcf.or.kr/",
-      "officialRecruitmentUrl": "https://gmcf.incruit.com/",
+      "officialRecruitmentUrl": "https://www.gmcf.or.kr/Community/Announcement/Index",
       "enabled": true
     },
     {
@@ -525,7 +527,7 @@
         "재단법인 부천문화재단"
       ],
       "homepage": "https://www.bcf.or.kr/",
-      "officialRecruitmentUrl": "https://www.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=86",
+      "officialRecruitmentUrl": "https://www.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=86&page=1&searchCategory=92&searchType=total&searchWord=",
       "enabled": true
     },
     {
@@ -540,7 +542,9 @@
       ],
       "homepage": "https://www.snart.or.kr/",
       "officialRecruitmentUrl": "https://www.seongnam.go.kr/bbs010402",
-      "enabled": true
+      "enabled": true,
+      "verifiedFallbackRecruitmentUrl": "https://www.ancf.or.kr/list/%EC%82%AC%EB%9E%8C",
+      "verifiedFallbackRole": "secondary-authoritative"
     },
     {
       "id": "gyeonggi:suwon",
@@ -582,7 +586,7 @@
         "재단법인 안양문화예술재단"
       ],
       "homepage": "https://ayac.or.kr/",
-      "officialRecruitmentUrl": "https://ayac.saramin.co.kr/",
+      "officialRecruitmentUrl": "https://ayac.or.kr/base/board/list?boardManagementNo=1&menuLevel=2&menuNo=19&searchCategory=49",
       "enabled": true
     },
     {
