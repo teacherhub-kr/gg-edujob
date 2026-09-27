@@ -1,20 +1,21 @@
 {
-  "generatedAt": "2026-09-27 10:24:01 KST",
+  "generatedAt": "2026-09-27 22:50:59 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-09-27 10:24:01 KST",
+    "generatedAt": "2026-09-27 22:50:59 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 19271,
-    "datasetIdCountBefore": 18266,
-    "missingBefore": 1006,
-    "recoveredNow": 1006,
+    "officialIdCount": 19259,
+    "datasetIdCountBefore": 20840,
+    "missingBefore": 0,
+    "recoveredNow": 0,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
-    "totalOffices": 44
+    "totalOffices": 44,
+    "scanId": "20260927T134509Z-36320728169-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -104,9 +105,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 8725,
-      "missingBeforeCount": 890,
-      "recoveredNowCount": 890,
+      "inDatasetBefore": 9615,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 9615,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -118,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 356,
+      "officialIdCount": 342,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 348,
-      "missingBeforeCount": 8,
-      "recoveredNowCount": 8,
-      "inDatasetAfter": 356,
+      "inDatasetBefore": 342,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
+      "inDatasetAfter": 342,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -138,7 +139,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2503,
+      "officialIdCount": 2505,
       "coverageComplete": true,
       "pagesScanned": 254,
       "accessErrors": 0,
@@ -150,19 +151,19 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 247,
-          "count": 2452,
+          "count": 2454,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
           "stopReason": "lookback-exhausted",
           "emptyPageEvidence": {},
-          "latestRegistered": "2026/09/23",
+          "latestRegistered": "2026/09/27",
           "sampleIds": [
+            "ice-central:3385344",
+            "ice-central:3385345",
             "ice-central:3385240",
             "ice-central:3385312",
-            "ice-central:3385255",
-            "ice-central:3385252",
-            "ice-central:3385251"
+            "ice-central:3385255"
           ]
         },
         {
@@ -188,10 +189,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2503,
+      "inDatasetBefore": 2505,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2503,
+      "inDatasetAfter": 2505,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -880,7 +881,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260927105412",
+              "/js/include.js?v=20260927232222",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -1075,9 +1076,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 76,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 80,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 80,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -1470,9 +1471,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 442,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 445,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 445,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -1528,9 +1529,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 423,
-      "missingBeforeCount": 13,
-      "recoveredNowCount": 13,
+      "inDatasetBefore": 436,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 436,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -1631,9 +1632,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 870,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 879,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 879,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -1824,9 +1825,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 181,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 182,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 182,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2185,9 +2186,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 308,
-      "missingBeforeCount": 10,
-      "recoveredNowCount": 10,
+      "inDatasetBefore": 318,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 318,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2288,9 +2289,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 422,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 426,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 426,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2346,9 +2347,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 679,
-      "missingBeforeCount": 17,
-      "recoveredNowCount": 17,
+      "inDatasetBefore": 696,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 696,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2404,9 +2405,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 170,
-      "missingBeforeCount": 7,
-      "recoveredNowCount": 7,
+      "inDatasetBefore": 177,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 177,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2551,9 +2552,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 3,
-      "missingBeforeCount": 2,
-      "recoveredNowCount": 2,
+      "inDatasetBefore": 5,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2619,9 +2620,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 31,
-      "missingBeforeCount": 8,
-      "recoveredNowCount": 8,
+      "inDatasetBefore": 39,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 39,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2653,9 +2654,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 5,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 6,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 6,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2687,9 +2688,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 97,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 106,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 106,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2721,9 +2722,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 58,
-      "missingBeforeCount": 11,
-      "recoveredNowCount": 11,
+      "inDatasetBefore": 69,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 69,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2755,9 +2756,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 117,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 126,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 126,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2917,9 +2918,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 8725,
-      "missingBeforeCount": 890,
-      "recoveredNowCount": 890,
+      "inDatasetBefore": 9615,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 9615,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2931,15 +2932,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 356,
+      "officialIdCount": 342,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 348,
-      "missingBeforeCount": 8,
-      "recoveredNowCount": 8,
-      "inDatasetAfter": 356,
+      "inDatasetBefore": 342,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
+      "inDatasetAfter": 342,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2951,7 +2952,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2503,
+      "officialIdCount": 2505,
       "coverageComplete": true,
       "pagesScanned": 254,
       "accessErrors": 0,
@@ -2963,19 +2964,19 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 247,
-          "count": 2452,
+          "count": 2454,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
           "stopReason": "lookback-exhausted",
           "emptyPageEvidence": {},
-          "latestRegistered": "2026/09/23",
+          "latestRegistered": "2026/09/27",
           "sampleIds": [
+            "ice-central:3385344",
+            "ice-central:3385345",
             "ice-central:3385240",
             "ice-central:3385312",
-            "ice-central:3385255",
-            "ice-central:3385252",
-            "ice-central:3385251"
+            "ice-central:3385255"
           ]
         },
         {
@@ -3001,10 +3002,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2503,
+      "inDatasetBefore": 2505,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2503,
+      "inDatasetAfter": 2505,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3693,7 +3694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260927105412",
+              "/js/include.js?v=20260927232222",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -3888,9 +3889,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 76,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 80,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 80,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -4283,9 +4284,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 442,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 445,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 445,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -4341,9 +4342,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 423,
-      "missingBeforeCount": 13,
-      "recoveredNowCount": 13,
+      "inDatasetBefore": 436,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 436,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -4444,9 +4445,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 870,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 879,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 879,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -4637,9 +4638,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 181,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 182,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 182,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -4998,9 +4999,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 308,
-      "missingBeforeCount": 10,
-      "recoveredNowCount": 10,
+      "inDatasetBefore": 318,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 318,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5101,9 +5102,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 422,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 426,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 426,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5159,9 +5160,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 679,
-      "missingBeforeCount": 17,
-      "recoveredNowCount": 17,
+      "inDatasetBefore": 696,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 696,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5217,9 +5218,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 170,
-      "missingBeforeCount": 7,
-      "recoveredNowCount": 7,
+      "inDatasetBefore": 177,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 177,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5364,9 +5365,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 3,
-      "missingBeforeCount": 2,
-      "recoveredNowCount": 2,
+      "inDatasetBefore": 5,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 5,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5432,9 +5433,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 31,
-      "missingBeforeCount": 8,
-      "recoveredNowCount": 8,
+      "inDatasetBefore": 39,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 39,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5466,9 +5467,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 5,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 6,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 6,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5500,9 +5501,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 97,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 106,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 106,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5534,9 +5535,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 58,
-      "missingBeforeCount": 11,
-      "recoveredNowCount": 11,
+      "inDatasetBefore": 69,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 69,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5568,9 +5569,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 117,
-      "missingBeforeCount": 9,
-      "recoveredNowCount": 9,
+      "inDatasetBefore": 126,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 126,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5644,5 +5645,6 @@
       "missingAfterExamples": [],
       "reconciled": true
     }
-  ]
+  ],
+  "scanId": "20260927T134509Z-36320728169-1"
 }
