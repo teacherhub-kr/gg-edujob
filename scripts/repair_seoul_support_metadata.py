@@ -15,6 +15,7 @@ REPORT_PATH = ROOT / "seoul_support_metadata_report.json"
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST).date()
 DATE_RE = re.compile(r"(20\d{2})[./-](\d{1,2})[./-](\d{1,2})")
+MAX_CANDIDATES = 40
 
 
 def norm(value):
@@ -63,7 +64,7 @@ def repair(job, session):
     if not url.startswith("https://") or urlparse(url).hostname != urlparse(board).hostname or not url.endswith("/FUS/JO/JOV11.do"):
         return "invalid-exact-detail-url"
     try:
-        response = session.post(url, data={"job_seq": seq}, headers={"Referer": board}, timeout=18)
+        response = session.post(url, data={"job_seq": seq}, headers={"Referer": board}, timeout=12)
         response.raise_for_status()
         if not response.encoding or response.encoding.lower() == "iso-8859-1":
             response.encoding = response.apparent_encoding or "utf-8"
@@ -101,11 +102,11 @@ def main():
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; metro-edujob-metadata-repair/1.0)", "Accept-Language": "ko-KR,ko;q=0.9"})
     outcomes = []
-    for job in candidates[:200]:
+    for job in candidates[:MAX_CANDIDATES]:
         outcomes.append({"id": job.get("id"), "result": repair(job, session)})
     report = {"checkedAt": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"), "candidates": len(candidates),
               "repaired": sum(x["result"] == "repaired" for x in outcomes), "outcomes": outcomes,
-              "capped": len(candidates) > 200}
+              "capped": len(candidates) > MAX_CANDIDATES}
     REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     if report["repaired"]:
         JOBS_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
