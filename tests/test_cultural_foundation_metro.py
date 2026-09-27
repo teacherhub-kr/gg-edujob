@@ -2,6 +2,8 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from bs4 import BeautifulSoup
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -76,7 +78,7 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
             self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
 
-    def test_foundation_owned_host_can_prove_identity_without_page_branding(self):
+    def test_foundation_owned_host_is_only_supporting_evidence(self):
         foundation = {
             "id": "seoul:seongdong",
             "name": "성동문화재단",
@@ -88,6 +90,10 @@ class CulturalFoundationMetroTests(unittest.TestCase):
                 "https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo",
             )
         )
+        html = "<html><body>채용 공고 <a href='/jobs/23'>직원 채용</a></body></html>"
+        response = SimpleNamespace(url="https://www.sdfac.or.kr/recruit", text=html, content=html.encode())
+        with self.assertRaisesRegex(RuntimeError, "identity unproved"):
+            crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {"/jobs/23": {}})
         shared = {
             "id": "gyeonggi:seongnam",
             "name": "성남문화재단",
@@ -96,6 +102,25 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertFalse(
             crawler.foundation_owned_board_host(shared, "https://www.seongnam.go.kr/bbs010402")
         )
+
+    def test_blocked_js_shell_and_js_detail_pages_fail_closed(self):
+        foundation = {"id": "gyeonggi:yangpyeong", "name": "양평문화재단", "homepage": "https://ypcf.or.kr/"}
+        examples = (
+            "<html><body>양평문화재단 WELLCONN 접근 대기</body></html>",
+            "<html ng-app='recruit'><body>양평문화재단 채용 {{item.title}}</body></html>",
+            "<html><body>양평문화재단 채용 <a href='javascript:reg_view(25)'>직원 채용 공고</a></body></html>",
+            "<html><body>양평문화재단 채용</body></html>",
+        )
+        for html in examples:
+            response = SimpleNamespace(url="https://ypcf.or.kr/recruit", text=html, content=html.encode())
+            with self.subTest(html=html), self.assertRaises(RuntimeError):
+                crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {})
+
+    def test_https_redirect_to_http_fails(self):
+        response = SimpleNamespace(url="http://ypcf.or.kr/recruit", encoding="utf-8", raise_for_status=lambda: None)
+        session = SimpleNamespace(get=lambda *args, **kwargs: response)
+        with self.assertRaisesRegex(RuntimeError, "downgraded"):
+            crawler.resilient_request(session, "https://ypcf.or.kr/recruit")
 
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
