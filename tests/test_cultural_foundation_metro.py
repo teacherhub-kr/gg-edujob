@@ -63,15 +63,24 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
             self.assertFalse(crawler.foundation_owned_board_host(foundation, "https://www.hanam.go.kr/www/"))
 
-    def test_initial_rollout_uses_only_four_live_verified_new_boards(self):
+    def test_initial_rollout_uses_only_three_detail_verified_new_boards(self):
         baseline = {
             "seoul:metropolitan",
             "incheon:metropolitan", "incheon:jemulpo", "incheon:seohae",
             "incheon:yeonsu", "incheon:bupyeong", "incheon:namdong",
         }
-        first_batch = {"seoul:yangcheon", "seoul:yeongdeungpo", "gyeonggi:suwon", "gyeonggi:yangpyeong"}
+        first_batch = {"seoul:yangcheon", "seoul:yeongdeungpo", "gyeonggi:yangpyeong"}
         configured = {x["id"] for x in self.registry["institutions"] if x.get("officialRecruitmentUrl")}
         self.assertEqual(configured, baseline | first_batch)
+
+    def test_board_navigation_cannot_be_published_as_detail(self):
+        self.assertFalse(crawler.official_position_title("채용공고"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.swcf.or.kr/?p=116", "https://www.swcf.or.kr/?p=116&bxPage=1"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.ydpcf.or.kr/board.do?bid=3&p=1", "https://www.ydpcf.or.kr/board.do?bid=3"))
+        self.assertTrue(crawler.looks_like_detail_url(
+            "https://ypcf.or.kr/recruit", "https://ypcf.or.kr/recruit/?bmode=view&idx=174131299"))
 
     def test_access_page_js_shell_and_js_detail_are_unhealthy(self):
         foundation = {"id": "gyeonggi:yangpyeong", "name": "양평문화재단", "homepage": "https://ypcf.or.kr/"}
