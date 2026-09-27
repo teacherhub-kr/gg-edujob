@@ -63,16 +63,13 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
             self.assertFalse(crawler.foundation_owned_board_host(foundation, "https://www.hanam.go.kr/www/"))
 
-    def test_initial_rollout_uses_only_eight_selected_new_boards(self):
+    def test_initial_rollout_uses_only_four_live_verified_new_boards(self):
         baseline = {
             "seoul:metropolitan",
             "incheon:metropolitan", "incheon:jemulpo", "incheon:seohae",
             "incheon:yeonsu", "incheon:bupyeong", "incheon:namdong",
         }
-        first_batch = {
-            "seoul:gangnam", "seoul:gwanak", "seoul:guro", "seoul:yangcheon",
-            "seoul:yeongdeungpo", "gyeonggi:suwon", "gyeonggi:yangpyeong", "gyeonggi:hanam",
-        }
+        first_batch = {"seoul:yangcheon", "seoul:yeongdeungpo", "gyeonggi:suwon", "gyeonggi:yangpyeong"}
         configured = {x["id"] for x in self.registry["institutions"] if x.get("officialRecruitmentUrl")}
         self.assertEqual(configured, baseline | first_batch)
 
