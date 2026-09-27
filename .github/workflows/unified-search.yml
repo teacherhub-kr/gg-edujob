@@ -2,6 +2,10 @@ name: Unified recruitment search
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Cultural foundation coverage']
+    types: [completed]
+    branches: [main]
   pull_request:
     paths:
       - 'scripts/build_unified_search.py'
@@ -47,7 +51,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -63,7 +67,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Capture immutable publication baseline
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main')
         run: python scripts/publication_transaction.py capture --output /tmp/unified_publication_base_sha
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
@@ -169,7 +173,7 @@ jobs:
         continue-on-error: true
         run: python scripts/reconcile_cultural_foundation_coverage.py
       - name: Publish verified search transaction
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && steps.prepare_publication.outcome == 'success' && steps.foundation_reconcile.outcome == 'success' && steps.crosscheck.outcome == 'success'
+        if: ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main')) && steps.prepare_publication.outcome == 'success' && steps.foundation_reconcile.outcome == 'success' && steps.crosscheck.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
@@ -184,7 +188,7 @@ jobs:
             --status-file /tmp/unified-publication-transaction.json \
             --message 'Publish verified multi-source recruitment search'
       - name: Upload unified publication transaction status
-        if: always() && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        if: always() && ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main'))
         uses: actions/upload-artifact@v4
         with:
           name: unified-publication-${{ github.run_id }}-${{ github.run_attempt }}
