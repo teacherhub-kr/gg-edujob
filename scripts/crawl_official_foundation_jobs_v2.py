@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json, re
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
@@ -19,8 +19,13 @@ def make_session():
 
 def resilient_request(session,url):
     r=session.get(url,timeout=25,headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},allow_redirects=True); r.raise_for_status()
+    if urlparse(url).scheme.lower()=="https" and urlparse(r.url).scheme.lower()!="https":
+        raise RuntimeError(f"HTTPS official URL downgraded in redirect: {url[:180]} -> {r.url[:180]}")
     if not r.encoding or r.encoding.lower()=="iso-8859-1": r.encoding=r.apparent_encoding or "utf-8"
     return r
+
+def verified_open_deadline(registered, apply_end, today):
+    return bool(registered and apply_end and registered<=today<=apply_end)
 
 def sfac_rows(session,foundation,url):
     r=resilient_request(session,url); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True)); title=""
@@ -33,7 +38,9 @@ def sfac_rows(session,foundation,url):
         m=re.search(r"(서울문화재단[^\n]{0,120}(?:채용|모집|공고)[^\n]{0,120})",text); title=base.normalize_space(m.group(1)) if m else ""
     raw_registered=base.parse_date_text(text[:2500]) or base.detail_registered(soup,None); today=datetime.now(KST).date(); apply_end=base.extract_apply_end(text,raw_registered)
     registered=raw_registered if raw_registered and raw_registered<=today and (not apply_end or raw_registered<=apply_end) else None
-    active=bool(title and registered and (not apply_end or apply_end>=today)) and not base.RESULT_RE.search(title)
+    if title and registered and not apply_end and not base.RESULT_RE.search(title):
+        raise RuntimeError("SFAC recruitment has no verified application deadline")
+    active=bool(title and verified_open_deadline(registered,apply_end,today)) and not base.RESULT_RE.search(title)
     rows=[]
     if active:
         stable=hashlib.sha1(f"{url}|{title}|{registered.isoformat()}".encode()).hexdigest()[:18]; fid=str(foundation.get("id") or "")
@@ -42,17 +49,15 @@ def sfac_rows(session,foundation,url):
 
 def sfac_careerlink_probe(session):
     r=resilient_request(session,SFAC_CAREERLINK_URL); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True))
-    detail_links=[a.get("href") for a in soup.find_all("a",href=True) if any(k in str(a.get("href")) for k in ("recruit","job","apply"))]
     empty_phrase="현재 게시중인 공고가 없습니다" in text or ("0 / 0" in text and "채용공고" in text)
-    empty_markup=(r.status_code==200 and "서울문화재단" in text and "채용" in text and not detail_links)
-    if not (empty_phrase or empty_markup): raise RuntimeError("sfac.careerlink.kr is not explicitly empty; dedicated current-post parser is required before collection can continue")
-    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"phrase" if empty_phrase else "200-html-no-recruitment-detail-links","role":"secondary-official-contract-surface"}
+    if not empty_phrase: raise RuntimeError("sfac.careerlink.kr lacks an explicit empty state; dedicated current-post parser is required")
+    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"explicit-empty-phrase","role":"secondary-official-contract-surface"}
 
 
 RECRUITMENT_RE=re.compile(
     r"채용|구인|기간제\s*(?:근로자|직원|인력)|직원\s*(?:공개|제한|경력)?\s*(?:경쟁\s*)?(?:채용|모집)|"
     r"(?:문화예술|예술교육|교육)\s*(?:전문)?\s*강사\s*(?:채용|모집)|강사\s*(?:채용|모집)|"
-    r"(?:대표이사|임원|이사|감사)\s*(?:공개)?\s*모집|인력\s*(?:채용|모집)|"
+    r"(?:대표이사|임원|이사|감사)(?:\s*\([^)]{1,20}\))?\s*(?:공개)?\s*모집|인력\s*(?:채용|모집)|"
     r"(?:합창단|예술단|교향악단|오케스트라)\s*(?:단원|연주자)\s*(?:추가)?\s*모집|"
     r"(?:성악|음악|예술)\s*지도자\s*(?:채용|모집)",
     re.I,
@@ -75,12 +80,89 @@ GENERIC_OFFICIAL_HOSTS={
     "nyjcf.or.kr","www.nyjcf.or.kr",
     "ypcf.or.kr","www.ypcf.or.kr",
     "ggcf.kr","www.ggcf.kr",
+    "gcfac.or.kr","www.gcfac.or.kr",
+    "dbfac.or.kr","www.dbfac.or.kr",
+    "ddmac.or.kr","www.ddmac.or.kr",
+    "mfac.or.kr","www.mfac.or.kr",
+    "nowonarts.kr","www.nowonarts.kr",
+    "songpafac.or.kr","www.songpafac.or.kr",
+    "recruit.incruit.com",
+    "gmcf.incruit.com",
+    "gmcf.or.kr","www.gmcf.or.kr","m.gmcf.or.kr",
+    "gcf.or.kr","www.gcf.or.kr",
+    "yjcf.or.kr","www.yjcf.or.kr",
+    "artic.or.kr","www.artic.or.kr",
+    "ansanart.com","www.ansanart.com",
+    "pccf.or.kr","www.pccf.or.kr",
+    "gangnam.go.kr","www.gangnam.go.kr",
+    "yfac.kr","www.yfac.kr",
+    "ydpcf.or.kr","www.ydpcf.or.kr",
+    "recruit.efac.or.kr",
+    "recruit.jnfac.or.kr",
+    "gdfac.or.kr","www.gdfac.or.kr",
+    "sdfac.or.kr","www.sdfac.or.kr",
+    "gunpocf.incruit.com",
+    "yicf.incruit.com",
+    "gbcf.fairyhr.com",
+    "gfac.or.kr","www.gfac.or.kr",
+    "naruart.applyin.co.kr",
+    "artgy.or.kr","www.artgy.or.kr",
+    "gcart.or.kr","www.gcart.or.kr",
+    "bcf.or.kr","www.bcf.or.kr",
+    "ayac.saramin.co.kr","ayac.or.kr","www.ayac.or.kr",
+    "pcfac.or.kr","www.pcfac.or.kr",
+    "swcf.or.kr","www.swcf.or.kr",
+    "guro.go.kr","www.guro.go.kr",
+    "guri.go.kr","www.guri.go.kr",
+    "hanam.go.kr","www.hanam.go.kr",
+    "seochocf.applyin.co.kr",
+    "caci.or.kr","www.caci.or.kr",
+    "seongnam.go.kr","www.seongnam.go.kr",
+    "uac.or.kr","www.uac.or.kr",
+    "paju.go.kr","www.paju.go.kr",
+    "culture.seoul.go.kr",
+    "ancf.or.kr","www.ancf.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
+BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
+JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
+EXPLICIT_EMPTY_RE=re.compile(r"등록된\s*(?:글|게시물|공고|자료)이\s*없|게시물이\s*없|검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없",re.I)
+
+
+def verify_board_surface(soup, foundation, response, candidates):
+    visible=base.normalize_space(soup.get_text(" ",strip=True))
+    if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
+        raise RuntimeError("official board returned an access-control page")
+    if not candidates and JS_SHELL_RE.search(response.text):
+        raise RuntimeError("official board is a JS-rendered shell without parsed details")
+    unsupported=[a for a in soup.find_all("a",href=True)
+                 if official_position_title(a.get_text(" ",strip=True))
+                 and (str(a.get("href") or "").strip().lower().startswith(("javascript:","#"))
+                      or a.has_attr("onclick"))
+                 and not (str(foundation.get("id"))=="incheon:metropolitan"
+                          and ifac_detail_url(a,response.url))]
+    if unsupported:
+        raise RuntimeError("official recruitment rows use unsupported JavaScript detail links")
+    normalized=visible.replace(" ","")
+    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
+    fid=str(foundation.get("id") or "")
+    identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in normalized for x in aliases)
+    if fid=="incheon:seohae":
+        identity_ok=identity_ok or "채용소식" in visible
+    if fid=="incheon:namdong":
+        identity_ok=identity_ok or ("타기관" in visible and ("채용" in visible or "공고" in visible))
+    if not identity_ok:
+        title=base.normalize_space(soup.title.get_text(" ",strip=True))[:100] if soup.title else ""
+        raise RuntimeError(f"official board identity unproved: finalUrl={response.url[:200]!r}, title={title!r}, bytes={len(response.content)}, candidates={len(candidates)}")
+    if not candidates and not EXPLICIT_EMPTY_RE.search(visible):
+        raise RuntimeError("official board has no parseable details and no explicit empty state")
+    return True
 
 
 def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
+    if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}:
+        return False
     if not title or base.RESULT_RE.search(title) or NON_POSITION_RE.search(title):
         return False
     return bool(RECRUITMENT_RE.search(title))
@@ -98,8 +180,31 @@ def container_text(anchor)->str:
     return base.normalize_space(anchor.get_text(" ",strip=True))
 
 
-def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "")!="incheon:namdong":
+SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
+    "incheon:namdong",
+    "seoul:guro",
+    "gyeonggi:guri",
+    "gyeonggi:hanam",
+    "gyeonggi:seongnam",
+    "gyeonggi:paju",
+}
+
+
+def foundation_owned_board_host(foundation, board_url:str)->bool:
+    fid=str(foundation.get("id") or "")
+    if fid in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
+        return False
+    board_host=(urlparse(board_url).hostname or "").lower()
+    home_host=(urlparse(str(foundation.get("homepage") or "")).hostname or "").lower()
+    if not board_host or not home_host:
+        return False
+    board_base=board_host[4:] if board_host.startswith("www.") else board_host
+    home_base=home_host[4:] if home_host.startswith("www.") else home_host
+    return board_base==home_base or board_base.endswith("."+home_base)
+
+
+def candidate_belongs_to_foundation(foundation,text:str,*,shared_board:bool=False)->bool:
+    if not shared_board and str(foundation.get("id") or "") not in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
@@ -119,6 +224,42 @@ def detail_identity(url:str)->str:
     return "url:"+hashlib.sha1(url.encode()).hexdigest()[:20]
 
 
+def looks_like_detail_url(board_url:str, candidate_url:str)->bool:
+    board=urlparse(board_url); candidate=urlparse(candidate_url)
+    if board.path.rstrip("/")!=candidate.path.rstrip("/"):
+        return True
+    query=parse_qs(candidate.query)
+    if any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")):
+        return True
+    if query.get("bmode")==["view"] or query.get("proc_type")==["view"]:
+        return True
+    return False
+
+
+def ifac_detail_url(anchor, board_url:str)->str|None:
+    if (urlparse(board_url).hostname or "").removeprefix("www.")!="ifac.or.kr":
+        return None
+    if str(anchor.get("href") or "").strip().lower() not in ("#none","javascript:void(0);"):
+        return None
+    m=re.fullmatch(r"\s*goView\(['\"](\d{4,})['\"],\s*['\"][^'\"]*['\"]\);?\s*",str(anchor.get("onclick") or ""))
+    if not m:
+        return None
+    key=str((parse_qs(urlparse(board_url).query).get("key") or [""])[0])
+    if not key:
+        return None
+    return urljoin(board_url,"/bbs/view.do")+"?"+urlencode({"bbsSn":m.group(1),"key":key})
+
+
+def ifac_title_deadline(title,registered):
+    m=re.search(r"\(\s*\d{1,2}\s*[.]\s*\d{1,2}\s*[.]?\s*[~～-]\s*(\d{1,2})\s*[.]\s*(\d{1,2})\s*[.]?\s*\)",title)
+    if not m or not registered:
+        return None
+    try:
+        return base.date(registered.year,int(m.group(1)),int(m.group(2)))
+    except ValueError:
+        return None
+
+
 def list_detail_candidates(session,foundation,board_url):
     r=resilient_request(session,board_url)
     soup=BeautifulSoup(r.text,"html.parser")
@@ -130,20 +271,25 @@ def list_detail_candidates(session,foundation,board_url):
     candidates={}
     dated_list_rows=0
     for a in soup.find_all("a",href=True):
-        title=base.normalize_space(a.get_text(" ",strip=True))
+        ifac_url=ifac_detail_url(a,r.url) if fid=="incheon:metropolitan" else None
+        title_node=a.select_one("dl.title dd") if ifac_url else None
+        title=base.normalize_space((title_node or a).get_text(" ",strip=True))
         if not official_position_title(title):
             continue
         href=str(a.get("href") or "").strip()
-        if not href or href.lower().startswith(("javascript:","#","mailto:","tel:")):
+        if not ifac_url and (not href or href.lower().startswith(("javascript:","#","mailto:","tel:"))):
             continue
-        absolute=urljoin(r.url,href)
+        absolute=ifac_url or urljoin(r.url,href)
         host=(urlparse(absolute).hostname or "").lower()
         if host not in allowed:
             continue
         if absolute.rstrip("/")==r.url.rstrip("/"):
             continue
+        if not looks_like_detail_url(r.url,absolute):
+            continue
         context=container_text(a)
-        if not candidate_belongs_to_foundation(foundation,title+" "+context):
+        shared_board=fid=="seoul:dongjak" and board_host=="culture.seoul.go.kr"
+        if not candidate_belongs_to_foundation(foundation,title+" "+context,shared_board=shared_board):
             continue
         reg=base.parse_date_text(context)
         if reg:
@@ -159,13 +305,24 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
+    identity_ok=verify_board_surface(soup,foundation,board_response,candidates)
     jobs=[]
     inspected=0
     errors=[]
+    unverified_deadlines=[]
     for identity,meta in list(candidates.items())[:80]:
         try:
             detail=resilient_request(session,str(meta["url"]))
             detail_soup=BeautifulSoup(detail.text,"html.parser")
+            detail_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
+            if BLOCK_PAGE_RE.search(detail.text[:4000]) or BLOCK_PAGE_RE.search(detail_text[:4000]):
+                raise RuntimeError("official detail returned an access-control page")
+            if JS_SHELL_RE.search(detail.text) and len(detail_text)<100:
+                raise RuntimeError("official detail returned an unrendered JavaScript shell")
+            list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
+            title_prefix=list_title.replace(" ","")[:20]
+            if not detail_text or (title_prefix and title_prefix not in detail_text.replace(" ","")):
+                raise RuntimeError("official detail does not contain its recruitment title")
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
                 continue
@@ -174,9 +331,14 @@ def generic_official_rows(session,foundation,board_url):
                 continue
             full_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
             apply_end=base.extract_apply_end(full_text,registered)
+            if not apply_end and str(foundation.get("id") or "")=="incheon:metropolitan":
+                apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
                 continue
             if not apply_end and registered<today-base.timedelta(days=30):
+                continue
+            if not apply_end:
+                unverified_deadlines.append(detail.url[:250])
                 continue
             inspected+=1
             fid=str(foundation.get("id") or "")
@@ -212,16 +374,10 @@ def generic_official_rows(session,foundation,board_url):
             errors.append({"url":str(meta.get("url") or "")[:500],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
     # A configured official board is healthy only if it is a real HTML surface.
     # Zero current jobs is valid; an unreadable or identity-mismatched surface is not.
-    board_text=base.normalize_space(soup.get_text(" ",strip=True))
-    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
-    identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in board_text.replace(" ","") for x in aliases)
-    fid=str(foundation.get("id") or "")
-    if fid=="incheon:seohae":
-        identity_ok=identity_ok or "채용소식" in board_text
-    if fid=="incheon:namdong":
-        identity_ok=identity_ok or ("타기관" in board_text and ("채용" in board_text or "공고" in board_text))
-    if not identity_ok:
-        raise RuntimeError("official board did not prove foundation/local-government identity")
+    if errors:
+        raise RuntimeError(f"official board detail fetch failed: {errors[:2]}")
+    if unverified_deadlines:
+        raise RuntimeError(f"official recent recruitment lacks a verified application deadline: {unverified_deadlines[:2]}")
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
@@ -234,19 +390,62 @@ def generic_official_rows(session,foundation,board_url):
     }
 
 
+def collect_with_verified_fallback(session, foundation, board_url):
+    fid=str(foundation.get("id") or "")
+    host=(urlparse(board_url).hostname or "").lower()
+    def collect(url):
+        h=(urlparse(url).hostname or "").lower()
+        if h=="nsart.or.kr" or h.endswith(".nsart.or.kr"):
+            return base.nsart_rows(session,foundation,url)
+        if h=="sfac.saramin.co.kr":
+            found,meta=sfac_rows(session,foundation,url)
+            careerlink=sfac_careerlink_probe(session)
+            meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]
+            meta["secondarySurfaces"]=[careerlink]
+            meta["adapterStatus"]="implemented"
+            return found,meta
+        if h in GENERIC_OFFICIAL_HOSTS:
+            return generic_official_rows(session,foundation,url)
+        raise RuntimeError("adapter-not-yet-implemented")
+
+    try:
+        return collect(board_url)
+    except (requests.exceptions.SSLError, requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as exc:
+        fallback=str(foundation.get("verifiedFallbackRecruitmentUrl") or "").strip()
+        if not fallback:
+            raise
+        found,meta=collect(fallback)
+        role=str(foundation.get("verifiedFallbackRole") or "secondary-authoritative")
+        for job in found:
+            job["sourceRole"]=role
+            if role=="secondary-official-mirror":
+                job["sourceType"]="공식 공공기관 채용 미러"
+                job["trustLevel"]="공식"
+            else:
+                job["sourceType"]="검증된 문화재단 연합회 채용"
+                job["trustLevel"]="검증"
+            job["primaryOfficialBoardUrl"]=board_url
+            job["boardUrl"]=fallback
+        meta["fallbackUsed"]=True
+        meta["fallbackRole"]=role
+        meta["primaryBoardUrl"]=board_url
+        meta["fallbackBoardUrl"]=fallback
+        meta["primaryTransportError"]=f"{type(exc).__name__}: {str(exc)[:180]}"
+        return found,meta
+
+
 def main():
     generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; session=make_session(); base.request=resilient_request
     jobs=[]; errors=[]; unsupported=[]; board_results=[]
     for foundation in configured:
         board_url=str(foundation.get("officialRecruitmentUrl") or "").strip(); host=(urlparse(board_url).hostname or "").lower()
         try:
-            if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
-            elif host=="sfac.saramin.co.kr":
-                found,meta=sfac_rows(session,foundation,board_url); careerlink=sfac_careerlink_probe(session); meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]; meta["secondarySurfaces"]=[careerlink]; meta["adapterStatus"]="implemented"
-            elif host in GENERIC_OFFICIAL_HOSTS:
-                found,meta=generic_official_rows(session,foundation,board_url)
-            else:
-                unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
+            try:
+                found,meta=collect_with_verified_fallback(session,foundation,board_url)
+            except RuntimeError as exc:
+                if str(exc)=="adapter-not-yet-implemented":
+                    unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
+                raise
             jobs.extend(found); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta})
         except Exception as exc:
             errors.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False})

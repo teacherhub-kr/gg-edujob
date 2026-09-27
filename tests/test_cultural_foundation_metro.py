@@ -2,6 +2,9 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from bs4 import BeautifulSoup
+from unittest.mock import patch
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -38,6 +41,7 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(rows["incheon:seohae"]["name"], "인천서해구문화재단")
         self.assertIn("인천서구문화재단", rows["incheon:seohae"]["aliases"])
         self.assertTrue(all(x.get("officialRecruitmentUrl") for x in rows.values()))
+        self.assertIn("cat=3", rows["incheon:yeonsu"]["officialRecruitmentUrl"])
         self.assertIn("namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
         self.assertIn("namdongcf.or.kr", rows["incheon:namdong"]["canonicalRecruitmentUrl"])
 
@@ -49,6 +53,82 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         }
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
         self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
+
+    def test_new_shared_municipal_boards_filter_unrelated_posts(self):
+        for fid, name, unrelated in (
+            ("seoul:guro", "구로문화재단", "구로구청 일반임기제 채용 공고"),
+            ("gyeonggi:hanam", "하남문화재단", "하남시 기간제근로자 채용 공고"),
+        ):
+            foundation = {"id": fid, "name": name, "aliases": [f"(재){name}"]}
+            self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, f"{name} 직원 채용"))
+            self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
+            self.assertFalse(crawler.foundation_owned_board_host(foundation, "https://www.hanam.go.kr/www/"))
+
+    def test_initial_rollout_uses_only_three_detail_verified_new_boards(self):
+        baseline = {
+            "seoul:metropolitan",
+            "incheon:metropolitan", "incheon:jemulpo", "incheon:seohae",
+            "incheon:yeonsu", "incheon:bupyeong", "incheon:namdong",
+        }
+        first_batch = {"seoul:yangcheon", "seoul:yeongdeungpo", "gyeonggi:yangpyeong"}
+        configured = {x["id"] for x in self.registry["institutions"] if x.get("officialRecruitmentUrl")}
+        self.assertEqual(configured, baseline | first_batch)
+
+    def test_board_navigation_cannot_be_published_as_detail(self):
+        self.assertFalse(crawler.official_position_title("채용공고"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.swcf.or.kr/?p=116", "https://www.swcf.or.kr/?p=116&bxPage=1"))
+        self.assertFalse(crawler.looks_like_detail_url(
+            "https://www.ydpcf.or.kr/board.do?bid=3&p=1", "https://www.ydpcf.or.kr/board.do?bid=3"))
+        self.assertTrue(crawler.looks_like_detail_url(
+            "https://ypcf.or.kr/recruit", "https://ypcf.or.kr/recruit/?bmode=view&idx=174131299"))
+
+    def test_access_page_js_shell_and_js_detail_are_unhealthy(self):
+        foundation = {"id": "gyeonggi:yangpyeong", "name": "양평문화재단", "homepage": "https://ypcf.or.kr/"}
+        examples = (
+            "<html><body>양평문화재단 WELLCONN 접근 대기</body></html>",
+            "<html ng-app='recruit'><body>양평문화재단 채용 {{item.title}}</body></html>",
+            "<html><body>양평문화재단 채용 <a href='javascript:reg_view(25)'>직원 채용 공고</a></body></html>",
+            "<html><body>양평문화재단 채용</body></html>",
+        )
+        for html in examples:
+            response = SimpleNamespace(url="https://ypcf.or.kr/recruit", text=html, content=html.encode())
+            with self.subTest(html=html), self.assertRaises(RuntimeError):
+                crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {})
+        self.assertTrue(crawler.foundation_owned_board_host(foundation, "https://ypcf.or.kr/recruit"))
+
+    def test_https_redirect_to_http_fails(self):
+        response = SimpleNamespace(url="http://ypcf.or.kr/recruit", encoding="utf-8", raise_for_status=lambda: None)
+        session = SimpleNamespace(get=lambda *args, **kwargs: response)
+        with self.assertRaisesRegex(RuntimeError, "downgraded"):
+            crawler.resilient_request(session, "https://ypcf.or.kr/recruit")
+
+    def test_secondary_sfac_board_requires_explicit_empty_text(self):
+        response = SimpleNamespace(url="https://sfac.careerlink.kr/", status_code=200,
+                                   text="<html><body>서울문화재단 채용</body></html>")
+        with patch.object(crawler, "resilient_request", return_value=response):
+            with self.assertRaisesRegex(RuntimeError, "lacks an explicit empty state"):
+                crawler.sfac_careerlink_probe(None)
+
+    def test_recent_post_without_deadline_is_not_verified_open(self):
+        today = crawler.base.date(2026, 9, 27)
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 9, 26), today))
+        self.assertTrue(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 10, 1), today))
+
+    def test_ifac_go_view_uses_exact_official_detail_and_title_period(self):
+        title="재단법인 인천문화재단 감사(비상임) 모집 공고(9.21.~10.6.)"
+        anchor=BeautifulSoup(
+            '<a href="#none" onclick="goView(\'236088\', \'\');"><dl class="title"><dd>'
+            +title+'</dd></dl></a>',"html.parser").a
+        board="https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232"
+        self.assertTrue(crawler.official_position_title(title))
+        self.assertEqual(crawler.ifac_detail_url(anchor,board),
+                         "https://ifac.or.kr/bbs/view.do?bbsSn=236088&key=m2501152808232")
+        self.assertEqual(crawler.ifac_title_deadline(title,crawler.base.date(2026,9,21)),
+                         crawler.base.date(2026,10,6))
+        anchor['onclick']="goView('../../bad', '');"
+        self.assertIsNone(crawler.ifac_detail_url(anchor,board))
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [

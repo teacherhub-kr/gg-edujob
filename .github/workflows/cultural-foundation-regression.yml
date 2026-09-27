@@ -17,6 +17,65 @@ permissions:
   contents: read
 
 jobs:
+  inspect_problem_boards:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Inspect public board link shapes without publishing
+        run: |
+          python -m pip install --disable-pip-version-check requests beautifulsoup4
+          python - <<'PY'
+          import json
+          import requests
+          from bs4 import BeautifulSoup
+          from pathlib import Path
+
+          pages = {
+              'incheon_metropolitan': 'https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232',
+              'incheon_yeonsu': 'https://www.ysfac.or.kr/user/board/list.php?board_code=announcement',
+              'seoul_careerlink': 'https://sfac.careerlink.kr/',
+          }
+          findings = {}
+          for name, url in pages.items():
+              try:
+                  response = requests.get(url, timeout=(8, 15), headers={'User-Agent': 'Mozilla/5.0'})
+                  soup = BeautifulSoup(response.text, 'html.parser')
+                  anchors = []
+                  for a in soup.find_all('a', href=True):
+                      label = a.get_text(' ', strip=True)
+                      if any(word in label for word in ('채용', '모집', '공고', '감사', '이사')):
+                          anchors.append({
+                              'label': label[:140], 'href': str(a.get('href'))[:220],
+                              'onclick': str(a.get('onclick') or '')[:220],
+                              'parentHtml': str(a.parent)[:900],
+                          })
+                  findings[name] = {
+                      'status': response.status_code, 'finalUrl': response.url,
+                      'bytes': len(response.content),
+                      'title': soup.title.get_text(' ', strip=True)[:150] if soup.title else '',
+                      'visibleIntro': soup.get_text(' ', strip=True)[:1000],
+                      'recruitmentAnchors': anchors[:12],
+                  }
+              except requests.RequestException as exc:
+                  findings[name] = {'error': type(exc).__name__, 'detail': str(exc)[:200]}
+          Path('foundation_board_diagnostics.json').write_text(
+              json.dumps(findings, ensure_ascii=False, indent=2), encoding='utf-8'
+          )
+          print(json.dumps({k: {key: value for key, value in v.items() if key != 'recruitmentAnchors'}
+                            for k, v in findings.items()}, ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foundation-board-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: foundation_board_diagnostics.json
+          if-no-files-found: warn
+          retention-days: 7
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -36,6 +95,16 @@ jobs:
           python scripts/validate_cultural_foundation_registry.py
       - name: Live-read configured official recruitment boards
         run: python scripts/crawl_official_foundation_jobs_v2.py
+      - name: Save live board and job evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cultural-foundation-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            official_foundation_jobs.json
+            official_foundation_report.json
+          if-no-files-found: warn
+          retention-days: 7
       - name: Require all configured boards supported and healthy
         run: |
           python - <<'PY'
