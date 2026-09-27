@@ -101,6 +101,11 @@ GENERIC_OFFICIAL_HOSTS={
     "gbcf.fairyhr.com",
     "gfac.or.kr","www.gfac.or.kr",
     "naruart.applyin.co.kr",
+    "artgy.or.kr","www.artgy.or.kr",
+    "gcart.or.kr","www.gcart.or.kr",
+    "bcf.or.kr","www.bcf.or.kr",
+    "ayac.saramin.co.kr",
+    "pcfac.or.kr","www.pcfac.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
