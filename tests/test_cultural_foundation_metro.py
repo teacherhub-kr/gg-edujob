@@ -67,6 +67,34 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
             self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
 
+    def test_foundation_owned_host_can_prove_identity_without_page_branding(self):
+        foundation = {
+            "id": "seoul:seongdong",
+            "name": "성동문화재단",
+            "homepage": "https://www.sdfac.or.kr/",
+        }
+        self.assertTrue(
+            crawler.foundation_owned_board_host(
+                foundation,
+                "https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo",
+            )
+        )
+        shared = {
+            "id": "gyeonggi:seongnam",
+            "name": "성남문화재단",
+            "homepage": "https://www.seongnam.go.kr/",
+        }
+        self.assertFalse(
+            crawler.foundation_owned_board_host(shared, "https://www.seongnam.go.kr/bbs010402")
+        )
+
+    def test_transport_fallbacks_are_explicit_and_bounded(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
+        self.assertIn("ancf.or.kr/list", rows["gyeonggi:seongnam"]["verifiedFallbackRecruitmentUrl"])
+        self.assertEqual(rows["seoul:dongjak"]["verifiedFallbackRole"], "secondary-official-mirror")
+        self.assertEqual(rows["gyeonggi:seongnam"]["verifiedFallbackRole"], "secondary-authoritative")
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
