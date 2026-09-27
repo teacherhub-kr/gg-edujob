@@ -2,6 +2,8 @@ name: Cultural foundation coverage
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 21 * * *' # 06:17 KST, one production writer
 permissions:
   contents: write
 
