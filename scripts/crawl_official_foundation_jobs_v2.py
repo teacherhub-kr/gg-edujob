@@ -44,11 +44,9 @@ def sfac_rows(session,foundation,url):
 
 def sfac_careerlink_probe(session):
     r=resilient_request(session,SFAC_CAREERLINK_URL); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True))
-    detail_links=[a.get("href") for a in soup.find_all("a",href=True) if any(k in str(a.get("href")) for k in ("recruit","job","apply"))]
     empty_phrase="현재 게시중인 공고가 없습니다" in text or ("0 / 0" in text and "채용공고" in text)
-    empty_markup=(r.status_code==200 and "서울문화재단" in text and "채용" in text and not detail_links)
-    if not (empty_phrase or empty_markup): raise RuntimeError("sfac.careerlink.kr is not explicitly empty; dedicated current-post parser is required before collection can continue")
-    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"phrase" if empty_phrase else "200-html-no-recruitment-detail-links","role":"secondary-official-contract-surface"}
+    if not empty_phrase: raise RuntimeError("sfac.careerlink.kr lacks an explicit empty state; dedicated current-post parser is required")
+    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"explicit-empty-phrase","role":"secondary-official-contract-surface"}
 
 
 RECRUITMENT_RE=re.compile(
