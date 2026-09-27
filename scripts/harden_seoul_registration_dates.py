@@ -9,6 +9,26 @@ TODAY_EXPR = 'NOW.strftime("%Y/%m/%d")'
 
 def patch_target(path, marker):
     text = path.read_text(encoding="utf-8")
+    if path.name == "complete_support_coverage.py" and "def seoul_items_from_soup" in text:
+        helper_start = text.find("def seoul_items_from_soup")
+        helper_end = text.find("\ndef ", helper_start + 4)
+        helper = text[helper_start:helper_end if helper_end >= 0 else len(text)]
+        board_start = text.find("def seoul_board")
+        board_end = text.find("\ndef ", board_start + 4)
+        board = text[board_start:board_end if board_end >= 0 else len(text)]
+        compact_helper = re.sub(r"\s+", "", helper)
+        explicit = 'registered=date_norm(first_of(vals,["등록일","작성일"]))' in compact_helper
+        no_guess = "all_dates(" not in helper and "plausible" not in helper
+        fail_closed = (
+            "parse_incomplete" in board
+            and "not registered" in board
+            and "not has_detail_anchor" in board
+            and "title_school_collision" in board
+        )
+        if not (explicit and no_guess and fail_closed):
+            raise SystemExit("Refactored Seoul coverage parser hardening invariant missing")
+        print("Seoul coverage parser refactored and fail-closed; no-op")
+        return
     start = text.find(marker)
     if start < 0:
         if path.name == "complete_support_coverage.py":

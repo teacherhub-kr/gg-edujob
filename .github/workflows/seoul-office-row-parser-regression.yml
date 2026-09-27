@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/harden_seoul_office_row_parser.py'
       - 'scripts/scrape_jobs.py'
+      - 'scripts/complete_support_coverage.py'
+      - 'tests/test_complete_support_seoul_parser.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
@@ -25,7 +27,9 @@ jobs:
       - name: Apply idempotent Seoul parser hardening
         run: python scripts/harden_seoul_office_row_parser.py
       - name: Compile scraper
-        run: python -m py_compile scripts/scrape_jobs.py scripts/harden_seoul_office_row_parser.py
+        run: python -m py_compile scripts/scrape_jobs.py scripts/complete_support_coverage.py scripts/harden_seoul_office_row_parser.py tests/test_complete_support_seoul_parser.py
+      - name: Regression - completion path rejects malformed SEN rows
+        run: python tests/test_complete_support_seoul_parser.py
       - name: Regression fixture - detail anchor beats longer school anchor and dates map by header
         run: |
           python - <<'PY'
