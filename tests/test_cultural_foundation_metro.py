@@ -50,6 +50,21 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
         self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
 
+    def test_shared_municipal_boards_require_foundation_identity(self):
+        cases = [
+            ("seoul:guro", "구로문화재단", "구로구청 일반임기제 채용 공고"),
+            ("gyeonggi:guri", "구리문화재단", "구리시 기간제근로자 채용 공고"),
+            ("gyeonggi:hanam", "하남문화재단", "하남시 지방임기제공무원 채용 공고"),
+        ]
+        for fid, name, unrelated in cases:
+            foundation = {"id": fid, "name": name, "aliases": [f"(재){name}"]}
+            self.assertTrue(
+                crawler.candidate_belongs_to_foundation(
+                    foundation, f"2026년 {name} 직원 채용 공고"
+                )
+            )
+            self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, unrelated))
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
