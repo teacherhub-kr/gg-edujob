@@ -163,8 +163,8 @@ def foundation_owned_board_host(foundation, board_url:str)->bool:
     return board_base==home_base or board_base.endswith("."+home_base)
 
 
-def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "") not in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
+def candidate_belongs_to_foundation(foundation,text:str,*,shared_board:bool=False)->bool:
+    if not shared_board and str(foundation.get("id") or "") not in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
@@ -208,7 +208,8 @@ def list_detail_candidates(session,foundation,board_url):
         if absolute.rstrip("/")==r.url.rstrip("/"):
             continue
         context=container_text(a)
-        if not candidate_belongs_to_foundation(foundation,title+" "+context):
+        shared_board=fid=="seoul:dongjak" and board_host=="culture.seoul.go.kr"
+        if not candidate_belongs_to_foundation(foundation,title+" "+context,shared_board=shared_board):
             continue
         reg=base.parse_date_text(context)
         if reg:
@@ -287,7 +288,12 @@ def generic_official_rows(session,foundation,board_url):
     if fid=="incheon:namdong":
         identity_ok=identity_ok or ("타기관" in board_text and ("채용" in board_text or "공고" in board_text))
     if not identity_ok:
-        raise RuntimeError("official board did not prove foundation/local-government identity")
+        page_title=base.normalize_space(soup.title.get_text(" ",strip=True))[:100] if soup.title else ""
+        raise RuntimeError(
+            "official board did not prove foundation/local-government identity: "
+            f"finalUrl={board_response.url[:200]!r}, title={page_title!r}, "
+            f"bytes={len(board_response.content)}, candidates={len(candidates)}"
+        )
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
