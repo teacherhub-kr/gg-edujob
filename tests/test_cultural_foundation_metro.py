@@ -130,6 +130,12 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "lacks an explicit empty state"):
                 crawler.sfac_careerlink_probe(None)
 
+    def test_recent_post_without_deadline_is_not_verified_open(self):
+        today = crawler.base.date(2026, 9, 27)
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
+        self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 9, 26), today))
+        self.assertTrue(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), crawler.base.date(2026, 10, 1), today))
+
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
