@@ -22,6 +22,7 @@ on:
       - 'tests/test_boramyc_historical_fixture.py'
       - 'tests/fixtures/boramyc_25441.html'
       - 'tests/test_seekle_historical_fixture.py'
+      - 'tests/test_foundation_unified_projection.py'
       - 'tests/fixtures/seekle_21827.html'
       - 'verified_foundation_official_sources.json'
       - 'official_foundation_jobs.json'
@@ -88,6 +89,8 @@ jobs:
           PY
       - name: Historical private-source parser and direct-link regressions
         run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture
+      - name: Verify Incheon foundation official projection and municipal ownership
+        run: python -m unittest tests.test_foundation_unified_projection
       - name: Build disposable multi-source unified candidate
         id: build_candidate
         continue-on-error: true
