@@ -36,6 +36,16 @@ jobs:
           python scripts/validate_cultural_foundation_registry.py
       - name: Live-read configured official recruitment boards
         run: python scripts/crawl_official_foundation_jobs_v2.py
+      - name: Retain exact detail evidence on success or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ifac-exact-detail-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            official_foundation_jobs.json
+            official_foundation_report.json
+          if-no-files-found: warn
+          retention-days: 7
       - name: Require all configured boards supported and healthy
         run: |
           python - <<'PY'

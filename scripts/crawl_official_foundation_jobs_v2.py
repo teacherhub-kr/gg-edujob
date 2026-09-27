@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json, re
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
@@ -52,7 +52,7 @@ def sfac_careerlink_probe(session):
 RECRUITMENT_RE=re.compile(
     r"채용|구인|기간제\s*(?:근로자|직원|인력)|직원\s*(?:공개|제한|경력)?\s*(?:경쟁\s*)?(?:채용|모집)|"
     r"(?:문화예술|예술교육|교육)\s*(?:전문)?\s*강사\s*(?:채용|모집)|강사\s*(?:채용|모집)|"
-    r"(?:대표이사|임원|이사|감사)\s*(?:공개)?\s*모집|인력\s*(?:채용|모집)|"
+    r"(?:대표이사|임원|이사|감사)(?:\s*\([^)]{1,20}\))?\s*(?:공개)?\s*모집|인력\s*(?:채용|모집)|"
     r"(?:합창단|예술단|교향악단|오케스트라)\s*(?:단원|연주자)\s*(?:추가)?\s*모집|"
     r"(?:성악|음악|예술)\s*지도자\s*(?:채용|모집)",
     re.I,
@@ -119,6 +119,30 @@ def detail_identity(url:str)->str:
     return "url:"+hashlib.sha1(url.encode()).hexdigest()[:20]
 
 
+def ifac_detail_url(anchor, board_url:str)->str|None:
+    if (urlparse(board_url).hostname or "").removeprefix("www.")!="ifac.or.kr":
+        return None
+    if str(anchor.get("href") or "").strip().lower() not in ("#none","javascript:void(0);"):
+        return None
+    m=re.fullmatch(r"\s*goView\(['\"](\d{4,})['\"],\s*['\"][^'\"]*['\"]\);?\s*",str(anchor.get("onclick") or ""))
+    if not m:
+        return None
+    key=str((parse_qs(urlparse(board_url).query).get("key") or [""])[0])
+    if not key:
+        return None
+    return urljoin(board_url,"/bbs/view.do")+"?"+urlencode({"bbsSn":m.group(1),"key":key})
+
+
+def ifac_title_deadline(title,registered):
+    m=re.search(r"\(\s*\d{1,2}\s*[.]\s*\d{1,2}\s*[.]?\s*[~～-]\s*(\d{1,2})\s*[.]\s*(\d{1,2})\s*[.]?\s*\)",title)
+    if not m or not registered:
+        return None
+    try:
+        return base.date(registered.year,int(m.group(1)),int(m.group(2)))
+    except ValueError:
+        return None
+
+
 def list_detail_candidates(session,foundation,board_url):
     r=resilient_request(session,board_url)
     soup=BeautifulSoup(r.text,"html.parser")
@@ -130,13 +154,17 @@ def list_detail_candidates(session,foundation,board_url):
     candidates={}
     dated_list_rows=0
     for a in soup.find_all("a",href=True):
-        title=base.normalize_space(a.get_text(" ",strip=True))
+        ifac_url=ifac_detail_url(a,r.url) if fid=="incheon:metropolitan" else None
+        title_node=a.select_one("dl.title dd") if ifac_url else None
+        title=base.normalize_space((title_node or a).get_text(" ",strip=True))
         if not official_position_title(title):
             continue
         href=str(a.get("href") or "").strip()
-        if not href or href.lower().startswith(("javascript:","#","mailto:","tel:")):
+        if fid=="incheon:metropolitan" and href.lower().startswith(("javascript:","#")) and not ifac_url:
+            raise RuntimeError("IFAC recruitment row has an unsupported JavaScript detail link")
+        if not ifac_url and (not href or href.lower().startswith(("javascript:","#","mailto:","tel:"))):
             continue
-        absolute=urljoin(r.url,href)
+        absolute=ifac_url or urljoin(r.url,href)
         host=(urlparse(absolute).hostname or "").lower()
         if host not in allowed:
             continue
@@ -159,12 +187,16 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
+    if str(foundation.get("id") or "")=="incheon:metropolitan" and not candidates:
+        raise RuntimeError("IFAC recruitment board has no parsed exact-detail links")
     jobs=[]
     inspected=0
     errors=[]
     for identity,meta in list(candidates.items())[:80]:
         try:
             detail=resilient_request(session,str(meta["url"]))
+            if str(foundation.get("id") or "")=="incheon:metropolitan" and urlparse(detail.url).scheme.lower()!="https":
+                raise RuntimeError("IFAC official detail downgraded from HTTPS")
             detail_soup=BeautifulSoup(detail.text,"html.parser")
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
@@ -173,7 +205,13 @@ def generic_official_rows(session,foundation,board_url):
             if not registered or registered>today or registered<today-base.timedelta(days=120):
                 continue
             full_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
+            if str(foundation.get("id") or "")=="incheon:metropolitan":
+                list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
+                if not full_text or list_title.replace(" ","")[:20] not in full_text.replace(" ",""):
+                    raise RuntimeError("IFAC detail does not contain its recruitment title")
             apply_end=base.extract_apply_end(full_text,registered)
+            if not apply_end and str(foundation.get("id") or "")=="incheon:metropolitan":
+                apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
                 continue
             if not apply_end and registered<today-base.timedelta(days=30):
@@ -222,6 +260,8 @@ def generic_official_rows(session,foundation,board_url):
         identity_ok=identity_ok or ("타기관" in board_text and ("채용" in board_text or "공고" in board_text))
     if not identity_ok:
         raise RuntimeError("official board did not prove foundation/local-government identity")
+    if fid=="incheon:metropolitan" and errors:
+        raise RuntimeError(f"IFAC detail fetch failed: {errors[:2]}")
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
