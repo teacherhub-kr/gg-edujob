@@ -2,12 +2,8 @@ name: Production operations watchdog
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/fast-refresh-watchdog.yml'
   schedule:
-    # One scheduler with offset fallback slots; writers remain dispatch-only.
+    # One scheduled supervisor with offset fallback slots; writers remain dispatch-only.
     # GitHub can delay or drop individual scheduled events.
     - cron: '4,19,34,49 * * * *'
 
