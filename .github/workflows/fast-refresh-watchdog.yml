@@ -3,9 +3,9 @@ name: Production operations watchdog
 on:
   workflow_dispatch:
   schedule:
-    # Single scheduler. All production writer workflows remain dispatch-only.
-    # Shifted two minutes to re-register the schedule after multiple missed events.
-    - cron: '19,49 * * * *'
+    # One scheduled supervisor with offset fallback slots; writers remain dispatch-only.
+    # GitHub can delay or drop individual scheduled events.
+    - cron: '4,19,34,49 * * * *'
 
 permissions:
   contents: read
