@@ -76,6 +76,12 @@ PRIVATE_REFRESH_TARGETS = {
 }
 ARTMORE_PROMOTE_KEY = "private-artmore-promote"
 ARTMORE_PROMOTE_WORKFLOW = "promote-artmore.yml"
+PRIVATE_REFRESH_IDLE_ACTIONS = {
+    "skip-healthy",
+    "skip-recovery-circuit-open",
+    "skip-recovery-backoff",
+    "skip-completeness-circuit-open",
+}
 TARGETS = {
     **CORE_TARGETS,
     **{key: spec["workflow"] for key, spec in PRIVATE_REFRESH_TARGETS.items()},
@@ -733,7 +739,10 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     action = "completeness"
                     reason = "no current successful daily official completeness proof"
 
-            if action == "skip-healthy":
+            # A blocked official proof/recovery cannot make stale private sources
+            # wait indefinitely. Keep the official incident open while using this
+            # otherwise idle watchdog slot for one separately guarded refresh.
+            if action in PRIVATE_REFRESH_IDLE_ACTIONS:
                 if active_private:
                     action = "skip-private-active"
                     reason = "active private refresh workflows: " + ",".join(active_private)
