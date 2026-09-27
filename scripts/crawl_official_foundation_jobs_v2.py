@@ -98,6 +98,9 @@ GENERIC_OFFICIAL_HOSTS={
     "sdfac.or.kr","www.sdfac.or.kr",
     "gunpocf.incruit.com",
     "yicf.incruit.com",
+    "gbcf.fairyhr.com",
+    "gfac.or.kr","www.gfac.or.kr",
+    "naruart.applyin.co.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
