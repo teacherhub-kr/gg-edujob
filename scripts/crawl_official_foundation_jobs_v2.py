@@ -110,6 +110,11 @@ GENERIC_OFFICIAL_HOSTS={
     "guro.go.kr","www.guro.go.kr",
     "guri.go.kr","www.guri.go.kr",
     "hanam.go.kr","www.hanam.go.kr",
+    "seochocf.applyin.co.kr",
+    "caci.or.kr","www.caci.or.kr",
+    "seongnam.go.kr","www.seongnam.go.kr",
+    "uac.or.kr","www.uac.or.kr",
+    "paju.go.kr","www.paju.go.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
@@ -138,6 +143,8 @@ SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "seoul:guro",
     "gyeonggi:guri",
     "gyeonggi:hanam",
+    "gyeonggi:seongnam",
+    "gyeonggi:paju",
 }
 
 
