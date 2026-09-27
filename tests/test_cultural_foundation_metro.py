@@ -91,9 +91,11 @@ class CulturalFoundationMetroTests(unittest.TestCase):
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
-        self.assertIn("ancf.or.kr/list", rows["gyeonggi:seongnam"]["verifiedFallbackRecruitmentUrl"])
         self.assertEqual(rows["seoul:dongjak"]["verifiedFallbackRole"], "secondary-official-mirror")
-        self.assertEqual(rows["gyeonggi:seongnam"]["verifiedFallbackRole"], "secondary-authoritative")
+        self.assertNotIn("verifiedFallbackRecruitmentUrl", rows["gyeonggi:seongnam"])
+        self.assertIn("m.gmcf.or.kr", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
+        self.assertIn("ayac.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+        self.assertNotIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
