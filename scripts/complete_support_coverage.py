@@ -462,7 +462,7 @@ def seoul_board(src):
                 "school": school, "title": title, "subject": " / ".join(x for x in (first_of(vals,["분야1"]), first_of(vals,["분야2"])) if x),
                 "region": next((x for x in src.get("regions", []) if x in f"{title} {school}"), ""),
                 "regions": src.get("regions", []), "type": "기타", "schoolLevel": "기타",
-                "applyStart": registered, "applyEnd": date_norm(first_of(vals, ["마감일", "접수마감일"])),
+                "applyStart": "", "applyEnd": date_norm(first_of(vals, ["마감일", "접수마감일"])),
                 "workStart": "", "workEnd": "", "registered": registered, "headcount": "",
                 "source": src["name"], "checkedSources": [src["name"]], "sourceType": "교육지원청 개별 게시판",
                 "url": f"{open_url}?job_seq={seq}", "boardUrl": board,

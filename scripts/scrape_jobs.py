@@ -602,7 +602,7 @@ def scrape_seoul_office(src):
                     "id":f"sen-office-{urlparse(board).hostname}-{seq}","province":"서울","school":school or office,"title":title,
                     "subject":subject,"region":region,"regions":regions,
                     "type":guess_type(raw_type+" "+title),"schoolLevel":normalize_school_level(raw_level,school,title),
-                    "applyStart":registered,"applyEnd":apply_end,"workStart":"","workEnd":"","registered":registered,"headcount":"",
+                    "applyStart":"","applyEnd":apply_end,"workStart":"","workEnd":"","registered":registered,"headcount":"",
                     "source":office,"checkedSources":[office],"sourceType":"교육지원청 개별 게시판","url":detail,"boardUrl":board,
                     "openMethod":"POST","openUrl":open_url,"openParams":{"job_seq":seq}
                 })
