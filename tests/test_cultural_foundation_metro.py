@@ -2,6 +2,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from bs4 import BeautifulSoup
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -98,6 +99,20 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             crawler.detail_identity("https://www.bpcf.or.kr/bpcf/bbs/BMSR00001/view.do?boardId=13000&menuNo=200059"),
             "boardId:13000",
         )
+
+    def test_ifac_go_view_resolves_verified_official_detail(self):
+        title="재단법인 인천문화재단 감사(비상임) 모집 공고(9.21.~10.6.)"
+        anchor=BeautifulSoup(
+            '<a href="#none" onclick="goView(\'236088\', \'\');"><dl class="title"><dd>'
+            +title+'</dd></dl></a>',"html.parser").a
+        board="https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232"
+        self.assertTrue(crawler.official_position_title(title))
+        self.assertEqual(crawler.ifac_detail_url(anchor,board),
+                         "https://ifac.or.kr/bbs/view.do?bbsSn=236088&key=m2501152808232")
+        self.assertEqual(crawler.ifac_title_deadline(title,crawler.base.date(2026,9,21)),
+                         crawler.base.date(2026,10,6))
+        anchor['onclick']="goView('../../bad', '');"
+        self.assertIsNone(crawler.ifac_detail_url(anchor,board))
 
 
 if __name__ == "__main__":
