@@ -75,6 +75,12 @@ GENERIC_OFFICIAL_HOSTS={
     "nyjcf.or.kr","www.nyjcf.or.kr",
     "ypcf.or.kr","www.ypcf.or.kr",
     "ggcf.kr","www.ggcf.kr",
+    "gcfac.or.kr","www.gcfac.or.kr",
+    "dbfac.or.kr","www.dbfac.or.kr",
+    "ddmac.or.kr","www.ddmac.or.kr",
+    "mfac.or.kr","www.mfac.or.kr",
+    "nowonarts.kr","www.nowonarts.kr",
+    "songpafac.or.kr","www.songpafac.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
