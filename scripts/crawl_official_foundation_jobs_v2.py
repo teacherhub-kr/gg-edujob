@@ -115,6 +115,8 @@ GENERIC_OFFICIAL_HOSTS={
     "seongnam.go.kr","www.seongnam.go.kr",
     "uac.or.kr","www.uac.or.kr",
     "paju.go.kr","www.paju.go.kr",
+    "culture.seoul.go.kr",
+    "ancf.or.kr","www.ancf.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
@@ -145,7 +147,21 @@ SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "gyeonggi:hanam",
     "gyeonggi:seongnam",
     "gyeonggi:paju",
+    "seoul:dongjak",
 }
+
+
+def foundation_owned_board_host(foundation, board_url:str)->bool:
+    fid=str(foundation.get("id") or "")
+    if fid in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
+        return False
+    board_host=(urlparse(board_url).hostname or "").lower()
+    home_host=(urlparse(str(foundation.get("homepage") or "")).hostname or "").lower()
+    if not board_host or not home_host:
+        return False
+    board_base=board_host[4:] if board_host.startswith("www.") else board_host
+    home_base=home_host[4:] if home_host.startswith("www.") else home_host
+    return board_base==home_base or board_base.endswith("."+home_base)
 
 
 def candidate_belongs_to_foundation(foundation,text:str)->bool:
@@ -266,6 +282,7 @@ def generic_official_rows(session,foundation,board_url):
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
     identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in board_text.replace(" ","") for x in aliases)
     fid=str(foundation.get("id") or "")
+    identity_ok=identity_ok or foundation_owned_board_host(foundation, board_response.url)
     if fid=="incheon:seohae":
         identity_ok=identity_ok or "채용소식" in board_text
     if fid=="incheon:namdong":
@@ -284,19 +301,62 @@ def generic_official_rows(session,foundation,board_url):
     }
 
 
+def collect_with_verified_fallback(session, foundation, board_url):
+    fid=str(foundation.get("id") or "")
+    host=(urlparse(board_url).hostname or "").lower()
+    def collect(url):
+        h=(urlparse(url).hostname or "").lower()
+        if h=="nsart.or.kr" or h.endswith(".nsart.or.kr"):
+            return base.nsart_rows(session,foundation,url)
+        if h=="sfac.saramin.co.kr":
+            found,meta=sfac_rows(session,foundation,url)
+            careerlink=sfac_careerlink_probe(session)
+            meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]
+            meta["secondarySurfaces"]=[careerlink]
+            meta["adapterStatus"]="implemented"
+            return found,meta
+        if h in GENERIC_OFFICIAL_HOSTS:
+            return generic_official_rows(session,foundation,url)
+        raise RuntimeError("adapter-not-yet-implemented")
+
+    try:
+        return collect(board_url)
+    except (requests.exceptions.SSLError, requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as exc:
+        fallback=str(foundation.get("verifiedFallbackRecruitmentUrl") or "").strip()
+        if not fallback:
+            raise
+        found,meta=collect(fallback)
+        role=str(foundation.get("verifiedFallbackRole") or "secondary-authoritative")
+        for job in found:
+            job["sourceRole"]=role
+            if role=="secondary-official-mirror":
+                job["sourceType"]="공식 공공기관 채용 미러"
+                job["trustLevel"]="공식"
+            else:
+                job["sourceType"]="검증된 문화재단 연합회 채용"
+                job["trustLevel"]="검증"
+            job["primaryOfficialBoardUrl"]=board_url
+            job["boardUrl"]=fallback
+        meta["fallbackUsed"]=True
+        meta["fallbackRole"]=role
+        meta["primaryBoardUrl"]=board_url
+        meta["fallbackBoardUrl"]=fallback
+        meta["primaryTransportError"]=f"{type(exc).__name__}: {str(exc)[:180]}"
+        return found,meta
+
+
 def main():
     generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; session=make_session(); base.request=resilient_request
     jobs=[]; errors=[]; unsupported=[]; board_results=[]
     for foundation in configured:
         board_url=str(foundation.get("officialRecruitmentUrl") or "").strip(); host=(urlparse(board_url).hostname or "").lower()
         try:
-            if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
-            elif host=="sfac.saramin.co.kr":
-                found,meta=sfac_rows(session,foundation,board_url); careerlink=sfac_careerlink_probe(session); meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]; meta["secondarySurfaces"]=[careerlink]; meta["adapterStatus"]="implemented"
-            elif host in GENERIC_OFFICIAL_HOSTS:
-                found,meta=generic_official_rows(session,foundation,board_url)
-            else:
-                unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
+            try:
+                found,meta=collect_with_verified_fallback(session,foundation,board_url)
+            except RuntimeError as exc:
+                if str(exc)=="adapter-not-yet-implemented":
+                    unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
+                raise
             jobs.extend(found); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta})
         except Exception as exc:
             errors.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False})
