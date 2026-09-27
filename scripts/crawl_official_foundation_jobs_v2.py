@@ -81,6 +81,13 @@ GENERIC_OFFICIAL_HOSTS={
     "mfac.or.kr","www.mfac.or.kr",
     "nowonarts.kr","www.nowonarts.kr",
     "songpafac.or.kr","www.songpafac.or.kr",
+    "recruit.incruit.com",
+    "gmcf.or.kr","www.gmcf.or.kr",
+    "gcf.or.kr","www.gcf.or.kr",
+    "yjcf.or.kr","www.yjcf.or.kr",
+    "artic.or.kr","www.artic.or.kr",
+    "ansanart.com","www.ansanart.com",
+    "pccf.or.kr","www.pccf.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
