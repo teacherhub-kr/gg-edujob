@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-13T07:30:27+09:00",
-  "policy": "official-foundation-primary-fail-closed-v6-sfac-saramin-careerlink",
+  "generatedAt": "2026-09-28T07:02:57+09:00",
+  "policy": "official-foundation-primary-fail-closed-v7-metro-generic",
   "healthy": true,
-  "registryInstitutions": 49,
-  "officialBoardsConfigured": 2,
-  "supportedBoardsChecked": 2,
+  "registryInstitutions": 55,
+  "officialBoardsConfigured": 8,
+  "supportedBoardsChecked": 8,
   "unsupportedConfiguredBoards": [],
-  "jobs": 3,
+  "jobs": 8,
   "errors": [],
   "boards": [
     {
@@ -23,7 +23,7 @@
       "inspectedDetailLinks": 1,
       "publishedCurrentJobs": 0,
       "active": false,
-      "registered": "2026-11-23",
+      "registered": "",
       "applyEnd": "2026-08-20",
       "secondarySurfaces": [
         {
@@ -48,8 +48,105 @@
         "https://www.nsart.or.kr/index.do"
       ],
       "discoveredDetailLinks": 10,
-      "inspectedDetailLinks": 10,
-      "publishedCurrentJobs": 3
+      "inspectedDetailLinks": 6,
+      "staleListCandidatesSkipped": 4,
+      "publishedCurrentJobs": 0
+    },
+    {
+      "foundationRegistryId": "incheon:metropolitan",
+      "foundationName": "인천문화재단",
+      "boardUrl": "https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 3,
+      "publishedCurrentJobs": 3,
+      "detailErrors": [],
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:jemulpo",
+      "foundationName": "제물포문화재단",
+      "boardUrl": "https://www.jcf.or.kr/main/inform/job.jsp",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.jcf.or.kr/main/inform/job.jsp"
+      ],
+      "discoveredDetailLinks": 2,
+      "datedRecruitmentRowsOnList": 2,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "foundationName": "인천서해구문화재단",
+      "boardUrl": "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgdiv=part",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgdiv=part"
+      ],
+      "discoveredDetailLinks": 8,
+      "datedRecruitmentRowsOnList": 6,
+      "inspectedDetailLinks": 4,
+      "publishedCurrentJobs": 4,
+      "detailErrors": [],
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:yeonsu",
+      "foundationName": "연수문화재단",
+      "boardUrl": "https://www.ysfac.or.kr/user/board/list.php?board_code=announcement",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.ysfac.or.kr/user/board/list.php?board_code=announcement"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 0,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:bupyeong",
+      "foundationName": "부평구문화재단",
+      "boardUrl": "https://www.bpcf.or.kr/bpcf/bbs/BMSR00063/list.do?menuNo=200059",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.bpcf.or.kr/bpcf/bbs/BMSR00063/list.do?menuNo=200059"
+      ],
+      "discoveredDetailLinks": 4,
+      "datedRecruitmentRowsOnList": 4,
+      "inspectedDetailLinks": 1,
+      "publishedCurrentJobs": 1,
+      "detailErrors": [],
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:namdong",
+      "foundationName": "남동문화재단",
+      "boardUrl": "https://www.namdong.go.kr/main/bbs/bbsMsgList.do?bcd=hireannounce",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.namdong.go.kr/main/bbs/bbsMsgList.do?bcd=hireannounce"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "identityVerified": true
     }
   ]
 }
