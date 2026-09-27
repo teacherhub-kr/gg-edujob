@@ -25,6 +25,10 @@ def canonical_url_multi(raw):
             empyear=str((q.get("empyear") or [""])[0]); entseq=str((q.get("entSeq") or [""])[0]); entid=str((q.get("ypEntId") or [""])[0])
             if empyear.isdigit() and entseq.isdigit() and entid:
                 return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"empyear":empyear,"entSeq":entseq,"ypEntId":entid}),""))
+        if host in {"ifac.or.kr", "www.ifac.or.kr"} and p.path.endswith("/bbs/view.do"):
+            article_id=str((q.get("bbsSn") or [""])[0])
+            if article_id.isdigit():
+                return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"bbsSn":article_id}),""))
         bpo=str((q.get("bpoId") or [""])[0])
         if bpo.isdigit() and (host=="nsart.or.kr" or host.endswith(".nsart.or.kr")) and p.path.endswith("/board/recruit.do"):
             # bpoId is the official article identity. Dropping it collapses separate recruitment
@@ -121,6 +125,34 @@ def project_foundation_official(job):
     return row
 
 
+def foundation_official_current(job):
+    """Validate an official foundation post independently of private-source region rules."""
+    if job.get("province") not in {"서울", "경기", "인천"}:
+        return False
+    if job.get("sourceRole") != "primary-official":
+        return False
+    if job.get("detailLinkVerified") is not True or job.get("transportVerified") is not True:
+        return False
+    if not job.get("foundationRegistryId") or not job.get("sourceIdentity"):
+        return False
+    if not str(job.get("url") or "").startswith("https://"):
+        return False
+    title = str(job.get("title") or "")
+    if base.PRIVATE_BANNED_RE.search(title) or base.PROMO_ONLY_RE.search(title) or base.RESULT_RE.search(title):
+        return False
+    registered = base.parse_date(job.get("registered"))
+    deadline = base.parse_date(job.get("applyEnd"))
+    if not registered or not deadline or registered > base.TODAY or deadline < base.TODAY or registered > deadline:
+        return False
+    # Municipal boards carry jobs for other employers. Require the foundation's
+    # identity in each post, not merely on the surrounding official board.
+    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong"}:
+        foundation_name = base.norm(str(job.get("foundationName") or ""))
+        if not foundation_name or foundation_name.replace(" ", "") not in base.norm(title).replace(" ", ""):
+            return False
+    return True
+
+
 def dedupe_multi_source(rows):
     out=[]; seen_id=set(); by_url={}; exact_url_groups=[]
     for row in rows:
@@ -148,7 +180,7 @@ def main():
     foundation_official_data=load("official_foundation_jobs.json",{}); foundation_official_jobs=rows_from(foundation_official_data)
     ledger=load("source_id_ledger.json",{"entries":{}}); protected=base.latest_official_ids(ledger)
     projected_canonical_official=[base.project_official(j) for j in official_jobs if base.official_current(j,protected)]
-    projected_foundation_official=[project_foundation_official(j) for j in foundation_official_jobs if base.private_current(j)]
+    projected_foundation_official=[project_foundation_official(j) for j in foundation_official_jobs if foundation_official_current(j)]
     projected_official=projected_canonical_official+projected_foundation_official
     all_private=[]; private_meta={}; canonical_private_total=0; enabled_private_sources=0; degraded_private_sources=[]
     for spec in PRIVATE_SOURCES:
