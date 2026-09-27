@@ -550,9 +550,11 @@ def seoul_row_values(table, tr):
     return vals
 
 def scrape_seoul_office(src):
+    from repair_seoul_support_metadata import exact_registration_from_detail
     office, board, regions = src["name"], src["boardUrl"], src.get("regions",[])
     print("SEOUL OFFICE", office)
     out, seen = [], set(); raw_rows=0; explicit_empty=False; got_table=False; consecutive_old_pages=0; parse_incomplete=0
+    detail_registration = {}
     page = 1
     while True:
         r = get(board, params={"pageIndex":page})
@@ -582,6 +584,12 @@ def scrape_seoul_office(src):
                     title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
                 if len(title)<3 or EXCLUDE_WORDS.search(title): continue
                 registered=date_norm(first_of(vals,["등록일","작성일"]))
+                if not registered and len(detail_registration)<40:
+                    school_for_detail=first_of(vals,["학교명","기관명","작성자"])
+                    if school_for_detail:
+                        detail_registration[seq]=exact_registration_from_detail(
+                            S,board,seq,school_for_detail,first_of(vals,["마감일","접수마감일"]))
+                        registered=detail_registration[seq]
                 if registered: page_dates.append(registered)
                 if registered and not recent_enough(registered,90): continue
                 page_recent+=1

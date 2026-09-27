@@ -74,6 +74,32 @@ def prove_absent_from_board(session, board, seq):
     return ids is not None and seq not in ids
 
 
+def exact_registration_from_detail(session, board, seq, school, listed_deadline):
+    """Recover a missing list date only when the same official detail agrees."""
+    board_host = urlparse(str(board or "")).hostname
+    if not board_host or not board_host.endswith(".sen.go.kr") or not str(seq).isdecimal():
+        return ""
+    url = f"https://{board_host}/FUS/JO/JOV11.do"
+    try:
+        response = session.post(url, data={"job_seq": str(seq)}, headers={"Referer": board}, timeout=12)
+        response.raise_for_status()
+        if not response.encoding or response.encoding.lower() == "iso-8859-1":
+            response.encoding = response.apparent_encoding or "utf-8"
+    except requests.RequestException:
+        return ""
+    values = fields(response.text)
+    registered = date(values.get("등록일자"))
+    detail_deadline = date(values.get("마감일자"))
+    institution = norm(values.get("기관명"))
+    if not registered or registered > TODAY.strftime("%Y/%m/%d"):
+        return ""
+    if not institution or institution != norm(school):
+        return ""
+    if not detail_deadline or (listed_deadline and detail_deadline != date(listed_deadline)):
+        return ""
+    return registered
+
+
 def needs_repair(job):
     if job.get("province") != "서울" or job.get("sourceType") != "교육지원청 개별 게시판":
         return False

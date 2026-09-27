@@ -8,6 +8,8 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import repair_seoul_support_metadata as repair
+import complete_support_coverage as coverage
+from bs4 import BeautifulSoup
 
 
 class Response:
@@ -54,6 +56,10 @@ class TestExactSeoulDetailRepair(unittest.TestCase):
         self.assertEqual(job["title"], "초등예술하나 연극 강사(6학년)")
         self.assertEqual(job["registered"], "2026/09/03")
         self.assertEqual(job["applyStart"], "")
+        self.assertEqual(repair.exact_registration_from_detail(
+            Session(html), job["boardUrl"], "5592", job["school"], job["applyEnd"]), "2026/09/03")
+        self.assertEqual(repair.exact_registration_from_detail(
+            Session(html), job["boardUrl"], "5592", "다른학교", job["applyEnd"]), "")
 
     def test_empty_or_conflicting_detail_preserves_job(self):
         job = self.job()
@@ -74,6 +80,18 @@ class TestExactSeoulDetailRepair(unittest.TestCase):
         self.assertFalse(repair.prove_absent_from_board(Session(html), board, "5592"))
         incomplete = html.replace("Total : 1 개", "Total : 2 개")
         self.assertFalse(repair.prove_absent_from_board(Session(incomplete), board, "5596"))
+
+    def test_list_without_registration_uses_matching_official_detail(self):
+        board = "https://sbedu.sen.go.kr/FUS/JO/JOL11.do"
+        html = """<table><tr><th>기관명</th><th>분야(과목)</th><th>마감일</th></tr><tr>
+        <td><a href="javascript:fncDetailView('5592');">서울어울초등학교</a></td>
+        <td><a href="javascript:fncDetailView('5592');">초등예술하나 연극 강사</a></td>
+        <td>2026-10-03</td></tr></table>"""
+        with patch.object(coverage, "exact_registration_from_detail", return_value="2026/09/03") as fetch:
+            coverage.SEOUL_DETAIL_REGISTRATION.clear()
+            rows, dates, _, _, incomplete = coverage.seoul_items(BeautifulSoup(html, "html.parser"), board)
+        self.assertEqual((len(rows), dates, incomplete), (1, ["2026/09/03"], 0))
+        fetch.assert_called_once_with(coverage.S, board, "5592", "서울어울초등학교", "2026-10-03")
 
     def test_stale_carry_removed_only_when_ledger_and_board_agree(self):
         class OfficialSession(Session):

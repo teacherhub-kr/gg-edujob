@@ -78,7 +78,7 @@ for marker in (
 if not (
     "plausible = [d for d in ds if d and d <= today_s]" in s
     or (
-        "def seoul_items(soup):" in s
+        "def seoul_items(soup" in s
         and 'registered = date_norm(first_of(vals, ["등록일", "작성일"]))' in s
         and "if not title or not registered" in s
     )

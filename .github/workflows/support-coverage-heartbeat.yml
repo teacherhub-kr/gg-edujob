@@ -32,7 +32,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           code = Path('scripts/complete_support_coverage.py').read_text(encoding='utf-8')
-          assert 'def seoul_items(soup):' in code
+          assert 'def seoul_items(soup' in code
           assert 'if not title or not registered' in code
           assert 'production_filter(additions)' in code
           print('reviewed Seoul row parser and production filter present')

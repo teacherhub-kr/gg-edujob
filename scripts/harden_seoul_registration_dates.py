@@ -38,12 +38,13 @@ def patch_target(path, marker):
     compact = re.sub(r"\s+", "", body)
     explicit = "registered=date_norm(first_of(vals,[\"등록일\",\"작성일\"]))" in compact
     explicit = explicit or ("registered=date_norm(first_of(vals," in compact and "등록일" in body and "작성일" in body)
+    helper_start = head.find("def seoul_items(soup")
     helper_explicit = (
         path.name == "complete_support_coverage.py"
-        and "def seoul_items(soup):" in head
+        and helper_start >= 0
         and 'registered = date_norm(first_of(vals, ["등록일", "작성일"]))' in head
         and "if not title or not registered" in head
-        and not re.search(r"registered\s*=\s*ds\s*\[\s*-1\s*\]", head.split("def seoul_items(soup):", 1)[1])
+        and not re.search(r"registered\s*=\s*ds\s*\[\s*-1\s*\]", head[helper_start:])
     )
     if "plausible" not in body and not explicit and not helper_explicit:
         raise SystemExit("Seoul registration-date hardening invariant missing")

@@ -19,6 +19,7 @@ from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 
 from support_population_contract import is_support_population_job
+from repair_seoul_support_metadata import exact_registration_from_detail
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = json.loads((ROOT / "sources.json").read_text(encoding="utf-8"))
@@ -44,6 +45,7 @@ RETRY_POLICY = Retry(
 )
 S.mount("https://", HTTPAdapter(max_retries=RETRY_POLICY))
 S.mount("http://", HTTPAdapter(max_retries=RETRY_POLICY))
+SEOUL_DETAIL_REGISTRATION = {}
 
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 JOB_WORDS = re.compile(r"채용|구인|모집|기간제|계약제|시간강사|강사|교사|교원|공무직|사무직|근로자|조리|돌봄|보육|봉사|튜터|안전지킴이|외부강사")
@@ -347,7 +349,7 @@ def seoul_values(table, tr):
     return row_vals(tr, labels)
 
 
-def seoul_items(soup):
+def seoul_items(soup, board=""):
     items, dates, expected_table, candidate_rows, incomplete = [], [], False, 0, 0
     for table in soup.find_all("table"):
         hs = headers(table)
@@ -365,6 +367,12 @@ def seoul_items(soup):
             title = seoul_detail_title(tr, seq) or first_of(vals, ["제목", "공고명"])
             registered = date_norm(first_of(vals, ["등록일", "작성일"]))
             school = first_of(vals, ["학교명", "기관명", "작성자"])
+            if not registered and board and school:
+                key = (board, seq)
+                if key not in SEOUL_DETAIL_REGISTRATION and sum(k[0] == board for k in SEOUL_DETAIL_REGISTRATION) < 40:
+                    SEOUL_DETAIL_REGISTRATION[key] = exact_registration_from_detail(
+                        S, board, seq, school, first_of(vals, ["마감일", "접수마감일"]))
+                registered = SEOUL_DETAIL_REGISTRATION.get(key, "")
             if not title or not registered or (school and clean(title) == clean(school)):
                 incomplete += 1
                 continue
@@ -410,7 +418,7 @@ def seoul_board(src):
         if re.search(r"총\s*0\s*건|전체\s*0\s*건|데이터가\s*없습니다|조회된\s*데이터가\s*없|등록된\s*자료가\s*없", txt):
             explicit_empty = True
 
-        items, dates, page_has_expected_table, page_candidate_rows, bad = seoul_items(soup)
+        items, dates, page_has_expected_table, page_candidate_rows, bad = seoul_items(soup, board)
         parse_incomplete += bad
         got_table |= page_has_expected_table
 
@@ -423,7 +431,7 @@ def seoul_board(src):
                 r2 = seoul_page(board, page, True)
                 if r2:
                     soup2 = BeautifulSoup(r2.text, "html.parser")
-                    post_items, post_dates, post_table, _, post_bad = seoul_items(soup2)
+                    post_items, post_dates, post_table, _, post_bad = seoul_items(soup2, board)
                     got_table |= post_table
                     parse_incomplete += post_bad
                     post_sig = tuple(x[0] for x in post_items)
