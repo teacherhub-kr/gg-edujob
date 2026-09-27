@@ -50,6 +50,15 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
         self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
 
+    def test_dongjak_official_mirror_filters_other_foundations_per_post(self):
+        foundation = {"id": "seoul:dongjak", "name": "동작문화재단", "aliases": []}
+        self.assertTrue(crawler.candidate_belongs_to_foundation(
+            foundation, "[동작문화재단] 2026 직원 채용", shared_board=True
+        ))
+        self.assertFalse(crawler.candidate_belongs_to_foundation(
+            foundation, "[용산문화재단] 2026 직원 채용", shared_board=True
+        ))
+
     def test_shared_municipal_boards_require_foundation_identity(self):
         cases = [
             ("seoul:guro", "구로문화재단", "구로구청 일반임기제 채용 공고"),
