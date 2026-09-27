@@ -94,6 +94,10 @@ GENERIC_OFFICIAL_HOSTS={
     "ydpcf.or.kr","www.ydpcf.or.kr",
     "recruit.efac.or.kr",
     "recruit.jnfac.or.kr",
+    "gdfac.or.kr","www.gdfac.or.kr",
+    "sdfac.or.kr","www.sdfac.or.kr",
+    "gunpocf.incruit.com",
+    "yicf.incruit.com",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
