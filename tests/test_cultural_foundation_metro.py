@@ -2,6 +2,8 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from bs4 import BeautifulSoup
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
@@ -72,6 +74,26 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         }
         configured = {x["id"] for x in self.registry["institutions"] if x.get("officialRecruitmentUrl")}
         self.assertEqual(configured, baseline | first_batch)
+
+    def test_access_page_js_shell_and_js_detail_are_unhealthy(self):
+        foundation = {"id": "gyeonggi:yangpyeong", "name": "양평문화재단", "homepage": "https://ypcf.or.kr/"}
+        examples = (
+            "<html><body>양평문화재단 WELLCONN 접근 대기</body></html>",
+            "<html ng-app='recruit'><body>양평문화재단 채용 {{item.title}}</body></html>",
+            "<html><body>양평문화재단 채용 <a href='javascript:reg_view(25)'>직원 채용 공고</a></body></html>",
+            "<html><body>양평문화재단 채용</body></html>",
+        )
+        for html in examples:
+            response = SimpleNamespace(url="https://ypcf.or.kr/recruit", text=html, content=html.encode())
+            with self.subTest(html=html), self.assertRaises(RuntimeError):
+                crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {})
+        self.assertTrue(crawler.foundation_owned_board_host(foundation, "https://ypcf.or.kr/recruit"))
+
+    def test_https_redirect_to_http_fails(self):
+        response = SimpleNamespace(url="http://ypcf.or.kr/recruit", encoding="utf-8", raise_for_status=lambda: None)
+        session = SimpleNamespace(get=lambda *args, **kwargs: response)
+        with self.assertRaisesRegex(RuntimeError, "downgraded"):
+            crawler.resilient_request(session, "https://ypcf.or.kr/recruit")
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
