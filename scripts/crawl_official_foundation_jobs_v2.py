@@ -88,6 +88,11 @@ GENERIC_OFFICIAL_HOSTS={
     "artic.or.kr","www.artic.or.kr",
     "ansanart.com","www.ansanart.com",
     "pccf.or.kr","www.pccf.or.kr",
+    "gangnam.go.kr","www.gangnam.go.kr",
+    "yfac.kr","www.yfac.kr",
+    "ydpcf.or.kr","www.ydpcf.or.kr",
+    "recruit.efac.or.kr",
+    "recruit.jnfac.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 
