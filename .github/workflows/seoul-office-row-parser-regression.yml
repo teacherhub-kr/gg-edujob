@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/harden_seoul_office_row_parser.py'
       - 'scripts/scrape_jobs.py'
+      - 'scripts/complete_support_coverage.py'
+      - 'scripts/repair_seoul_support_metadata.py'
+      - 'tests/test_repair_seoul_support_metadata.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
@@ -26,6 +29,8 @@ jobs:
         run: python scripts/harden_seoul_office_row_parser.py
       - name: Compile scraper
         run: python -m py_compile scripts/scrape_jobs.py scripts/harden_seoul_office_row_parser.py
+      - name: Exact-detail metadata recovery regression
+        run: python -m unittest discover -s tests -p test_repair_seoul_support_metadata.py
       - name: Regression fixture - detail anchor beats longer school anchor and dates map by header
         run: |
           python - <<'PY'

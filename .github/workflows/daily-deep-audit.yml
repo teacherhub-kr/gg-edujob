@@ -66,7 +66,7 @@ jobs:
                   'ended_on_structural_empty',
                   'naturalEnd',
                   'any pagination request failure makes traversal incomplete',
-                  'plausible = [d for d in ds if d and d <= today_s]',
+                  'if not title or not registered',
               ],
               'scripts/verify_support_completeness.py': [
                   'no explicit termination proof',
@@ -198,6 +198,7 @@ jobs:
           python scripts/resolve_support_links.py
           python scripts/enrich_support_periods.py
           python scripts/enrich_seoul_get_fallback.py
+          python scripts/repair_seoul_support_metadata.py
           python scripts/update_deep_audit_status.py detail-enrichment running
       - name: Require all 25+11 support offices to have proven traversal
         run: |
@@ -268,7 +269,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           test -s gyeonggi_central_90d_report.json
-          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json deep_audit_status.json board_cache.json support_coverage_report.json source_reconciliation_report.json central_pagination_report.json support_link_resolution.json support_period_cache.json daily_missing_recovery_report.json date_anomaly_report.json board_discovery_report.json operational_quality_report.json operational_quality_history.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/resolve_support_links.py scripts/discover_recruitment_boards.py scripts/harden_deep_audit.py
+          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json deep_audit_status.json board_cache.json support_coverage_report.json source_reconciliation_report.json central_pagination_report.json support_link_resolution.json support_period_cache.json daily_missing_recovery_report.json date_anomaly_report.json board_discovery_report.json operational_quality_report.json operational_quality_history.json sources.json scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/resolve_support_links.py scripts/discover_recruitment_boards.py scripts/harden_deep_audit.py seoul_support_metadata_report.json
           git add -f gyeonggi_central_90d_report.json
           git diff --cached --quiet && exit 0
           python scripts/publication_transaction.py publish \

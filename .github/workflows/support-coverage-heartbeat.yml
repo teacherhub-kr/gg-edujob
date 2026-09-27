@@ -21,118 +21,22 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Restore exact support-office traversal before coverage
+      - name: Keep reviewed support-office traversal
         run: |
-          set -euo pipefail
-          python - <<'PY'
-          import hashlib
-          import subprocess
-          from pathlib import Path
-
-          parent = '577314551ad18f959f43ec0c04ecfb06c7c23ac9'
-          target = 'scripts/complete_support_coverage.py'
-          parent_sha256 = '78fa7f03fc97360ebbbf13d532533067bac0f2ee85ec6230107831c771c5c040'
-          # Live reconstruction from the verified parent plus the three production-population
-          # edits below deterministically yields this digest. Keep the check fail-closed.
-          result_sha256 = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
-          expected_lines = 598
-
-          raw = subprocess.run(
-              ['git', 'show', f'{parent}:{target}'],
-              check=True,
-              stdout=subprocess.PIPE,
-          ).stdout
-          parent_digest = hashlib.sha256(raw).hexdigest()
-          if parent_digest != parent_sha256:
-              raise SystemExit(f'parent sha256 mismatch: {parent_digest}')
-
-          text = raw.decode('utf-8')
-
-          anchor = 'from bs4 import BeautifulSoup\n'
-          if text.count(anchor) != 1:
-              raise SystemExit('import anchor is not unique')
-          text = text.replace(
-              anchor,
-              anchor + '\nfrom support_population_contract import is_support_population_job\n',
-              1,
-          )
-
-          main_anchor = 'def main():\n'
-          if text.count(main_anchor) != 1:
-              raise SystemExit('main() anchor is not unique')
-          text = text.replace(
-              main_anchor,
-              'def production_filter(rows):\n'
-              '    return [r for r in rows if is_support_population_job(r, as_of=NOW)]\n'
-              '\n'
-              'def main():\n',
-              1,
-          )
-
-          merge_old = '    added = merge(additions)\n'
-          if text.count(merge_old) != 1:
-              raise SystemExit('merge anchor is not unique')
-          text = text.replace(
-              merge_old,
-              '    added = merge(production_filter(additions))\n',
-              1,
-          )
-
-          data = text.encode('utf-8')
-          result_digest = hashlib.sha256(data).hexdigest()
-          line_count = len(text.splitlines())
-          if result_digest != result_sha256:
-              raise SystemExit(f'restored content sha256 mismatch: {result_digest}')
-          if line_count != expected_lines:
-              raise SystemExit(f'restored line count mismatch: {line_count}')
-
-          Path(target).write_bytes(data)
-          print(f'restored {target}: {line_count} lines, sha256 {result_digest}')
-          PY
-
           python -m py_compile scripts/complete_support_coverage.py
           python scripts/harden_reconciliation_central_lookback.py
           python scripts/harden_deep_audit.py
           python scripts/harden_network_retries.py
           python scripts/harden_central_pagination.py
           python scripts/harden_fast_pagination.py
-
           python - <<'PY'
-          import hashlib
           from pathlib import Path
-
-          target = Path('scripts/complete_support_coverage.py')
-          expected = '2363c18306f144a736747b525942bb407735a22ef317217db1842a1585aedf6e'
-          expected_lines = 598
-          data = target.read_bytes()
-          digest = hashlib.sha256(data).hexdigest()
-          line_count = len(data.decode('utf-8').splitlines())
-          if digest != expected:
-              raise SystemExit(f'hardener changed verified traversal: {digest}')
-          if line_count != expected_lines:
-              raise SystemExit(f'hardener changed verified traversal line count: {line_count}')
-          print(f'verified restored traversal: {line_count} lines, sha256 {digest}')
+          code = Path('scripts/complete_support_coverage.py').read_text(encoding='utf-8')
+          assert 'def seoul_items(soup):' in code
+          assert 'if not title or not registered' in code
+          assert 'production_filter(additions)' in code
+          print('reviewed Seoul row parser and production filter present')
           PY
-
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/complete_support_coverage.py
-          if git diff --cached --quiet; then
-            echo 'support traversal already restored; no restoration commit needed'
-          else
-            git commit -m 'Restore parent support-office traversal with population contract'
-            for i in 1 2 3; do
-              git fetch origin main
-              git rebase --autostash origin/main
-              if git push origin HEAD:main; then
-                break
-              fi
-              if [ "$i" -eq 3 ]; then
-                exit 1
-              fi
-              sleep $((i*5))
-            done
-          fi
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Validate crawler syntax
