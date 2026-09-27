@@ -24,6 +24,9 @@ def resilient_request(session,url):
     if not r.encoding or r.encoding.lower()=="iso-8859-1": r.encoding=r.apparent_encoding or "utf-8"
     return r
 
+def verified_open_deadline(registered, apply_end, today):
+    return bool(registered and apply_end and registered<=today<=apply_end)
+
 def sfac_rows(session,foundation,url):
     r=resilient_request(session,url); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True)); title=""
     for selector in ("h1","h2","h3",".title",".recruit-title"):
@@ -35,7 +38,9 @@ def sfac_rows(session,foundation,url):
         m=re.search(r"(서울문화재단[^\n]{0,120}(?:채용|모집|공고)[^\n]{0,120})",text); title=base.normalize_space(m.group(1)) if m else ""
     raw_registered=base.parse_date_text(text[:2500]) or base.detail_registered(soup,None); today=datetime.now(KST).date(); apply_end=base.extract_apply_end(text,raw_registered)
     registered=raw_registered if raw_registered and raw_registered<=today and (not apply_end or raw_registered<=apply_end) else None
-    active=bool(title and registered and (not apply_end or apply_end>=today)) and not base.RESULT_RE.search(title)
+    if title and registered and not apply_end and not base.RESULT_RE.search(title):
+        raise RuntimeError("SFAC recruitment has no verified application deadline")
+    active=bool(title and verified_open_deadline(registered,apply_end,today)) and not base.RESULT_RE.search(title)
     rows=[]
     if active:
         stable=hashlib.sha1(f"{url}|{title}|{registered.isoformat()}".encode()).hexdigest()[:18]; fid=str(foundation.get("id") or "")
@@ -276,6 +281,7 @@ def generic_official_rows(session,foundation,board_url):
     jobs=[]
     inspected=0
     errors=[]
+    unverified_deadlines=[]
     for identity,meta in list(candidates.items())[:80]:
         try:
             detail=resilient_request(session,str(meta["url"]))
@@ -300,6 +306,9 @@ def generic_official_rows(session,foundation,board_url):
             if apply_end and apply_end<today:
                 continue
             if not apply_end and registered<today-base.timedelta(days=30):
+                continue
+            if not apply_end:
+                unverified_deadlines.append(detail.url[:250])
                 continue
             inspected+=1
             fid=str(foundation.get("id") or "")
@@ -337,6 +346,8 @@ def generic_official_rows(session,foundation,board_url):
     # Zero current jobs is valid; an unreadable or identity-mismatched surface is not.
     if errors:
         raise RuntimeError(f"official board detail fetch failed: {errors[:2]}")
+    if unverified_deadlines:
+        raise RuntimeError(f"official recent recruitment lacks a verified application deadline: {unverified_deadlines[:2]}")
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
