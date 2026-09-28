@@ -146,7 +146,7 @@ def foundation_official_current(job):
         return False
     # Municipal boards carry jobs for other employers. Require the foundation's
     # identity in each post, not merely on the surrounding official board.
-    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong"}:
+    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam"}:
         foundation_name = base.norm(str(job.get("foundationName") or ""))
         if not foundation_name or foundation_name.replace(" ", "") not in base.norm(title).replace(" ", ""):
             return False
