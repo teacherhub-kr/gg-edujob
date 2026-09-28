@@ -116,6 +116,7 @@ def project_foundation_official(job):
     row["categories"]=["문화예술","공공 문화재단"]
     row["subject"]="문화예술 · 공공 문화재단"
     row["foundationRegistryId"]=str(job.get("foundationRegistryId") or "")
+    row["deadlineVerification"]=str(job.get("deadlineVerification") or ("verified" if job.get("applyEnd") else "unverified-recent-official-post"))
     row["boardUrl"]=str(job.get("boardUrl") or "")
     row["detailLinkVerified"]=job.get("detailLinkVerified") is True
     row["detailLinkReason"]=str(job.get("detailLinkReason") or "official-foundation-detail")
@@ -142,11 +143,15 @@ def foundation_official_current(job):
         return False
     registered = base.parse_date(job.get("registered"))
     deadline = base.parse_date(job.get("applyEnd"))
-    if not registered or not deadline or registered > base.TODAY or deadline < base.TODAY or registered > deadline:
+    if not registered or registered > base.TODAY or registered < base.TODAY - timedelta(days=120):
+        return False
+    if deadline and (deadline < base.TODAY or registered > deadline):
+        return False
+    if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=21)):
         return False
     # Municipal boards carry jobs for other employers. Require the foundation's
     # identity in each post, not merely on the surrounding official board.
-    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam"}:
+    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam", "seoul:guro"}:
         foundation_name = base.norm(str(job.get("foundationName") or ""))
         if not foundation_name or foundation_name.replace(" ", "") not in base.norm(title).replace(" ", ""):
             return False
