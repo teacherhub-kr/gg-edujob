@@ -99,11 +99,17 @@ class CulturalFoundationMetroTests(unittest.TestCase):
               "title":"과천문화재단 직원 채용 공고","registered":today.isoformat(),"applyEnd":"",
               "deadlineVerification":"unverified-recent-official-post"}
         self.assertTrue(unified.foundation_official_current(post))
-        self.assertFalse(unified.foundation_official_current({**post,"registered":(today-unified.timedelta(days=22)).isoformat()}))
+        self.assertFalse(unified.foundation_official_current({**post,"registered":(today-unified.timedelta(days=15)).isoformat()}))
         self.assertFalse(unified.foundation_official_current({**post,"deadlineVerification":""}))
         projected=unified.project_foundation_official(post)
         self.assertEqual(projected["deadlineVerification"],"unverified-recent-official-post")
         self.assertFalse(projected.get("applyEnd"))
+
+    def test_navigation_and_hiring_disclosure_cannot_be_detail_jobs(self):
+        board="https://www.gangnam.go.kr/office/gfac/board/gfac_staffrec/list.do?mid=gfac_staffRec"
+        self.assertFalse(crawler.looks_like_detail_url(board,"https://www.gangnam.go.kr/office/gfac/board/gfac_chargeteacher/list.do?mid=gfac_chargeTeacher"))
+        self.assertTrue(crawler.looks_like_detail_url(board,"https://www.gangnam.go.kr/office/gfac/board/gfac_staffrec/588/view.do?mid=gfac_staffRec"))
+        self.assertFalse(crawler.official_position_title("2026년 제4차 재단 직원 공개채용 채용과정 공개"))
 
     def test_blocked_shell_and_script_links_do_not_prove_board_health(self):
         foundation={"id":"seoul:nowon","name":"노원문화재단","aliases":[]}
