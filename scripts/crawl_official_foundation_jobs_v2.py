@@ -2,6 +2,7 @@
 """Reliability wrapper for official cultural-foundation recruitment collection."""
 from __future__ import annotations
 import hashlib, json, re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
@@ -328,10 +329,8 @@ def generic_official_rows(session,foundation,board_url):
     }
 
 
-def main():
-    generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; session=make_session(); base.request=resilient_request
-    jobs=[]; errors=[]; unsupported=[]; board_results=[]
-    for foundation in configured:
+def collect_board(foundation):
+    with make_session() as session:
         board_url=str(foundation.get("officialRecruitmentUrl") or "").strip(); host=(urlparse(board_url).hostname or "").lower()
         try:
             if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
@@ -340,10 +339,21 @@ def main():
             elif host in GENERIC_OFFICIAL_HOSTS:
                 found,meta=generic_official_rows(session,foundation,board_url)
             else:
-                unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
-            jobs.extend(found); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta})
+                return [],None,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"},None
+            return found,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta},None,None
         except Exception as exc:
-            errors.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False})
+            return [],{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False},None,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}
+
+def main():
+    generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; base.request=resilient_request
+    jobs=[]; errors=[]; unsupported=[]; board_results=[]
+    # Sessions are confined to one worker; map retains registry order in the report.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for found,board,not_supported,error in pool.map(collect_board,configured):
+            jobs.extend(found)
+            if board: board_results.append(board)
+            if not_supported: unsupported.append(not_supported)
+            if error: errors.append(error)
     ids=[str(x.get("sourceIdentity") or "") for x in jobs]; urls=[str(x.get("url") or "") for x in jobs]; duplicate_ids=sorted({x for x in ids if x and ids.count(x)>1}); duplicate_urls=sorted({x for x in urls if x and urls.count(x)>1})
     if duplicate_ids or duplicate_urls: errors.append({"error":"duplicate-official-identities","ids":duplicate_ids,"urls":duplicate_urls})
     jobs.sort(key=lambda x:(str(x.get("registered") or ""),str(x.get("sourceIdentity") or "")),reverse=True); healthy=not errors and not unsupported
