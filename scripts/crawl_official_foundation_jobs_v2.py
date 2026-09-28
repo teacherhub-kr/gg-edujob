@@ -62,7 +62,8 @@ RECRUITMENT_RE=re.compile(
 )
 NON_POSITION_RE=re.compile(
     r"참여자|참가자|관람객|서포터즈|동아리|대관|지원사업|공모전|작품\s*공모|"
-    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집",
+    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집|"
+    r"채용\s*(?:과정|절차)\s*공개|모집\s*과정\s*공개",
     re.I,
 )
 GENERIC_OFFICIAL_HOSTS={
@@ -165,10 +166,12 @@ def detail_identity(url:str)->str:
 
 def looks_like_detail_url(board_url:str,candidate_url:str)->bool:
     board=urlparse(board_url); candidate=urlparse(candidate_url)
-    if board.path.rstrip("/")!=candidate.path.rstrip("/"): return True
     query=parse_qs(candidate.query)
-    if any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")): return True
-    return query.get("bmode")==["view"] or query.get("proc_type")==["view"]
+    detail_key=any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","nttNo","not_ancmt_mgt_no","seq","no"))
+    if re.search(r"/(?:list|recruitlist|selectBbsNttList|selectGosiList)\.(?:do|php)$",candidate.path,re.I) and not detail_key:
+        return False
+    if detail_key or query.get("bmode")==["view"] or query.get("proc_type")==["view"]: return True
+    return board.path.rstrip("/")!=candidate.path.rstrip("/")
 
 
 def ifac_detail_url(anchor, board_url:str)->str|None:
@@ -275,7 +278,7 @@ def generic_official_rows(session,foundation,board_url):
                 apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
                 continue
-            if not apply_end and registered<today-base.timedelta(days=21):
+            if not apply_end and registered<today-base.timedelta(days=14):
                 continue
             if not apply_end:
                 unverified_deadlines.append(detail.url[:250])
