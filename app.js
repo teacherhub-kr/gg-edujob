@@ -237,6 +237,7 @@ const summaryOf=(j)=>{
 const regionLabel=(j)=>regionsOf(j).join('·')||province(j)||'지역 미분류';
 const deadlineLabel=(j)=>{
   const d=dayDiff(j.applyEnd);
+  if(j.deadlineVerification==='unverified-recent-official-post')return '마감일 미확인 · 원문 확인';
   if(d===null)return '마감일 미정';
   if(d===0)return '오늘 마감';
   if(d>0)return `~ ${fmtDate(j.applyEnd)}`;
@@ -445,7 +446,7 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
   const badges=badgeData(j).map(([cls,label])=>`<span class="badge ${cls}">${esc(label)}</span>`).join('');
   const summary=summaryOf(j);
   const deadline=deadlineLabel(j);
-  const showDeadline=Boolean(parseDate(j.applyEnd));
+  const showDeadline=Boolean(parseDate(j.applyEnd))||j.deadlineVerification==='unverified-recent-official-post';
   return `<article class="job-card" data-job-key="${esc(r.key)}" tabindex="0" role="link" aria-label="${esc(j.title||'채용 공고')}">
     <div class="badge-row">${badges}</div>
     <div class="job-content">
