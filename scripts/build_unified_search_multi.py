@@ -147,7 +147,7 @@ def foundation_official_current(job):
         return False
     if deadline and (deadline < base.TODAY or registered > deadline):
         return False
-    if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=21)):
+    if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=14)):
         return False
     # Municipal boards carry jobs for other employers. Require the foundation's
     # identity in each post, not merely on the surrounding official board.
