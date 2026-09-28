@@ -2,6 +2,7 @@
 """Reliability wrapper for official cultural-foundation recruitment collection."""
 from __future__ import annotations
 import hashlib, json, re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
@@ -19,6 +20,8 @@ def make_session():
 
 def resilient_request(session,url):
     r=session.get(url,timeout=25,headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},allow_redirects=True); r.raise_for_status()
+    if urlparse(url).scheme.lower()=="https" and urlparse(r.url).scheme.lower()!="https":
+        raise RuntimeError(f"HTTPS official URL downgraded in redirect: {url[:180]} -> {r.url[:180]}")
     if not r.encoding or r.encoding.lower()=="iso-8859-1": r.encoding=r.apparent_encoding or "utf-8"
     return r
 
@@ -59,7 +62,8 @@ RECRUITMENT_RE=re.compile(
 )
 NON_POSITION_RE=re.compile(
     r"참여자|참가자|관람객|서포터즈|동아리|대관|지원사업|공모전|작품\s*공모|"
-    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집",
+    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집|"
+    r"채용\s*(?:과정|절차)\s*공개|모집\s*과정\s*공개",
     re.I,
 )
 GENERIC_OFFICIAL_HOSTS={
@@ -75,12 +79,54 @@ GENERIC_OFFICIAL_HOSTS={
     "nyjcf.or.kr","www.nyjcf.or.kr",
     "ypcf.or.kr","www.ypcf.or.kr",
     "ggcf.kr","www.ggcf.kr",
+    "nowonarts.kr","www.nowonarts.kr",
+    "gcart.or.kr","www.gcart.or.kr",
+    "gcf.or.kr","www.gcf.or.kr",
+    "swcf.or.kr","www.swcf.or.kr",
+    "ansanart.com","www.ansanart.com",
+    "uac.or.kr","www.uac.or.kr",
+    "artic.or.kr","www.artic.or.kr",
+    "hanam.go.kr","www.hanam.go.kr",
+    "gangnam.go.kr","www.gangnam.go.kr",
+    "guro.go.kr","www.guro.go.kr",
+    "yfac.kr","www.yfac.kr",
+    "ydpcf.or.kr","www.ydpcf.or.kr",
+    "gcart.or.kr","www.gcart.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
+BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
+JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
+EXPLICIT_EMPTY_RE=re.compile(r"등록된\s*(?:글|게시물|공고|자료)이\s*없|게시물이\s*없|검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없",re.I)
+
+def verify_board_surface(soup,foundation,response,candidates):
+    visible=base.normalize_space(soup.get_text(" ",strip=True))
+    if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
+        raise RuntimeError("official board returned an access-control page")
+    if not candidates and JS_SHELL_RE.search(response.text):
+        raise RuntimeError("official board is a JS-rendered shell without parsed details")
+    unsupported=[a for a in soup.find_all("a",href=True)
+                 if official_position_title(a.get_text(" ",strip=True))
+                 and (str(a.get("href") or "").strip().lower().startswith(("javascript:","#")) or a.has_attr("onclick"))
+                 and not (str(foundation.get("id"))=="incheon:metropolitan" and ifac_detail_url(a,response.url))]
+    if unsupported:
+        raise RuntimeError("official recruitment rows use unsupported JavaScript detail links")
+    normalized=visible.replace(" ","")
+    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
+    fid=str(foundation.get("id") or "")
+    identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in normalized for x in aliases)
+    if fid=="incheon:seohae": identity_ok=identity_ok or "채용소식" in visible
+    if fid=="incheon:namdong": identity_ok=identity_ok or ("타기관" in visible and ("채용" in visible or "공고" in visible))
+    if not identity_ok:
+        title=base.normalize_space(soup.title.get_text(" ",strip=True))[:100] if soup.title else ""
+        raise RuntimeError(f"official board identity unproved: finalUrl={response.url[:200]!r}, title={title!r}, bytes={len(response.content)}, candidates={len(candidates)}")
+    if not candidates and not EXPLICIT_EMPTY_RE.search(visible):
+        raise RuntimeError("official board has no parseable details and no explicit empty state")
+    return True
 
 
 def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
+    if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}: return False
     if not title or base.RESULT_RE.search(title) or NON_POSITION_RE.search(title):
         return False
     return bool(RECRUITMENT_RE.search(title))
@@ -99,7 +145,7 @@ def container_text(anchor)->str:
 
 
 def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "") not in {"incheon:seohae","incheon:namdong"}:
+    if str(foundation.get("id") or "") not in {"incheon:seohae","incheon:namdong","gyeonggi:hanam","seoul:guro"}:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
@@ -117,6 +163,15 @@ def detail_identity(url:str)->str:
     if parts and re.fullmatch(r"\d{2,}",parts[-1]):
         return f"path:{parts[-1]}"
     return "url:"+hashlib.sha1(url.encode()).hexdigest()[:20]
+
+def looks_like_detail_url(board_url:str,candidate_url:str)->bool:
+    board=urlparse(board_url); candidate=urlparse(candidate_url)
+    query=parse_qs(candidate.query)
+    detail_key=any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","nttNo","not_ancmt_mgt_no","seq","no"))
+    if re.search(r"/(?:list|recruitlist|selectBbsNttList|selectGosiList)\.(?:do|php)$",candidate.path,re.I) and not detail_key:
+        return False
+    if detail_key or query.get("bmode")==["view"] or query.get("proc_type")==["view"]: return True
+    return board.path.rstrip("/")!=candidate.path.rstrip("/")
 
 
 def ifac_detail_url(anchor, board_url:str)->str|None:
@@ -170,6 +225,8 @@ def list_detail_candidates(session,foundation,board_url):
             continue
         if absolute.rstrip("/")==r.url.rstrip("/"):
             continue
+        if not looks_like_detail_url(r.url,absolute):
+            continue
         context=container_text(a)
         # A shared municipal board can mention the foundation in its menu or
         # surrounding rows. Only the individual posting title proves ownership.
@@ -189,17 +246,24 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
-    if str(foundation.get("id") or "")=="incheon:metropolitan" and not candidates:
-        raise RuntimeError("IFAC recruitment board has no parsed exact-detail links")
+    identity_ok=verify_board_surface(soup,foundation,board_response,candidates)
     jobs=[]
     inspected=0
     errors=[]
+    unverified_deadlines=[]
     for identity,meta in list(candidates.items())[:80]:
         try:
             detail=resilient_request(session,str(meta["url"]))
-            if str(foundation.get("id") or "")=="incheon:metropolitan" and urlparse(detail.url).scheme.lower()!="https":
-                raise RuntimeError("IFAC official detail downgraded from HTTPS")
             detail_soup=BeautifulSoup(detail.text,"html.parser")
+            detail_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
+            if BLOCK_PAGE_RE.search(detail.text[:4000]) or BLOCK_PAGE_RE.search(detail_text[:4000]):
+                raise RuntimeError("official detail returned an access-control page")
+            if JS_SHELL_RE.search(detail.text) and len(detail_text)<100:
+                raise RuntimeError("official detail returned an unrendered JavaScript shell")
+            list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
+            title_prefix=list_title.replace(" ","")[:20]
+            if not detail_text or (title_prefix and title_prefix not in detail_text.replace(" ","")):
+                raise RuntimeError("official detail does not contain its recruitment title")
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
                 continue
@@ -209,17 +273,15 @@ def generic_official_rows(session,foundation,board_url):
             if not registered or registered>today or registered<today-base.timedelta(days=120):
                 continue
             full_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
-            if str(foundation.get("id") or "")=="incheon:metropolitan":
-                list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
-                if not full_text or list_title.replace(" ","")[:20] not in full_text.replace(" ",""):
-                    raise RuntimeError("IFAC detail does not contain its recruitment title")
             apply_end=base.extract_apply_end(full_text,registered)
             if not apply_end and str(foundation.get("id") or "")=="incheon:metropolitan":
                 apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
                 continue
-            if not apply_end and registered<today-base.timedelta(days=30):
+            if not apply_end and registered<today-base.timedelta(days=14):
                 continue
+            if not apply_end:
+                unverified_deadlines.append(detail.url[:250])
             inspected+=1
             fid=str(foundation.get("id") or "")
             detail_id=detail_identity(detail.url)
@@ -242,30 +304,21 @@ def generic_official_rows(session,foundation,board_url):
                 "title":title,
                 "registered":base.format_date(registered),
                 "applyEnd":base.format_date(apply_end),
+                "deadlineVerification":"verified" if apply_end else "unverified-recent-official-post",
                 "url":detail.url,
                 "originalUrl":detail.url,
                 "detailUrl":detail.url,
                 "boardUrl":board_response.url,
                 "detailLinkVerified":True,
-                "detailLinkReason":"official-local-government-exact-detail" if fid in {"incheon:seohae","incheon:namdong"} else "official-foundation-exact-detail",
+                "detailLinkReason":"official-local-government-exact-detail" if fid in {"incheon:seohae","incheon:namdong","gyeonggi:hanam","seoul:guro"} else "official-foundation-exact-detail",
                 "transportVerified":True,
             })
         except Exception as exc:
             errors.append({"url":str(meta.get("url") or "")[:500],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
     # A configured official board is healthy only if it is a real HTML surface.
     # Zero current jobs is valid; an unreadable or identity-mismatched surface is not.
-    board_text=base.normalize_space(soup.get_text(" ",strip=True))
-    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
-    identity_ok=any(base.normalize_space(x) and base.normalize_space(x).replace(" ","") in board_text.replace(" ","") for x in aliases)
-    fid=str(foundation.get("id") or "")
-    if fid=="incheon:seohae":
-        identity_ok=identity_ok or "채용소식" in board_text
-    if fid=="incheon:namdong":
-        identity_ok=identity_ok or ("타기관" in board_text and ("채용" in board_text or "공고" in board_text))
-    if not identity_ok:
-        raise RuntimeError("official board did not prove foundation/local-government identity")
-    if fid=="incheon:metropolitan" and errors:
-        raise RuntimeError(f"IFAC detail fetch failed: {errors[:2]}")
+    if errors:
+        raise RuntimeError(f"official board detail fetch failed: {errors[:2]}")
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
@@ -274,14 +327,13 @@ def generic_official_rows(session,foundation,board_url):
         "inspectedDetailLinks":inspected,
         "publishedCurrentJobs":len(jobs),
         "detailErrors":errors[:10],
+        "recentPostsWithUnverifiedDeadline":len(unverified_deadlines),
         "identityVerified":identity_ok,
     }
 
 
-def main():
-    generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; session=make_session(); base.request=resilient_request
-    jobs=[]; errors=[]; unsupported=[]; board_results=[]
-    for foundation in configured:
+def collect_board(foundation):
+    with make_session() as session:
         board_url=str(foundation.get("officialRecruitmentUrl") or "").strip(); host=(urlparse(board_url).hostname or "").lower()
         try:
             if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
@@ -290,10 +342,21 @@ def main():
             elif host in GENERIC_OFFICIAL_HOSTS:
                 found,meta=generic_official_rows(session,foundation,board_url)
             else:
-                unsupported.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"}); continue
-            jobs.extend(found); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta})
+                return [],None,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"reason":"adapter-not-yet-implemented"},None
+            return found,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":True,**meta},None,None
         except Exception as exc:
-            errors.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}); board_results.append({"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False})
+            return [],{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"healthy":False},None,{"foundationRegistryId":foundation.get("id"),"foundationName":foundation.get("name"),"boardUrl":board_url,"error":f"{type(exc).__name__}: {exc}"}
+
+def main():
+    generated=datetime.now(KST).isoformat(timespec="seconds"); foundations=base.effective_foundations(); configured=[x for x in foundations if str(x.get("officialRecruitmentUrl") or "").strip()]; base.request=resilient_request
+    jobs=[]; errors=[]; unsupported=[]; board_results=[]
+    # Sessions are confined to one worker; map retains registry order in the report.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for found,board,not_supported,error in pool.map(collect_board,configured):
+            jobs.extend(found)
+            if board: board_results.append(board)
+            if not_supported: unsupported.append(not_supported)
+            if error: errors.append(error)
     ids=[str(x.get("sourceIdentity") or "") for x in jobs]; urls=[str(x.get("url") or "") for x in jobs]; duplicate_ids=sorted({x for x in ids if x and ids.count(x)>1}); duplicate_urls=sorted({x for x in urls if x and urls.count(x)>1})
     if duplicate_ids or duplicate_urls: errors.append({"error":"duplicate-official-identities","ids":duplicate_ids,"urls":duplicate_urls})
     jobs.sort(key=lambda x:(str(x.get("registered") or ""),str(x.get("sourceIdentity") or "")),reverse=True); healthy=not errors and not unsupported
