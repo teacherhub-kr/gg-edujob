@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T03:54:23+09:00",
+  "generatedAt": "2026-09-28T11:45:36+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -21,9 +21,9 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 0,
-    "cleaneye": 0,
-    "artmore": 0,
+    "official": 5,
+    "cleaneye": 15,
+    "artmore": 1,
     "ancf": 0,
     "lessoninfo-discovery": 16
   },
@@ -32,6 +32,26 @@
   "discoveryOnlyGapCount": 0,
   "discoveryOnlyGaps": [],
   "unmappedStrongSourceRows": {},
+  "excludedMisattributedMunicipalOfficialRows": [
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "sourceIdentity": "official-foundation:incheon:seohae:2bc57c66892bddb0d6f5",
+      "title": "방사선실 기간제근로자 채용 공고",
+      "reason": "shared-municipal-board-post-does-not-name-foundation"
+    },
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "sourceIdentity": "official-foundation:incheon:seohae:587d40ce8978801abccf",
+      "title": "인천광역시 서해구 지방시간선택제임기제 마급 공무원 채용시험 시행계획 재공고(배수펌프장 관리원)",
+      "reason": "shared-municipal-board-post-does-not-name-foundation"
+    },
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "sourceIdentity": "official-foundation:incheon:seohae:5bb1db7802f8ce3ff97b",
+      "title": "인천광역시 서해구 개방형직위(보건소장) 채용시험 모집 공고",
+      "reason": "shared-municipal-board-post-does-not-name-foundation"
+    }
+  ],
   "institutions": [
     {
       "foundationRegistryId": "seoul:metropolitan",
@@ -56,14 +76,14 @@
       "municipality": "강남구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 2,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:gangdong",
@@ -296,14 +316,14 @@
       "municipality": "송파구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:yangcheon",
@@ -376,14 +396,14 @@
       "municipality": "중구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:jungnang",
@@ -536,14 +556,14 @@
       "municipality": "김포시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 3,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:namyangju",
@@ -584,14 +604,14 @@
       "municipality": "성남시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 2,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:suwon",
@@ -648,14 +668,14 @@
       "municipality": "양평군",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
-        "artmore": 0,
+        "cleaneye": 1,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:yeoju",
@@ -744,14 +764,14 @@
       "municipality": "파주시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:pyeongtaek",
@@ -792,14 +812,14 @@
       "municipality": "하남시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 2,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:hwaseong",
@@ -808,14 +828,14 @@
       "municipality": "화성시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 2,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "incheon:metropolitan",
@@ -823,15 +843,15 @@
       "region": "인천",
       "municipality": "인천광역시",
       "sourceCounts": {
-        "official": 0,
+        "official": 3,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": true,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "incheon:jemulpo",
@@ -855,15 +875,15 @@
       "region": "인천",
       "municipality": "서해구",
       "sourceCounts": {
-        "official": 0,
+        "official": 1,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "incheon:yeonsu",
@@ -887,15 +907,15 @@
       "region": "인천",
       "municipality": "부평구",
       "sourceCounts": {
-        "official": 0,
+        "official": 1,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "incheon:namdong",
