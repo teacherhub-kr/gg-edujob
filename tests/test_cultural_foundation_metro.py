@@ -8,6 +8,7 @@ from unittest.mock import patch
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
 import reconcile_cultural_foundation_coverage as reconcile
+import build_unified_search_multi as unified
 
 
 class CulturalFoundationMetroTests(unittest.TestCase):
@@ -89,6 +90,20 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         title="하남문화재단 직원 채용 공고"
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation,title))
         self.assertTrue(reconcile.municipal_official_post_belongs_to_foundation({"title":title},foundation))
+
+    def test_recent_official_post_without_deadline_has_bounded_visibility(self):
+        today=unified.base.TODAY
+        post={"province":"경기","sourceRole":"primary-official","detailLinkVerified":True,
+              "transportVerified":True,"foundationRegistryId":"gyeonggi:gwacheon",
+              "sourceIdentity":"official-foundation:gwacheon:test","url":"https://www.gcart.or.kr/recruitView.do?bbsIdx=1909",
+              "title":"과천문화재단 직원 채용 공고","registered":today.isoformat(),"applyEnd":"",
+              "deadlineVerification":"unverified-recent-official-post"}
+        self.assertTrue(unified.foundation_official_current(post))
+        self.assertFalse(unified.foundation_official_current({**post,"registered":(today-unified.timedelta(days=22)).isoformat()}))
+        self.assertFalse(unified.foundation_official_current({**post,"deadlineVerification":""}))
+        projected=unified.project_foundation_official(post)
+        self.assertEqual(projected["deadlineVerification"],"unverified-recent-official-post")
+        self.assertFalse(projected.get("applyEnd"))
 
     def test_blocked_shell_and_script_links_do_not_prove_board_health(self):
         foundation={"id":"seoul:nowon","name":"노원문화재단","aliases":[]}
