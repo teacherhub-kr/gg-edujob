@@ -58,6 +58,6 @@ jobs:
           configured=int(r.get('officialBoardsConfigured') or 0)
           checked=int(r.get('supportedBoardsChecked') or 0)
           assert configured == checked, (configured,checked,r)
-          assert configured >= 15, r
+          assert configured >= 21, r
           print('official foundation board live proof ok',configured,'boards',r.get('jobs'),'current jobs')
           PY
