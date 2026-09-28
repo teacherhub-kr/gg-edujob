@@ -3,9 +3,11 @@ import sys
 import unittest
 from pathlib import Path
 from bs4 import BeautifulSoup
+from unittest.mock import patch
 
 sys.path.insert(0, "scripts")
 import crawl_official_foundation_jobs_v2 as crawler
+import reconcile_cultural_foundation_coverage as reconcile
 
 
 class CulturalFoundationMetroTests(unittest.TestCase):
@@ -50,6 +52,34 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         }
         self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, "(재)남동문화재단 2026년 기간제근로자 채용 공고"))
         self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, "서울특별시 송파구 시간선택임기제공무원 채용공고"))
+
+    def test_seohae_shared_board_excludes_other_employers_even_with_branded_context(self):
+        foundation = {
+            "id": "incheon:seohae",
+            "name": "인천서해구문화재단",
+            "aliases": ["인천서구문화재단"],
+        }
+        other_titles = [
+            "방사선실 기간제근로자 채용 공고",
+            "인천광역시 서해구 지방시간선택제임기제 마급 공무원 채용시험 시행계획 재공고(배수펌프장 관리원)",
+            "인천광역시 서해구 개방형직위(보건소장) 채용시험 모집 공고",
+        ]
+        for title in other_titles:
+            self.assertFalse(crawler.candidate_belongs_to_foundation(foundation, title))
+            self.assertFalse(reconcile.municipal_official_post_belongs_to_foundation({"title": title}, foundation))
+        for title in ("인천서해구문화재단 직원 채용 공고", "(재)인천서구문화재단 기간제근로자 모집"):
+            self.assertTrue(crawler.candidate_belongs_to_foundation(foundation, title))
+            self.assertTrue(reconcile.municipal_official_post_belongs_to_foundation({"title": title}, foundation))
+
+        board_url = "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job"
+        class Response:
+            url = board_url
+            text = ('<div>인천서해구문화재단 공식 채용 안내'
+                    '<a href="/open_content/main/bbs/bbsMsgDetail.do?msg_seq=5076&bcd=job">'
+                    '방사선실 기간제근로자 채용 공고</a></div>')
+        with patch.object(crawler, "resilient_request", return_value=Response()):
+            _, _, candidates, _ = crawler.list_detail_candidates(None, foundation, board_url)
+        self.assertEqual(candidates, {}, "surrounding foundation branding cannot make a hospital job a foundation post")
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
