@@ -105,6 +105,15 @@ def identify_foundation(row: dict, matchers) -> str:
     return ""
 
 
+def municipal_official_post_belongs_to_foundation(row: dict, foundation: dict) -> bool:
+    """A municipality's job board is official, but its other employers are not the foundation."""
+    if foundation["id"] not in {"incheon:seohae", "incheon:namdong"}:
+        return True
+    title = norm(row.get("title") or "")
+    aliases = [foundation.get("name"), *(foundation.get("aliases") or [])]
+    return bool(title and any(norm(alias) in title for alias in aliases if norm(alias)))
+
+
 def same_date(a: dict, b: dict, key: str) -> bool:
     av = str(a.get(key) or "")[:10]
     bv = str(b.get(key) or "")[:10]
@@ -171,12 +180,21 @@ def main() -> int:
 
     mapped = defaultdict(lambda: defaultdict(list))
     unmapped = defaultdict(list)
+    excluded_municipal_official = []
     for source, dataset in datasets.items():
         for job in dataset:
             if not current(job, today):
                 continue
             fid = identify_foundation(job, matchers)
             if fid and fid in by_fid:
+                if source == "official" and not municipal_official_post_belongs_to_foundation(job, by_fid[fid]):
+                    excluded_municipal_official.append({
+                        "foundationRegistryId": fid,
+                        "sourceIdentity": job.get("sourceIdentity"),
+                        "title": job.get("title"),
+                        "reason": "shared-municipal-board-post-does-not-name-foundation",
+                    })
+                    continue
                 mapped[fid][source].append(job)
             elif source != "lessoninfo-discovery":
                 unmapped[source].append(job)
@@ -251,6 +269,7 @@ def main() -> int:
         "discoveryOnlyGapCount":len(discovery_gaps),
         "discoveryOnlyGaps":discovery_gaps[:200],
         "unmappedStrongSourceRows":{s:len(v) for s,v in unmapped.items()},
+        "excludedMisattributedMunicipalOfficialRows": excluded_municipal_official,
         "institutions":institutions,
     }
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
