@@ -81,6 +81,40 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             _, _, candidates, _ = crawler.list_detail_candidates(None, foundation, board_url)
         self.assertEqual(candidates, {}, "surrounding foundation branding cannot make a hospital job a foundation post")
 
+    def test_hanam_municipal_board_requires_foundation_in_post_title(self):
+        foundation={"id":"gyeonggi:hanam","name":"하남문화재단","aliases":["(재)하남문화재단"]}
+        for title in ("시청 기간제근로자 채용 공고","하남시 직원 채용 공고"):
+            self.assertFalse(crawler.candidate_belongs_to_foundation(foundation,title))
+            self.assertFalse(reconcile.municipal_official_post_belongs_to_foundation({"title":title},foundation))
+        title="하남문화재단 직원 채용 공고"
+        self.assertTrue(crawler.candidate_belongs_to_foundation(foundation,title))
+        self.assertTrue(reconcile.municipal_official_post_belongs_to_foundation({"title":title},foundation))
+
+    def test_blocked_shell_and_script_links_do_not_prove_board_health(self):
+        foundation={"id":"seoul:nowon","name":"노원문화재단","aliases":[]}
+        class Response:
+            url="https://nowonarts.kr/channels/job/posts"
+            def __init__(self,markup):
+                self.text=markup
+                self.content=markup.encode()
+        for markup in (
+            "<html>노원문화재단 WELLCONN 접근 대기</html>",
+            "<html>노원문화재단 채용 <div ng-repeat='job in jobs'>{{job.title}}</div></html>",
+            "<html>노원문화재단 채용 <a href='javascript:reg_view(42)'>직원 채용 공고</a></html>",
+        ):
+            with self.assertRaises(RuntimeError):
+                crawler.verify_board_surface(BeautifulSoup(markup,"html.parser"),foundation,Response(markup),{})
+
+    def test_https_official_redirect_to_http_fails_closed(self):
+        class Response:
+            url="http://nowonarts.kr/channels/job/posts"
+            encoding="utf-8"
+            def raise_for_status(self): pass
+        class Session:
+            def get(self,*args,**kwargs): return Response()
+        with self.assertRaisesRegex(RuntimeError,"downgraded"):
+            crawler.resilient_request(Session(),"https://nowonarts.kr/channels/job/posts")
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
