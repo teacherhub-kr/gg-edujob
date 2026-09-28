@@ -85,6 +85,11 @@ GENERIC_OFFICIAL_HOSTS={
     "uac.or.kr","www.uac.or.kr",
     "artic.or.kr","www.artic.or.kr",
     "hanam.go.kr","www.hanam.go.kr",
+    "gangnam.go.kr","www.gangnam.go.kr",
+    "guro.go.kr","www.guro.go.kr",
+    "yfac.kr","www.yfac.kr",
+    "ydpcf.or.kr","www.ydpcf.or.kr",
+    "gcart.or.kr","www.gcart.or.kr",
 }
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
@@ -138,7 +143,7 @@ def container_text(anchor)->str:
 
 
 def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "") not in {"incheon:seohae","incheon:namdong","gyeonggi:hanam"}:
+    if str(foundation.get("id") or "") not in {"incheon:seohae","incheon:namdong","gyeonggi:hanam","seoul:guro"}:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
@@ -269,10 +274,10 @@ def generic_official_rows(session,foundation,board_url):
                 apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
                 continue
-            if not apply_end and registered<today-base.timedelta(days=30):
+            if not apply_end and registered<today-base.timedelta(days=21):
                 continue
             if not apply_end:
-                unverified_deadlines.append(detail.url[:250]); continue
+                unverified_deadlines.append(detail.url[:250])
             inspected+=1
             fid=str(foundation.get("id") or "")
             detail_id=detail_identity(detail.url)
@@ -295,12 +300,13 @@ def generic_official_rows(session,foundation,board_url):
                 "title":title,
                 "registered":base.format_date(registered),
                 "applyEnd":base.format_date(apply_end),
+                "deadlineVerification":"verified" if apply_end else "unverified-recent-official-post",
                 "url":detail.url,
                 "originalUrl":detail.url,
                 "detailUrl":detail.url,
                 "boardUrl":board_response.url,
                 "detailLinkVerified":True,
-                "detailLinkReason":"official-local-government-exact-detail" if fid in {"incheon:seohae","incheon:namdong","gyeonggi:hanam"} else "official-foundation-exact-detail",
+                "detailLinkReason":"official-local-government-exact-detail" if fid in {"incheon:seohae","incheon:namdong","gyeonggi:hanam","seoul:guro"} else "official-foundation-exact-detail",
                 "transportVerified":True,
             })
         except Exception as exc:
@@ -309,8 +315,6 @@ def generic_official_rows(session,foundation,board_url):
     # Zero current jobs is valid; an unreadable or identity-mismatched surface is not.
     if errors:
         raise RuntimeError(f"official board detail fetch failed: {errors[:2]}")
-    if unverified_deadlines:
-        raise RuntimeError(f"official recent recruitment lacks a verified application deadline: {unverified_deadlines[:2]}")
     return jobs,{
         "adapter":"generic-official-board-v1",
         "surfacesChecked":[board_response.url],
@@ -319,6 +323,7 @@ def generic_official_rows(session,foundation,board_url):
         "inspectedDetailLinks":inspected,
         "publishedCurrentJobs":len(jobs),
         "detailErrors":errors[:10],
+        "recentPostsWithUnverifiedDeadline":len(unverified_deadlines),
         "identityVerified":identity_ok,
     }
 
