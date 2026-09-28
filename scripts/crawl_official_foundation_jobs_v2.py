@@ -99,7 +99,7 @@ def container_text(anchor)->str:
 
 
 def candidate_belongs_to_foundation(foundation,text:str)->bool:
-    if str(foundation.get("id") or "")!="incheon:namdong":
+    if str(foundation.get("id") or "") not in {"incheon:seohae","incheon:namdong"}:
         return True
     haystack=base.normalize_space(text).replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
@@ -171,7 +171,9 @@ def list_detail_candidates(session,foundation,board_url):
         if absolute.rstrip("/")==r.url.rstrip("/"):
             continue
         context=container_text(a)
-        if not candidate_belongs_to_foundation(foundation,title+" "+context):
+        # A shared municipal board can mention the foundation in its menu or
+        # surrounding rows. Only the individual posting title proves ownership.
+        if not candidate_belongs_to_foundation(foundation,title):
             continue
         reg=base.parse_date_text(context)
         if reg:
@@ -200,6 +202,8 @@ def generic_official_rows(session,foundation,board_url):
             detail_soup=BeautifulSoup(detail.text,"html.parser")
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
+                continue
+            if not candidate_belongs_to_foundation(foundation,title):
                 continue
             registered=base.detail_registered(detail_soup,meta.get("registered"))
             if not registered or registered>today or registered<today-base.timedelta(days=120):
