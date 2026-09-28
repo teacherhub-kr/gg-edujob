@@ -107,7 +107,7 @@ def identify_foundation(row: dict, matchers) -> str:
 
 def municipal_official_post_belongs_to_foundation(row: dict, foundation: dict) -> bool:
     """A municipality's job board is official, but its other employers are not the foundation."""
-    if foundation["id"] not in {"incheon:seohae", "incheon:namdong"}:
+    if foundation["id"] not in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam"}:
         return True
     title = norm(row.get("title") or "")
     aliases = [foundation.get("name"), *(foundation.get("aliases") or [])]
