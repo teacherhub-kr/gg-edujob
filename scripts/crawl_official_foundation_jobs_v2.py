@@ -126,7 +126,12 @@ GENERIC_OFFICIAL_HOSTS={
 PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
 JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
-EXPLICIT_EMPTY_RE=re.compile(r"등록된\s*(?:글|게시물|공고|자료)이\s*없|게시물이\s*없|검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없",re.I)
+EXPLICIT_EMPTY_RE=re.compile(
+    r"등록된\\s*(?:글|게시물|공고|자료|정보|채용공고)이\\s*없|게시물이\\s*없|"
+    r"검색된\\s*(?:결과|자료)가\\s*없|현재\\s*(?:게시중인\\s*)?(?:채용)?공고가\\s*없|"
+    r"진행\\s*중\\s*채용공고\\s*0건",
+    re.I,
+)
 
 
 def verify_board_surface(soup, foundation, response, candidates):
@@ -162,6 +167,8 @@ def verify_board_surface(soup, foundation, response, candidates):
 def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
     if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}:
+        return False
+    if re.search(r"진행\\s*중\\s*채용공고\\s*0건",title,re.I):
         return False
     if not title or base.RESULT_RE.search(title) or NON_POSITION_RE.search(title):
         return False
@@ -261,6 +268,15 @@ def ifac_title_deadline(title,registered):
 
 
 def list_detail_candidates(session,foundation,board_url):
+    requested=urlparse(board_url)
+    requested_host=(requested.hostname or "").lower()
+    # Modern Incruit tenant landing pages expose the actual vacancy list under
+    # /<tenant>/job/. Read that canonical list surface instead of treating the
+    # landing shell as an empty/unsupported board.
+    if requested_host=="recruit.incruit.com":
+        parts=[p for p in requested.path.split("/") if p]
+        if parts and not (len(parts)>=2 and parts[1]=="job"):
+            board_url=f"https://recruit.incruit.com/{parts[0]}/job/"
     r=resilient_request(session,board_url)
     soup=BeautifulSoup(r.text,"html.parser")
     board_host=(urlparse(r.url).hostname or "").lower()
@@ -272,10 +288,6 @@ def list_detail_candidates(session,foundation,board_url):
     dated_list_rows=0
     for a in soup.find_all("a",href=True):
         ifac_url=ifac_detail_url(a,r.url) if fid=="incheon:metropolitan" else None
-        title_node=a.select_one("dl.title dd") if ifac_url else None
-        title=base.normalize_space((title_node or a).get_text(" ",strip=True))
-        if not official_position_title(title):
-            continue
         href=str(a.get("href") or "").strip()
         if not ifac_url and (not href or href.lower().startswith(("javascript:","#","mailto:","tel:"))):
             continue
@@ -287,7 +299,23 @@ def list_detail_candidates(session,foundation,board_url):
             continue
         if not looks_like_detail_url(r.url,absolute):
             continue
+
+        title_node=a.select_one("dl.title dd") if ifac_url else None
+        title=base.normalize_space((title_node or a).get_text(" ",strip=True))
         context=container_text(a)
+        parsed_absolute=urlparse(absolute)
+        incruit_job=bool(
+            board_host=="recruit.incruit.com"
+            and re.search(r"/job/\\d{4,}(?:/)?$",parsed_absolute.path)
+        )
+        # Modern Incruit list anchors are often labelled only "자세히 보기";
+        # the vacancy title/date live in the containing card. Use the card only
+        # for candidate discovery and let the exact detail page prove the title.
+        if not official_position_title(title):
+            if incruit_job and official_position_title(context):
+                title=""
+            else:
+                continue
         shared_board=fid=="seoul:dongjak" and board_host=="culture.seoul.go.kr"
         if not candidate_belongs_to_foundation(foundation,title+" "+context,shared_board=shared_board):
             continue
