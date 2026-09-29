@@ -108,7 +108,7 @@ GENERIC_OFFICIAL_HOSTS={
     "songpafac.or.kr","www.songpafac.or.kr",
     "recruit.incruit.com",
     "gmcf.incruit.com",
-    "gmcf.or.kr","www.gmcf.or.kr","m.gmcf.or.kr",
+    "gmcf.or.kr","www.gmcf.or.kr","m.gmcf.or.kr","gm.go.kr","www.gm.go.kr",
     "gcf.or.kr","www.gcf.or.kr",
     "yjcf.or.kr","www.yjcf.or.kr",
     "artic.or.kr","www.artic.or.kr",
@@ -230,6 +230,7 @@ def container_text(anchor)->str:
 SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "incheon:namdong",
     "gyeonggi:goyang",
+    "gyeonggi:gwangmyeong",
     "seoul:guro",
     "gyeonggi:guri",
     "gyeonggi:hanam",
