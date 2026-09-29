@@ -339,7 +339,32 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         )
         self.assertTrue(crawler.base.nsart_candidate_in_window({"registered": None}, today))
 
+    def test_ninehire_root_uses_recruit_surface_and_explicit_empty(self):
+        foundation = {"id": "seoul:jungnang", "name": "중랑문화재단", "aliases": ["재단법인 중랑문화재단"]}
+        html = "<html><body>재단법인 중랑문화재단 채용 공고 진행 중인 채용이 없습니다.</body></html>"
+        response = SimpleNamespace(
+            url="https://recruit.jnfac.or.kr/recruit",
+            text=html,
+            content=html.encode(),
+        )
+        with patch.object(crawler, "resilient_request", return_value=response) as request:
+            _, soup, candidates, dated = crawler.list_detail_candidates(
+                None, foundation, "https://recruit.jnfac.or.kr/"
+            )
+        request.assert_called_once_with(None, "https://recruit.jnfac.or.kr/recruit")
+        self.assertEqual(candidates, {})
+        self.assertEqual(dated, 0)
+        self.assertTrue(crawler.verify_board_surface(soup, foundation, response, candidates))
+
     def test_native_detail_identity_prefers_query_id(self):
+        self.assertEqual(
+            crawler.detail_identity("https://recruit.efac.or.kr/sub01/sub01.php?type=view&uid=5098"),
+            "uid:5098",
+        )
+        self.assertTrue(crawler.looks_like_detail_url(
+            "https://recruit.efac.or.kr/sub01/sub01.php",
+            "https://recruit.efac.or.kr/sub01/sub01.php?type=view&uid=5098",
+        ))
         self.assertEqual(
             crawler.detail_identity("https://www.jcf.or.kr/main/bbs/bbsMsgDetail.do?bcd=recruit&msg_seq=118"),
             "msg_seq:118",
