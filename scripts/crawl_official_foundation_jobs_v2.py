@@ -127,9 +127,9 @@ PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
 JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
 EXPLICIT_EMPTY_RE=re.compile(
-    r"등록된\\s*(?:글|게시물|공고|자료|정보|채용공고)이\\s*없|게시물이\\s*없|"
-    r"검색된\\s*(?:결과|자료)가\\s*없|현재\\s*(?:게시중인\\s*)?(?:채용)?공고가\\s*없|"
-    r"진행\\s*중\\s*채용공고\\s*0건",
+    r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)이\s*없|게시물이\s*없|"
+    r"검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|"
+    r"진행\s*중\s*채용공고\s*0건",
     re.I,
 )
 
@@ -168,7 +168,7 @@ def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
     if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}:
         return False
-    if re.search(r"진행\\s*중\\s*채용공고\\s*0건",title,re.I):
+    if re.search(r"진행\s*중\s*채용공고\s*0건",title,re.I):
         return False
     if not title or base.RESULT_RE.search(title) or NON_POSITION_RE.search(title):
         return False
@@ -306,7 +306,7 @@ def list_detail_candidates(session,foundation,board_url):
         parsed_absolute=urlparse(absolute)
         incruit_job=bool(
             board_host=="recruit.incruit.com"
-            and re.search(r"/job/\\d{4,}(?:/)?$",parsed_absolute.path)
+            and re.search(r"/job/\d{4,}(?:/)?$",parsed_absolute.path)
         )
         # Modern Incruit list anchors are often labelled only "자세히 보기";
         # the vacancy title/date live in the containing card. Use the card only
