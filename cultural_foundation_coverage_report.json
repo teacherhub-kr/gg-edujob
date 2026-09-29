@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T21:07:16+09:00",
+  "generatedAt": "2026-09-30T02:38:27+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -21,7 +21,7 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 11,
+    "official": 10,
     "cleaneye": 11,
     "artmore": 0,
     "ancf": 1,
@@ -648,15 +648,15 @@
       "region": "경기",
       "municipality": "양평군",
       "sourceCounts": {
-        "official": 1,
+        "official": 0,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:yeoju",
