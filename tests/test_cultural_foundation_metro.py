@@ -131,6 +131,66 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "lacks an explicit empty state"):
                 crawler.sfac_careerlink_probe(None)
 
+    def test_saas_empty_states_and_modern_incruit_job_cards(self):
+        self.assertTrue(crawler.EXPLICIT_EMPTY_RE.search("등록된 정보가 없습니다."))
+        self.assertTrue(crawler.EXPLICIT_EMPTY_RE.search("등록된 채용공고가 없습니다."))
+        self.assertTrue(crawler.EXPLICIT_EMPTY_RE.search("진행 중 채용공고 0건"))
+        self.assertFalse(crawler.official_position_title("진행 중 채용공고 0건"))
+
+        foundation = {
+            "id": "gyeonggi:metropolitan",
+            "name": "경기문화재단",
+            "aliases": ["(재)경기문화재단", "재단법인 경기문화재단"],
+        }
+        html = """
+        <html><head><title>(재)경기문화재단 채용리스트</title></head><body>
+          <div class="job-card">
+            모집중 2026.09.07 09:00~2026.10.14 15:00
+            2026년 경기문화재단 제10차 기간제 근로자 채용
+            <a href="/ggcf/job/2609030002">자세히 보기</a>
+          </div>
+        </body></html>
+        """
+        response = SimpleNamespace(
+            url="https://recruit.incruit.com/ggcf/job/",
+            text=html,
+            content=html.encode(),
+        )
+        with patch.object(crawler, "resilient_request", return_value=response) as request:
+            _, soup, candidates, dated = crawler.list_detail_candidates(
+                None, foundation, "https://recruit.incruit.com/ggcf/"
+            )
+        request.assert_called_once_with(None, "https://recruit.incruit.com/ggcf/job/")
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(dated, 1)
+        candidate = next(iter(candidates.values()))
+        self.assertEqual(candidate["url"], "https://recruit.incruit.com/ggcf/job/2609030002")
+        self.assertEqual(candidate["fallbackTitle"], "")
+        self.assertTrue(crawler.verify_board_surface(soup, foundation, response, candidates))
+
+        empty_html = """
+        <html><head><title>(재)성북문화재단 채용리스트</title></head>
+        <body><h2>채용정보</h2><p>등록된 정보가 없습니다.</p></body></html>
+        """
+        empty_response = SimpleNamespace(
+            url="https://recruit.incruit.com/sbculture/job/",
+            text=empty_html,
+            content=empty_html.encode(),
+        )
+        empty_foundation = {
+            "id": "seoul:seongbuk",
+            "name": "성북문화재단",
+            "aliases": ["(재)성북문화재단"],
+        }
+        self.assertTrue(
+            crawler.verify_board_surface(
+                BeautifulSoup(empty_html, "html.parser"),
+                empty_foundation,
+                empty_response,
+                {},
+            )
+        )
+
     def test_recent_post_without_deadline_is_not_verified_open(self):
         today = crawler.base.date(2026, 9, 27)
         self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
