@@ -109,7 +109,7 @@ GENERIC_OFFICIAL_HOSTS={
     "artgy.or.kr","www.artgy.or.kr",
     "gcart.or.kr","www.gcart.or.kr",
     "bcf.or.kr","www.bcf.or.kr",
-    "ayac.saramin.co.kr","ayac.or.kr","www.ayac.or.kr",
+    "ayac.saramin.co.kr","ayac.or.kr","www.ayac.or.kr","m.ayac.or.kr",
     "pcfac.or.kr","www.pcfac.or.kr",
     "swcf.or.kr","www.swcf.or.kr",
     "guro.go.kr","www.guro.go.kr",
