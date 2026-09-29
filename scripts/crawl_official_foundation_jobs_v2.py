@@ -129,7 +129,7 @@ JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv
 EXPLICIT_EMPTY_RE=re.compile(
     r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)[이가]\s*없|게시물이\s*없|"
     r"검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|"
-    r"진행\s*중\s*채용공고\s*0건|진행\s*중인\s*채용공고가\s*없",
+    r"진행\s*중\s*채용공고\s*0건|진행\s*중인\s*채용공고가\s*없|진행\s*중인\s*채용이\s*없",
     re.I,
 )
 SAAS_EXPLICIT_EMPTY_HOSTS={
@@ -240,7 +240,7 @@ def candidate_belongs_to_foundation(foundation,text:str,*,shared_board:bool=Fals
 def detail_identity(url:str)->str:
     parsed=urlparse(url)
     query=parse_qs(parsed.query)
-    for key in ("bbsSn","boardId","msg_seq","sq","idx","nttSn","seq","no","id"):
+    for key in ("bbsSn","boardId","msg_seq","sq","idx","uid","nttSn","seq","no","id"):
         value=str((query.get(key) or [""])[0]).strip()
         if value:
             return f"{key}:{value}"
@@ -255,9 +255,9 @@ def looks_like_detail_url(board_url:str, candidate_url:str)->bool:
     if board.path.rstrip("/")!=candidate.path.rstrip("/"):
         return True
     query=parse_qs(candidate.query)
-    if any(key in query for key in ("b_num","idx","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")):
+    if any(key in query for key in ("b_num","idx","uid","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")):
         return True
-    if query.get("bmode")==["view"] or query.get("proc_type")==["view"]:
+    if query.get("bmode")==["view"] or query.get("proc_type")==["view"] or query.get("type")==["view"]:
         return True
     return False
 
@@ -296,6 +296,8 @@ def list_detail_candidates(session,foundation,board_url):
         parts=[p for p in requested.path.split("/") if p]
         if parts and not (len(parts)>=2 and parts[1]=="job"):
             board_url=f"https://recruit.incruit.com/{parts[0]}/job/"
+    elif requested_host=="recruit.jnfac.or.kr" and requested.path.rstrip("/") in ("",""):
+        board_url="https://recruit.jnfac.or.kr/recruit"
     r=resilient_request(session,board_url)
     soup=BeautifulSoup(r.text,"html.parser")
     board_host=(urlparse(r.url).hostname or "").lower()
