@@ -3,9 +3,13 @@ name: Production operations watchdog
 on:
   workflow_dispatch:
   schedule:
-    # One scheduled supervisor with offset fallback slots; writers remain dispatch-only.
-    # GitHub can delay or drop individual scheduled events.
-    - cron: '4,19,34,49 * * * *'
+    # One scheduled supervisor, but register each offset as an independent cron.
+    # This keeps the same 15-minute cadence while reducing dependence on a single
+    # schedule registration when GitHub delays or drops individual scheduled events.
+    - cron: '4 * * * *'
+    - cron: '19 * * * *'
+    - cron: '34 * * * *'
+    - cron: '49 * * * *'
 
 permissions:
   contents: read
