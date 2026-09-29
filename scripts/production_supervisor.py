@@ -87,6 +87,10 @@ TARGETS = {
     **{key: spec["workflow"] for key, spec in PRIVATE_REFRESH_TARGETS.items()},
     ARTMORE_PROMOTE_KEY: ARTMORE_PROMOTE_WORKFLOW,
 }
+PRODUCTION_EVENTS = {
+    filename: {"workflow_dispatch"} for filename in TARGETS.values()
+}
+PRODUCTION_EVENTS[WATCHDOG_WORKFLOW] = {"workflow_dispatch", "schedule"}
 CIRCUIT_BACKOFF_HOURS = {
     "fast": 6,
     "recovery": 12,
@@ -213,13 +217,38 @@ def completed_at(run: dict[str, Any] | None) -> datetime | None:
     return parse_time(run.get("updated_at") or run.get("run_started_at") or run.get("created_at"))
 
 
+def run_started_at(run: dict[str, Any] | None) -> datetime | None:
+    if not run:
+        return None
+    return parse_time(run.get("run_started_at") or run.get("created_at") or run.get("updated_at"))
+
+
+def sort_runs_newest_first(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    floor = datetime.min.replace(tzinfo=KST)
+    return sorted(runs, key=lambda run: run_started_at(run) or floor, reverse=True)
+
+
+def production_runs(filename: str, runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    allowed = PRODUCTION_EVENTS[filename]
+    filtered = [
+        run
+        for run in runs
+        if run.get("event") in allowed and run.get("head_branch") == "main"
+    ]
+    return sort_runs_newest_first(filtered)
+
+
 def latest_completed(runs: list[dict[str, Any]]) -> dict[str, Any] | None:
-    return next((r for r in runs if r.get("status") == "completed"), None)
+    return next((r for r in sort_runs_newest_first(runs) if r.get("status") == "completed"), None)
 
 
 def latest_success(runs: list[dict[str, Any]]) -> dict[str, Any] | None:
     return next(
-        (r for r in runs if r.get("status") == "completed" and r.get("conclusion") == "success"),
+        (
+            r
+            for r in sort_runs_newest_first(runs)
+            if r.get("status") == "completed" and r.get("conclusion") == "success"
+        ),
         None,
     )
 
@@ -232,7 +261,7 @@ def consecutive_real_failures(runs: list[dict[str, Any]]) -> tuple[int, datetime
     """
     count = 0
     latest_failure: datetime | None = None
-    for run in runs:
+    for run in sort_runs_newest_first(runs):
         if run.get("status") != "completed":
             continue
         conclusion = str(run.get("conclusion") or "")
@@ -353,13 +382,26 @@ def run_text(args: list[str], *, check: bool = False) -> str:
 
 
 def gh_runs(repo: str, filename: str) -> list[dict[str, Any]]:
-    raw = run_text(
-        ["gh", "api", f"/repos/{repo}/actions/workflows/{filename}/runs?per_page=30"]
-    )
-    try:
-        return (json.loads(raw) or {}).get("workflow_runs", []) or []
-    except Exception:
-        return []
+    allowed = PRODUCTION_EVENTS[filename]
+    found: dict[int, dict[str, Any]] = {}
+    for event in sorted(allowed):
+        raw = run_text(
+            [
+                "gh",
+                "api",
+                f"/repos/{repo}/actions/workflows/{filename}/runs?branch=main&event={event}&per_page=30",
+            ]
+        )
+        try:
+            runs = (json.loads(raw) or {}).get("workflow_runs", []) or []
+        except Exception:
+            runs = []
+        for run in runs:
+            try:
+                found[int(run.get("id"))] = run
+            except Exception:
+                continue
+    return production_runs(filename, list(found.values()))
 
 
 def git_commit_time(path: str) -> datetime | None:
@@ -396,6 +438,20 @@ def unified_publication_stale(
 ) -> bool:
     """Return True when the user-facing unified publication lags verified input data."""
     return bool(input_time and (unified_time is None or input_time > unified_time))
+
+
+def official_publication_lag(
+    now: datetime,
+    jobs_time: datetime | None,
+    unified_time: datetime | None,
+    *,
+    threshold: timedelta = timedelta(hours=3),
+) -> bool:
+    if jobs_time is None:
+        return False
+    if unified_time is not None and unified_time >= jobs_time:
+        return False
+    return now - jobs_time > threshold
 
 
 def private_refresh_due(
@@ -483,6 +539,39 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "scripts/source_registry.py",
     ]
     collector_changes_after_success = git_change_count_after(success_at, validation_paths)
+    _, fast_failure_time = consecutive_real_failures(all_runs["fast"])
+    collector_contract_changed_after_failure = (
+        git_change_count_after(fast_failure_time, validation_paths) > 0
+        if fast_failure_time is not None
+        else False
+    )
+
+    unified_validation_paths = [
+        ".github/workflows/unified-search.yml",
+        "scripts/build_unified_search.py",
+        "scripts/build_unified_search_multi.py",
+        "scripts/validate_unified_search.py",
+        "scripts/validate_unified_search_multi.py",
+        "scripts/validate_required_metro_publication.py",
+        "scripts/crosscheck_private_official.py",
+        "scripts/reconcile_cultural_foundation_coverage.py",
+        "scripts/source_registry.py",
+        "scripts/private_source_registry.py",
+        "scripts/direct_post_links.py",
+        "scripts/audit_direct_post_links.py",
+        "scripts/apply_unified_frontend.py",
+        "scripts/crawl_seekle_instructor_jobs.py",
+        "scripts/crawl_boramyc_instructor_jobs.py",
+        "scripts/publication_transaction.py",
+        "verified_foundation_official_sources.json",
+        "official_foundation_jobs.json",
+    ]
+    _, unified_failure_time = consecutive_real_failures(all_runs["unified"])
+    unified_contract_changed_after_failure = (
+        git_change_count_after(unified_failure_time, unified_validation_paths) > 0
+        if unified_failure_time is not None
+        else False
+    )
 
     jobs_time = git_commit_time("jobs.json")
     unified_time = git_commit_time("unified_jobs.json")
@@ -557,14 +646,20 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         # unified dataset, drain that publication backlog before starting another
         # potentially long Fast refresh. Unified publication remains fail-closed.
         if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:
-            blocked, failures, _ = circuit_blocked("unified", unified_runs, now)
+            blocked, failures, _ = circuit_blocked(
+                "unified",
+                unified_runs,
+                now,
+                allow_probe_after_change=unified_contract_changed_after_failure,
+            )
             latest_unified_time = completed_at(latest_unified)
             if blocked:
                 action = "skip-unified-circuit-open"
                 circuit = "unified"
                 reason = f"Unified search circuit open after {failures} real failures"
             elif (
-                latest_unified
+                not unified_contract_changed_after_failure
+                and latest_unified
                 and latest_unified.get("conclusion") in REAL_FAILURES
                 and latest_unified_time
                 and now - latest_unified_time < timedelta(hours=1)
@@ -577,12 +672,72 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     "publish verified official jobs backlog before another Fast refresh: "
                     f"jobs={jobs_time}, unified={unified_time}"
                 )
+
+            # A blocked Unified publication must not starve official collection.
+            # If Fast itself is due, let its independent circuit/backoff decide.
+            if action in {"skip-unified-circuit-open", "skip-unified-backoff"} and fast_needed:
+                blocked_fast, fast_failures_now, fast_latest_failure = circuit_blocked(
+                    "fast",
+                    all_runs["fast"],
+                    now,
+                    allow_probe_after_change=collector_contract_changed_after_failure,
+                )
+                if blocked_fast:
+                    production_stale_for_p0 = (
+                        production_success_age is None
+                        or production_success_age > P0_STALE_AFTER
+                    )
+                    recovery_available = False
+                    recovery_gate = "production-not-p0-stale"
+                    recovery_failures = 0
+                    if production_stale_for_p0:
+                        recovery_available, recovery_gate, recovery_failures = recovery_fallback_available(
+                            all_runs["recovery"],
+                            now,
+                            allow_probe_after_change=recovery_contract_changed_after_failure,
+                        )
+                    if recovery_available:
+                        action = "recovery"
+                        circuit = None
+                        reason = (
+                            f"Unified is blocked and Fast circuit is open after {fast_failures_now} real failures; "
+                            "use Recovery as alternative verified production path"
+                        )
+                    else:
+                        action = "skip-fast-circuit-open"
+                        circuit = "fast"
+                        reason = (
+                            f"Unified is blocked; Fast circuit open after {fast_failures_now} real failures; "
+                            f"lastFastFailure={fast_latest_failure.isoformat() if fast_latest_failure else None}; "
+                            f"recoveryFallback={recovery_gate}; recoveryFailures={recovery_failures}"
+                        )
+                else:
+                    latest_fast = latest_completed(all_runs["fast"])
+                    latest_fast_time = completed_at(latest_fast)
+                    if (
+                        not collector_contract_changed_after_failure
+                        and latest_fast
+                        and latest_fast.get("conclusion") in REAL_FAILURES
+                        and latest_fast_time
+                        and now - latest_fast_time < timedelta(hours=1)
+                    ):
+                        action = "skip-fast-backoff"
+                        circuit = None
+                        reason = "Unified is blocked; Fast refresh failed within the last hour"
+                    else:
+                        action = "fast"
+                        circuit = None
+                        reason = (
+                            "Unified is blocked but official collection is due; "
+                            f"successAgeHours={round(success_age.total_seconds()/3600, 2) if success_age else None}, "
+                            f"collectorContractChangedAfterFailure={collector_contract_changed_after_failure}"
+                        )
         elif fast_needed and not fast_status_running:
             blocked, failures, latest_failure = circuit_blocked(
                 "fast",
                 all_runs["fast"],
                 now,
-                allow_probe_after_change=collector_changes_after_success > 0,
+                allow_probe_after_change=collector_contract_changed_after_failure,
             )
             if blocked:
                 production_stale_for_p0 = (
@@ -616,12 +771,25 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                         f"recoveryFailures={recovery_failures}"
                     )
             else:
-                action = "fast"
-                reason = (
-                    f"registryComplete={required_registry}, "
-                    f"successAgeHours={round(success_age.total_seconds()/3600, 2) if success_age else None}, "
-                    f"collectorChangesAfterSuccess={collector_changes_after_success}"
-                )
+                latest_fast = latest_completed(all_runs["fast"])
+                latest_fast_time = completed_at(latest_fast)
+                if (
+                    not collector_contract_changed_after_failure
+                    and latest_fast
+                    and latest_fast.get("conclusion") in REAL_FAILURES
+                    and latest_fast_time
+                    and now - latest_fast_time < timedelta(hours=1)
+                ):
+                    action = "skip-fast-backoff"
+                    reason = "fast refresh failed within the last hour"
+                else:
+                    action = "fast"
+                    reason = (
+                        f"registryComplete={required_registry}, "
+                        f"successAgeHours={round(success_age.total_seconds()/3600, 2) if success_age else None}, "
+                        f"collectorChangesAfterSuccess={collector_changes_after_success}, "
+                        f"collectorContractChangedAfterFailure={collector_contract_changed_after_failure}"
+                    )
         elif fast_status_running:
             action = "skip-status-running"
             reason = "collector_status reports a recent running Fast job"
@@ -652,7 +820,10 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             # preserves the last-known-good unified_jobs.json.
             if unified_publication_stale(latest_publication_input, unified_time):
                 blocked, failures, _ = circuit_blocked(
-                    "unified", unified_runs, now
+                    "unified",
+                    unified_runs,
+                    now,
+                    allow_probe_after_change=unified_contract_changed_after_failure,
                 )
                 latest_unified_time = completed_at(latest_unified)
                 if blocked:
@@ -660,7 +831,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     circuit = "unified"
                     reason = f"Unified search circuit open after {failures} real failures"
                 elif (
-                    latest_unified
+                    not unified_contract_changed_after_failure
+                    and latest_unified
                     and latest_unified.get("conclusion") in REAL_FAILURES
                     and latest_unified_time
                     and now - latest_unified_time < timedelta(hours=1)
@@ -835,6 +1007,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         production_success_age is None or production_success_age > P0_STALE_AFTER
     ):
         p0_reasons.append("fast-circuit-open-without-fresh-alternative")
+    if official_publication_lag(now, jobs_time, unified_time):
+        p0_reasons.append("official-publication-lag>3h")
     p0_incident = bool(p0_reasons)
 
     workflow_count = len(list(Path(".github/workflows").glob("*.yml"))) + len(
@@ -863,6 +1037,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "watchdogPreviousCompletedAgeHours": watchdog_previous_age_hours,
         "watchdogScheduleLag": watchdog_lag,
         "collectorChangesAfterSuccess": collector_changes_after_success,
+        "collectorContractChangedAfterFailure": collector_contract_changed_after_failure,
+        "unifiedContractChangedAfterFailure": unified_contract_changed_after_failure,
         "recoveryWorkflowCommitAt": recovery_workflow_time.isoformat() if recovery_workflow_time else None,
         "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
         "activeTargets": active,
