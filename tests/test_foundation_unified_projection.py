@@ -4,6 +4,7 @@ from datetime import timedelta
 
 sys.path.insert(0, "scripts")
 import build_unified_search_multi as unified
+import reconcile_cultural_foundation_coverage as coverage
 
 
 class FoundationOfficialProjectionTests(unittest.TestCase):
@@ -54,6 +55,29 @@ class FoundationOfficialProjectionTests(unittest.TestCase):
         self.assertFalse(unified.foundation_official_current(self.post(applyEnd=(today-timedelta(days=1)).isoformat())))
         self.assertFalse(unified.foundation_official_current(self.post(detailLinkVerified=False)))
         self.assertFalse(unified.foundation_official_current(self.post(url="http://ifac.or.kr/bbs/view.do?bbsSn=236088")))
+
+    def test_unverified_deadline_window_matches_coverage_reconciliation(self):
+        today = unified.base.TODAY
+        boundary = self.post(
+            foundationRegistryId="seoul:guro",
+            foundationName="구로문화재단",
+            title="구로문화재단 정규직 공개경쟁채용 모집공고",
+            applyEnd="",
+            deadlineVerification="unverified-recent-official-post",
+            registered=(today - timedelta(days=14)).isoformat(),
+            url="https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=664&nttNo=240430&key=1792",
+        )
+        stale = dict(boundary, registered=(today - timedelta(days=15)).isoformat())
+        self.assertTrue(unified.foundation_official_current(boundary))
+        self.assertTrue(coverage.current(boundary, today))
+        self.assertFalse(unified.foundation_official_current(stale))
+        self.assertFalse(coverage.current(stale, today))
+
+    def test_coverage_rejects_primary_official_without_deadline_evidence(self):
+        today = unified.base.TODAY
+        row = self.post(applyEnd="", registered=(today - timedelta(days=2)).isoformat())
+        self.assertFalse(unified.foundation_official_current(row))
+        self.assertFalse(coverage.current(row, today))
 
 
 if __name__ == "__main__":
