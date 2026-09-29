@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T18:18:43.191182+00:00",
+  "generatedAt": "2026-09-29T12:05:09.414162+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6134,
-    "gyeonggiTotal": 6134,
-    "seoulExact": 405,
-    "seoulTotal": 405
+    "gyeonggiExact": 6110,
+    "gyeonggiTotal": 6110,
+    "seoulExact": 399,
+    "seoulTotal": 399
   },
   "provinces": {
     "gyeonggi": {
@@ -31,7 +31,7 @@
             "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
             "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
           ],
-          "count": 79,
+          "count": 80,
           "rawRows": 210,
           "ok": true,
           "state": "complete",
@@ -42,7 +42,7 @@
               "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
               "pagesScanned": 4,
               "rawRows": 40,
-              "recentRows": 26,
+              "recentRows": 27,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -111,7 +111,7 @@
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
           ],
-          "count": 175,
+          "count": 176,
           "rawRows": 250,
           "ok": true,
           "state": "complete",
@@ -146,7 +146,7 @@
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
               "pagesScanned": 19,
               "rawRows": 190,
-              "recentRows": 172,
+              "recentRows": 173,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -166,7 +166,7 @@
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
           ],
-          "count": 249,
+          "count": 251,
           "rawRows": 290,
           "ok": true,
           "state": "complete",
@@ -177,7 +177,7 @@
               "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
               "pagesScanned": 26,
               "rawRows": 260,
-              "recentRows": 236,
+              "recentRows": 238,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -211,8 +211,8 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 307,
-          "rawRows": 432,
+          "count": 314,
+          "rawRows": 442,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -220,9 +220,9 @@
           "boardHealth": [
             {
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
-              "pagesScanned": 31,
-              "rawRows": 312,
-              "recentRows": 291,
+              "pagesScanned": 32,
+              "rawRows": 322,
+              "recentRows": 296,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -234,7 +234,7 @@
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5030&mi=8667",
               "pagesScanned": 7,
               "rawRows": 70,
-              "recentRows": 15,
+              "recentRows": 17,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -267,7 +267,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 43,
+          "pagesScanned": 44,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -284,7 +284,7 @@
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
           ],
-          "count": 588,
+          "count": 598,
           "rawRows": 760,
           "ok": true,
           "state": "complete",
@@ -295,7 +295,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "pagesScanned": 52,
               "rawRows": 520,
-              "recentRows": 493,
+              "recentRows": 500,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -319,7 +319,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
               "pagesScanned": 10,
               "rawRows": 100,
-              "recentRows": 79,
+              "recentRows": 81,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -341,7 +341,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 493,
+              "representativeStableIdCount": 500,
               "ignoredAsStaleAlias": true
             },
             {
@@ -358,7 +358,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 493,
+              "representativeStableIdCount": 500,
               "ignoredAsStaleAlias": true
             },
             {
@@ -377,7 +377,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
               "pagesScanned": 6,
               "rawRows": 60,
-              "recentRows": 4,
+              "recentRows": 5,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -440,8 +440,8 @@
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
           ],
-          "count": 432,
-          "rawRows": 510,
+          "count": 439,
+          "rawRows": 520,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -449,9 +449,9 @@
           "boardHealth": [
             {
               "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
-              "pagesScanned": 43,
-              "rawRows": 430,
-              "recentRows": 404,
+              "pagesScanned": 44,
+              "rawRows": 440,
+              "recentRows": 411,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -484,7 +484,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 51,
+          "pagesScanned": 52,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -496,8 +496,8 @@
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=11748&bbsId=11037",
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228"
           ],
-          "count": 424,
-          "rawRows": 483,
+          "count": 431,
+          "rawRows": 493,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -529,9 +529,9 @@
             },
             {
               "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
-              "pagesScanned": 44,
-              "rawRows": 441,
-              "recentRows": 422,
+              "pagesScanned": 45,
+              "rawRows": 451,
+              "recentRows": 429,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -540,7 +540,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 50,
+          "pagesScanned": 51,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -552,7 +552,7 @@
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
           ],
-          "count": 596,
+          "count": 602,
           "rawRows": 1190,
           "ok": true,
           "state": "complete",
@@ -563,7 +563,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
               "pagesScanned": 55,
               "rawRows": 550,
-              "recentRows": 526,
+              "recentRows": 528,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -575,7 +575,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 70,
+              "recentRows": 74,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -587,7 +587,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381",
               "pagesScanned": 55,
               "rawRows": 550,
-              "recentRows": 526,
+              "recentRows": 528,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -607,8 +607,8 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 857,
-          "rawRows": 890,
+          "count": 871,
+          "rawRows": 910,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -616,9 +616,9 @@
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-              "pagesScanned": 81,
-              "rawRows": 810,
-              "recentRows": 789,
+              "pagesScanned": 83,
+              "rawRows": 830,
+              "recentRows": 802,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -630,7 +630,7 @@
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803",
               "pagesScanned": 8,
               "rawRows": 80,
-              "recentRows": 68,
+              "recentRows": 69,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -639,7 +639,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 89,
+          "pagesScanned": 91,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -681,7 +681,7 @@
             "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5511&mi=9003"
           ],
           "count": 43,
-          "rawRows": 104,
+          "rawRows": 105,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -702,7 +702,7 @@
             {
               "url": "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5511&mi=9003",
               "pagesScanned": 3,
-              "rawRows": 44,
+              "rawRows": 45,
               "recentRows": 2,
               "paginationRepeated": false,
               "accessError": false,
@@ -792,8 +792,8 @@
             "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
             "https://www.goean.kr/goean/na/ntt/selectNttList.do?mi=4464&bbsId=2727"
           ],
-          "count": 175,
-          "rawRows": 200,
+          "count": 180,
+          "rawRows": 220,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -801,9 +801,9 @@
           "boardHealth": [
             {
               "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
-              "pagesScanned": 17,
-              "rawRows": 170,
-              "recentRows": 156,
+              "pagesScanned": 18,
+              "rawRows": 180,
+              "recentRows": 159,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -813,9 +813,9 @@
             },
             {
               "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?mi=4464&bbsId=2727",
-              "pagesScanned": 3,
-              "rawRows": 30,
-              "recentRows": 19,
+              "pagesScanned": 4,
+              "rawRows": 40,
+              "recentRows": 21,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -824,7 +824,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 20,
+          "pagesScanned": 22,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -904,7 +904,7 @@
             "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
             "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?mi=3546&bbsId=1871"
           ],
-          "count": 129,
+          "count": 132,
           "rawRows": 155,
           "ok": true,
           "state": "complete",
@@ -915,7 +915,7 @@
               "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
               "pagesScanned": 15,
               "rawRows": 150,
-              "recentRows": 129,
+              "recentRows": 132,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1004,7 +1004,7 @@
             "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2386&bbsId=2220",
             "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2452&bbsId=2243"
           ],
-          "count": 73,
+          "count": 74,
           "rawRows": 135,
           "ok": true,
           "state": "complete",
@@ -1015,7 +1015,7 @@
               "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 72,
+              "recentRows": 73,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1061,8 +1061,8 @@
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
           ],
-          "count": 112,
-          "rawRows": 191,
+          "count": 115,
+          "rawRows": 192,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1070,12 +1070,12 @@
           "boardHealth": [
             {
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12229&mi=20180",
-              "pagesScanned": 2,
-              "rawRows": 10,
-              "recentRows": 2,
+              "pagesScanned": 3,
+              "rawRows": 11,
+              "recentRows": 3,
               "paginationRepeated": false,
               "accessError": false,
-              "explicitEmpty": true,
+              "explicitEmpty": false,
               "crossedLookback": false,
               "naturalEnd": true,
               "coverageComplete": true
@@ -1084,7 +1084,7 @@
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
               "pagesScanned": 11,
               "rawRows": 110,
-              "recentRows": 91,
+              "recentRows": 92,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1096,7 +1096,7 @@
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
               "pagesScanned": 7,
               "rawRows": 70,
-              "recentRows": 19,
+              "recentRows": 20,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1117,7 +1117,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 22,
+          "pagesScanned": 23,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1129,8 +1129,8 @@
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
           ],
-          "count": 315,
-          "rawRows": 360,
+          "count": 322,
+          "rawRows": 370,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1162,9 +1162,9 @@
             },
             {
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
-              "pagesScanned": 27,
-              "rawRows": 270,
-              "recentRows": 254,
+              "pagesScanned": 28,
+              "rawRows": 280,
+              "recentRows": 261,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1173,7 +1173,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 37,
+          "pagesScanned": 38,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1216,7 +1216,7 @@
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10788&bbsId=7179"
           ],
-          "count": 418,
+          "count": 421,
           "rawRows": 491,
           "ok": true,
           "state": "complete",
@@ -1239,7 +1239,7 @@
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
               "pagesScanned": 35,
               "rawRows": 350,
-              "recentRows": 332,
+              "recentRows": 335,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1284,8 +1284,8 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 674,
-          "rawRows": 771,
+          "count": 685,
+          "rawRows": 781,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1293,9 +1293,9 @@
           "boardHealth": [
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
-              "pagesScanned": 11,
-              "rawRows": 110,
-              "recentRows": 95,
+              "pagesScanned": 12,
+              "rawRows": 120,
+              "recentRows": 99,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1305,8 +1305,8 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
-              "pagesScanned": 7,
-              "rawRows": 70,
+              "pagesScanned": 6,
+              "rawRows": 60,
               "recentRows": 16,
               "paginationRepeated": false,
               "accessError": false,
@@ -1317,9 +1317,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 59,
-              "rawRows": 591,
-              "recentRows": 563,
+              "pagesScanned": 60,
+              "rawRows": 601,
+              "recentRows": 570,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1328,7 +1328,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 77,
+          "pagesScanned": 78,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1340,7 +1340,7 @@
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116"
           ],
-          "count": 164,
+          "count": 165,
           "rawRows": 212,
           "ok": true,
           "state": "complete",
@@ -1363,7 +1363,7 @@
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
               "pagesScanned": 11,
               "rawRows": 111,
-              "recentRows": 98,
+              "recentRows": 99,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1475,9 +1475,9 @@
           "boards": [
             "https://sbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 4,
-          "rawRows": 4,
-          "seoulOfficeParseIncomplete": 4,
+          "count": 5,
+          "rawRows": 5,
+          "seoulOfficeParseIncomplete": 5,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1485,8 +1485,8 @@
             {
               "url": "https://sbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 4,
-              "recentRows": 4,
+              "rawRows": 5,
+              "recentRows": 5,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1507,9 +1507,9 @@
           "boards": [
             "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 5,
-          "rawRows": 6,
-          "seoulOfficeParseIncomplete": 5,
+          "count": 7,
+          "rawRows": 8,
+          "seoulOfficeParseIncomplete": 7,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1517,8 +1517,8 @@
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 6,
-              "recentRows": 5,
+              "rawRows": 8,
+              "recentRows": 7,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1635,7 +1635,7 @@
           "boards": [
             "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 98,
+          "count": 100,
           "rawRows": 120,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1646,7 +1646,7 @@
               "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 12,
               "rawRows": 120,
-              "recentRows": 98,
+              "recentRows": 100,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1667,7 +1667,7 @@
           "boards": [
             "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 67,
+          "count": 68,
           "rawRows": 90,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1678,7 +1678,7 @@
               "url": "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 67,
+              "recentRows": 68,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1699,7 +1699,7 @@
           "boards": [
             "https://dgedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 121,
+          "count": 122,
           "rawRows": 150,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1710,7 +1710,7 @@
               "url": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 15,
               "rawRows": 150,
-              "recentRows": 121,
+              "recentRows": 122,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1801,7 +1801,7 @@
           "boards": [
             "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"
           ],
-          "count": 45,
+          "count": 46,
           "rawRows": 120,
           "pagesScanned": 4,
           "ok": true,
@@ -1814,7 +1814,7 @@
               "collector": "nambu-first-party-json",
               "pagesScanned": 4,
               "rawRows": 120,
-              "recentRows": 45,
+              "recentRows": 46,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -1822,7 +1822,7 @@
               "naturalEnd": false,
               "explicitEmpty": false,
               "totalRowsHint": null,
-              "latestRegistered": "2026/09/28",
+              "latestRegistered": "2026/09/29",
               "schemaDiagnostic": [],
               "pagerDiagnostic": {},
               "pageProgress": [
@@ -1831,8 +1831,8 @@
                   "startnum": 0,
                   "rawRows": 30,
                   "detailIdSample": [
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49540/N/N",
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49539/N/N"
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49542/N/N",
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49540/N/N"
                   ]
                 },
                 {
@@ -1840,8 +1840,8 @@
                   "startnum": 30,
                   "rawRows": 30,
                   "detailIdSample": [
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49308/N/N",
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49307/N/N"
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49317/N/N",
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49308/N/N"
                   ]
                 },
                 {
@@ -1849,8 +1849,8 @@
                   "startnum": 60,
                   "rawRows": 30,
                   "detailIdSample": [
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49128/N/N",
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49125/N/N"
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49136/N/N",
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/49128/N/N"
                   ]
                 },
                 {
@@ -1858,8 +1858,8 @@
                   "startnum": 90,
                   "rawRows": 30,
                   "detailIdSample": [
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48894/N/N",
-                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48886/N/N"
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48902/N/N",
+                    "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/R/48894/N/N"
                   ]
                 }
               ]
@@ -1878,7 +1878,7 @@
           "boards": [
             "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
           ],
-          "count": 78,
+          "count": 83,
           "rawRows": 110,
           "pagesScanned": 11,
           "ok": true,
@@ -1890,7 +1890,7 @@
               "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
               "pagesScanned": 11,
               "rawRows": 110,
-              "recentRows": 78,
+              "recentRows": 83,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -1898,7 +1898,7 @@
               "naturalEnd": false,
               "explicitEmpty": false,
               "totalRowsHint": null,
-              "latestRegistered": "2026/09/23",
+              "latestRegistered": "2026/09/29",
               "schemaDiagnostic": [
                 {
                   "page": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
@@ -1960,7 +1960,7 @@
                           "attrs": {
                             "href": "#",
                             "data-mst": "BM0000000049",
-                            "data-idx": "BD0000008177",
+                            "data-idx": "BD0000008182",
                             "data-menu": ""
                           },
                           "parentAttrs": {}
@@ -1995,7 +1995,7 @@
                           "attrs": {
                             "href": "#",
                             "data-mst": "BM0000000049",
-                            "data-idx": "BD0000008176",
+                            "data-idx": "BD0000008181",
                             "data-menu": ""
                           },
                           "parentAttrs": {}
@@ -2062,7 +2062,7 @@
           "boards": [
             "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
           ],
-          "count": 130,
+          "count": 131,
           "rawRows": 160,
           "pagesScanned": 16,
           "ok": true,
@@ -2075,7 +2075,7 @@
               "collector": "seobu-verified-headless-chrome",
               "pagesScanned": 16,
               "rawRows": 160,
-              "recentRows": 130,
+              "recentRows": 131,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -2083,7 +2083,7 @@
               "naturalEnd": false,
               "explicitEmpty": false,
               "totalRowsHint": null,
-              "latestRegistered": "2026/09/28",
+              "latestRegistered": "2026/09/29",
               "schemaDiagnostic": [],
               "pagerDiagnostic": {},
               "pageProgress": [
@@ -2091,128 +2091,128 @@
                   "requestedPage": 1,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159272&page=1&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159271&page=1&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159278&page=1&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159272&page=1&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 2,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159224&page=2&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159220&page=2&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159235&page=2&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159224&page=2&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 3,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159179&page=3&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159172&page=3&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159180&page=3&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159179&page=3&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 4,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159129&page=4&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159115&page=4&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159135&page=4&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159129&page=4&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 5,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159067&page=5&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159066&page=5&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159072&page=5&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159067&page=5&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 6,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159044&page=6&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159040&page=6&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159045&page=6&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159044&page=6&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 7,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158987&page=7&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158986&page=7&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158988&page=7&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158987&page=7&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 8,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158932&page=8&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158931&page=8&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158933&page=8&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158932&page=8&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 9,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158876&page=9&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158870&page=9&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158878&page=9&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158876&page=9&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 10,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158829&page=10&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158827&page=10&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158830&page=10&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158829&page=10&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 11,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158790&page=11&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158788&page=11&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158796&page=11&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158790&page=11&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 12,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158741&page=12&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158731&page=12&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158746&page=12&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158741&page=12&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 13,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158684&page=13&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158679&page=13&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158690&page=13&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158684&page=13&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 14,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158653&page=14&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158652&page=14&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158654&page=14&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158653&page=14&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 15,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158618&page=15&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158617&page=15&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158621&page=15&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158618&page=15&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 16,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158569&page=16&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158568&page=16&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158573&page=16&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158569&page=16&board_code=4674&g1="
                   ]
                 }
               ]
@@ -2231,7 +2231,7 @@
           "boards": [
             "https://ganghwa.ice.go.kr/open/recruiting.asp"
           ],
-          "count": 64,
+          "count": 65,
           "rawRows": 90,
           "pagesScanned": 9,
           "ok": true,
@@ -2243,15 +2243,15 @@
               "url": "https://ganghwa.ice.go.kr/open/recruiting.asp",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 64,
+              "recentRows": 65,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
               "crossedLookback": true,
               "naturalEnd": false,
               "explicitEmpty": false,
-              "totalRowsHint": 3140,
-              "latestRegistered": "2026/09/28",
+              "totalRowsHint": 3141,
+              "latestRegistered": "2026/09/29",
               "schemaDiagnostic": [
                 {
                   "page": "https://ganghwa.ice.go.kr/open/recruiting.asp",
@@ -2307,11 +2307,11 @@
                       "anchorCount": 1,
                       "anchorShapes": [
                         {
-                          "href": "javascript:act_view('/open/recruiting.asp','4222','view','N','4221');",
+                          "href": "javascript:act_view('/open/recruiting.asp','4223','view','N','4222');",
                           "onclick": "",
                           "dataId": "",
                           "attrs": {
-                            "href": "javascript:act_view('/open/recruiting.asp','4222','view','N','4221');"
+                            "href": "javascript:act_view('/open/recruiting.asp','4223','view','N','4222');"
                           },
                           "parentAttrs": {}
                         }
@@ -2339,11 +2339,11 @@
                       "anchorCount": 1,
                       "anchorShapes": [
                         {
-                          "href": "javascript:act_view('/open/recruiting.asp','4221','view','4222','4220');",
+                          "href": "javascript:act_view('/open/recruiting.asp','4222','view','4223','4221');",
                           "onclick": "",
                           "dataId": "",
                           "attrs": {
-                            "href": "javascript:act_view('/open/recruiting.asp','4221','view','4222','4220');"
+                            "href": "javascript:act_view('/open/recruiting.asp','4222','view','4223','4221');"
                           },
                           "parentAttrs": {}
                         }
@@ -2429,7 +2429,7 @@
                   },
                   {
                     "label": "〉〉",
-                    "href": "javascript:act_page('/open/recruiting.asp','list','314')",
+                    "href": "javascript:act_page('/open/recruiting.asp','list','315')",
                     "onclick": "",
                     "attrs": {}
                   }
@@ -2490,7 +2490,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20260929023836",
+                  "/js/include.js?v=20260929201940",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2506,8 +2506,8 @@
                   "redirectStatuses": [],
                   "observedPage": "1",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4222&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4221",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4221&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4222&nNum=4220"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4223&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4222",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4222&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4223&nNum=4221"
                   ]
                 },
                 {
@@ -2517,8 +2517,8 @@
                   "redirectStatuses": [],
                   "observedPage": "2",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4212&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4213&nNum=4211",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4211&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4212&nNum=4210"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4213&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4214&nNum=4212",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4212&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4213&nNum=4211"
                   ]
                 },
                 {
@@ -2528,8 +2528,8 @@
                   "redirectStatuses": [],
                   "observedPage": "3",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4200&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4201&nNum=4199",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4199&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4200&nNum=4198"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4201&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4202&nNum=4200",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4200&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4201&nNum=4199"
                   ]
                 },
                 {
@@ -2539,8 +2539,8 @@
                   "redirectStatuses": [],
                   "observedPage": "4",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4190&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4191&nNum=4189",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4189&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4190&nNum=4188"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4191&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4192&nNum=4190",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4190&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4191&nNum=4189"
                   ]
                 },
                 {
@@ -2550,8 +2550,8 @@
                   "redirectStatuses": [],
                   "observedPage": "5",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4179&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4180&nNum=4178",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4178&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4179&nNum=4177"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4180&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4181&nNum=4179",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4179&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4180&nNum=4178"
                   ]
                 },
                 {
@@ -2561,8 +2561,8 @@
                   "redirectStatuses": [],
                   "observedPage": "6",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4169&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4170&nNum=4168",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4168&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4169&nNum=4167"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4170&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4171&nNum=4169",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4169&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4170&nNum=4168"
                   ]
                 },
                 {
@@ -2572,8 +2572,8 @@
                   "redirectStatuses": [],
                   "observedPage": "7",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4159&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4160&nNum=4158",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4158&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4159&nNum=4157"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4160&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4161&nNum=4159",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4159&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4160&nNum=4158"
                   ]
                 },
                 {
@@ -2583,8 +2583,8 @@
                   "redirectStatuses": [],
                   "observedPage": "8",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4149&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4150&nNum=4148",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4148&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4149&nNum=4147"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4150&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4151&nNum=4149",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4149&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4150&nNum=4148"
                   ]
                 },
                 {
@@ -2594,8 +2594,8 @@
                   "redirectStatuses": [],
                   "observedPage": "9",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4139&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4140&nNum=4138",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4138&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4139&nNum=4137"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4140&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4141&nNum=4139",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4139&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4140&nNum=4138"
                   ]
                 }
               ]
@@ -2626,7 +2626,6 @@
     "gyeonggi/용인교육지원청: round rawRows=70, but traversal has explicit completion evidence",
     "gyeonggi/의정부교육지원청: round rawRows=80, but traversal has explicit completion evidence",
     "gyeonggi/파주교육지원청: round rawRows=90, but traversal has explicit completion evidence",
-    "gyeonggi/평택교육지원청: round rawRows=70, but traversal has explicit completion evidence",
     "seoul/강남서초교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "incheon/인천강화교육지원청: round rawRows=90, but traversal has explicit completion evidence"
   ],
