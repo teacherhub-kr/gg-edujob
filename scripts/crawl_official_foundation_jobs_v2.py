@@ -84,7 +84,8 @@ RECRUITMENT_RE=re.compile(
 )
 NON_POSITION_RE=re.compile(
     r"참여자|참가자|관람객|서포터즈|동아리|대관|지원사업|공모전|작품\s*공모|"
-    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집",
+    r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집|"
+    r"채용\s*과정\s*공개",
     re.I,
 )
 GENERIC_OFFICIAL_HOSTS={
@@ -206,7 +207,7 @@ def verify_board_surface(soup, foundation, response, candidates):
 
 def official_position_title(title:str)->bool:
     title=base.normalize_space(title)
-    if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용"}:
+    if title.replace(" ","") in {"채용공고","채용정보","채용안내","직원채용","직원채용공고","지도강사모집공고"}:
         return False
     if re.search(r"진행\s*중\s*채용공고\s*0건",title,re.I):
         return False
