@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK"
+  },
+  "deploy": {
+    "startCommand": "python ops/heartbeat/heartbeat.py",
+    "cronSchedule": "11,41 * * * *",
+    "restartPolicyType": "NEVER"
+  }
+}
