@@ -118,6 +118,49 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             with self.subTest(html=html), self.assertRaises(RuntimeError):
                 crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {})
 
+    def test_stale_js_only_board_can_be_healthy_but_recent_js_fails(self):
+        foundation = {
+            "id": "seoul:dongdaemun",
+            "name": "동대문문화재단",
+            "aliases": ["(재)동대문문화재단"],
+        }
+        stale_html = """
+        <html><head><title>동대문문화재단 인재채용</title></head><body>
+          <div>2026-04-10 <a href="javascript:view(224)">2026년 제2차 동대문문화재단 직원 채용 공고</a></div>
+        </body></html>
+        """
+        stale_response = SimpleNamespace(
+            url="https://ddmac.or.kr/sub04/sub03.php",
+            text=stale_html,
+            content=stale_html.encode(),
+        )
+        self.assertTrue(
+            crawler.verify_board_surface(
+                BeautifulSoup(stale_html, "html.parser"),
+                foundation,
+                stale_response,
+                {},
+            )
+        )
+
+        recent_html = """
+        <html><head><title>동대문문화재단 인재채용</title></head><body>
+          <div>2026-09-20 <a href="javascript:view(225)">2026년 제3차 동대문문화재단 직원 채용 공고</a></div>
+        </body></html>
+        """
+        recent_response = SimpleNamespace(
+            url="https://ddmac.or.kr/sub04/sub03.php",
+            text=recent_html,
+            content=recent_html.encode(),
+        )
+        with self.assertRaisesRegex(RuntimeError, "unsupported JavaScript"):
+            crawler.verify_board_surface(
+                BeautifulSoup(recent_html, "html.parser"),
+                foundation,
+                recent_response,
+                {},
+            )
+
     def test_https_redirect_to_http_fails(self):
         response = SimpleNamespace(url="http://ypcf.or.kr/recruit", encoding="utf-8", raise_for_status=lambda: None)
         session = SimpleNamespace(get=lambda *args, **kwargs: response)
