@@ -170,6 +170,22 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "downgraded"):
             crawler.resilient_request(session, "https://ypcf.or.kr/recruit")
 
+    def test_designated_saramin_ending_page_is_explicit_zero(self):
+        foundation = {"id": "gyeonggi:anyang", "name": "안양문화예술재단", "aliases": []}
+        response = SimpleNamespace(
+            url="https://ayac.saramin.co.kr/ending_page.html",
+            text="<html><body><img alt='채용 종료'></body></html>",
+            content=b"x",
+            encoding="utf-8",
+        )
+        with patch.object(crawler, "resilient_request", return_value=response):
+            jobs, meta = crawler.designated_saramin_rows(
+                None, foundation, "https://ayac.saramin.co.kr/"
+            )
+        self.assertEqual(jobs, [])
+        self.assertTrue(meta["explicitEmpty"])
+        self.assertEqual(meta["evidence"], "saramin-ending-page")
+
     def test_secondary_sfac_board_requires_explicit_empty_text(self):
         response = SimpleNamespace(url="https://sfac.careerlink.kr/", status_code=200,
                                    text="<html><body>서울문화재단 채용</body></html>")
@@ -295,11 +311,11 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(rows["seoul:dongjak"]["verifiedFallbackRole"], "secondary-official-mirror")
         self.assertNotIn("verifiedFallbackRecruitmentUrl", rows["gyeonggi:seongnam"])
         self.assertIn("www.gmcf.or.kr", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
-        self.assertIn("artgy.or.kr", rows["gyeonggi:goyang"]["officialRecruitmentUrl"])
-        self.assertIn("m.ayac.or.kr", rows["gyeonggi:anyang"]["officialRecruitmentUrl"])
+        self.assertIn("goyang.go.kr/jobs", rows["gyeonggi:goyang"]["officialRecruitmentUrl"])
+        self.assertIn("ayac.saramin.co.kr", rows["gyeonggi:anyang"]["officialRecruitmentUrl"])
         self.assertIn("yfac.fairyhr.com", rows["seoul:yangcheon"]["officialRecruitmentUrl"])
         self.assertIn("recruit.incruit.com/ydpcf", rows["seoul:yeongdeungpo"]["officialRecruitmentUrl"])
-        self.assertIn("m.ayac.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+        self.assertIn("goyang.go.kr", crawler.GENERIC_OFFICIAL_HOSTS)
         self.assertIn("yfac.fairyhr.com", crawler.GENERIC_OFFICIAL_HOSTS)
         self.assertNotIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
 
