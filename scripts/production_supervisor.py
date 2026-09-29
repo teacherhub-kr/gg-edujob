@@ -672,6 +672,66 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     "publish verified official jobs backlog before another Fast refresh: "
                     f"jobs={jobs_time}, unified={unified_time}"
                 )
+
+            # A blocked Unified publication must not starve official collection.
+            # If Fast itself is due, let its independent circuit/backoff decide.
+            if action in {"skip-unified-circuit-open", "skip-unified-backoff"} and fast_needed:
+                blocked_fast, fast_failures_now, fast_latest_failure = circuit_blocked(
+                    "fast",
+                    all_runs["fast"],
+                    now,
+                    allow_probe_after_change=collector_contract_changed_after_failure,
+                )
+                if blocked_fast:
+                    production_stale_for_p0 = (
+                        production_success_age is None
+                        or production_success_age > P0_STALE_AFTER
+                    )
+                    recovery_available = False
+                    recovery_gate = "production-not-p0-stale"
+                    recovery_failures = 0
+                    if production_stale_for_p0:
+                        recovery_available, recovery_gate, recovery_failures = recovery_fallback_available(
+                            all_runs["recovery"],
+                            now,
+                            allow_probe_after_change=recovery_contract_changed_after_failure,
+                        )
+                    if recovery_available:
+                        action = "recovery"
+                        circuit = None
+                        reason = (
+                            f"Unified is blocked and Fast circuit is open after {fast_failures_now} real failures; "
+                            "use Recovery as alternative verified production path"
+                        )
+                    else:
+                        action = "skip-fast-circuit-open"
+                        circuit = "fast"
+                        reason = (
+                            f"Unified is blocked; Fast circuit open after {fast_failures_now} real failures; "
+                            f"lastFastFailure={fast_latest_failure.isoformat() if fast_latest_failure else None}; "
+                            f"recoveryFallback={recovery_gate}; recoveryFailures={recovery_failures}"
+                        )
+                else:
+                    latest_fast = latest_completed(all_runs["fast"])
+                    latest_fast_time = completed_at(latest_fast)
+                    if (
+                        not collector_contract_changed_after_failure
+                        and latest_fast
+                        and latest_fast.get("conclusion") in REAL_FAILURES
+                        and latest_fast_time
+                        and now - latest_fast_time < timedelta(hours=1)
+                    ):
+                        action = "skip-fast-backoff"
+                        circuit = None
+                        reason = "Unified is blocked; Fast refresh failed within the last hour"
+                    else:
+                        action = "fast"
+                        circuit = None
+                        reason = (
+                            "Unified is blocked but official collection is due; "
+                            f"successAgeHours={round(success_age.total_seconds()/3600, 2) if success_age else None}, "
+                            f"collectorContractChangedAfterFailure={collector_contract_changed_after_failure}"
+                        )
         elif fast_needed and not fast_status_running:
             blocked, failures, latest_failure = circuit_blocked(
                 "fast",
