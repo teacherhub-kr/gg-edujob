@@ -124,9 +124,12 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             "name": "동대문문화재단",
             "aliases": ["(재)동대문문화재단"],
         }
-        stale_html = """
+        today = crawler.datetime.now(crawler.KST).date()
+        stale_date = (today - crawler.base.timedelta(days=121)).isoformat()
+        recent_date = (today - crawler.base.timedelta(days=9)).isoformat()
+        stale_html = f"""
         <html><head><title>동대문문화재단 인재채용</title></head><body>
-          <div>2026-04-10 <a href="javascript:view(224)">2026년 제2차 동대문문화재단 직원 채용 공고</a></div>
+          <div>{stale_date} <a href="javascript:view(224)">2026년 제2차 동대문문화재단 직원 채용 공고</a></div>
         </body></html>
         """
         stale_response = SimpleNamespace(
@@ -143,9 +146,9 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
         )
 
-        recent_html = """
+        recent_html = f"""
         <html><head><title>동대문문화재단 인재채용</title></head><body>
-          <div>2026-09-20 <a href="javascript:view(225)">2026년 제3차 동대문문화재단 직원 채용 공고</a></div>
+          <div>{recent_date} <a href="javascript:view(225)">2026년 제3차 동대문문화재단 직원 채용 공고</a></div>
         </body></html>
         """
         recent_response = SimpleNamespace(
