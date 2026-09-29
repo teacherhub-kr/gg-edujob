@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-29 20:19:38 KST",
+  "generatedAt": "2026-09-30 01:52:41 KST",
   "lookbackDays": 90,
   "officeCount": 5,
   "completeOffices": 5,
   "merged": true,
-  "newlyAddedJobs": 249,
-  "crossSourceDuplicatesCollapsed": 77,
+  "newlyAddedJobs": 246,
+  "crossSourceDuplicatesCollapsed": 76,
   "offices": [
     {
       "name": "인천남부교육지원청",
@@ -90,7 +90,7 @@
       "boards": [
         "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
       ],
-      "count": 83,
+      "count": 82,
       "rawRows": 110,
       "pagesScanned": 11,
       "ok": true,
@@ -102,7 +102,7 @@
           "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 83,
+          "recentRows": 82,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -274,9 +274,9 @@
       "boards": [
         "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       ],
-      "count": 131,
-      "rawRows": 160,
-      "pagesScanned": 16,
+      "count": 128,
+      "rawRows": 150,
+      "pagesScanned": 15,
       "ok": true,
       "state": "complete",
       "message": "최근 90일 범위 공식 구인게시판 완전수집",
@@ -285,9 +285,9 @@
         {
           "url": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",
           "collector": "seobu-verified-headless-chrome",
-          "pagesScanned": 16,
-          "rawRows": 160,
-          "recentRows": 131,
+          "pagesScanned": 15,
+          "rawRows": 150,
+          "recentRows": 128,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -417,14 +417,6 @@
               "detailIdSample": [
                 "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158621&page=15&board_code=4674&g1=",
                 "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158618&page=15&board_code=4674&g1="
-              ]
-            },
-            {
-              "requestedPage": 16,
-              "rawRows": 10,
-              "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158573&page=16&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158569&page=16&board_code=4674&g1="
               ]
             }
           ]
@@ -702,7 +694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260929201940",
+              "/js/include.js?v=20260930015247",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
