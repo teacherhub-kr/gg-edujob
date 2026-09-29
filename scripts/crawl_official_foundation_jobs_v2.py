@@ -103,7 +103,7 @@ GENERIC_OFFICIAL_HOSTS={
     "sdfac.or.kr","www.sdfac.or.kr",
     "gunpocf.incruit.com",
     "yicf.incruit.com",
-    "gbcf.fairyhr.com",
+    "gbcf.fairyhr.com","yfac.fairyhr.com",
     "gfac.or.kr","www.gfac.or.kr",
     "naruart.applyin.co.kr",
     "artgy.or.kr","www.artgy.or.kr",
@@ -135,6 +135,7 @@ EXPLICIT_EMPTY_RE=re.compile(
 SAAS_EXPLICIT_EMPTY_HOSTS={
     "recruit.incruit.com",
     "gbcf.fairyhr.com",
+    "yfac.fairyhr.com",
     "gunpocf.incruit.com",
     "yicf.incruit.com",
 }
