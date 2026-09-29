@@ -187,36 +187,156 @@ def schedule_gaps_minutes(runs: list[dict], name: str, cutoff: datetime) -> list
     return gaps
 
 
+def classify_path(
+    *,
+    anchor: datetime,
+    unified_successes: list[tuple[datetime, dict]],
+    pages_successes: list[tuple[datetime, dict]],
+    now: datetime,
+    slo: timedelta,
+) -> dict[str, Any]:
+    """Classify one delivery path without dropping missing downstream publications.
+
+    A path that has not reached Pages is pending until the SLO expires. After the
+    SLO expires it becomes a censored violation: the exact latency is unknown, but
+    it is already known to exceed the objective.
+    """
+    elapsed_minutes = max(0.0, (now - anchor).total_seconds() / 60)
+    unified = next_success(unified_successes, anchor)
+    if not unified:
+        status = "censored_violation" if now - anchor > slo else "pending"
+        return {
+            "status": status,
+            "violationStage": "unified",
+            "lowerBoundMinutes": round(elapsed_minutes, 2),
+        }
+
+    unified_time, unified_run = unified
+    pages = next_success(pages_successes, unified_time)
+    if not pages:
+        status = "censored_violation" if now - anchor > slo else "pending"
+        return {
+            "status": status,
+            "violationStage": "pages",
+            "unifiedCompletedAt": unified_time.isoformat(),
+            "unifiedRunId": unified_run.get("id"),
+            "lowerBoundMinutes": round(elapsed_minutes, 2),
+        }
+
+    pages_time, pages_run = pages
+    latency_minutes = max(0.0, (pages_time - anchor).total_seconds() / 60)
+    return {
+        "status": "matched",
+        "sloCompliant": pages_time - anchor <= slo,
+        "unifiedCompletedAt": unified_time.isoformat(),
+        "pagesCompletedAt": pages_time.isoformat(),
+        "unifiedRunId": unified_run.get("id"),
+        "pagesRunId": pages_run.get("id"),
+        "latencyMinutes": round(latency_minutes, 2),
+        "unifiedToPagesMinutes": round((pages_time - unified_time).total_seconds() / 60, 2),
+    }
+
+
+def sample_status_counts(samples: list[dict]) -> dict[str, int]:
+    counts = Counter(str(sample.get("status") or "unknown") for sample in samples)
+    return {
+        "matched": counts.get("matched", 0),
+        "pending": counts.get("pending", 0),
+        "censoredViolations": counts.get("censored_violation", 0),
+    }
+
+
+def slo_compliance(samples: list[dict]) -> dict[str, Any]:
+    matched = [sample for sample in samples if sample.get("status") == "matched"]
+    censored = [sample for sample in samples if sample.get("status") == "censored_violation"]
+    compliant = [sample for sample in matched if sample.get("sloCompliant") is True]
+    matched_violations = [sample for sample in matched if sample.get("sloCompliant") is False]
+    decided = len(matched) + len(censored)
+    rate = round(len(compliant) / decided, 4) if decided else None
+    return {
+        "decidedSamples": decided,
+        "sloCompliantMatched": len(compliant),
+        "matchedViolations": len(matched_violations),
+        "censoredViolations": len(censored),
+        "complianceRate": rate,
+    }
+
+
+def censored_p95(samples: list[dict], latency_key: str) -> dict[str, Any]:
+    """Nearest-rank p95 with censored violations treated as +infinity.
+
+    If the p95 order statistic lands on a censored sample, report a lower bound
+    instead of pretending to know an exact p95.
+    """
+    matched_values = sorted(
+        float(sample[latency_key])
+        for sample in samples
+        if sample.get("status") == "matched" and sample.get(latency_key) is not None
+    )
+    censored = [
+        float(sample.get("lowerBoundMinutes") or 0.0)
+        for sample in samples
+        if sample.get("status") == "censored_violation"
+    ]
+    total = len(matched_values) + len(censored)
+    if total == 0:
+        return {
+            "decidedSamples": 0,
+            "p95Minutes": None,
+            "p95IsLowerBound": False,
+            "p95LowerBoundMinutes": None,
+        }
+    rank = max(1, math.ceil(0.95 * total))
+    if rank <= len(matched_values):
+        return {
+            "decidedSamples": total,
+            "p95Minutes": round(matched_values[rank - 1], 2),
+            "p95IsLowerBound": False,
+            "p95LowerBoundMinutes": None,
+        }
+    return {
+        "decidedSamples": total,
+        "p95Minutes": None,
+        "p95IsLowerBound": True,
+        "p95LowerBoundMinutes": round(min(censored), 2) if censored else None,
+    }
+
+
 def fast_to_visible_samples(
     fast_successes: list[tuple[datetime, dict]],
     unified_successes: list[tuple[datetime, dict]],
     pages_successes: list[tuple[datetime, dict]],
     cutoff: datetime,
+    *,
+    now: datetime,
+    slo_hours: float,
 ) -> list[dict]:
     samples = []
+    slo = timedelta(hours=slo_hours)
     for fast_time, fast_run in fast_successes:
         if fast_time < cutoff:
             continue
-        unified = next_success(unified_successes, fast_time, max_wait=timedelta(hours=2))
-        if not unified:
-            continue
-        unified_time, unified_run = unified
-        pages = next_success(pages_successes, unified_time, max_wait=timedelta(minutes=20))
-        if not pages:
-            continue
-        pages_time, pages_run = pages
-        samples.append({
+        path = classify_path(
+            anchor=fast_time,
+            unified_successes=unified_successes,
+            pages_successes=pages_successes,
+            now=now,
+            slo=slo,
+        )
+        sample = {
             "fastRunId": fast_run.get("id"),
             "fastRunNumber": fast_run.get("run_number"),
-            "unifiedRunId": unified_run.get("id"),
-            "pagesRunId": pages_run.get("id"),
             "fastCompletedAt": fast_time.isoformat(),
-            "unifiedCompletedAt": unified_time.isoformat(),
-            "pagesCompletedAt": pages_time.isoformat(),
-            "fastToUnifiedMinutes": round((unified_time - fast_time).total_seconds() / 60, 2),
-            "unifiedToPagesMinutes": round((pages_time - unified_time).total_seconds() / 60, 2),
-            "fastToPagesMinutes": round((pages_time - fast_time).total_seconds() / 60, 2),
-        })
+            **path,
+        }
+        if path.get("status") == "matched":
+            sample["fastToPagesMinutes"] = path["latencyMinutes"]
+            unified_time = parse_time(path.get("unifiedCompletedAt"))
+            if unified_time:
+                sample["fastToUnifiedMinutes"] = round(
+                    (unified_time - fast_time).total_seconds() / 60, 2
+                )
+        samples.append(sample)
     return samples
 
 
@@ -271,31 +391,37 @@ def visibility_samples(
     entries: list[dict],
     unified_successes: list[tuple[datetime, dict]],
     pages_successes: list[tuple[datetime, dict]],
+    *,
+    now: datetime,
+    slo_hours: float,
 ) -> list[dict]:
     out = []
+    slo = timedelta(hours=slo_hours)
     for entry in entries:
         seen = entry["firstSeen"]
-        unified = next_success(unified_successes, seen, max_wait=timedelta(hours=6))
-        if not unified:
-            continue
-        unified_time, unified_run = unified
-        pages = next_success(pages_successes, unified_time, max_wait=timedelta(minutes=20))
-        if not pages:
-            continue
-        pages_time, pages_run = pages
-        out.append({
+        path = classify_path(
+            anchor=seen,
+            unified_successes=unified_successes,
+            pages_successes=pages_successes,
+            now=now,
+            slo=slo,
+        )
+        sample = {
             "sourceIdentity": entry["sourceIdentity"],
             "province": entry["province"],
             "source": entry["source"],
             "registered": entry["registered"],
             "firstSeen": seen.isoformat(),
-            "unifiedCompletedAt": unified_time.isoformat(),
-            "pagesCompletedAt": pages_time.isoformat(),
-            "detectedToUnifiedMinutes": round((unified_time - seen).total_seconds() / 60, 2),
-            "detectedToPagesMinutes": round((pages_time - seen).total_seconds() / 60, 2),
-            "unifiedRunId": unified_run.get("id"),
-            "pagesRunId": pages_run.get("id"),
-        })
+            **path,
+        }
+        if path.get("status") == "matched":
+            sample["detectedToPagesMinutes"] = path["latencyMinutes"]
+            unified_time = parse_time(path.get("unifiedCompletedAt"))
+            if unified_time:
+                sample["detectedToUnifiedMinutes"] = round(
+                    (unified_time - seen).total_seconds() / 60, 2
+                )
+        out.append(sample)
     return out
 
 
@@ -316,11 +442,46 @@ def build_report(
     fast_gaps = completion_gaps_hours(fast, cutoff)
     watchdog_gaps = schedule_gaps_minutes(runs, "Production operations watchdog", cutoff)
     entries, batches = first_seen_samples(ledger, cutoff)
-    samples = visibility_samples(entries, unified, pages)
-    delivery_samples = fast_to_visible_samples(fast, unified, pages, cutoff)
-    detected_to_unified = [x["detectedToUnifiedMinutes"] for x in samples]
-    detected_to_pages = [x["detectedToPagesMinutes"] for x in samples]
-    fast_to_pages = [x["fastToPagesMinutes"] for x in delivery_samples]
+    samples = visibility_samples(
+        entries,
+        unified,
+        pages,
+        now=now,
+        slo_hours=slo_hours,
+    )
+    delivery_samples = fast_to_visible_samples(
+        fast,
+        unified,
+        pages,
+        cutoff,
+        now=now,
+        slo_hours=slo_hours,
+    )
+    matched_samples = [x for x in samples if x.get("status") == "matched"]
+    matched_delivery_samples = [
+        x for x in delivery_samples if x.get("status") == "matched"
+    ]
+    detected_to_unified = [
+        x["detectedToUnifiedMinutes"]
+        for x in matched_samples
+        if x.get("detectedToUnifiedMinutes") is not None
+    ]
+    detected_to_pages = [
+        x["detectedToPagesMinutes"]
+        for x in matched_samples
+        if x.get("detectedToPagesMinutes") is not None
+    ]
+    fast_to_pages = [
+        x["fastToPagesMinutes"]
+        for x in matched_delivery_samples
+        if x.get("fastToPagesMinutes") is not None
+    ]
+    visibility_counts = sample_status_counts(samples)
+    delivery_counts = sample_status_counts(delivery_samples)
+    visibility_compliance = slo_compliance(samples)
+    delivery_compliance = slo_compliance(delivery_samples)
+    visibility_p95 = censored_p95(samples, "detectedToPagesMinutes")
+    delivery_p95 = censored_p95(delivery_samples, "fastToPagesMinutes")
 
     gap_stats = stats(fast_gaps)
     watchdog_gap_stats = stats(watchdog_gaps)
@@ -347,7 +508,8 @@ def build_report(
         "measurementLimits": {
             "officialRegistrationTimestamp": "Most official sources expose date-only registration values; exact official-posted-to-firstSeen latency is not asserted.",
             "firstSeen": "source_id_ledger firstSeen is the first independent stable-ID observation, not necessarily the exact instant the official site published.",
-            "sloProxy": "p95 interval between successful Fast publications plus p95 Fast-completion-to-Pages tail; conservative operational proxy, not a fabricated official timestamp.",
+            "censoring": "Missing downstream Unified/Pages publication is retained as pending until the SLO expires, then counted as a censored violation instead of being dropped from the sample.",
+            "sloProxy": "p95 interval between successful Fast publications plus p95 matched Fast-completion-to-Pages tail; censored delivery evidence is reported separately and never silently discarded.",
         },
         "workflowStats": wf,
         "observationCadence": {
@@ -361,13 +523,21 @@ def build_report(
             "firstSeenBatches": batches[-30:],
         },
         "detectedToVisible": {
-            "matchedSamples": len(samples),
+            "matchedSamples": visibility_counts["matched"],
+            "pendingSamples": visibility_counts["pending"],
+            "censoredViolations": visibility_counts["censoredViolations"],
+            "sloCompliance": visibility_compliance,
+            "censoredP95": visibility_p95,
             "detectedToUnifiedMinutes": stats(detected_to_unified),
             "detectedToPagesMinutes": detected_pages_stats,
             "sample": samples[-20:],
         },
         "verifiedPublicationTail": {
-            "matchedFastRuns": len(delivery_samples),
+            "matchedFastRuns": delivery_counts["matched"],
+            "pendingFastRuns": delivery_counts["pending"],
+            "censoredViolations": delivery_counts["censoredViolations"],
+            "sloCompliance": delivery_compliance,
+            "censoredP95": delivery_p95,
             "fastToPagesMinutes": fast_to_pages_stats,
             "sample": delivery_samples[-20:],
         },
@@ -420,7 +590,13 @@ def main() -> int:
         "fastGapP95Hours": report["observationCadence"]["successfulFastPublicationGapHours"]["p95"],
         "watchdogScheduleGapP95Minutes": report["observationCadence"]["watchdogScheduleGapMinutes"]["p95"],
         "detectedToPagesP95Minutes": report["detectedToVisible"]["detectedToPagesMinutes"]["p95"],
+        "detectedCensoredViolations": report["detectedToVisible"]["censoredViolations"],
+        "detectedPendingSamples": report["detectedToVisible"]["pendingSamples"],
+        "detectedComplianceRate": report["detectedToVisible"]["sloCompliance"]["complianceRate"],
         "fastToPagesP95Minutes": report["verifiedPublicationTail"]["fastToPagesMinutes"]["p95"],
+        "fastCensoredViolations": report["verifiedPublicationTail"]["censoredViolations"],
+        "fastPendingRuns": report["verifiedPublicationTail"]["pendingFastRuns"],
+        "fastDeliveryComplianceRate": report["verifiedPublicationTail"]["sloCompliance"]["complianceRate"],
         "sloProxy": report["fourHourVisibilitySloProxy"],
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))
