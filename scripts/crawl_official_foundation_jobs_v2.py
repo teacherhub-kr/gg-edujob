@@ -47,6 +47,26 @@ def sfac_rows(session,foundation,url):
         rows.append({"sourceIdentity":f"official-foundation:sfac:{stable}","foundationRegistryId":fid,"foundationName":foundation.get("name") or "서울문화재단","organization":foundation.get("name") or "서울문화재단","source":foundation.get("name") or "서울문화재단","sourceType":"문화재단 공식채용","sourceSurface":"cultural-foundation","sourceSurfaceLabel":"서울문화재단 공식 채용공고","sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "서울","region":foundation.get("municipality") or "서울특별시","regions":[foundation.get("municipality") or "서울특별시"],"location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),"title":title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),"url":r.url,"originalUrl":r.url,"detailUrl":r.url,"boardUrl":url,"detailLinkVerified":True,"detailLinkReason":"official-sfac-current-microsite","transportVerified":True})
     return rows,{"adapter":"sfac-saramin-current-microsite","surfacesChecked":[r.url],"discoveredDetailLinks":1 if title else 0,"inspectedDetailLinks":1 if title else 0,"publishedCurrentJobs":len(rows),"active":active,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end)}
 
+def designated_saramin_rows(session,foundation,url):
+    r=resilient_request(session,url)
+    final_path=urlparse(r.url).path.rstrip("/").lower()
+    if final_path.endswith("/ending_page.html") or final_path=="ending_page.html":
+        return [],{
+            "adapter":"designated-saramin-tenant-v1",
+            "surfacesChecked":[r.url],
+            "publishedCurrentJobs":0,
+            "explicitEmpty":True,
+            "evidence":"saramin-ending-page",
+            "identityVerified":True,
+        }
+    # Active Saramin tenants use the same recruitment-detail contract already
+    # validated for SFAC: exact HTTPS detail, real title, registration date and
+    # verified application deadline are all required.
+    found,meta=sfac_rows(session,foundation,r.url)
+    meta["adapter"]="designated-saramin-tenant-v1"
+    return found,meta
+
+
 def sfac_careerlink_probe(session):
     r=resilient_request(session,SFAC_CAREERLINK_URL); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True))
     empty_phrase="현재 게시중인 공고가 없습니다" in text or ("0 / 0" in text and "채용공고" in text)
@@ -106,7 +126,7 @@ GENERIC_OFFICIAL_HOSTS={
     "gbcf.fairyhr.com","yfac.fairyhr.com",
     "gfac.or.kr","www.gfac.or.kr",
     "naruart.applyin.co.kr",
-    "artgy.or.kr","www.artgy.or.kr",
+    "artgy.or.kr","www.artgy.or.kr","goyang.go.kr","www.goyang.go.kr",
     "gcart.or.kr","www.gcart.or.kr",
     "bcf.or.kr","www.bcf.or.kr",
     "ayac.saramin.co.kr","ayac.or.kr","www.ayac.or.kr","m.ayac.or.kr",
@@ -209,6 +229,7 @@ def container_text(anchor)->str:
 
 SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "incheon:namdong",
+    "gyeonggi:goyang",
     "seoul:guro",
     "gyeonggi:guri",
     "gyeonggi:hanam",
@@ -453,6 +474,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
         h=(urlparse(url).hostname or "").lower()
         if h=="nsart.or.kr" or h.endswith(".nsart.or.kr"):
             return base.nsart_rows(session,foundation,url)
+        if h=="ayac.saramin.co.kr":
+            return designated_saramin_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
             found,meta=sfac_rows(session,foundation,url)
             # Careerlink is a secondary official contract surface. A markup change
