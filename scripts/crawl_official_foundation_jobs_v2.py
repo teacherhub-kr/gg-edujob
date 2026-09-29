@@ -85,7 +85,7 @@ RECRUITMENT_RE=re.compile(
 NON_POSITION_RE=re.compile(
     r"참여자|참가자|관람객|서포터즈|동아리|대관|지원사업|공모전|작품\s*공모|"
     r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집|"
-    r"채용\s*과정\s*공개",
+    r"채용\s*과정\s*공개|후보자\s*추천\s*공고",
     re.I,
 )
 GENERIC_OFFICIAL_HOSTS={
@@ -182,6 +182,8 @@ def verify_board_surface(soup, foundation, response, candidates):
             continue
         if str(foundation.get("id"))=="incheon:metropolitan" and ifac_detail_url(a,response.url):
             continue
+        if official_js_detail_url(a,response.url):
+            continue
         registered=base.parse_date_text(container_text(a))
         if registered and registered < today-base.timedelta(days=120):
             stale_unresolved.append(a)
@@ -264,7 +266,7 @@ def candidate_belongs_to_foundation(foundation,text:str,*,shared_board:bool=Fals
 def detail_identity(url:str)->str:
     parsed=urlparse(url)
     query=parse_qs(parsed.query)
-    for key in ("bbsSn","boardId","msg_seq","sq","idx","uid","nttSn","seq","no","id"):
+    for key in ("bbsSn","boardId","msg_seq","sq","idx","uid","nttSn","seq","pstSn","pk_seq","board_seq","q_bbscttSn","no","id"):
         value=str((query.get(key) or [""])[0]).strip()
         if value:
             return f"{key}:{value}"
@@ -279,7 +281,7 @@ def looks_like_detail_url(board_url:str, candidate_url:str)->bool:
     if board.path.rstrip("/")!=candidate.path.rstrip("/"):
         return True
     query=parse_qs(candidate.query)
-    if any(key in query for key in ("b_num","idx","uid","bbsSn","boardId","msg_seq","sq","nttSn","seq","no")):
+    if any(key in query for key in ("b_num","idx","uid","bbsSn","boardId","msg_seq","sq","nttSn","seq","pstSn","pk_seq","board_seq","q_bbscttSn","no")):
         return True
     if query.get("bmode")==["view"] or query.get("proc_type")==["view"] or query.get("type")==["view"]:
         return True
@@ -298,6 +300,68 @@ def ifac_detail_url(anchor, board_url:str)->str|None:
     if not key:
         return None
     return urljoin(board_url,"/bbs/view.do")+"?"+urlencode({"bbsSn":m.group(1),"key":key})
+
+
+def official_js_detail_url(anchor, board_url:str)->str|None:
+    """Resolve only known same-host official-board JavaScript detail contracts."""
+    parsed=urlparse(board_url)
+    host=(parsed.hostname or "").lower()
+    href=str(anchor.get("href") or "").strip()
+    onclick=str(anchor.get("onclick") or "").strip()
+    raw=" ".join([
+        href, onclick,
+        str(anchor.get("data-seq") or ""),
+        str(anchor.get("data-id") or ""),
+        str(anchor.get("data-pstsn") or ""),
+    ])
+
+    def explicit_or_arg(keys, *, min_digits=3):
+        for key in keys:
+            m=re.search(rf"{re.escape(key)}\\s*[:=,]?\\s*['\"]?(\\d{{{min_digits},}})",raw,re.I)
+            if m:
+                return m.group(1)
+        m=re.search(rf"\\(\\s*['\"]?(\\d{{{min_digits},}})['\"]?",onclick)
+        return m.group(1) if m else None
+
+    query=parse_qs(parsed.query)
+
+    if host in {"goyang.go.kr","www.goyang.go.kr","gm.go.kr","www.gm.go.kr"} and "BD_selectBbsList.do" in parsed.path:
+        ident=explicit_or_arg(("q_bbscttSn","bbscttSn"),min_digits=10)
+        bbs=str((query.get("q_bbsCode") or [""])[0])
+        if ident and bbs:
+            path=parsed.path.replace("BD_selectBbsList.do","BD_selectBbs.do")
+            return f"{parsed.scheme}://{parsed.netloc}{path}?"+urlencode({"q_bbsCode":bbs,"q_bbscttSn":ident})
+
+    if host in {"gcfac.or.kr","www.gcfac.or.kr"} and parsed.path.rstrip("/")=="/board/recruit":
+        ident=explicit_or_arg(("board_seq","boardSeq"),min_digits=3)
+        if ident:
+            menu=str((query.get("gcfac_menu_cd") or ["U0140"])[0])
+            return f"{parsed.scheme}://{parsed.netloc}/board/recruitDetail?"+urlencode({"board_seq":ident,"gcfac_menu_cd":menu})
+
+    if host in {"mfac.or.kr","www.mfac.or.kr"} and parsed.path.endswith("/notice_all_list.jsp"):
+        ident=explicit_or_arg(("pk_seq","pkSeq"),min_digits=3)
+        if ident:
+            return f"{parsed.scheme}://{parsed.netloc}/communication/notice_all_view.jsp?"+urlencode({
+                "page":"1","pk_seq":ident,"sc_b_code":"BOARD_1207683401","sc_type":"3"
+            })
+
+    if host in {"pccf.or.kr","www.pccf.or.kr"} and parsed.path.endswith("/bbs/list.do"):
+        ident=explicit_or_arg(("pstSn","pst_sn"),min_digits=6)
+        key=str((query.get("key") or [""])[0])
+        if ident and key:
+            return f"{parsed.scheme}://{parsed.netloc}/bbs/view.do?"+urlencode({"key":key,"pstSn":ident})
+
+    if host in {"paju.go.kr","www.paju.go.kr"} and parsed.path.endswith("/BD_board.list.do"):
+        ident=explicit_or_arg(("seq",),min_digits=10)
+        bbs=str((query.get("bbsCd") or [""])[0])
+        ctg=str((query.get("q_ctgCd") or [""])[0])
+        if ident and bbs:
+            params={"bbsCd":bbs,"seq":ident}
+            if ctg:
+                params["q_ctgCd"]=ctg
+            return f"{parsed.scheme}://{parsed.netloc}{parsed.path.replace('BD_board.list.do','BD_board.view.do')}?"+urlencode(params)
+
+    return None
 
 
 def ifac_title_deadline(title,registered):
@@ -339,10 +403,11 @@ def list_detail_candidates(session,foundation,board_url):
     dated_list_rows=0
     for a in soup.find_all("a",href=True):
         ifac_url=ifac_detail_url(a,r.url) if fid=="incheon:metropolitan" else None
+        js_url=official_js_detail_url(a,r.url)
         href=str(a.get("href") or "").strip()
-        if not ifac_url and (not href or href.lower().startswith(("javascript:","#","mailto:","tel:"))):
+        if not ifac_url and not js_url and (not href or href.lower().startswith(("javascript:","#","mailto:","tel:"))):
             continue
-        absolute=ifac_url or urljoin(r.url,href)
+        absolute=ifac_url or js_url or urljoin(r.url,href)
         host=(urlparse(absolute).hostname or "").lower()
         if host not in allowed:
             continue
