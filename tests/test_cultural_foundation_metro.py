@@ -259,8 +259,10 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
         self.assertEqual(rows["seoul:dongjak"]["verifiedFallbackRole"], "secondary-official-mirror")
         self.assertNotIn("verifiedFallbackRecruitmentUrl", rows["gyeonggi:seongnam"])
-        self.assertIn("m.gmcf.or.kr", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
-        self.assertIn("ayac.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+        self.assertIn("www.gmcf.or.kr", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
+        self.assertIn("artgy.or.kr", rows["gyeonggi:goyang"]["officialRecruitmentUrl"])
+        self.assertIn("m.ayac.or.kr", rows["gyeonggi:anyang"]["officialRecruitmentUrl"])
+        self.assertIn("m.ayac.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
         self.assertNotIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
 
     def test_position_scope_includes_jobs_and_teaching_people(self):
