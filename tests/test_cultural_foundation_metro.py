@@ -342,6 +342,9 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             "하반기 정기대관 모집 공고",
             "문화예술활동 지원사업 공모",
             "기간제근로자 채용 면접시험 합격자 결정 공고",
+            "2026년 제4차 재단 직원 공개채용 채용과정 공개",
+            "직원채용공고",
+            "지도강사 모집공고",
             "제안서 평가위원 후보자 모집 공고",
         ]
         for title in excluded:
