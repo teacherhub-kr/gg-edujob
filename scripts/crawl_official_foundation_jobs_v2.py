@@ -129,9 +129,15 @@ JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv
 EXPLICIT_EMPTY_RE=re.compile(
     r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)[이가]\s*없|게시물이\s*없|"
     r"검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|"
-    r"진행\s*중\s*채용공고\s*0건",
+    r"진행\s*중\s*채용공고\s*0건|진행\s*중인\s*채용공고가\s*없",
     re.I,
 )
+SAAS_EXPLICIT_EMPTY_HOSTS={
+    "recruit.incruit.com",
+    "gbcf.fairyhr.com",
+    "gunpocf.incruit.com",
+    "yicf.incruit.com",
+}
 
 
 def verify_board_surface(soup, foundation, response, candidates):
@@ -294,6 +300,12 @@ def list_detail_candidates(session,foundation,board_url):
     soup=BeautifulSoup(r.text,"html.parser")
     board_host=(urlparse(r.url).hostname or "").lower()
     fid=str(foundation.get("id") or "")
+    visible=base.normalize_space(soup.get_text(" ",strip=True))
+    # On supported recruitment SaaS surfaces an explicit current-zero message is
+    # authoritative for the active vacancy list. Do not mistake navigation links
+    # such as "채용공고" or "announcement" for live postings.
+    if board_host in SAAS_EXPLICIT_EMPTY_HOSTS and EXPLICIT_EMPTY_RE.search(visible):
+        return r,soup,{},0
     allowed={board_host}
     if fid=="incheon:seohae":
         allowed.update({"seohae.go.kr","www.seohae.go.kr","isel.seo.incheon.kr"})
