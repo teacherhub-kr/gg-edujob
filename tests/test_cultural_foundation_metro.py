@@ -237,6 +237,38 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
         )
 
+    def test_explicit_zero_saas_state_short_circuits_navigation_links(self):
+        cases = [
+            (
+                {"id": "gyeonggi:hwaseong", "name": "화성시문화관광재단", "aliases": []},
+                "https://recruit.incruit.com/hcf/",
+                "https://recruit.incruit.com/hcf/job/",
+                "<html><body>진행중인 채용공고가 없습니다. <a href='/hcf/job/'>채용공고</a></body></html>",
+            ),
+            (
+                {"id": "seoul:gangbuk", "name": "강북문화재단", "aliases": []},
+                "https://gbcf.fairyhr.com/",
+                "https://gbcf.fairyhr.com/",
+                "<html><body>강북문화재단 진행 중 채용공고 0건 <a href='/announcement'>채용공고</a></body></html>",
+            ),
+        ]
+        for foundation, requested, final_url, html in cases:
+            response = SimpleNamespace(url=final_url, text=html, content=html.encode())
+            with self.subTest(requested=requested), patch.object(
+                crawler, "resilient_request", return_value=response
+            ) as request:
+                _, _, candidates, dated = crawler.list_detail_candidates(
+                    None, foundation, requested
+                )
+            self.assertEqual(candidates, {})
+            self.assertEqual(dated, 0)
+            expected = (
+                "https://recruit.incruit.com/hcf/job/"
+                if "recruit.incruit.com" in requested
+                else requested
+            )
+            request.assert_called_once_with(None, expected)
+
     def test_recent_post_without_deadline_is_not_verified_open(self):
         today = crawler.base.date(2026, 9, 27)
         self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
