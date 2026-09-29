@@ -4,12 +4,17 @@ from datetime import datetime, timedelta, timezone
 from scripts.production_supervisor import (
     KST,
     PRIVATE_REFRESH_TARGETS,
+    PRODUCTION_EVENTS,
+    TARGETS,
+    WATCHDOG_WORKFLOW,
     change_after_failure,
     circuit_blocked,
     consecutive_real_failures,
     detect_source_anomalies,
     latest_verified_production_success,
+    official_publication_lag,
     private_refresh_due,
+    production_runs,
     registry_contract_status,
     recovery_fallback_available,
     unified_publication_stale,
@@ -178,6 +183,100 @@ class ProductionSupervisorTests(unittest.TestCase):
             self.assertIn("workflow_dispatch:", trigger)
             self.assertNotIn("schedule:", trigger)
             self.assertNotIn("workflow_run:", trigger)
+
+    def test_production_run_contract_excludes_pr_and_feature_branch_dispatch(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        runs = [
+            {
+                "id": 1,
+                "event": "pull_request",
+                "head_branch": "feature/x",
+                "status": "in_progress",
+                "created_at": (now - timedelta(minutes=1)).isoformat(),
+                "run_started_at": (now - timedelta(minutes=1)).isoformat(),
+            },
+            {
+                "id": 2,
+                "event": "workflow_dispatch",
+                "head_branch": "feature/x",
+                "status": "completed",
+                "conclusion": "success",
+                "created_at": (now - timedelta(minutes=2)).isoformat(),
+                "run_started_at": (now - timedelta(minutes=2)).isoformat(),
+            },
+            {
+                "id": 3,
+                "event": "workflow_dispatch",
+                "head_branch": "main",
+                "status": "completed",
+                "conclusion": "failure",
+                "created_at": (now - timedelta(minutes=3)).isoformat(),
+                "run_started_at": (now - timedelta(minutes=3)).isoformat(),
+            },
+        ]
+        kept = production_runs("unified-search.yml", runs)
+        self.assertEqual([item["id"] for item in kept], [3])
+
+    def test_rerun_started_at_controls_run_order(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        old_rerun = {
+            "id": 10,
+            "event": "workflow_dispatch",
+            "head_branch": "main",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": (now - timedelta(hours=8)).isoformat(),
+            "run_started_at": (now - timedelta(minutes=2)).isoformat(),
+        }
+        newer_created_failure = {
+            "id": 11,
+            "event": "workflow_dispatch",
+            "head_branch": "main",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": (now - timedelta(hours=1)).isoformat(),
+            "run_started_at": (now - timedelta(hours=1)).isoformat(),
+        }
+        kept = production_runs("unified-search.yml", [newer_created_failure, old_rerun])
+        self.assertEqual([item["id"] for item in kept], [10, 11])
+        failures, _ = consecutive_real_failures(kept)
+        self.assertEqual(failures, 0)
+
+    def test_production_event_contract_is_explicit_for_every_writer(self):
+        self.assertEqual(set(PRODUCTION_EVENTS), set(TARGETS.values()) | {WATCHDOG_WORKFLOW})
+        for filename in TARGETS.values():
+            self.assertEqual(PRODUCTION_EVENTS[filename], {"workflow_dispatch"})
+        self.assertEqual(
+            PRODUCTION_EVENTS[WATCHDOG_WORKFLOW],
+            {"workflow_dispatch", "schedule"},
+        )
+
+    def test_official_publication_lag_triggers_after_three_hours(self):
+        now = datetime(2026, 9, 29, 21, 0, tzinfo=KST)
+        jobs = now - timedelta(hours=3, minutes=30)
+        unified = jobs - timedelta(minutes=20)
+        self.assertTrue(official_publication_lag(now, jobs, unified))
+        self.assertFalse(
+            official_publication_lag(now, now - timedelta(hours=2), unified)
+        )
+        self.assertFalse(official_publication_lag(now, jobs, jobs))
+        self.assertFalse(official_publication_lag(now, None, unified))
+
+    def test_supervisor_has_fast_failure_backoff_and_change_after_failure_probe(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn("collector_contract_changed_after_failure", source)
+        self.assertIn('action = "skip-fast-backoff"', source)
+        self.assertIn("Unified is blocked but official collection is due", source)
+        self.assertIn("unified_contract_changed_after_failure", source)
+
+    def test_watchdog_does_not_cancel_in_progress_decision(self):
+        from pathlib import Path
+
+        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        self.assertIn("group: production-operations-watchdog", text)
+        self.assertIn("cancel-in-progress: false", text)
 
     def test_cancelled_runs_do_not_count_as_failures(self):
         runs = [run("failure"), run("cancelled"), run("failure"), run("failure"), run("success")]
