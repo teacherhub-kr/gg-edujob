@@ -140,12 +140,25 @@ def verify_board_surface(soup, foundation, response, candidates):
         raise RuntimeError("official board returned an access-control page")
     if not candidates and JS_SHELL_RE.search(response.text):
         raise RuntimeError("official board is a JS-rendered shell without parsed details")
-    unsupported=[a for a in soup.find_all("a",href=True)
-                 if official_position_title(a.get_text(" ",strip=True))
-                 and (str(a.get("href") or "").strip().lower().startswith(("javascript:","#"))
-                      or a.has_attr("onclick"))
-                 and not (str(foundation.get("id"))=="incheon:metropolitan"
-                          and ifac_detail_url(a,response.url))]
+    unsupported=[]
+    stale_unresolved=[]
+    today=datetime.now(KST).date()
+    for a in soup.find_all("a",href=True):
+        if not official_position_title(a.get_text(" ",strip=True)):
+            continue
+        uses_js=(
+            str(a.get("href") or "").strip().lower().startswith(("javascript:","#"))
+            or a.has_attr("onclick")
+        )
+        if not uses_js:
+            continue
+        if str(foundation.get("id"))=="incheon:metropolitan" and ifac_detail_url(a,response.url):
+            continue
+        registered=base.parse_date_text(container_text(a))
+        if registered and registered < today-base.timedelta(days=120):
+            stale_unresolved.append(a)
+            continue
+        unsupported.append(a)
     if unsupported:
         raise RuntimeError("official recruitment rows use unsupported JavaScript detail links")
     normalized=visible.replace(" ","")
@@ -159,7 +172,7 @@ def verify_board_surface(soup, foundation, response, candidates):
     if not identity_ok:
         title=base.normalize_space(soup.title.get_text(" ",strip=True))[:100] if soup.title else ""
         raise RuntimeError(f"official board identity unproved: finalUrl={response.url[:200]!r}, title={title!r}, bytes={len(response.content)}, candidates={len(candidates)}")
-    if not candidates and not EXPLICIT_EMPTY_RE.search(visible):
+    if not candidates and not EXPLICIT_EMPTY_RE.search(visible) and not stale_unresolved:
         raise RuntimeError("official board has no parseable details and no explicit empty state")
     return True
 
