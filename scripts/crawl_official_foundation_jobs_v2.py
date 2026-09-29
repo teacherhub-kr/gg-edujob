@@ -427,9 +427,17 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return base.nsart_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
             found,meta=sfac_rows(session,foundation,url)
-            careerlink=sfac_careerlink_probe(session)
-            meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]
-            meta["secondarySurfaces"]=[careerlink]
+            # Careerlink is a secondary official contract surface. A markup change
+            # there must not invalidate a healthy primary Saramin board; preserve
+            # the probe result as diagnostics while keeping publication fail-closed
+            # on the primary source itself.
+            try:
+                careerlink=sfac_careerlink_probe(session)
+            except Exception as exc:
+                meta["secondaryProbeError"]=f"{type(exc).__name__}: {str(exc)[:180]}"
+            else:
+                meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]
+                meta["secondarySurfaces"]=[careerlink]
             meta["adapterStatus"]="implemented"
             return found,meta
         if h in GENERIC_OFFICIAL_HOSTS:
