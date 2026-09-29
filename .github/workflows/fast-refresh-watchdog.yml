@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: production-operations-watchdog
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   watchdog:
