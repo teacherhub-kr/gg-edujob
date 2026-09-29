@@ -56,17 +56,26 @@ def title_match(a: str, b: str) -> bool:
 
 def current(row: dict, today: date) -> bool:
     end = str(row.get("applyEnd") or row.get("pubEndDate") or "")[:10]
+    end_date = None
     if end:
         try:
-            if date.fromisoformat(end) < today: return False
+            end_date = date.fromisoformat(end)
+            if end_date < today: return False
         except Exception:
-            pass
+            end_date = None
     registered = str(row.get("registered") or row.get("pubDate") or "")[:10]
+    registered_date = None
     if registered:
         try:
-            if date.fromisoformat(registered) > today: return False
+            registered_date = date.fromisoformat(registered)
+            if registered_date > today: return False
         except Exception:
-            pass
+            registered_date = None
+    if not end_date and row.get("sourceRole") == "primary-official":
+        if row.get("deadlineVerification") != "unverified-recent-official-post":
+            return False
+        if not registered_date or registered_date < today - timedelta(days=14):
+            return False
     return True
 
 
