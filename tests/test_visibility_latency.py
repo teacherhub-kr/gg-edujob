@@ -1,5 +1,5 @@
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from scripts.measure_visibility_latency import build_report, parse_time, percentile
 
@@ -74,6 +74,139 @@ class VisibilityLatencyTests(unittest.TestCase):
             report["detectedToVisible"]["matchedSamples"],
             1,
         )
+
+    def test_missing_unified_after_slo_is_censored_violation(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        ledger = {
+            "entries": {
+                "gg:test:censored": {
+                    "province": "경기",
+                    "source": "테스트",
+                    "registered": "2026/09/29",
+                    "firstSeen": (now - timedelta(hours=5)).isoformat(),
+                }
+            }
+        }
+        report = build_report(
+            ledger=ledger,
+            runs=[],
+            now=now,
+            window_hours=24,
+            slo_hours=4,
+        )
+        detected = report["detectedToVisible"]
+        self.assertEqual(detected["matchedSamples"], 0)
+        self.assertEqual(detected["pendingSamples"], 0)
+        self.assertEqual(detected["censoredViolations"], 1)
+        self.assertEqual(detected["sloCompliance"]["complianceRate"], 0.0)
+        self.assertTrue(detected["censoredP95"]["p95IsLowerBound"])
+        self.assertGreaterEqual(
+            detected["censoredP95"]["p95LowerBoundMinutes"],
+            300,
+        )
+
+    def test_missing_unified_within_slo_is_pending_not_violation(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        ledger = {
+            "entries": {
+                "gg:test:pending": {
+                    "province": "경기",
+                    "source": "테스트",
+                    "registered": "2026/09/29",
+                    "firstSeen": (now - timedelta(hours=2)).isoformat(),
+                }
+            }
+        }
+        report = build_report(
+            ledger=ledger,
+            runs=[],
+            now=now,
+            window_hours=24,
+            slo_hours=4,
+        )
+        detected = report["detectedToVisible"]
+        self.assertEqual(detected["matchedSamples"], 0)
+        self.assertEqual(detected["pendingSamples"], 1)
+        self.assertEqual(detected["censoredViolations"], 0)
+        self.assertIsNone(detected["sloCompliance"]["complianceRate"])
+
+    def test_missing_pages_after_slo_is_not_dropped(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        seen = now - timedelta(hours=5)
+        runs = [
+            {
+                "id": 100,
+                "name": "Unified recruitment search",
+                "conclusion": "success",
+                "created_at": (seen + timedelta(minutes=10)).isoformat(),
+                "run_started_at": (seen + timedelta(minutes=10)).isoformat(),
+                "updated_at": (seen + timedelta(minutes=15)).isoformat(),
+            }
+        ]
+        ledger = {
+            "entries": {
+                "gg:test:no-pages": {
+                    "province": "서울",
+                    "source": "테스트",
+                    "registered": "2026/09/29",
+                    "firstSeen": seen.isoformat(),
+                }
+            }
+        }
+        report = build_report(
+            ledger=ledger,
+            runs=runs,
+            now=now,
+            window_hours=24,
+            slo_hours=4,
+        )
+        sample = report["detectedToVisible"]["sample"][0]
+        self.assertEqual(sample["status"], "censored_violation")
+        self.assertEqual(sample["violationStage"], "pages")
+        self.assertEqual(report["detectedToVisible"]["censoredViolations"], 1)
+
+    def test_matched_sample_over_slo_counts_as_violation(self):
+        now = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
+        seen = now - timedelta(hours=6)
+        runs = [
+            {
+                "id": 100,
+                "name": "Unified recruitment search",
+                "conclusion": "success",
+                "created_at": (seen + timedelta(hours=4)).isoformat(),
+                "run_started_at": (seen + timedelta(hours=4)).isoformat(),
+                "updated_at": (seen + timedelta(hours=4, minutes=10)).isoformat(),
+            },
+            {
+                "id": 101,
+                "name": "pages build and deployment",
+                "conclusion": "success",
+                "created_at": (seen + timedelta(hours=4, minutes=20)).isoformat(),
+                "run_started_at": (seen + timedelta(hours=4, minutes=20)).isoformat(),
+                "updated_at": (seen + timedelta(hours=4, minutes=30)).isoformat(),
+            },
+        ]
+        ledger = {
+            "entries": {
+                "gg:test:late": {
+                    "province": "인천",
+                    "source": "테스트",
+                    "registered": "2026/09/29",
+                    "firstSeen": seen.isoformat(),
+                }
+            }
+        }
+        report = build_report(
+            ledger=ledger,
+            runs=runs,
+            now=now,
+            window_hours=24,
+            slo_hours=4,
+        )
+        detected = report["detectedToVisible"]
+        self.assertEqual(detected["matchedSamples"], 1)
+        self.assertEqual(detected["sloCompliance"]["matchedViolations"], 1)
+        self.assertEqual(detected["sloCompliance"]["complianceRate"], 0.0)
 
     def test_rerun_attempt_is_not_misclassified_as_queue_delay(self):
         runs = [
