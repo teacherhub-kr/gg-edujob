@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T22:40:38+09:00",
+  "generatedAt": "2026-09-29T19:25:04+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -21,149 +21,16 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 13,
-    "cleaneye": 16,
-    "artmore": 1,
+    "official": 11,
+    "cleaneye": 11,
+    "artmore": 0,
     "ancf": 1,
-    "lessoninfo-discovery": 13
+    "lessoninfo-discovery": 12
   },
   "coverageGapCount": 0,
   "coverageGaps": [],
-  "discoveryOnlyGapCount": 12,
-  "discoveryOnlyGaps": [
-    {
-      "foundationRegistryId": "seoul:metropolitan",
-      "foundationName": "서울문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95108",
-      "title": "2026 서울문화재단 연극배우 워크숍 참여자 모집: '화술을 위한 시각적 이미지 활용 훈련' (~9.28)",
-      "registered": "2026-09-23",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95108"
-    },
-    {
-      "foundationRegistryId": "seoul:seongdong",
-      "foundationName": "성동문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94794",
-      "title": "(재)성동문화재단 직원 채용 공고(기간제/육아대체/공연기획)",
-      "registered": "2026-08-31",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:seocho",
-      "foundationName": "서초문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94883",
-      "title": "2026-07차 서초문화재단 직원 채용 공고",
-      "registered": "2026-09-07",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94887",
-      "title": "[송파문화재단] 일일 하우스어셔 모집",
-      "registered": "2026-09-07",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94886",
-      "title": "[송파문화재단] 일일 티켓매니저 모집",
-      "registered": "2026-09-07",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:yangcheon",
-      "foundationName": "양천문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94869",
-      "title": "2026년 제5차 (재)양천문화재단 직원 채용 공고",
-      "registered": "2026-09-04",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:jungnang",
-      "foundationName": "중랑문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95107",
-      "title": "[중랑문화재단] 2026년 3기 청년 일경험 프로그램 참여자 모집",
-      "registered": "2026-09-23",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95107"
-    },
-    {
-      "foundationRegistryId": "gyeonggi:metropolitan",
-      "foundationName": "경기문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94796",
-      "title": "경기문화재단 2026 경기창작캠퍼스 프리 레지던시 운영요원 모집",
-      "registered": "2026-08-31",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "gyeonggi:metropolitan",
-      "foundationName": "경기문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94795",
-      "title": "경기문화재단 경기창작캠퍼스 <우리가 서로 사랑한 이유에 대해서는 묻지 않기로 해요> 전시 운영요원모집",
-      "registered": "2026-08-31",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "gyeonggi:yongin",
-      "foundationName": "용인문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94905",
-      "title": "2026년 (재)용인문화재단 6차 기간제근로자(휴직대체인력) 채용 공고",
-      "registered": "2026-09-08",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "gyeonggi:hwaseong",
-      "foundationName": "화성시문화관광재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95030",
-      "title": "2026년 제3회 (재)화성시문화관광재단 공연장 안내원 모집",
-      "registered": "2026-09-17",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "gyeonggi:hwaseong",
-      "foundationName": "화성시문화관광재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94923",
-      "title": "[모집]화성시문화관광재단 전시장 코디네이터 모집",
-      "registered": "2026-09-09",
-      "applyEnd": "",
-      "url": null
-    }
-  ],
+  "discoveryOnlyGapCount": 0,
+  "discoveryOnlyGaps": [],
   "unmappedStrongSourceRows": {},
   "excludedMisattributedMunicipalOfficialRows": [],
   "institutions": [
@@ -177,7 +44,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 1
+        "lessoninfo-discovery": 0
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": true,
@@ -269,15 +136,15 @@
       "region": "서울",
       "municipality": "구로구",
       "sourceCounts": {
-        "official": 1,
+        "official": 0,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:geumcheon",
@@ -301,13 +168,13 @@
       "region": "서울",
       "municipality": "노원구",
       "sourceCounts": {
-        "official": 1,
+        "official": 0,
         "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -430,14 +297,14 @@
       "municipality": "송파구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:yangcheon",
@@ -510,14 +377,14 @@
       "municipality": "중구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:jungnang",
@@ -782,12 +649,12 @@
       "municipality": "양평군",
       "sourceCounts": {
         "official": 1,
-        "cleaneye": 1,
-        "artmore": 1,
+        "cleaneye": 0,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -878,14 +745,14 @@
       "municipality": "파주시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:pyeongtaek",
@@ -942,12 +809,12 @@
       "municipality": "화성시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 2,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     },
