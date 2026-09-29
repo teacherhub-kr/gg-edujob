@@ -127,7 +127,7 @@ PAGE_PARAM_KEYS=("pageIndex","page","pgno","pageNo","pageno")
 BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|비정상적인\s*접근|Access\s+Denied|Web\s+Application\s+Firewall",re.I)
 JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
 EXPLICIT_EMPTY_RE=re.compile(
-    r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)이\s*없|게시물이\s*없|"
+    r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)[이가]\s*없|게시물이\s*없|"
     r"검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|"
     r"진행\s*중\s*채용공고\s*0건",
     re.I,
