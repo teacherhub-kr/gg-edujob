@@ -70,6 +70,14 @@ NEW_RETURN = '''    return out,{"name":office,"url":board,"boards":[board],"coun
 
 def replace_once(text, old, new, label):
     count = text.count(old)
+    if label == "detail title/date parser" and count == 0 and all(marker in text for marker in (
+        'vals=seoul_row_values(table,tr)',
+        'detail_anchor=seoul_detail_anchor_for_seq(tr,seq)',
+        'registered=date_norm(first_of(vals,["등록일","작성일"]))',
+        'exact_registration_from_detail(',
+        'title_school_collision',
+    )):
+        return text
     if count == 0 and new in text:
         return text
     if count != 1:
