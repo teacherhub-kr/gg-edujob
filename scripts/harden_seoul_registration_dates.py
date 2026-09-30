@@ -9,6 +9,14 @@ TODAY_EXPR = 'NOW.strftime("%Y/%m/%d")'
 
 def patch_target(path, marker):
     text = path.read_text(encoding="utf-8")
+    if path.name == "complete_support_coverage.py" and all(token in text for token in (
+        "def seoul_items(",
+        "exact_registration_from_detail(",
+        "items, dates, page_has_expected_table, page_candidate_rows, bad = seoul_items(soup, board)",
+        "parse_incomplete += bad",
+    )):
+        print("Seoul coverage parser uses exact-detail helper; no-op")
+        return
     start = text.find(marker)
     if start < 0:
         if path.name == "complete_support_coverage.py":
