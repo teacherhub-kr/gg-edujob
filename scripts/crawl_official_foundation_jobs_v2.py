@@ -336,8 +336,9 @@ def official_js_detail_url(anchor, board_url:str)->str|None:
     query=parse_qs(parsed.query)
 
     if host in {"goyang.go.kr","www.goyang.go.kr","gm.go.kr","www.gm.go.kr"} and "BD_selectBbsList.do" in parsed.path:
-        ident=explicit_or_arg(("q_bbscttSn","bbscttSn"),min_digits=10)
-        bbs=str((query.get("q_bbsCode") or [""])[0])
+        named=re.search(r"""fnView\(\s*['"](?P<bbs>\d+)['"]\s*,\s*['"](?P<ident>\d{10,})['"]""",onclick)
+        ident=named.group("ident") if named else explicit_or_arg(("q_bbscttSn","bbscttSn"),min_digits=10)
+        bbs=(named.group("bbs") if named else "") or str((query.get("q_bbsCode") or [""])[0])
         if ident and bbs:
             path=parsed.path.replace("BD_selectBbsList.do","BD_selectBbs.do")
             return f"{parsed.scheme}://{parsed.netloc}{path}?"+urlencode({"q_bbsCode":bbs,"q_bbscttSn":ident})
@@ -362,8 +363,9 @@ def official_js_detail_url(anchor, board_url:str)->str|None:
             return f"{parsed.scheme}://{parsed.netloc}/bbs/view.do?"+urlencode({"key":key,"pstSn":ident})
 
     if host in {"paju.go.kr","www.paju.go.kr"} and parsed.path.endswith("/BD_board.list.do"):
-        ident=explicit_or_arg(("seq",),min_digits=10)
-        bbs=str((query.get("bbsCd") or [""])[0])
+        named=re.search(r"""jsView\(\s*['"](?P<bbs>\d+)['"]\s*,\s*['"](?P<ident>\d{10,})['"]""",onclick)
+        ident=named.group("ident") if named else explicit_or_arg(("seq",),min_digits=10)
+        bbs=(named.group("bbs") if named else "") or str((query.get("bbsCd") or [""])[0])
         ctg=str((query.get("q_ctgCd") or [""])[0])
         if ident and bbs:
             params={"bbsCd":bbs,"seq":ident}
