@@ -40,8 +40,8 @@ def harden_seoul_registration_fallback():
     # Treat that stricter path as already hardened instead of requiring the legacy
     # plausible-date marker to remain forever.
     exact_detail_safe = (
-        "exact_registration_from_detail" in tail
-        and "def seoul_items" in tail
+        "exact_registration_from_detail" in text
+        and "def seoul_items" in text
     )
     legacy_safe = "plausible = [d for d in ds if d and d <= today_s]" in tail
     if not (exact_detail_safe or legacy_safe):
