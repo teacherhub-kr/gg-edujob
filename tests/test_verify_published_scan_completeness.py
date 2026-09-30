@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.verify_published_scan_completeness import VerificationError, verify
+from scripts.verify_published_scan_completeness import VerificationError, verify, verify_snapshot_only
 
 
 def job(sid):
@@ -91,6 +91,44 @@ class PublishedScanCompletenessTests(unittest.TestCase):
                 report(published_ids),
                 ledger(published_ids, generated="2026-09-23 13:00:00 KST"),
                 report(published_ids, missing_before=1, generated="2026-09-23 13:00:00 KST"),
+                expected_sources=2,
+            )
+
+    def test_snapshot_only_allows_recovered_missing_before_when_final_jobs_are_complete(self):
+        ids = {"goe-central:1", "ice-central:10"}
+        published_jobs = {
+            "jobs": [job(x) for x in sorted(ids)] * 50,
+            "sourceReconciliation": {
+                "officialIdCount": 2,
+                "missingAfter": 0,
+                "reconciledSources": 2,
+                "totalSources": 2,
+            },
+        }
+        result = verify_snapshot_only(
+            published_jobs,
+            ledger(ids),
+            report(ids, missing_before=2),
+            expected_sources=2,
+        )
+        self.assertEqual(result["publishedScan"]["missingFromPublishedJobs"], 0)
+
+    def test_snapshot_only_fails_if_postprocessing_loses_scan_bound_id(self):
+        ids = {"goe-central:1", "ice-central:10"}
+        published_jobs = {
+            "jobs": [job("goe-central:1")] * 100,
+            "sourceReconciliation": {
+                "officialIdCount": 2,
+                "missingAfter": 0,
+                "reconciledSources": 2,
+                "totalSources": 2,
+            },
+        }
+        with self.assertRaisesRegex(VerificationError, "already present"):
+            verify_snapshot_only(
+                published_jobs,
+                ledger(ids),
+                report(ids),
                 expected_sources=2,
             )
 
