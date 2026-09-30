@@ -930,7 +930,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                     reason = "active private refresh workflows: " + ",".join(active_private)
                 else:
                     candidate_time = git_commit_time("artmore_reconciliation_report.candidate.json")
-                    canonical_artmore_time = private_refresh_times.get("private-artmore-candidate")
+                    canonical_artmore_time = git_commit_time("artmore_reconciliation_report.json")
                     candidate_report = load_json("artmore_reconciliation_report.candidate.json", {})
                     artmore_ready = bool(
                         candidate_time
