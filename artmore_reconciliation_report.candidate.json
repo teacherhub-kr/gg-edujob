@@ -1,61 +1,29 @@
 {
-  "generatedAt": "2026-09-30T17:12:32+09:00",
+  "generatedAt": "2026-10-01T05:16:46+09:00",
   "source": "아트모아",
   "policy": "artmore-active-browser-v1-candidate",
   "publicationEnabled": false,
-  "healthy": true,
-  "traversalComplete": true,
-  "candidateIdCount": 37,
-  "publishedIdCount": 37,
+  "healthy": false,
+  "traversalComplete": false,
+  "candidateIdCount": 0,
+  "publishedIdCount": 0,
   "missingAfterCount": 0,
   "missingAfter": [],
-  "sourceReports": [
+  "sourceReports": [],
+  "errors": [
     {
       "region": "서울",
-      "code": "2001",
-      "pagesVisited": 3,
-      "ids": 28,
-      "pages": [
-        {
-          "page": 1,
-          "rowCount": 10,
-          "newIdCount": 10,
-          "firstId": "95168",
-          "lastId": "95148"
-        },
-        {
-          "page": 2,
-          "rowCount": 10,
-          "newIdCount": 10,
-          "firstId": "95145",
-          "lastId": "95132"
-        },
-        {
-          "page": 3,
-          "rowCount": 8,
-          "newIdCount": 8,
-          "firstId": "95131",
-          "lastId": "95122"
-        }
-      ]
+      "error": "RuntimeError: region all selector missing while restoring 서울"
     },
     {
       "region": "경기",
-      "code": "2083",
-      "pagesVisited": 1,
-      "ids": 9,
-      "pages": [
-        {
-          "page": 1,
-          "rowCount": 9,
-          "newIdCount": 9,
-          "firstId": "95167",
-          "lastId": "95069"
-        }
-      ]
+      "error": "RuntimeError: region all selector missing while restoring 경기"
+    },
+    {
+      "region": "all",
+      "error": "suspicious drop: previous=47 current=0"
     }
   ],
-  "errors": [],
   "regionsAllowed": [
     "서울",
     "경기"
