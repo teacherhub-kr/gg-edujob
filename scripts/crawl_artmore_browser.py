@@ -47,20 +47,53 @@ async def visible_click(loc):
     return False
 
 
+async def wait_for_region_radio(page, region: str, code: str, timeout_ms: int = 10000):
+    radio = page.locator(f"#area_level_{code}")
+    try:
+        await radio.wait_for(state="attached", timeout=timeout_ms)
+    except Exception as exc:
+        top_count = await page.locator('[id^="area_level_"]').count()
+        raise RuntimeError(
+            f"region radio missing after popup load: {region}/{code}; top_count={top_count}"
+        ) from exc
+    return radio
+
+
+async def wait_for_region_all(page, region: str, code: str, timeout_ms: int = 10000):
+    all_radio = page.locator("#all_3")
+    try:
+        await all_radio.wait_for(state="attached", timeout=timeout_ms)
+    except Exception as exc:
+        detail_count = await page.locator("#area_level_3 .area_level_3").count()
+        raise RuntimeError(
+            f"region all selector missing after ajax for {region}/{code}; detail_count={detail_count}"
+        ) from exc
+    return all_radio
+
+
+async def select_region_all(page, region: str, code: str, attempts: int = 3):
+    last_exc = None
+    for attempt in range(1, attempts + 1):
+        radio = await wait_for_region_radio(page, region, code)
+        await radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
+        try:
+            all_radio = await wait_for_region_all(page, region, code, timeout_ms=6000)
+            await all_radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
+            return all_radio
+        except Exception as exc:
+            last_exc = exc
+            if attempt < attempts:
+                await page.wait_for_timeout(500 * attempt)
+    raise RuntimeError(
+        f"region child ajax failed after {attempts} attempts for {region}/{code}: {last_exc}"
+    )
+
+
 async def restore_region_filter(page, region: str, code: str) -> str:
     expected = f"2000-{code}"
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError(f"region opener missing while restoring {region}")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing while restoring: {region}/{code}")
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
-    await page.wait_for_timeout(400)
-    all_radio = page.locator("#all_3")
-    if not await all_radio.count():
-        raise RuntimeError(f"region all selector missing while restoring {region}")
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await select_region_all(page, region, code)
     await page.wait_for_timeout(200)
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
@@ -103,16 +136,7 @@ async def establish_filter(page, region: str, code: str):
         raise RuntimeError("human-check/block page detected")
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError("region opener missing")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing: {region}/{code}")
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
-    await page.wait_for_timeout(500)
-    all_radio = page.locator("#all_3")
-    if not await all_radio.count():
-        raise RuntimeError("region all selector missing")
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await select_region_all(page, region, code)
     await page.wait_for_timeout(250)
     expected = f"2000-{code}"
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
@@ -238,8 +262,6 @@ async def collect_surface(browser, region: str, code: str):
                 if r["stableId"] not in seen_ids:
                     seen_ids.add(r["stableId"])
                     out.append(r)
-            if len(rows) < 10:
-                break
         if len(page_reports) >= max_pages and page_reports[-1].get("newIdCount"):
             raise RuntimeError(f"max page safety cap reached for {region}: {max_pages}")
         if not out:

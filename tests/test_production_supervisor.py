@@ -162,6 +162,43 @@ class ProductionSupervisorTests(unittest.TestCase):
             "artmore_reconciliation_report.json",
         )
 
+    def test_artmore_promotion_compares_candidate_to_canonical_publication(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn(
+            'candidate_time = git_commit_time("artmore_reconciliation_report.candidate.json")',
+            source,
+        )
+        self.assertIn(
+            'canonical_artmore_time = git_commit_time("artmore_reconciliation_report.json")',
+            source,
+        )
+        self.assertNotIn(
+            'canonical_artmore_time = private_refresh_times.get("private-artmore-candidate")',
+            source,
+        )
+
+    def test_artmore_pagination_does_not_stop_on_postfilter_row_count(self):
+        from pathlib import Path
+
+        source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
+        self.assertNotIn("if len(rows) < 10:", source)
+        self.assertIn("if not rows or not new_ids:", source)
+
+    def test_artmore_collector_waits_for_ajax_region_options(self):
+        from pathlib import Path
+
+        source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
+        self.assertIn("async def wait_for_region_all", source)
+        self.assertIn("async def select_region_all", source)
+        self.assertIn('await all_radio.wait_for(state="attached", timeout=timeout_ms)', source)
+        self.assertIn("attempts: int = 3", source)
+        self.assertGreaterEqual(
+            source.count("await select_region_all(page, region, code)"),
+            2,
+        )
+
     def test_private_overdue_can_use_non_p0_recovery_and_completeness_slots(self):
         self.assertIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertIn("completeness", PRIVATE_REFRESH_IDLE_ACTIONS)
