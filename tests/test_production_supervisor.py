@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.production_supervisor import (
     KST,
+    PRIVATE_REFRESH_IDLE_ACTIONS,
     PRIVATE_REFRESH_TARGETS,
     PRODUCTION_EVENTS,
     TARGETS,
@@ -160,6 +161,12 @@ class ProductionSupervisorTests(unittest.TestCase):
             PRIVATE_REFRESH_TARGETS["private-artmore-candidate"]["report"],
             "artmore_reconciliation_report.json",
         )
+
+    def test_private_overdue_can_use_non_p0_recovery_and_completeness_slots(self):
+        self.assertIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertIn("completeness", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertNotIn("fast", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertNotIn("unified", PRIVATE_REFRESH_IDLE_ACTIONS)
 
     def test_priority_contract_places_official_unified_backlog_before_fast(self):
         from pathlib import Path
