@@ -76,9 +76,9 @@ async def restore_region_filter(page, region: str, code: str) -> str:
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError(f"region opener missing while restoring {region}")
     radio = await wait_for_region_radio(page, region, code)
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await radio.check(force=True)
     all_radio = await wait_for_region_all(page, region, code)
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await all_radio.check(force=True)
     await page.wait_for_timeout(200)
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
@@ -122,9 +122,9 @@ async def establish_filter(page, region: str, code: str):
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError("region opener missing")
     radio = await wait_for_region_radio(page, region, code)
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await radio.check(force=True)
     all_radio = await wait_for_region_all(page, region, code)
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await all_radio.check(force=True)
     await page.wait_for_timeout(250)
     expected = f"2000-{code}"
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
