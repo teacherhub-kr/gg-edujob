@@ -34,8 +34,18 @@ def harden_seoul_registration_fallback():
     tail = tail.replace(unsafe_main, safe_main).replace(unsafe_post, safe_post)
     if 'registered = ds[-1] if ds else ""' in tail:
         raise SystemExit("Unsafe Seoul row-date fallback still present after reconciliation hardening")
-    if "plausible = [d for d in ds if d and d <= today_s]" not in tail:
-        raise SystemExit("Safe Seoul registration-date fallback marker missing")
+
+    # Newer Seoul coverage code can avoid heuristic row-date fallback entirely by
+    # recovering the registration date from the exact official SEN detail page.
+    # Treat that stricter path as already hardened instead of requiring the legacy
+    # plausible-date marker to remain forever.
+    exact_detail_safe = (
+        "exact_registration_from_detail" in text
+        and "def seoul_items" in text
+    )
+    legacy_safe = "plausible = [d for d in ds if d and d <= today_s]" in tail
+    if not (exact_detail_safe or legacy_safe):
+        raise SystemExit("Safe Seoul registration-date strategy missing")
     SUPPORT_CRAWLER.write_text(head + tail, encoding="utf-8")
 
 

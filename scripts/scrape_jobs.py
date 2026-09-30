@@ -506,19 +506,24 @@ def seoul_seq_from_row(tr):
 
 
 def seoul_detail_anchor_for_seq(tr, seq):
-    """Return the anchor that actually opens this SEN job_seq detail row."""
+    """Return the subject/detail anchor bound to this SEN job_seq row."""
     seq = str(seq or "")
     if not seq:
         return None
+    matched = []
     for a in tr.find_all("a"):
         raw = " ".join((a.get("href", "") or "", a.get("onclick", "") or ""))
         if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"job_seq\s*[=,'\"() ]+{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"JOV11\.do[^\n]*?(?:job_seq\D*)?{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
-    return None
+            matched.append(a)
+    # SEN can link both institution and subject cells to the same detail ID.
+    # The subject/detail cell is the final matching anchor in the observed rows.
+    return matched[-1] if matched else None
 
 
 def seoul_row_values(table, tr):
@@ -546,9 +551,11 @@ def seoul_row_values(table, tr):
     return vals
 
 def scrape_seoul_office(src):
+    from repair_seoul_support_metadata import exact_registration_from_detail
     office, board, regions = src["name"], src["boardUrl"], src.get("regions",[])
     print("SEOUL OFFICE", office)
     out, seen = [], set(); raw_rows=0; explicit_empty=False; got_table=False; consecutive_old_pages=0; parse_incomplete=0
+    detail_registration = {}
     page = 1
     while True:
         r = get(board, params={"pageIndex":page})
@@ -578,6 +585,12 @@ def scrape_seoul_office(src):
                     title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
                 if len(title)<3 or EXCLUDE_WORDS.search(title): continue
                 registered=date_norm(first_of(vals,["등록일","작성일"]))
+                if not registered and len(detail_registration)<40:
+                    school_for_detail=first_of(vals,["학교명","기관명","작성자"])
+                    if school_for_detail:
+                        detail_registration[seq]=exact_registration_from_detail(
+                            S,board,seq,school_for_detail,first_of(vals,["마감일","접수마감일"]))
+                        registered=detail_registration[seq]
                 if registered: page_dates.append(registered)
                 if registered and not recent_enough(registered,90): continue
                 page_recent+=1
@@ -598,7 +611,7 @@ def scrape_seoul_office(src):
                     "id":f"sen-office-{urlparse(board).hostname}-{seq}","province":"서울","school":school or office,"title":title,
                     "subject":subject,"region":region,"regions":regions,
                     "type":guess_type(raw_type+" "+title),"schoolLevel":normalize_school_level(raw_level,school,title),
-                    "applyStart":registered,"applyEnd":apply_end,"workStart":"","workEnd":"","registered":registered,"headcount":"",
+                    "applyStart":"","applyEnd":apply_end,"workStart":"","workEnd":"","registered":registered,"headcount":"",
                     "source":office,"checkedSources":[office],"sourceType":"교육지원청 개별 게시판","url":detail,"boardUrl":board,
                     "openMethod":"POST","openUrl":open_url,"openParams":{"job_seq":seq}
                 })
