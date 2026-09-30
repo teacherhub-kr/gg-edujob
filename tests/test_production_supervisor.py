@@ -179,6 +179,14 @@ class ProductionSupervisorTests(unittest.TestCase):
             source,
         )
 
+    def test_artmore_region_confirm_waits_for_visible_button(self):
+        from pathlib import Path
+
+        source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
+        self.assertIn("async def confirm_region_selection", source)
+        self.assertIn('await button.wait_for(state="visible", timeout=timeout_ms)', source)
+        self.assertGreaterEqual(source.count("await confirm_region_selection(page, region)"), 2)
+
     def test_artmore_pagination_does_not_stop_on_postfilter_row_count(self):
         from pathlib import Path
 
