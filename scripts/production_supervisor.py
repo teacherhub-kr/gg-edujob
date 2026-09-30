@@ -82,6 +82,12 @@ ARTMORE_PROMOTE_KEY = "private-artmore-promote"
 ARTMORE_PROMOTE_WORKFLOW = "promote-artmore.yml"
 PRIVATE_REFRESH_IDLE_ACTIONS = {
     "skip-healthy",
+    # When verified official production is already fresh enough that execution
+    # reaches the non-Fast audit branch, overdue private recruitment sources
+    # take precedence over non-P0 Recovery / routine Completeness work.
+    # Registry/P0/Fast/Unified gates are evaluated earlier and still win.
+    "recovery",
+    "completeness",
     "skip-recovery-circuit-open",
     "skip-recovery-backoff",
     "skip-completeness-circuit-open",
