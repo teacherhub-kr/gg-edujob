@@ -151,6 +151,16 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertTrue(private_refresh_due(now - timedelta(hours=7), now, 6))
         self.assertFalse(private_refresh_due(now - timedelta(hours=5), now, 6))
 
+    def test_artmore_candidate_freshness_uses_isolated_candidate_report(self):
+        self.assertEqual(
+            PRIVATE_REFRESH_TARGETS["private-artmore-candidate"]["report"],
+            "artmore_reconciliation_report.candidate.json",
+        )
+        self.assertNotEqual(
+            PRIVATE_REFRESH_TARGETS["private-artmore-candidate"]["report"],
+            "artmore_reconciliation_report.json",
+        )
+
     def test_priority_contract_places_official_unified_backlog_before_fast(self):
         from pathlib import Path
 
