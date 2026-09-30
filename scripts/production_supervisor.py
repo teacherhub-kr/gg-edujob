@@ -50,7 +50,11 @@ PRIVATE_REFRESH_TARGETS = {
     },
     "private-artmore-candidate": {
         "workflow": "update-artmore-candidate.yml",
-        "report": "artmore_reconciliation_report.json",
+        # Candidate freshness must follow the isolated candidate report, not the
+        # canonical ArtMore publication. Otherwise a healthy candidate refresh
+        # still looks stale until promotion succeeds, causing the supervisor to
+        # re-run the same candidate workflow and starve other private sources.
+        "report": "artmore_reconciliation_report.candidate.json",
         "maxAgeHours": 6,
     },
     "private-gonggonggangsa": {
