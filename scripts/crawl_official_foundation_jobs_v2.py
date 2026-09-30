@@ -190,7 +190,17 @@ def verify_board_surface(soup, foundation, response, candidates):
             continue
         unsupported.append(a)
     if unsupported:
-        raise RuntimeError("official recruitment rows use unsupported JavaScript detail links")
+        samples=[]
+        for a in unsupported[:3]:
+            samples.append({
+                "text": base.normalize_space(a.get_text(" ",strip=True))[:180],
+                "href": str(a.get("href") or "")[:240],
+                "onclick": str(a.get("onclick") or "")[:320],
+                "dataSeq": str(a.get("data-seq") or "")[:120],
+                "dataId": str(a.get("data-id") or "")[:120],
+                "dataPstSn": str(a.get("data-pstsn") or "")[:120],
+            })
+        raise RuntimeError(f"official recruitment rows use unsupported JavaScript detail links: {samples}")
     normalized=visible.replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
     fid=str(foundation.get("id") or "")
