@@ -179,6 +179,13 @@ class ProductionSupervisorTests(unittest.TestCase):
             source,
         )
 
+    def test_artmore_pagination_does_not_stop_on_postfilter_row_count(self):
+        from pathlib import Path
+
+        source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
+        self.assertNotIn("if len(rows) < 10:", source)
+        self.assertIn("if not rows or not new_ids:", source)
+
     def test_artmore_collector_waits_for_ajax_region_options(self):
         from pathlib import Path
 
