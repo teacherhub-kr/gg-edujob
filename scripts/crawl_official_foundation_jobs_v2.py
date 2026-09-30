@@ -192,6 +192,8 @@ def verify_board_surface(soup, foundation, response, candidates):
     if unsupported:
         samples=[]
         for a in unsupported[:3]:
+            parent=a.parent
+            grand=parent.parent if parent is not None else None
             samples.append({
                 "text": base.normalize_space(a.get_text(" ",strip=True))[:180],
                 "href": str(a.get("href") or "")[:240],
@@ -199,8 +201,24 @@ def verify_board_surface(soup, foundation, response, candidates):
                 "dataSeq": str(a.get("data-seq") or "")[:120],
                 "dataId": str(a.get("data-id") or "")[:120],
                 "dataPstSn": str(a.get("data-pstsn") or "")[:120],
+                "parentAttrs": dict(getattr(parent,"attrs",{}) or {}),
+                "grandAttrs": dict(getattr(grand,"attrs",{}) or {}),
+                "ancestorHtml": str(grand or parent or a)[:1200],
             })
-        raise RuntimeError(f"official recruitment rows use unsupported JavaScript detail links: {samples}")
+        script_hints=[]
+        for script in soup.find_all("script"):
+            raw=str(script.string or script.get_text(" ",strip=False) or "")
+            if not raw:
+                continue
+            low=raw.lower()
+            if any(token in low for token in ("reg_view","fnview","jsview","recruitdetail","notice_all_view","board_seq","pk_seq")):
+                script_hints.append(base.normalize_space(raw)[:1400])
+            if len(script_hints)>=3:
+                break
+        raise RuntimeError(
+            f"official recruitment rows use unsupported JavaScript detail links: {samples}; "
+            f"scriptHints={script_hints}"
+        )
     normalized=visible.replace(" ","")
     aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
     fid=str(foundation.get("id") or "")
