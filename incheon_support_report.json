@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-30 06:49:23 KST",
+  "generatedAt": "2026-09-30 13:47:57 KST",
   "lookbackDays": 90,
   "officeCount": 5,
   "completeOffices": 5,
   "merged": true,
-  "newlyAddedJobs": 246,
+  "newlyAddedJobs": 248,
   "crossSourceDuplicatesCollapsed": 76,
   "offices": [
     {
@@ -274,9 +274,9 @@
       "boards": [
         "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       ],
-      "count": 128,
-      "rawRows": 150,
-      "pagesScanned": 15,
+      "count": 129,
+      "rawRows": 160,
+      "pagesScanned": 16,
       "ok": true,
       "state": "complete",
       "message": "최근 90일 범위 공식 구인게시판 완전수집",
@@ -285,9 +285,9 @@
         {
           "url": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674",
           "collector": "seobu-verified-headless-chrome",
-          "pagesScanned": 15,
-          "rawRows": 150,
-          "recentRows": 128,
+          "pagesScanned": 16,
+          "rawRows": 160,
+          "recentRows": 129,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -295,7 +295,7 @@
           "naturalEnd": false,
           "explicitEmpty": false,
           "totalRowsHint": null,
-          "latestRegistered": "2026/09/29",
+          "latestRegistered": "2026/09/30",
           "schemaDiagnostic": [],
           "pagerDiagnostic": {},
           "pageProgress": [
@@ -303,120 +303,128 @@
               "requestedPage": 1,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159278&page=1&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159272&page=1&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159289&page=1&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159278&page=1&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 2,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159235&page=2&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159224&page=2&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159236&page=2&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159235&page=2&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 3,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159180&page=3&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159179&page=3&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159185&page=3&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159180&page=3&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 4,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159135&page=4&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159129&page=4&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159136&page=4&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159135&page=4&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 5,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159072&page=5&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159067&page=5&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159073&page=5&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159072&page=5&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 6,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159045&page=6&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159044&page=6&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159049&page=6&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159045&page=6&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 7,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158988&page=7&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158987&page=7&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158989&page=7&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158988&page=7&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 8,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158933&page=8&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158932&page=8&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158934&page=8&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158933&page=8&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 9,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158878&page=9&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158876&page=9&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158899&page=9&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158878&page=9&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 10,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158830&page=10&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158829&page=10&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158851&page=10&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158830&page=10&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 11,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158796&page=11&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158790&page=11&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158797&page=11&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158796&page=11&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 12,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158746&page=12&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158741&page=12&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158759&page=12&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158746&page=12&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 13,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158690&page=13&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158684&page=13&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158703&page=13&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158690&page=13&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 14,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158654&page=14&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158653&page=14&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158661&page=14&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158654&page=14&board_code=4674&g1="
               ]
             },
             {
               "requestedPage": 15,
               "rawRows": 10,
               "detailIdSample": [
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158621&page=15&board_code=4674&g1=",
-                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158618&page=15&board_code=4674&g1="
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158622&page=15&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158621&page=15&board_code=4674&g1="
+              ]
+            },
+            {
+              "requestedPage": 16,
+              "rawRows": 10,
+              "detailIdSample": [
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158574&page=16&board_code=4674&g1=",
+                "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158573&page=16&board_code=4674&g1="
               ]
             }
           ]
@@ -435,7 +443,7 @@
       "boards": [
         "https://ganghwa.ice.go.kr/open/recruiting.asp"
       ],
-      "count": 65,
+      "count": 66,
       "rawRows": 90,
       "pagesScanned": 9,
       "ok": true,
@@ -447,15 +455,15 @@
           "url": "https://ganghwa.ice.go.kr/open/recruiting.asp",
           "pagesScanned": 9,
           "rawRows": 90,
-          "recentRows": 65,
+          "recentRows": 66,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
           "crossedLookback": true,
           "naturalEnd": false,
           "explicitEmpty": false,
-          "totalRowsHint": 3141,
-          "latestRegistered": "2026/09/29",
+          "totalRowsHint": 3142,
+          "latestRegistered": "2026/09/30",
           "schemaDiagnostic": [
             {
               "page": "https://ganghwa.ice.go.kr/open/recruiting.asp",
@@ -511,11 +519,11 @@
                   "anchorCount": 1,
                   "anchorShapes": [
                     {
-                      "href": "javascript:act_view('/open/recruiting.asp','4223','view','N','4222');",
+                      "href": "javascript:act_view('/open/recruiting.asp','4224','view','N','4223');",
                       "onclick": "",
                       "dataId": "",
                       "attrs": {
-                        "href": "javascript:act_view('/open/recruiting.asp','4223','view','N','4222');"
+                        "href": "javascript:act_view('/open/recruiting.asp','4224','view','N','4223');"
                       },
                       "parentAttrs": {}
                     }
@@ -543,11 +551,11 @@
                   "anchorCount": 1,
                   "anchorShapes": [
                     {
-                      "href": "javascript:act_view('/open/recruiting.asp','4222','view','4223','4221');",
+                      "href": "javascript:act_view('/open/recruiting.asp','4223','view','4224','4222');",
                       "onclick": "",
                       "dataId": "",
                       "attrs": {
-                        "href": "javascript:act_view('/open/recruiting.asp','4222','view','4223','4221');"
+                        "href": "javascript:act_view('/open/recruiting.asp','4223','view','4224','4222');"
                       },
                       "parentAttrs": {}
                     }
@@ -694,7 +702,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20260930064935",
+              "/js/include.js?v=20260930134751",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -710,8 +718,8 @@
               "redirectStatuses": [],
               "observedPage": "1",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4223&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4222",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4222&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4223&nNum=4221"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4224&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4223",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4223&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4224&nNum=4222"
               ]
             },
             {
@@ -721,8 +729,8 @@
               "redirectStatuses": [],
               "observedPage": "2",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4213&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4214&nNum=4212",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4212&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4213&nNum=4211"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4214&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4215&nNum=4213",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4213&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4214&nNum=4212"
               ]
             },
             {
@@ -732,8 +740,8 @@
               "redirectStatuses": [],
               "observedPage": "3",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4201&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4202&nNum=4200",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4200&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4201&nNum=4199"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4202&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4203&nNum=4201",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4201&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4202&nNum=4200"
               ]
             },
             {
@@ -743,8 +751,8 @@
               "redirectStatuses": [],
               "observedPage": "4",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4191&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4192&nNum=4190",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4190&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4191&nNum=4189"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4192&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4193&nNum=4191",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4191&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4192&nNum=4190"
               ]
             },
             {
@@ -754,8 +762,8 @@
               "redirectStatuses": [],
               "observedPage": "5",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4180&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4181&nNum=4179",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4179&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4180&nNum=4178"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4181&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4182&nNum=4180",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4180&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4181&nNum=4179"
               ]
             },
             {
@@ -765,8 +773,8 @@
               "redirectStatuses": [],
               "observedPage": "6",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4170&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4171&nNum=4169",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4169&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4170&nNum=4168"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4171&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4172&nNum=4170",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4170&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4171&nNum=4169"
               ]
             },
             {
@@ -776,8 +784,8 @@
               "redirectStatuses": [],
               "observedPage": "7",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4160&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4161&nNum=4159",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4159&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4160&nNum=4158"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4161&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4162&nNum=4160",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4160&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4161&nNum=4159"
               ]
             },
             {
@@ -787,8 +795,8 @@
               "redirectStatuses": [],
               "observedPage": "8",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4150&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4151&nNum=4149",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4149&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4150&nNum=4148"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4151&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4152&nNum=4150",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4150&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4151&nNum=4149"
               ]
             },
             {
@@ -798,8 +806,8 @@
               "redirectStatuses": [],
               "observedPage": "9",
               "detailIdSample": [
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4140&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4141&nNum=4139",
-                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4139&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4140&nNum=4138"
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4141&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4142&nNum=4140",
+                "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4140&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4141&nNum=4139"
               ]
             }
           ]
@@ -872,6 +880,14 @@
     },
     {
       "source": "인천서부교육지원청",
+      "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159289",
+      "school": "인천청람초등학교",
+      "title": "인천청람초등학교 조리실무사 채용 2차 공고[긴급]",
+      "registered": "2026/09/30",
+      "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159289&page=1&board_code=4674&g1="
+    },
+    {
+      "source": "인천서부교육지원청",
       "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159278",
       "school": "인천해원초등학교",
       "title": "인천해원초등학교 특수교육대상학생 교육(돌봄)활동 보조인력(자원봉사자) 모집 공고",
@@ -887,12 +903,12 @@
       "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159272&page=1&board_code=4674&g1="
     },
     {
-      "source": "인천서부교육지원청",
-      "sourceIdentity": "ice-support:seobu.ice.go.kr:board_idx:159271",
-      "school": "인천가석초등학교",
-      "title": "2026학년도 인천가석초등학교 특수교육대상학생 보조인력(자원봉사자) 위촉 재공고",
-      "registered": "2026/09/28",
-      "url": "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159271&page=1&board_code=4674&g1="
+      "source": "인천강화교육지원청",
+      "sourceIdentity": "ice-support:ganghwa.ice.go.kr:num:4224",
+      "school": "강화초등학교",
+      "title": "[긴급] 2026학년도 강화초등학교 특수학급 자원봉사자 위촉 공고 NEW",
+      "registered": "2026/09/30",
+      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4224&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4223"
     },
     {
       "source": "인천강화교육지원청",
@@ -900,7 +916,7 @@
       "school": "송해초등학교",
       "title": "[긴급]2026학년도 2학기 송해초등학교 급식배식원 채용 재공고 NEW",
       "registered": "2026/09/29",
-      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4223&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4222"
+      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4223&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4224&nNum=4222"
     },
     {
       "source": "인천강화교육지원청",
@@ -909,14 +925,6 @@
       "title": "2026학년도 초등 방과후·돌봄 개인위탁 외부강사 공고(보조강사) NEW",
       "registered": "2026/09/28",
       "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4222&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4223&nNum=4221"
-    },
-    {
-      "source": "인천강화교육지원청",
-      "sourceIdentity": "ice-support:ganghwa.ice.go.kr:num:4221",
-      "school": "명신초등학교",
-      "title": "2학기 현장체험학습 보조인력 구인",
-      "registered": "2026/09/23",
-      "url": "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4221&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4222&nNum=4220"
     }
   ]
 }
