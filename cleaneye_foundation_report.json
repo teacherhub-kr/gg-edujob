@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T19:26:56+09:00",
+  "generatedAt": "2026-10-01T07:57:21+09:00",
   "source": "클린아이 잡플러스",
   "role": "public-foundation-safety-source",
   "policy": "cleaneye-exact-institution-current-v1",
@@ -9,20 +9,16 @@
   "missingAfterCount": 0,
   "registryInstitutions": 55,
   "institutionsQueried": 55,
-  "currentJobs": 17,
-  "institutionsWithCurrentJobs": 11,
+  "currentJobs": 11,
+  "institutionsWithCurrentJobs": 7,
   "institutionIdsWithCurrentJobs": [
-    "gyeonggi:gimpo",
     "gyeonggi:hanam",
     "gyeonggi:hwaseong",
-    "gyeonggi:paju",
     "gyeonggi:seongnam",
-    "gyeonggi:yangpyeong",
     "incheon:bupyeong",
     "seoul:gangnam",
-    "seoul:junggu",
-    "seoul:nowon",
-    "seoul:songpa"
+    "seoul:guro",
+    "seoul:nowon"
   ],
   "institutions": [
     {
@@ -87,13 +83,13 @@
     },
     {
       "query": "구로문화재단",
-      "apiRows": 93,
-      "exactRows": 93,
+      "apiRows": 94,
+      "exactRows": 94,
       "pages": 10,
-      "reportedCount": 93,
+      "reportedCount": 94,
       "foundationRegistryId": "seoul:guro",
       "foundationName": "구로문화재단",
-      "currentRows": 0
+      "currentRows": 1
     },
     {
       "query": "금천문화재단",
@@ -193,7 +189,7 @@
       "reportedCount": 110,
       "foundationRegistryId": "seoul:songpa",
       "foundationName": "송파문화재단",
-      "currentRows": 1
+      "currentRows": 0
     },
     {
       "query": "양천문화재단",
@@ -243,7 +239,7 @@
       "reportedCount": 118,
       "foundationRegistryId": "seoul:junggu",
       "foundationName": "중구문화재단",
-      "currentRows": 1
+      "currentRows": 0
     },
     {
       "query": "중랑문화재단",
@@ -343,7 +339,7 @@
       "reportedCount": 58,
       "foundationRegistryId": "gyeonggi:gimpo",
       "foundationName": "김포문화재단",
-      "currentRows": 3
+      "currentRows": 0
     },
     {
       "query": "남양주문화재단",
@@ -413,7 +409,7 @@
       "reportedCount": 26,
       "foundationRegistryId": "gyeonggi:yangpyeong",
       "foundationName": "양평문화재단",
-      "currentRows": 1
+      "currentRows": 0
     },
     {
       "query": "여주세종문화관광재단",
@@ -473,7 +469,7 @@
       "reportedCount": 11,
       "foundationRegistryId": "gyeonggi:paju",
       "foundationName": "파주문화재단",
-      "currentRows": 1
+      "currentRows": 0
     },
     {
       "query": "평택시문화재단",
@@ -507,10 +503,10 @@
     },
     {
       "query": "화성시문화관광재단",
-      "apiRows": 370,
-      "exactRows": 370,
-      "pages": 37,
-      "reportedCount": 370,
+      "apiRows": 371,
+      "exactRows": 371,
+      "pages": 38,
+      "reportedCount": 371,
       "foundationRegistryId": "gyeonggi:hwaseong",
       "foundationName": "화성시문화관광재단",
       "currentRows": 2
