@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-01T07:03:26+09:00",
+  "generatedAt": "2026-10-01T07:45:27+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4122,
+  "privateJobs": 4264,
   "officialJobs": 20238,
   "privateSources": {
     "lessoninfo": {
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 47
+      "canonicalCount": 189
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -81,10 +81,10 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 47,
+      "jobs": 189,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 0
+      "officialGapCandidates": 3
     },
     "gonggonggangsa": {
       "jobs": 25,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 37,
+  "officialGapCandidates": 40,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -530,6 +530,42 @@
       ],
       "registered": "2026-03-07",
       "url": "https://www.jobteacher.kr/employ/detail/20162",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:94657",
+      "privateTitle": "진행중 발달장애인 주간, 방과후 활동 서비스 제공인력으로...",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-08-19",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94657",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95140",
+      "privateTitle": "진행중 다지기 에듀짐 장애인 주간&방과후 센터 사...",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-09-28",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95140",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:94583",
+      "privateTitle": "진행중 [고양문화재단] 어울림문화학교 강사 상시 모집",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-08-14",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

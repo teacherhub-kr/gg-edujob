@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T07:03:29+09:00",
+  "generatedAt": "2026-10-01T07:45:29+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -29,19 +29,8 @@
   },
   "coverageGapCount": 0,
   "coverageGaps": [],
-  "discoveryOnlyGapCount": 14,
+  "discoveryOnlyGapCount": 6,
   "discoveryOnlyGaps": [
-    {
-      "foundationRegistryId": "seoul:metropolitan",
-      "foundationName": "서울문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95133",
-      "title": "서울문화재단 문화예술 지원 업무 보조 구인(서울무용센터_명지대 인근)",
-      "registered": "2026-09-28",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95133"
-    },
     {
       "foundationRegistryId": "seoul:metropolitan",
       "foundationName": "서울문화재단",
@@ -65,50 +54,6 @@
       "url": null
     },
     {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95127",
-      "title": "[송파문화재단] 일일 하우스어셔 모집",
-      "registered": "2026-09-28",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95127"
-    },
-    {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95126",
-      "title": "[송파문화재단] 일일 티켓매니저 모집",
-      "registered": "2026-09-28",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95126"
-    },
-    {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94887",
-      "title": "[송파문화재단] 일일 하우스어셔 모집",
-      "registered": "2026-09-07",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:songpa",
-      "foundationName": "송파문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:94886",
-      "title": "[송파문화재단] 일일 티켓매니저 모집",
-      "registered": "2026-09-07",
-      "applyEnd": "",
-      "url": null
-    },
-    {
       "foundationRegistryId": "seoul:yangcheon",
       "foundationName": "양천문화재단",
       "source": "lessoninfo-discovery",
@@ -118,17 +63,6 @@
       "registered": "2026-09-04",
       "applyEnd": "",
       "url": null
-    },
-    {
-      "foundationRegistryId": "seoul:jungnang",
-      "foundationName": "중랑문화재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95107",
-      "title": "[중랑문화재단] 2026년 3기 청년 일경험 프로그램 참여자 모집",
-      "registered": "2026-09-23",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95107"
     },
     {
       "foundationRegistryId": "gyeonggi:yangpyeong",
@@ -149,28 +83,6 @@
       "sourceIdentity": "culture:id:94905",
       "title": "2026년 (재)용인문화재단 6차 기간제근로자(휴직대체인력) 채용 공고",
       "registered": "2026-09-08",
-      "applyEnd": "",
-      "url": null
-    },
-    {
-      "foundationRegistryId": "gyeonggi:hwaseong",
-      "foundationName": "화성시문화관광재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95137",
-      "title": "2026년 제3회 (재)화성시문화관광재단 공연장 안내원 모집",
-      "registered": "2026-09-28",
-      "applyEnd": "",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95137"
-    },
-    {
-      "foundationRegistryId": "gyeonggi:hwaseong",
-      "foundationName": "화성시문화관광재단",
-      "source": "lessoninfo-discovery",
-      "strength": "discovery-only",
-      "sourceIdentity": "culture:id:95030",
-      "title": "2026년 제3회 (재)화성시문화관광재단 공연장 안내원 모집",
-      "registered": "2026-09-17",
       "applyEnd": "",
       "url": null
     },
