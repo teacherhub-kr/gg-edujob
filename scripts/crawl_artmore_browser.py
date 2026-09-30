@@ -71,14 +71,31 @@ async def wait_for_region_all(page, region: str, code: str, timeout_ms: int = 10
     return all_radio
 
 
+async def select_region_all(page, region: str, code: str, attempts: int = 3):
+    last_exc = None
+    for attempt in range(1, attempts + 1):
+        radio = await wait_for_region_radio(page, region, code)
+        if await radio.is_checked():
+            await radio.evaluate("e=>{e.checked=false}")
+        await radio.check(force=True)
+        try:
+            all_radio = await wait_for_region_all(page, region, code, timeout_ms=6000)
+            await all_radio.check(force=True)
+            return all_radio
+        except Exception as exc:
+            last_exc = exc
+            if attempt < attempts:
+                await page.wait_for_timeout(500 * attempt)
+    raise RuntimeError(
+        f"region child ajax failed after {attempts} attempts for {region}/{code}: {last_exc}"
+    )
+
+
 async def restore_region_filter(page, region: str, code: str) -> str:
     expected = f"2000-{code}"
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError(f"region opener missing while restoring {region}")
-    radio = await wait_for_region_radio(page, region, code)
-    await radio.check(force=True)
-    all_radio = await wait_for_region_all(page, region, code)
-    await all_radio.check(force=True)
+    await select_region_all(page, region, code)
     await page.wait_for_timeout(200)
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
@@ -121,10 +138,7 @@ async def establish_filter(page, region: str, code: str):
         raise RuntimeError("human-check/block page detected")
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError("region opener missing")
-    radio = await wait_for_region_radio(page, region, code)
-    await radio.check(force=True)
-    all_radio = await wait_for_region_all(page, region, code)
-    await all_radio.check(force=True)
+    await select_region_all(page, region, code)
     await page.wait_for_timeout(250)
     expected = f"2000-{code}"
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
