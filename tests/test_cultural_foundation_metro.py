@@ -383,6 +383,30 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(dated, 0)
         self.assertTrue(crawler.verify_board_surface(soup, foundation, response, candidates))
 
+    def test_named_municipal_javascript_detail_contracts_use_second_identifier(self):
+        goyang = BeautifulSoup(
+            """<a href="#" onclick="fnView('1082','20260903101529704','/jobs','-1','1','');">(재)고양문화재단 비상임감사 공개모집공고</a>""",
+            "html.parser",
+        ).find("a")
+        resolved = crawler.official_js_detail_url(
+            goyang,
+            "https://www.goyang.go.kr/jobs/user/bbs/BD_selectBbsList.do?q_bbsCode=1082",
+        )
+        self.assertIn("q_bbsCode=1082", resolved)
+        self.assertIn("q_bbscttSn=20260903101529704", resolved)
+
+        paju = BeautifulSoup(
+            """<a href="javascript:void(0)" onclick="jsView('1022', '20260930094802200', 'N', 'Y'); return false;">파주 채용 공고</a>""",
+            "html.parser",
+        ).find("a")
+        resolved = crawler.official_js_detail_url(
+            paju,
+            "https://www.paju.go.kr/user/board/BD_board.list.do?bbsCd=1022&q_ctgCd=4064",
+        )
+        self.assertIn("bbsCd=1022", resolved)
+        self.assertIn("seq=20260930094802200", resolved)
+        self.assertIn("q_ctgCd=4064", resolved)
+
     def test_known_javascript_detail_contracts_parse_without_regex_errors(self):
         cases = [
             (
