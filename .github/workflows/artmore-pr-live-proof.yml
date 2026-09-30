@@ -60,6 +60,24 @@ jobs:
               'traversalComplete': r.get('traversalComplete')
           }, ensure_ascii=False, indent=2))
           PY
+      - name: Validate all candidate detail links in isolated runner
+        run: |
+          python scripts/promote_artmore_candidate.py
+          python - <<'PY'
+          import json, pathlib
+          r=json.loads(pathlib.Path('artmore_detail_link_report.candidate.json').read_text(encoding='utf-8'))
+          if r.get('healthy') is not True or r.get('detailCoverageComplete') is not True:
+              raise SystemExit(f'detail-link proof failed: {r.get("detailErrorCount")} errors')
+          if int(r.get('candidateCount') or 0) != int(r.get('verifiedCount') or -1):
+              raise SystemExit(f'detail coverage mismatch: {r}')
+          print(json.dumps({
+              'candidateCount': r.get('candidateCount'),
+              'verifiedCount': r.get('verifiedCount'),
+              'detailErrorCount': r.get('detailErrorCount'),
+              'abnormalDrop': r.get('abnormalDrop'),
+              'previousCanonicalCount': r.get('previousCanonicalCount')
+          }, ensure_ascii=False, indent=2))
+          PY
       - name: Upload read-only candidate evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -70,5 +88,6 @@ jobs:
             artmore_source_id_ledger.candidate.json
             artmore_reconciliation_report.candidate.json
             artmore_collection_state.candidate.json
+            artmore_detail_link_report.candidate.json
           if-no-files-found: warn
           retention-days: 7
