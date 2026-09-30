@@ -47,6 +47,18 @@ async def visible_click(loc):
     return False
 
 
+async def wait_for_region_radio(page, region: str, code: str, timeout_ms: int = 10000):
+    radio = page.locator(f"#area_level_{code}")
+    try:
+        await radio.wait_for(state="attached", timeout=timeout_ms)
+    except Exception as exc:
+        top_count = await page.locator('[id^="area_level_"]').count()
+        raise RuntimeError(
+            f"region radio missing after popup load: {region}/{code}; top_count={top_count}"
+        ) from exc
+    return radio
+
+
 async def wait_for_region_all(page, region: str, code: str, timeout_ms: int = 10000):
     all_radio = page.locator("#all_3")
     try:
@@ -63,10 +75,7 @@ async def restore_region_filter(page, region: str, code: str) -> str:
     expected = f"2000-{code}"
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError(f"region opener missing while restoring {region}")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing while restoring: {region}/{code}")
+    radio = await wait_for_region_radio(page, region, code)
     await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
     all_radio = await wait_for_region_all(page, region, code)
     await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
@@ -112,10 +121,7 @@ async def establish_filter(page, region: str, code: str):
         raise RuntimeError("human-check/block page detected")
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError("region opener missing")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing: {region}/{code}")
+    radio = await wait_for_region_radio(page, region, code)
     await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
     all_radio = await wait_for_region_all(page, region, code)
     await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
