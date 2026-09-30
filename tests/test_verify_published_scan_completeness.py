@@ -73,6 +73,30 @@ class PublishedScanCompletenessTests(unittest.TestCase):
         self.assertEqual(result["publishedScan"]["missingFromPublishedJobs"], 0)
         self.assertEqual(result["liveAudit"]["idsAbsentFromPublishedJobs"], 1)
 
+    def test_merged_official_occurrence_counts_as_represented(self):
+        central = "ice-central:3376871"
+        support = "ice-support:bukbu.ice.go.kr:data_idx:BD0000008094"
+        published_ids = {central, support}
+        merged = job(central)
+        merged["sourceIdentities"] = [central, support]
+        published_jobs = {
+            "jobs": [merged] * 100,
+            "sourceReconciliation": {
+                "officialIdCount": 2,
+                "missingAfter": 0,
+                "reconciledSources": 2,
+                "totalSources": 2,
+            },
+        }
+        result = verify(
+            published_jobs,
+            ledger(published_ids),
+            report(published_ids),
+            ledger(published_ids, generated="2026-09-23 13:00:00 KST"),
+            report(published_ids, generated="2026-09-23 13:00:00 KST"),
+            expected_sources=2,
+        )
+        self.assertEqual(result["publishedScan"]["missingFromPublishedJobs"], 0)
     def test_id_present_in_published_ledger_but_missing_from_jobs_fails(self):
         published_ids = {"goe-central:1", "ice-central:10"}
         published_jobs = {
