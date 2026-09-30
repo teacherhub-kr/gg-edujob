@@ -1,0 +1,72 @@
+name: ArtMore direct-contract live proof
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/crawl_artmore_browser.py'
+      - 'scripts/crawl_artmore_browser_v2.py'
+      - '.github/workflows/artmore-direct-contract-live-proof.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: artmore-direct-contract-live-proof-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  live-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+      - name: Syntax check
+        run: python -m py_compile scripts/crawl_artmore_browser.py scripts/crawl_artmore_browser_v2.py
+      - name: Collect read-only ArtMore candidate
+        env:
+          ARTMORE_MAX_PAGES: '250'
+        run: python scripts/crawl_artmore_browser_v2.py
+      - name: Validate full metro traversal
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          r=json.loads(pathlib.Path('artmore_reconciliation_report.candidate.json').read_text(encoding='utf-8'))
+          jobs=json.loads(pathlib.Path('artmore_jobs.candidate.json').read_text(encoding='utf-8')).get('jobs') or []
+          reports=r.get('sourceReports') or []
+          if r.get('healthy') is not True or r.get('traversalComplete') is not True:
+              raise SystemExit(f'unhealthy candidate: {r.get("errors")}')
+          if int(r.get('missingAfterCount') or 0) != 0:
+              raise SystemExit(f'missingAfter={r.get("missingAfterCount")}')
+          if {x.get('region') for x in reports} != {'서울','경기'}:
+              raise SystemExit(f'incomplete metro proof: {reports}')
+          if any(int(x.get('ids') or 0) <= 0 for x in reports):
+              raise SystemExit(f'zero region IDs: {reports}')
+          if not jobs:
+              raise SystemExit('zero jobs')
+          print(json.dumps({
+              'candidateJobs':len(jobs),
+              'regions':[{'region':x.get('region'),'ids':x.get('ids'),'pagesVisited':x.get('pagesVisited')} for x in reports],
+              'healthy':r.get('healthy'),
+              'traversalComplete':r.get('traversalComplete'),
+              'missingAfterCount':r.get('missingAfterCount'),
+          },ensure_ascii=False,indent=2))
+          PY
+      - name: Upload read-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artmore-direct-contract-${{ github.run_id }}
+          path: |
+            artmore_jobs.candidate.json
+            artmore_source_id_ledger.candidate.json
+            artmore_reconciliation_report.candidate.json
+            artmore_collection_state.candidate.json
+          if-no-files-found: warn
+          retention-days: 7
