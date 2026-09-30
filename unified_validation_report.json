@@ -1,11 +1,10 @@
 {
-  "generatedAt": "2026-10-01T03:21:35+09:00",
+  "generatedAt": "2026-10-01T04:14:50+09:00",
   "healthy": true,
-  "total": 7249,
+  "total": 7050,
   "official": 2980,
-  "privateDisplayed": 4269,
+  "privateDisplayed": 4070,
   "enabledPrivateSources": [
-    "lessoninfo",
     "cleaneye",
     "jobteacher",
     "artmore",
@@ -13,10 +12,12 @@
     "seekle",
     "boramyc"
   ],
-  "degradedPrivateSources": [],
-  "privateStableIds": 4276,
-  "privateRepresentedDirectly": 4269,
-  "privateRepresentedByOfficial": 7,
+  "degradedPrivateSources": [
+    "lessoninfo"
+  ],
+  "privateStableIds": 4070,
+  "privateRepresentedDirectly": 4070,
+  "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
     "lessoninfo": 0,
@@ -44,254 +45,12 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 166,
-  "verifiedLessoninfoCultureLinkExamples": [
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95122",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95122",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95120",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95120",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95119",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95119",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95117",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95117",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95116",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95116",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95114",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95114",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95109",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95109",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95107",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95107",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95106",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95106",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95103",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95103",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95102",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95102",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95101",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95101",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95100",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95100",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95098",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95098",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95095",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95095",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95094",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95094",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95093",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95093",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95090",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95090",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95089",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95089",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95091",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95091",
-      "resolvedUrlType": "official"
-    }
-  ],
+  "verifiedLessoninfoCultureLinks": 0,
+  "verifiedLessoninfoCultureLinkExamples": [],
   "failClosedLessoninfoCultureLinks": 0,
   "failClosedLessoninfoCultureLinkExamples": [],
-  "projectedVerifiedLessoninfoCultureLinks": 166,
-  "projectedVerifiedLessoninfoCultureLinkExamples": [
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95122",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95122",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95120",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95120",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95119",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95119",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95117",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95117",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95116",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95116",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95114",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95114",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95109",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95109",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95107",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95107",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95106",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95106",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95103",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95103",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95102",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95102",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95101",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95101",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95100",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95100",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95098",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95098",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95095",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95095",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95094",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95094",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95093",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95093",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95090",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95090",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95089",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95089",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95091",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95091",
-      "resolvedUrlType": "official"
-    }
-  ],
+  "projectedVerifiedLessoninfoCultureLinks": 0,
+  "projectedVerifiedLessoninfoCultureLinkExamples": [],
   "projectedNonDirectPrivateLinks": 0,
   "projectedNonDirectPrivateLinkExamples": [],
   "projectedFailClosedLessoninfoCultureLinks": 0,
@@ -303,8 +62,8 @@
   "badCrossSourceAliasEvidence": 0,
   "sourceValidationPopulations": {
     "lessoninfo": {
-      "rawCount": 212,
-      "currentCount": 206
+      "rawCount": 213,
+      "currentCount": 0
     },
     "cleaneye": {
       "rawCount": 17,
@@ -332,5 +91,7 @@
     }
   },
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "레슨인포 is degraded and excluded from this unified publication"
+  ]
 }
