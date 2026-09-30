@@ -137,32 +137,69 @@ async def enable_current_only(page):
 
 
 async def establish_filter(page, region: str, code: str):
+    """Submit ArtMore's verified search contract directly.
+
+    The public region popup hydrates child controls through flaky Ajax. The server
+    contract itself is stable: array_area_type=2000-<region> plus
+    exclude_end_yn=Y. Submit that exact form payload, then verify the returned
+    page preserved both values before any rows are accepted.
+    """
+    expected = f"2000-{code}"
     await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
-    await page.wait_for_timeout(700)
+    await page.wait_for_timeout(500)
     body = await page.locator("body").inner_text()
     if BLOCK_RE.search(body):
         raise RuntimeError("human-check/block page detected")
-    if not await visible_click(page.get_by_role("button", name="지역 선택")):
-        raise RuntimeError("region opener missing")
-    await select_region_all(page, region, code)
-    await page.wait_for_timeout(250)
-    expected = f"2000-{code}"
-    vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        raise RuntimeError(f"area selector not staged: {expected}; got={vals}")
-    await confirm_region_selection(page, region)
-    await page.wait_for_timeout(350)
-    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        raise RuntimeError(f"area selector not committed: {expected}; got={vals}")
-    await enable_current_only(page)
-    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        await restore_region_filter(page, region, code)
-        if await page.locator("#exclude_end_yn").input_value() != "Y":
-            raise RuntimeError(f"current-only state lost while restoring {region} filter")
-    return expected
 
+    page_input = page.locator("#page")
+    if not await page_input.count():
+        raise RuntimeError("ArtMore search page input missing")
+    form = page_input.locator("xpath=ancestor::form[1]")
+    if not await form.count():
+        raise RuntimeError("ArtMore search form missing")
+
+    await page.evaluate(
+        """expected=>{
+          const pageInput=document.querySelector('#page');
+          const form=pageInput?.form;
+          if(!form) throw new Error('search form missing');
+          form.querySelectorAll('input[name="array_area_type"]').forEach(e=>e.remove());
+          const area=document.createElement('input');
+          area.type='hidden';
+          area.name='array_area_type';
+          area.value=expected;
+          form.appendChild(area);
+
+          let current=form.querySelector('input[name="exclude_end_yn"]');
+          if(!current){
+            current=document.createElement('input');
+            current.type='hidden';
+            current.name='exclude_end_yn';
+            current.id='exclude_end_yn';
+            form.appendChild(current);
+          }
+          current.value='Y';
+          pageInput.value='1';
+        }""",
+        expected,
+    )
+    try:
+        async with page.expect_navigation(wait_until="domcontentloaded", timeout=60000):
+            await form.evaluate("f=>f.submit()")
+    except Exception as exc:
+        raise RuntimeError(f"direct region contract submit failed for {region}/{code}") from exc
+    await page.wait_for_timeout(500)
+
+    body = await page.locator("body").inner_text()
+    if BLOCK_RE.search(body):
+        raise RuntimeError("human-check/block page detected after region submit")
+    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
+    current = await page.locator("#exclude_end_yn").input_value() if await page.locator("#exclude_end_yn").count() else ""
+    if expected not in vals or current != "Y":
+        raise RuntimeError(
+            f"direct region contract not preserved for {region}: area={vals} current={current}"
+        )
+    return expected
 
 async def page_rows(page, region: str):
     anchors = page.locator('a[href*="rec_idx="]')

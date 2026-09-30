@@ -179,13 +179,16 @@ class ProductionSupervisorTests(unittest.TestCase):
             source,
         )
 
-    def test_artmore_region_confirm_waits_for_visible_button(self):
+    def test_artmore_collector_submits_verified_region_contract_directly(self):
         from pathlib import Path
 
         source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
-        self.assertIn("async def confirm_region_selection", source)
-        self.assertIn('await button.wait_for(state="visible", timeout=timeout_ms)', source)
-        self.assertGreaterEqual(source.count("await confirm_region_selection(page, region)"), 2)
+        block = source.split("async def establish_filter", 1)[1].split("async def page_rows", 1)[0]
+        self.assertIn("array_area_type", block)
+        self.assertIn("exclude_end_yn", block)
+        self.assertIn("form.evaluate(\"f=>f.submit()\")", block)
+        self.assertIn("direct region contract not preserved", block)
+        self.assertNotIn('get_by_role("button", name="지역 선택")', block)
 
     def test_artmore_pagination_does_not_stop_on_postfilter_row_count(self):
         from pathlib import Path
@@ -193,19 +196,6 @@ class ProductionSupervisorTests(unittest.TestCase):
         source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
         self.assertNotIn("if len(rows) < 10:", source)
         self.assertIn("if not rows or not new_ids:", source)
-
-    def test_artmore_collector_waits_for_ajax_region_options(self):
-        from pathlib import Path
-
-        source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
-        self.assertIn("async def wait_for_region_all", source)
-        self.assertIn("async def select_region_all", source)
-        self.assertIn('await all_radio.wait_for(state="attached", timeout=timeout_ms)', source)
-        self.assertIn("attempts: int = 3", source)
-        self.assertGreaterEqual(
-            source.count("await select_region_all(page, region, code)"),
-            2,
-        )
 
     def test_private_overdue_can_use_non_p0_recovery_and_completeness_slots(self):
         self.assertIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
