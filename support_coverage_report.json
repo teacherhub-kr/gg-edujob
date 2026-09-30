@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T09:53:18.002105+00:00",
+  "generatedAt": "2026-09-30T11:09:20.308999+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6084,
-    "gyeonggiTotal": 6084,
-    "seoulExact": 397,
-    "seoulTotal": 397
+    "gyeonggiExact": 6085,
+    "gyeonggiTotal": 6085,
+    "seoulExact": 305,
+    "seoulTotal": 305
   },
   "provinces": {
     "gyeonggi": {
@@ -284,7 +284,7 @@
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
           ],
-          "count": 606,
+          "count": 607,
           "rawRows": 770,
           "ok": true,
           "state": "complete",
@@ -295,7 +295,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "pagesScanned": 53,
               "rawRows": 530,
-              "recentRows": 508,
+              "recentRows": 509,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -341,7 +341,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 508,
+              "representativeStableIdCount": 509,
               "ignoredAsStaleAlias": true
             },
             {
@@ -358,7 +358,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 508,
+              "representativeStableIdCount": 509,
               "ignoredAsStaleAlias": true
             },
             {
@@ -2501,7 +2501,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20260930181552",
+                  "/js/include.js?v=20260930192936",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
