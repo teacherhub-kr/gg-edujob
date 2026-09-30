@@ -75,12 +75,10 @@ async def select_region_all(page, region: str, code: str, attempts: int = 3):
     last_exc = None
     for attempt in range(1, attempts + 1):
         radio = await wait_for_region_radio(page, region, code)
-        if await radio.is_checked():
-            await radio.evaluate("e=>{e.checked=false}")
-        await radio.check(force=True)
+        await radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
         try:
             all_radio = await wait_for_region_all(page, region, code, timeout_ms=6000)
-            await all_radio.check(force=True)
+            await all_radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
             return all_radio
         except Exception as exc:
             last_exc = exc
