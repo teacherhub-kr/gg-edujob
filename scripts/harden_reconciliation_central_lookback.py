@@ -34,7 +34,12 @@ def harden_seoul_registration_fallback():
     tail = tail.replace(unsafe_main, safe_main).replace(unsafe_post, safe_post)
     if 'registered = ds[-1] if ds else ""' in tail:
         raise SystemExit("Unsafe Seoul row-date fallback still present after reconciliation hardening")
-    if "plausible = [d for d in ds if d and d <= today_s]" not in tail:
+    explicit_helper = (
+        "def seoul_items(soup" in head
+        and 'registered = date_norm(first_of(vals, ["등록일", "작성일"]))' in head
+        and "if not title or not registered" in head
+    )
+    if "plausible = [d for d in ds if d and d <= today_s]" not in tail and not explicit_helper:
         raise SystemExit("Safe Seoul registration-date fallback marker missing")
     SUPPORT_CRAWLER.write_text(head + tail, encoding="utf-8")
 

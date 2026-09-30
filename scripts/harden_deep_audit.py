@@ -72,10 +72,18 @@ for marker in (
     "naturalEnd",
     "silently skip the current page",
     "any pagination request failure makes traversal incomplete",
-    "plausible = [d for d in ds if d and d <= today_s]",
 ):
     if marker not in s:
         raise SystemExit(f"Deep audit hardening incomplete: {marker}")
+if not (
+    "plausible = [d for d in ds if d and d <= today_s]" in s
+    or (
+        "def seoul_items(soup" in s
+        and 'registered = date_norm(first_of(vals, ["등록일", "작성일"]))' in s
+        and "if not title or not registered" in s
+    )
+):
+    raise SystemExit("Deep audit Seoul registration parsing incomplete")
 CRAWLER.write_text(s, encoding="utf-8")
 
 v = VERIFY.read_text(encoding="utf-8")
