@@ -264,8 +264,6 @@ async def collect_surface(browser, region: str, code: str):
                 if r["stableId"] not in seen_ids:
                     seen_ids.add(r["stableId"])
                     out.append(r)
-            if len(rows) < 10:
-                break
         if len(page_reports) >= max_pages and page_reports[-1].get("newIdCount"):
             raise RuntimeError(f"max page safety cap reached for {region}: {max_pages}")
         if not out:
