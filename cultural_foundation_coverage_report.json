@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T23:15:17+09:00",
+  "generatedAt": "2026-10-01T01:17:09+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -22,7 +22,7 @@
   "failedAvailableComponents": [],
   "currentMappedBySource": {
     "official": 10,
-    "cleaneye": 11,
+    "cleaneye": 9,
     "artmore": 0,
     "ancf": 1,
     "lessoninfo-discovery": 12
@@ -537,14 +537,14 @@
       "municipality": "김포시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 3,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:namyangju",
@@ -889,12 +889,12 @@
       "municipality": "부평구",
       "sourceCounts": {
         "official": 1,
-        "cleaneye": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 1,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
