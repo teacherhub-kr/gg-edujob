@@ -19,6 +19,7 @@ from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 
 from support_population_contract import is_support_population_job
+from repair_seoul_support_metadata import exact_registration_from_detail
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = json.loads((ROOT / "sources.json").read_text(encoding="utf-8"))
@@ -44,6 +45,7 @@ RETRY_POLICY = Retry(
 )
 S.mount("https://", HTTPAdapter(max_retries=RETRY_POLICY))
 S.mount("http://", HTTPAdapter(max_retries=RETRY_POLICY))
+SEOUL_DETAIL_REGISTRATION = {}
 
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 JOB_WORDS = re.compile(r"채용|구인|모집|기간제|계약제|시간강사|강사|교사|교원|공무직|사무직|근로자|조리|돌봄|보육|봉사|튜터|안전지킴이|외부강사")
@@ -318,6 +320,63 @@ def seoul_seq(tr):
         if m:
             return m.group(1)
     return ""
+
+
+def seoul_detail_title(tr, seq):
+    """Use the final link bound to this job ID, which is the subject/detail cell."""
+    matched = []
+    for anchor in tr.find_all("a"):
+        action = " ".join((anchor.get("href", "") or "", anchor.get("onclick", "") or ""))
+        if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", action, re.I):
+            matched.append(clean(anchor.get_text(" ", strip=True)))
+    return matched[-1] if matched else ""
+
+
+def seoul_values(table, tr):
+    """Select the header row matching the data row's actual column count."""
+    cells = tr.find_all("td")
+    candidates = []
+    for row in table.find_all("tr"):
+        if row is tr:
+            break
+        labels = [clean(th.get_text(" ", strip=True)) for th in row.find_all("th")]
+        if len(labels) == len(cells):
+            score = sum(any(k in label for k in ("제목", "학교", "기관", "분야", "등록일", "마감")) for label in labels)
+            candidates.append((score, labels))
+    labels = max(candidates, key=lambda item: item[0])[1] if candidates else headers(table)
+    return row_vals(tr, labels)
+
+
+def seoul_items(soup, board=""):
+    items, dates, expected_table, candidate_rows, incomplete = [], [], False, 0, 0
+    for table in soup.find_all("table"):
+        hs = headers(table)
+        if not hs or not any(any(k in h for k in ("마감", "직종", "학교", "구분", "대상", "분야", "등록일", "작성자")) for h in hs):
+            continue
+        expected_table = True
+        for tr in table.find_all("tr"):
+            if not tr.find_all("td"):
+                continue
+            candidate_rows += 1
+            seq = seoul_seq(tr)
+            if not seq:
+                continue
+            vals = seoul_values(table, tr)
+            title = seoul_detail_title(tr, seq) or first_of(vals, ["제목", "공고명"])
+            registered = date_norm(first_of(vals, ["등록일", "작성일"]))
+            school = first_of(vals, ["학교명", "기관명", "작성자"])
+            if not registered and board and school:
+                key = (board, seq)
+                if key not in SEOUL_DETAIL_REGISTRATION and sum(k[0] == board for k in SEOUL_DETAIL_REGISTRATION) < 40:
+                    SEOUL_DETAIL_REGISTRATION[key] = exact_registration_from_detail(
+                        S, board, seq, school, first_of(vals, ["마감일", "접수마감일"]))
+                registered = SEOUL_DETAIL_REGISTRATION.get(key, "")
+            if not title or not registered or (school and clean(title) == clean(school)):
+                incomplete += 1
+                continue
+            items.append((seq, title, registered, vals))
+            dates.append(registered)
+    return items, dates, expected_table, candidate_rows, incomplete
 
 
 def seoul_page(board, page, prefer_post=False):
