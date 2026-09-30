@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01 01:15 KST",
+  "updatedAt": "2026-10-01 05:45 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261001014855",
+                  "/js/include.js?v=20261001062056",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,7 +2670,7 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-01 01:55 KST",
+    "checkedAt": "2026-10-01 06:27 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 1/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
@@ -2697,7 +2697,7 @@
         }
       ]
     },
-    "previousTotal": 20600,
+    "previousTotal": 20238,
     "currentTotal": 20238
   },
   "jobs": [
@@ -578488,7 +578488,7 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-01 01:49 KST",
+      "checkedAt": "2026-10-01 06:21 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
@@ -578499,23 +578499,23 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-01 01:54 KST",
+    "checkedAt": "2026-10-01 06:25 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-01 01:54 KST",
+    "checkedAt": "2026-10-01 06:25 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
     "freshCount": 17616,
-    "previousCount": 20600,
+    "previousCount": 20238,
     "mergedCount": 20218,
     "carriedForward": 2602,
     "officialIdProtected": 18701,
     "officialIdCarryForward": 1012,
     "enrichedFromPrevious": 6088,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-01 01:52 KST"
+    "generatedAt": "2026-10-01 06:24 KST"
   },
   "supportLinkResolution": {
     "gyeonggiExact": 5960,
@@ -578524,7 +578524,7 @@
     "seoulTotal": 295
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-01 01:52 KST",
+    "checkedAt": "2026-10-01 06:24 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5274,
     "detailPagesParsed": 2080,
@@ -578534,7 +578534,7 @@
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-01 01:53 KST",
+      "checkedAt": "2026-10-01 06:25 KST",
       "candidates": 152,
       "detailPagesConfirmed": 146,
       "cacheEntriesImproved": 0,
@@ -578546,10 +578546,10 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-01 01:59:41 KST",
+    "generatedAt": "2026-10-01 06:32:30 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18701,
+    "officialIdCount": 18700,
     "datasetIdCountBefore": 20311,
     "missingBefore": 0,
     "recoveredNow": 0,
@@ -578558,6 +578558,6 @@
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20260930T165514Z-36740999654-1"
+    "scanId": "20260930T212730Z-36774674233-1"
   }
 }
