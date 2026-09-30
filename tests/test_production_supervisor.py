@@ -191,9 +191,11 @@ class ProductionSupervisorTests(unittest.TestCase):
 
         source = Path("scripts/crawl_artmore_browser.py").read_text(encoding="utf-8")
         self.assertIn("async def wait_for_region_all", source)
+        self.assertIn("async def select_region_all", source)
         self.assertIn('await all_radio.wait_for(state="attached", timeout=timeout_ms)', source)
+        self.assertIn("attempts: int = 3", source)
         self.assertGreaterEqual(
-            source.count("all_radio = await wait_for_region_all(page, region, code)"),
+            source.count("await select_region_all(page, region, code)"),
             2,
         )
 
