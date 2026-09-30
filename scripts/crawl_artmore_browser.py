@@ -89,6 +89,15 @@ async def select_region_all(page, region: str, code: str, attempts: int = 3):
     )
 
 
+async def confirm_region_selection(page, region: str, timeout_ms: int = 10000):
+    button = page.locator("#btn_area_ok")
+    try:
+        await button.wait_for(state="visible", timeout=timeout_ms)
+        await button.click()
+    except Exception as exc:
+        raise RuntimeError(f"region confirm button missing while selecting {region}") from exc
+
+
 async def restore_region_filter(page, region: str, code: str) -> str:
     expected = f"2000-{code}"
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
@@ -98,8 +107,7 @@ async def restore_region_filter(page, region: str, code: str) -> str:
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
         raise RuntimeError(f"area selector not staged while restoring {region}: {expected}; got={vals}")
-    if not await visible_click(page.locator("#btn_area_ok")):
-        raise RuntimeError(f"region confirm button missing while restoring {region}")
+    await confirm_region_selection(page, region)
     await page.wait_for_timeout(350)
     vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
@@ -142,8 +150,7 @@ async def establish_filter(page, region: str, code: str):
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
         raise RuntimeError(f"area selector not staged: {expected}; got={vals}")
-    if not await visible_click(page.locator("#btn_area_ok")):
-        raise RuntimeError("region confirm button missing")
+    await confirm_region_selection(page, region)
     await page.wait_for_timeout(350)
     vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
