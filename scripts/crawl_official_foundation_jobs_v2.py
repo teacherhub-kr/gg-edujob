@@ -128,6 +128,8 @@ GENERIC_OFFICIAL_HOSTS={
     "gbcf.fairyhr.com","yfac.fairyhr.com",
     "gfac.or.kr","www.gfac.or.kr",
     "naruart.applyin.co.kr",
+    "gwangjin.go.kr","www.gwangjin.go.kr",
+    "pajucf.or.kr","www.pajucf.or.kr",
     "artgy.or.kr","www.artgy.or.kr","goyang.go.kr","www.goyang.go.kr",
     "gcart.or.kr","www.gcart.or.kr",
     "bcf.or.kr","www.bcf.or.kr",
@@ -264,10 +266,10 @@ SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "gyeonggi:goyang",
     "gyeonggi:gwangmyeong",
     "seoul:guro",
+    "seoul:gwangjin",
     "gyeonggi:guri",
     "gyeonggi:hanam",
     "gyeonggi:seongnam",
-    "gyeonggi:paju",
 }
 
 
@@ -634,12 +636,10 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return generic_official_rows(session,foundation,url)
         raise RuntimeError("adapter-not-yet-implemented")
 
-    try:
-        return collect(board_url)
-    except (requests.exceptions.SSLError, requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as exc:
+    def verified_fallback(exc):
         fallback=str(foundation.get("verifiedFallbackRecruitmentUrl") or "").strip()
         if not fallback:
-            raise
+            raise exc
         found,meta=collect(fallback)
         role=str(foundation.get("verifiedFallbackRole") or "secondary-authoritative")
         for job in found:
@@ -658,6 +658,16 @@ def collect_with_verified_fallback(session, foundation, board_url):
         meta["fallbackBoardUrl"]=fallback
         meta["primaryTransportError"]=f"{type(exc).__name__}: {str(exc)[:180]}"
         return found,meta
+
+    try:
+        return collect(board_url)
+    except (requests.exceptions.SSLError, requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as exc:
+        return verified_fallback(exc)
+    except requests.exceptions.HTTPError as exc:
+        status=getattr(getattr(exc,"response",None),"status_code",None)
+        if status is None or not (500 <= int(status) < 600):
+            raise
+        return verified_fallback(exc)
 
 
 def main():
