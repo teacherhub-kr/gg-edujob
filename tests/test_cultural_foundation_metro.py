@@ -515,6 +515,15 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
         )
 
+    def test_vue_recruitment_filters_use_verified_category_contracts(self):
+        gangdong = crawler.vue_notice_filter(17, 1)
+        junggu = crawler.vue_notice_filter(19, 2)
+        self.assertEqual(gangdong["CategoryID"], 17)
+        self.assertEqual(gangdong["DepartmentID"], 1)
+        self.assertEqual(gangdong["PageSize"], 30)
+        self.assertEqual(junggu["CategoryID"], 19)
+        self.assertEqual(junggu["PageIndex"], 2)
+
     def test_efac_closed_row_contract_is_explicit(self):
         soup = BeautifulSoup(
             """<table><tr class="list" onclick="reg_view('5098')">
