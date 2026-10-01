@@ -197,9 +197,11 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertNotIn("if len(rows) < 10:", source)
         self.assertIn("if not rows or not new_ids:", source)
 
-    def test_private_overdue_can_use_non_p0_recovery_and_completeness_slots(self):
+    def test_private_overdue_can_use_safe_idle_and_backoff_slots(self):
         self.assertIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertIn("completeness", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertIn("skip-unified-circuit-open", PRIVATE_REFRESH_IDLE_ACTIONS)
+        self.assertIn("skip-unified-backoff", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertNotIn("fast", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertNotIn("unified", PRIVATE_REFRESH_IDLE_ACTIONS)
 
