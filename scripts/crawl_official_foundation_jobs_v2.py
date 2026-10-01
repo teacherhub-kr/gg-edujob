@@ -945,10 +945,8 @@ def cleaneye_official_rows(session,foundation,board_url):
         if page_no>100:
             raise RuntimeError(f"CleanEye official registry pagination safety cap: {name} total={total}")
     exact=[row for row in rows if cleaneye_norm(row.get("entName")) in aliases]
-    if rows and not exact:
-        raise RuntimeError(f"CleanEye foundation identity unproved for {name!r}")
-    if not exact and int(total or 0)>0:
-        raise RuntimeError(f"CleanEye exact institution reconciliation failed for {name!r}")
+    if not exact:
+        raise RuntimeError(f"CleanEye exact institution identity unproved for {name!r}; reportedCount={int(total or 0)}")
     today=datetime.now(KST).date()
     jobs=[]; inspected=0; errors=[]
     for row in exact:
@@ -1015,7 +1013,7 @@ def cleaneye_official_rows(session,foundation,board_url):
         "exactInstitutionRows":len(exact),
         "inspectedDetailLinks":inspected,
         "publishedCurrentJobs":len(jobs),
-        "identityVerified":bool(exact) or int(total or 0)==0,
+        "identityVerified":True,
         "governmentRegistry":True,
     }
 
