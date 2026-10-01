@@ -500,6 +500,82 @@ def list_detail_candidates(session,foundation,board_url):
     return r,soup,candidates,dated_list_rows
 
 
+def efac_list_rows(soup):
+    rows=[]
+    for tr in soup.find_all("tr"):
+        onclick=str(tr.get("onclick") or "")
+        m=re.search(r"""reg_view\(\s*['"](?P<uid>\d+)['"]\s*\)""",onclick)
+        if not m:
+            continue
+        text=base.normalize_space(tr.get_text(" ",strip=True))
+        if not official_position_title(text):
+            continue
+        rows.append({
+            "uid":m.group("uid"),
+            "text":text,
+            "closed":"마감" in text,
+            "registered":base.parse_date_text(text),
+        })
+    return rows
+
+
+def efac_rows(session,foundation,board_url):
+    today=datetime.now(KST).date()
+    r=resilient_request(session,board_url)
+    soup=BeautifulSoup(r.text,"html.parser")
+    visible=base.normalize_space(soup.get_text(" ",strip=True))
+    if "은평문화재단" not in visible or "채용" not in visible:
+        raise RuntimeError("EFAC recruitment board identity unproved")
+    rows=efac_list_rows(soup)
+    jobs=[]; inspected=0; detail_errors=[]
+    for row in rows:
+        if row["closed"] or base.RESULT_RE.search(row["text"]):
+            continue
+        registered=row.get("registered")
+        if not registered or registered>today or registered<today-base.timedelta(days=120):
+            continue
+        detail_url=f"{urlparse(r.url).scheme}://{urlparse(r.url).netloc}{urlparse(r.url).path}?"+urlencode({"type":"view","uid":row["uid"]})
+        try:
+            detail=resilient_request(session,detail_url)
+            ds=BeautifulSoup(detail.text,"html.parser")
+            full=base.normalize_space(ds.get_text(" ",strip=True))
+            if not full or "은평문화재단" not in full:
+                raise RuntimeError("EFAC detail identity unproved")
+            title=base.detail_title(ds,row["text"])
+            if not official_position_title(title):
+                continue
+            apply_end=base.extract_apply_end(full,registered)
+            if not apply_end:
+                raise RuntimeError("EFAC open recruitment lacks verified application deadline")
+            if apply_end<today:
+                continue
+            inspected+=1
+            fid=str(foundation.get("id") or "")
+            sid="official-foundation:"+fid+":"+hashlib.sha1((row["uid"]+"|"+detail.url).encode()).hexdigest()[:20]
+            jobs.append({
+                "sourceIdentity":sid,"foundationRegistryId":fid,
+                "foundationName":foundation.get("name") or "","organization":foundation.get("name") or "",
+                "source":foundation.get("name") or "","sourceType":"문화재단 공식채용/모집",
+                "sourceSurface":"cultural-foundation","sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 공식 채용·인력모집",
+                "sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "",
+                "region":foundation.get("municipality") or "","regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+                "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+                "title":title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),
+                "url":detail.url,"originalUrl":detail.url,"detailUrl":detail.url,"boardUrl":r.url,
+                "detailLinkVerified":True,"detailLinkReason":"official-foundation-exact-detail","transportVerified":True,
+            })
+        except Exception as exc:
+            detail_errors.append({"uid":row["uid"],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
+    if detail_errors:
+        raise RuntimeError(f"EFAC open recruitment detail verification failed: {detail_errors[:2]}")
+    return jobs,{
+        "adapter":"efac-recruitment-v1","surfacesChecked":[r.url],
+        "discoveredDetailLinks":len(rows),"inspectedDetailLinks":inspected,
+        "publishedCurrentJobs":len(jobs),"explicitClosedRows":sum(1 for x in rows if x["closed"]),
+        "identityVerified":True,
+    }
+
+
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
@@ -617,6 +693,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return base.nsart_rows(session,foundation,url)
         if h=="ayac.saramin.co.kr":
             return designated_saramin_rows(session,foundation,url)
+        if h=="recruit.efac.or.kr":
+            return efac_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
             found,meta=sfac_rows(session,foundation,url)
             # Careerlink is a secondary official contract surface. A markup change
