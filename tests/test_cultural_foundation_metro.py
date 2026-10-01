@@ -407,6 +407,41 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("seq=20260930094802200", resolved)
         self.assertIn("q_ctgCd=4064", resolved)
 
+    def test_observed_foundation_javascript_contracts_resolve_exact_details(self):
+        geumcheon = BeautifulSoup(
+            """<tr onclick="goBoardView('9325');"><td class="title"><a href="javascript:void(0);">(재)금천문화재단 직원 공개모집 공고</a></td></tr>""",
+            "html.parser",
+        ).find("a")
+        resolved = crawler.official_js_detail_url(
+            geumcheon,
+            "https://gcfac.or.kr/board/recruit?gcfac_menu_cd=U0140",
+        )
+        self.assertIn("/board/recruitDetail?", resolved)
+        self.assertIn("board_seq=9325", resolved)
+
+        mapo = BeautifulSoup(
+            """<a class="btnDetail" href="javascript:void(0);" seq="9169">2026년 제5회 마포문화재단 직원 채용 공고</a>""",
+            "html.parser",
+        ).find("a")
+        resolved = crawler.official_js_detail_url(
+            mapo,
+            "https://www.mfac.or.kr/communication/notice_all_list.jsp?sc_type=3",
+        )
+        self.assertIn("/communication/notice_all_view.jsp?", resolved)
+        self.assertIn("pk_seq=9169", resolved)
+
+        pocheon = BeautifulSoup(
+            """<a href="javascript:reg_view('1819123')">(재)포천문화관광재단 2026년 제5회 직원 공개채용 공고</a>""",
+            "html.parser",
+        ).find("a")
+        resolved = crawler.official_js_detail_url(
+            pocheon,
+            "https://www.pcfac.or.kr/sub07/sub03.php",
+        )
+        self.assertIn("/sub07/sub03.php?", resolved)
+        self.assertIn("type=view", resolved)
+        self.assertIn("uid=1819123", resolved)
+
     def test_known_javascript_detail_contracts_parse_without_regex_errors(self):
         cases = [
             (
