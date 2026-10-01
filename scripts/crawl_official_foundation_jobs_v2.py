@@ -374,7 +374,7 @@ def official_js_detail_url(anchor, board_url:str)->str|None:
 
     if host in {"gcfac.or.kr","www.gcfac.or.kr"} and parsed.path.rstrip("/")=="/board/recruit":
         ancestor_raw=" ".join(ancestor_onclicks)
-        named=re.search(r"""goBoardView(s*['"](?P<ident>d{3,})['"]s*)""",ancestor_raw)
+        named=re.search(r"""goBoardView\(\s*['"](?P<ident>\d{3,})['"]\s*\)""",ancestor_raw)
         ident=named.group("ident") if named else explicit_or_arg(("board_seq","boardSeq"),min_digits=3)
         if ident:
             menu=str((query.get("gcfac_menu_cd") or ["U0140"])[0])
@@ -382,7 +382,7 @@ def official_js_detail_url(anchor, board_url:str)->str|None:
 
     if host in {"mfac.or.kr","www.mfac.or.kr"} and parsed.path.endswith("/notice_all_list.jsp"):
         seq_attr=str(anchor.get("seq") or "").strip()
-        ident=seq_attr if re.fullmatch(r"d{3,}",seq_attr) else explicit_or_arg(("pk_seq","pkSeq"),min_digits=3)
+        ident=seq_attr if re.fullmatch(r"\d{3,}",seq_attr) else explicit_or_arg(("pk_seq","pkSeq"),min_digits=3)
         if ident:
             return f"{parsed.scheme}://{parsed.netloc}/communication/notice_all_view.jsp?"+urlencode({
                 "page":"1","pk_seq":ident,"sc_b_code":"BOARD_1207683401","sc_type":"3"
@@ -395,7 +395,7 @@ def official_js_detail_url(anchor, board_url:str)->str|None:
             return f"{parsed.scheme}://{parsed.netloc}/bbs/view.do?"+urlencode({"key":key,"pstSn":ident})
 
     if host in {"pcfac.or.kr","www.pcfac.or.kr"} and parsed.path.endswith("/sub07/sub03.php"):
-        named=re.search(r"""reg_view(s*['"](?P<ident>d{4,})['"]s*)""",href+" "+onclick)
+        named=re.search(r"""reg_view\(\s*['"](?P<ident>\d{4,})['"]\s*\)""",href+" "+onclick)
         if named:
             return f"{parsed.scheme}://{parsed.netloc}/sub07/sub03.php?"+urlencode({
                 "type":"view","uid":named.group("ident")
