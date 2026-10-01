@@ -332,6 +332,25 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertNotIn("gyeonggi:paju", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
         self.assertIn("pajucf.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
 
+    def test_dongjak_uses_filtered_seoul_culture_official_mirror(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        row = rows["seoul:dongjak"]
+        self.assertIn("culture.seoul.go.kr/culture/bbs/B0000002/list.do", row["verifiedFallbackRecruitmentUrl"])
+        self.assertIn("searchCnd=1", row["verifiedFallbackRecruitmentUrl"])
+        self.assertIn("searchWrd=", row["verifiedFallbackRecruitmentUrl"])
+        self.assertEqual(row["verifiedFallbackRole"], "secondary-official-mirror")
+        self.assertIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+
+    def test_bucheon_uses_verified_city_recruitment_mirror(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        row = rows["gyeonggi:bucheon"]
+        self.assertIn("bucheon.go.kr/site/program/board/basicboard/list", row["verifiedFallbackRecruitmentUrl"])
+        self.assertEqual(row["verifiedFallbackRole"], "secondary-official-mirror")
+        self.assertIn("gyeonggi:bucheon", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+        self.assertIn("bucheon.go.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+        url = "https://www.bucheon.go.kr/site/program/board/basicboard/view?boardtypeid=26756&encid=BZJJFP82CPkJg4%2BYB5twEA%3D%3D"
+        self.assertTrue(crawler.detail_identity(url).startswith("encid:"))
+
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
