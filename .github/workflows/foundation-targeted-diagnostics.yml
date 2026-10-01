@@ -1,0 +1,65 @@
+name: Foundation targeted read-only diagnostics
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundation-targeted-diagnostics.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install diagnostics dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
+      - name: Inspect hard foundation surfaces
+        run: |
+          python - <<'PY'
+          import json,re,requests
+          from bs4 import BeautifulSoup
+          urls=[
+            "https://www.gdfac.or.kr/community/ko/notice",
+            "https://www.caci.or.kr/community/ko/notice",
+            "https://seochocf.applyin.co.kr/",
+            "https://naruart.applyin.co.kr/",
+            "https://recruit.efac.or.kr/sub01/sub01.php",
+            "https://recruit.jnfac.or.kr/",
+            "https://www.dbfac.or.kr/front/board/boardContentsListPage.do?board_id=7",
+            "https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo",
+            "https://www.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=86&page=1&searchCategory=92&searchType=total&searchWord=",
+          ]
+          headers={"User-Agent":"Mozilla/5.0"}
+          for url in urls:
+            print("\n===== URL",url)
+            try:
+              r=requests.get(url,headers=headers,timeout=25,allow_redirects=True)
+              print("STATUS",r.status_code,"FINAL",r.url,"BYTES",len(r.content),"CTYPE",r.headers.get("content-type"))
+              r.encoding=r.apparent_encoding or r.encoding
+              soup=BeautifulSoup(r.text,"html.parser")
+              print("TITLE",soup.title.get_text(" ",strip=True)[:240] if soup.title else "")
+              txt=" ".join(soup.get_text(" ",strip=True).split())
+              print("TEXT",txt[:900])
+              print("SCRIPTS",json.dumps([s.get("src") for s in soup.find_all("script") if s.get("src")][:40],ensure_ascii=False))
+              hints=[]
+              for s in soup.find_all("script"):
+                raw=s.string or s.get_text(" ",strip=False) or ""
+                low=raw.lower()
+                if any(k in low for k in ("api","notice","article","pager","recruit","announcement","ajax","board")):
+                  hints.append(" ".join(raw.split())[:2200])
+              print("INLINE_HINTS",json.dumps(hints[:8],ensure_ascii=False))
+              anchors=[]
+              for a in soup.find_all("a",href=True):
+                text=" ".join(a.get_text(" ",strip=True).split())
+                if any(k in text for k in ("채용","모집","공고","입사지원")):
+                  anchors.append({"text":text[:180],"href":str(a.get("href"))[:400],"onclick":str(a.get("onclick") or "")[:400]})
+              print("ANCHORS",json.dumps(anchors[:25],ensure_ascii=False))
+            except Exception as e:
+              print("ERROR",type(e).__name__,str(e))
+          PY
