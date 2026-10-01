@@ -110,6 +110,10 @@ def source_health(spec, report, detail_report) -> bool:
         ok = ok and int(report.get("detailErrorCount") or 0) == 0
     if spec.get("detail_report"):
         ok = ok and bool(detail_report and detail_report.get("healthy") and detail_report.get("detailCoverageComplete") and int(detail_report.get("detailErrorCount") or 0) == 0)
-    if ok and spec.get("key") == "lessoninfo": ok = _lessoninfo_exact_link_coverage(spec)
+    # Private-source publication is collection-gated, not link-verification-gated.
+    # Lessoninfo rows with uncertain culture detail links remain publishable as clearly
+    # labelled private-source cards; the unified projection keeps those rows non-clickable
+    # until a cold verifier proves an exact destination. This prevents one weak link from
+    # suppressing the entire private source.
     if ok and spec.get("key") == "cleaneye": ok = _generic_exact_link_coverage(spec)
     return ok
