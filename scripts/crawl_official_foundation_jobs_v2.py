@@ -294,7 +294,7 @@ def candidate_belongs_to_foundation(foundation,text:str,*,shared_board:bool=Fals
 def detail_identity(url:str)->str:
     parsed=urlparse(url)
     query=parse_qs(parsed.query)
-    for key in ("bbsSn","boardId","msg_seq","sq","idx","uid","nttSn","seq","pstSn","pk_seq","board_seq","q_bbscttSn","no","id"):
+    for key in ("bbsSn","boardId","msg_seq","sq","idx","uid","nttSn","nttNo","seq","pstSn","pk_seq","board_seq","q_bbscttSn","bbIdx","action-value","no","id"):
         value=str((query.get(key) or [""])[0]).strip()
         if value:
             return f"{key}:{value}"
@@ -309,9 +309,9 @@ def looks_like_detail_url(board_url:str, candidate_url:str)->bool:
     if board.path.rstrip("/")!=candidate.path.rstrip("/"):
         return True
     query=parse_qs(candidate.query)
-    if any(key in query for key in ("b_num","idx","uid","bbsSn","boardId","msg_seq","sq","nttSn","seq","pstSn","pk_seq","board_seq","q_bbscttSn","no")):
+    if any(key in query for key in ("b_num","idx","uid","bbsSn","boardId","msg_seq","sq","nttSn","nttNo","seq","pstSn","pk_seq","board_seq","q_bbscttSn","bbIdx","action-value","no")):
         return True
-    if query.get("bmode")==["view"] or query.get("proc_type")==["view"] or query.get("type")==["view"]:
+    if query.get("bmode")==["view"] or query.get("proc_type")==["view"] or query.get("type")==["view"] or query.get("action")==["read"]:
         return True
     return False
 
