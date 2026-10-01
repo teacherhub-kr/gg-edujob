@@ -500,6 +500,113 @@ def list_detail_candidates(session,foundation,board_url):
     return r,soup,candidates,dated_list_rows
 
 
+def dbfac_notice_key(title:str)->str:
+    m=re.search(r"제\s*(\d{4})\s*[-–]\s*(\d+)\s*호",title or "")
+    return f"{m.group(1)}-{int(m.group(2))}" if m else ""
+
+
+def dbfac_list_rows(soup):
+    rows=[]
+    for tr in soup.find_all("tr"):
+        a=tr.find("a",href=True)
+        if not a:
+            continue
+        href=str(a.get("href") or "")
+        m=re.search(r"""contentsViewAll\(\s*['"](?P<cid>[0-9a-fA-F]{16,})['"]\s*,\s*['"]7['"]\s*\)""",href)
+        if not m:
+            continue
+        title=base.normalize_space(a.get_text(" ",strip=True))
+        text=base.normalize_space(tr.get_text(" ",strip=True))
+        registered=base.parse_date_text(text)
+        rows.append({
+            "contentsId":m.group("cid"),"title":title,"text":text,
+            "registered":registered,"noticeKey":dbfac_notice_key(title),
+            "resultLike":bool(base.RESULT_RE.search(title) or re.search(r"\[발표\]|서류전형\s*합격|면접전형|최종\s*합격",title,re.I)),
+        })
+    return rows
+
+
+def dbfac_rows(session,foundation,board_url):
+    today=datetime.now(KST).date()
+    page=resilient_request(session,board_url)
+    soup=BeautifulSoup(page.text,"html.parser")
+    if "도봉문화재단" not in base.normalize_space(soup.get_text(" ",strip=True)):
+        raise RuntimeError("DBFAC board identity unproved")
+    endpoint=f"{urlparse(page.url).scheme}://{urlparse(page.url).netloc}/front/board/boardContentsList.do"
+    rr=session.post(
+        endpoint,
+        data={"board_id":"7","miv_pageNo":"1","miv_pageSize":"30","mode":"W","contents_id":"","viewType":"","cate_id":""},
+        timeout=25,
+        headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},
+    )
+    rr.raise_for_status()
+    rsoup=BeautifulSoup(rr.text,"html.parser")
+    rows=dbfac_list_rows(rsoup)
+    if not rows:
+        raise RuntimeError("DBFAC AJAX list returned no parseable recruitment rows")
+    result_dates={}
+    for row in rows:
+        if row["resultLike"] and row["noticeKey"] and row["registered"]:
+            prev=result_dates.get(row["noticeKey"])
+            if prev is None or row["registered"]>prev:
+                result_dates[row["noticeKey"]]=row["registered"]
+    jobs=[]; inspected=0; unverified=[]; errors=[]
+    for row in rows:
+        title=row["title"]
+        if row["resultLike"] or not official_position_title(title):
+            continue
+        registered=row["registered"]
+        if not registered or registered>today or registered<today-base.timedelta(days=120):
+            continue
+        closed_at=result_dates.get(row["noticeKey"]) if row["noticeKey"] else None
+        if closed_at and closed_at>=registered:
+            continue
+        if registered<today-base.timedelta(days=30):
+            continue
+        detail_url=f"{urlparse(page.url).scheme}://{urlparse(page.url).netloc}/front/board/boardContentsView.do?"+urlencode({"board_id":"7","contents_id":row["contentsId"]})
+        try:
+            detail=resilient_request(session,detail_url)
+            ds=BeautifulSoup(detail.text,"html.parser")
+            full=base.normalize_space(ds.get_text(" ",strip=True))
+            if title.replace(" ","")[:18] not in full.replace(" ",""):
+                raise RuntimeError("DBFAC detail does not contain list title")
+            apply_end=base.extract_apply_end(full,registered)
+            if apply_end and apply_end<today:
+                continue
+            if not apply_end:
+                unverified.append({"url":detail.url[:240],"title":title[:180]})
+                continue
+            inspected+=1
+            fid=str(foundation.get("id") or "")
+            identity="contents_id:"+row["contentsId"]
+            sid="official-foundation:"+fid+":"+hashlib.sha1((identity+"|"+detail.url).encode()).hexdigest()[:20]
+            jobs.append({
+                "sourceIdentity":sid,"foundationRegistryId":fid,
+                "foundationName":foundation.get("name") or "","organization":foundation.get("name") or "",
+                "source":foundation.get("name") or "","sourceType":"문화재단 공식채용/모집",
+                "sourceSurface":"cultural-foundation","sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 공식 채용·인력모집",
+                "sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "",
+                "region":foundation.get("municipality") or "","regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+                "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+                "title":title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),
+                "url":detail.url,"originalUrl":detail.url,"detailUrl":detail.url,"boardUrl":page.url,
+                "detailLinkVerified":True,"detailLinkReason":"official-foundation-dbfac-exact-detail","transportVerified":True,
+            })
+        except Exception as exc:
+            errors.append({"url":detail_url[:240],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
+    if errors:
+        raise RuntimeError(f"DBFAC detail verification failed: {errors[:2]}")
+    if unverified:
+        raise RuntimeError(f"DBFAC recent recruitment lacks verified deadline: {unverified[:2]}")
+    return jobs,{
+        "adapter":"dbfac-ajax-recruitment-v1","surfacesChecked":[page.url,endpoint],
+        "discoveredDetailLinks":len(rows),"inspectedDetailLinks":inspected,
+        "publishedCurrentJobs":len(jobs),"closedByLaterStage":sum(
+            1 for row in rows if row["noticeKey"] and row["noticeKey"] in result_dates and not row["resultLike"]
+        ),"identityVerified":True,
+    }
+
+
 def vue_notice_filter(category_id:int,page:int=1,page_size:int=30):
     return {
         "PerformanceID":None,"PerformanceName":None,"CategoryID":category_id,
@@ -801,6 +908,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
         h=(urlparse(url).hostname or "").lower()
         if h=="nsart.or.kr" or h.endswith(".nsart.or.kr"):
             return base.nsart_rows(session,foundation,url)
+        if h in {"dbfac.or.kr","www.dbfac.or.kr"}:
+            return dbfac_rows(session,foundation,url)
         if h in {"gdfac.or.kr","www.gdfac.or.kr"}:
             return vue_notice_rows(session,foundation,url,17)
         if h in {"caci.or.kr","www.caci.or.kr"}:
