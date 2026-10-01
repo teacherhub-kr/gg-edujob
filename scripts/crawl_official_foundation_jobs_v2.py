@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Reliability wrapper for official cultural-foundation recruitment collection."""
 from __future__ import annotations
-import hashlib, json, re
+import hashlib, json, math, re, shutil, subprocess
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
@@ -17,14 +17,55 @@ RETRY=Retry(total=4,connect=4,read=3,status=3,backoff_factor=1.0,status_forcelis
 def make_session():
     s=requests.Session(); s.mount("https://",HTTPAdapter(max_retries=RETRY)); s.mount("http://",HTTPAdapter(max_retries=RETRY)); return s
 
+
+class BrowserVerifiedResponse:
+    def __init__(self,url,text):
+        self.url=url
+        self.text=text
+        self.content=text.encode("utf-8")
+        self.encoding="utf-8"
+        self.status_code=200
+
+
+def browser_verified_request(url):
+    """Use the runner browser only for a narrowly allowlisted TLS-chain failure.
+
+    Chrome keeps normal certificate validation enabled. This is not a bypass:
+    no --ignore-certificate-errors or insecure TLS option is permitted.
+    """
+    host=(urlparse(url).hostname or "").lower()
+    if host not in {"sd.go.kr","www.sd.go.kr"}:
+        raise RuntimeError(f"browser TLS fallback is not allowlisted for {host!r}")
+    chrome=shutil.which("google-chrome") or shutil.which("google-chrome-stable") or shutil.which("chromium")
+    if not chrome:
+        raise RuntimeError("verified browser TLS fallback unavailable")
+    cmd=[chrome,"--headless=new","--no-sandbox","--disable-gpu","--dump-dom",url]
+    cp=subprocess.run(cmd,text=True,capture_output=True,timeout=45)
+    html=cp.stdout or ""
+    stderr=cp.stderr or ""
+    if cp.returncode!=0 or len(html)<1000:
+        raise RuntimeError(f"verified browser TLS fallback failed rc={cp.returncode} bytes={len(html)} err={stderr[-500:]!r}")
+    combined=(html+" "+stderr)[:200000]
+    if re.search(r"NET::ERR_CERT|Privacy error|Your connection is not private|ERR_SSL|certificate error",combined,re.I):
+        raise RuntimeError("verified browser TLS fallback reported a certificate error")
+    if BLOCK_PAGE_RE.search(base.normalize_space(BeautifulSoup(html,"html.parser").get_text(" ",strip=True))[:6000]):
+        raise RuntimeError("verified browser TLS fallback returned an access-control page")
+    return BrowserVerifiedResponse(url,html)
+
+
 def resilient_request(session,url,*,extra_headers=None):
     headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"}
     if extra_headers:
         headers.update(extra_headers)
-    r=session.get(url,timeout=25,headers=headers,allow_redirects=True); r.raise_for_status()
+    try:
+        r=session.get(url,timeout=25,headers=headers,allow_redirects=True)
+        r.raise_for_status()
+    except requests.exceptions.SSLError:
+        r=browser_verified_request(url)
     if urlparse(url).scheme.lower()=="https" and urlparse(r.url).scheme.lower()!="https":
         raise RuntimeError(f"HTTPS official URL downgraded in redirect: {url[:180]} -> {r.url[:180]}")
-    if not r.encoding or r.encoding.lower()=="iso-8859-1": r.encoding=r.apparent_encoding or "utf-8"
+    if not getattr(r,"encoding",None) or str(r.encoding).lower()=="iso-8859-1":
+        r.encoding=getattr(r,"apparent_encoding",None) or "utf-8"
     return r
 
 def verified_open_deadline(registered, apply_end, today):
@@ -125,7 +166,7 @@ GENERIC_OFFICIAL_HOSTS={
     "recruit.efac.or.kr",
     "recruit.jnfac.or.kr",
     "gdfac.or.kr","www.gdfac.or.kr",
-    "sdfac.or.kr","www.sdfac.or.kr",
+    "sdfac.or.kr","www.sdfac.or.kr","sd.go.kr","www.sd.go.kr",
     "gunpocf.incruit.com",
     "yicf.incruit.com",
     "gbcf.fairyhr.com","yfac.fairyhr.com",
@@ -275,6 +316,7 @@ SHARED_OFFICIAL_BOARD_FOUNDATION_IDS={
     "gyeonggi:guri",
     "gyeonggi:hanam",
     "gyeonggi:seongnam",
+    "seoul:seongdong",
 }
 
 
@@ -856,6 +898,128 @@ def applyin_rows(session,foundation,board_url):
     }
 
 
+def cleaneye_norm(value):
+    value=re.sub(r"\(\s*재\s*\)|재단법인","",str(value or ""),flags=re.I)
+    return re.sub(r"[^0-9A-Za-z가-힣]+","",value).lower()
+
+
+def cleaneye_official_rows(session,foundation,board_url):
+    """Read one foundation from the Ministry of Interior and Safety CleanEye job registry."""
+    page="https://job.cleaneye.go.kr/user/ypRecruitment.do"
+    api="https://job.cleaneye.go.kr/user/selectYpRecruitment.do"
+    detail_base="https://job.cleaneye.go.kr/user/ypCareersData.do"
+    headers={
+        "User-Agent":UA,
+        "Accept-Language":"ko-KR,ko;q=0.9",
+        "X-Requested-With":"XMLHttpRequest",
+        "Referer":page,
+        "Cache-Control":"no-cache, no-store, max-age=0",
+        "Pragma":"no-cache",
+    }
+    warm=resilient_request(session,page)
+    if "cleaneye.go.kr" not in (urlparse(warm.url).hostname or ""):
+        raise RuntimeError("CleanEye official registry warm-up redirected off official host")
+    name=str(foundation.get("name") or "")
+    aliases={cleaneye_norm(name),*(cleaneye_norm(x) for x in foundation.get("aliases") or [])}
+    aliases.discard("")
+    rows=[]; total=None; page_no=1
+    while True:
+        payload={"pageIndex":str(page_no),"pageUnit":"10","pageSize":"10","status":"","entName":name,"searchKeyword":name}
+        rr=session.post(api,data=payload,timeout=30,headers=headers)
+        rr.raise_for_status()
+        try:
+            data=rr.json()
+        except Exception as exc:
+            raise RuntimeError("CleanEye official registry returned non-JSON search payload") from exc
+        if total is None:
+            total=int(data.get("cnt") or 0)
+        batch=data.get("list") or []
+        if not isinstance(batch,list):
+            raise RuntimeError("CleanEye official registry returned malformed search rows")
+        if not batch:
+            break
+        rows.extend(batch)
+        if page_no>=max(1,math.ceil(total/10)):
+            break
+        page_no+=1
+        if page_no>100:
+            raise RuntimeError(f"CleanEye official registry pagination safety cap: {name} total={total}")
+    exact=[row for row in rows if cleaneye_norm(row.get("entName")) in aliases]
+    if rows and not exact:
+        raise RuntimeError(f"CleanEye foundation identity unproved for {name!r}")
+    if not exact and int(total or 0)>0:
+        raise RuntimeError(f"CleanEye exact institution reconciliation failed for {name!r}")
+    today=datetime.now(KST).date()
+    jobs=[]; inspected=0; errors=[]
+    for row in exact:
+        status=str(row.get("status") or "")
+        registered=base.parse_date_text(str(row.get("pubDate") or ""))
+        apply_end=base.parse_date_text(str(row.get("pubEndDate") or ""))
+        if status=="709003" or (apply_end and apply_end<today):
+            continue
+        title=base.normalize_space(str(row.get("entTitle") or ""))
+        if not title or not official_position_title(title):
+            continue
+        empyear=str(row.get("empyear") or "").strip()
+        ent_id=str(row.get("ypEntId") or "").strip()
+        seq=str(row.get("entSeq") or "").strip()
+        if not (empyear and ent_id and seq and registered and apply_end):
+            errors.append({"title":title[:160],"error":"missing stable identity/date","empyear":empyear,"entId":ent_id,"seq":seq})
+            continue
+        detail_url=detail_base+"?"+urlencode({"empyear":empyear,"entSeq":seq,"ypEntId":ent_id})
+        try:
+            detail=resilient_request(session,detail_url)
+            text=base.normalize_space(BeautifulSoup(detail.text,"html.parser").get_text(" ",strip=True))
+            if cleaneye_norm(name) not in cleaneye_norm(text):
+                raise RuntimeError("CleanEye exact detail lacks foundation identity")
+            if title.replace(" ","")[:18] not in text.replace(" ",""):
+                raise RuntimeError("CleanEye exact detail lacks list title")
+        except Exception as exc:
+            errors.append({"url":detail_url[:300],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
+            continue
+        inspected+=1
+        fid=str(foundation.get("id") or "")
+        sid=f"official-foundation:{fid}:cleaneye:{empyear}:{ent_id}:{seq}"
+        jobs.append({
+            "sourceIdentity":sid,
+            "foundationRegistryId":fid,
+            "foundationName":foundation.get("name") or "",
+            "organization":row.get("entName") or foundation.get("name") or "",
+            "source":"클린아이 잡플러스",
+            "sourceType":"지방공공기관 공식채용",
+            "sourceSurface":"cultural-foundation",
+            "sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 행정안전부 공식 채용",
+            "sourceRole":"primary-official-government-registry",
+            "trustLevel":"공식",
+            "province":foundation.get("region") or "",
+            "region":foundation.get("municipality") or "",
+            "regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+            "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+            "title":title,
+            "registered":base.format_date(registered),
+            "applyEnd":base.format_date(apply_end),
+            "url":detail.url,
+            "originalUrl":detail.url,
+            "detailUrl":detail.url,
+            "boardUrl":page,
+            "detailLinkVerified":True,
+            "detailLinkReason":"official-cleaneye-exact-institution-detail",
+            "transportVerified":True,
+        })
+    if errors:
+        raise RuntimeError(f"CleanEye current recruitment verification failed: {errors[:2]}")
+    return jobs,{
+        "adapter":"cleaneye-official-institution-v1",
+        "surfacesChecked":[page,api],
+        "reportedCount":total,
+        "exactInstitutionRows":len(exact),
+        "inspectedDetailLinks":inspected,
+        "publishedCurrentJobs":len(jobs),
+        "identityVerified":bool(exact) or int(total or 0)==0,
+        "governmentRegistry":True,
+    }
+
+
 def ninehire_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     page_url=board_url.rstrip("/")+"/recruit"
@@ -1091,6 +1255,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return efac_rows(session,foundation,url)
         if h in {"seochocf.applyin.co.kr","naruart.applyin.co.kr"}:
             return applyin_rows(session,foundation,url)
+        if h=="job.cleaneye.go.kr":
+            return cleaneye_official_rows(session,foundation,url)
         if h=="recruit.jnfac.or.kr":
             return ninehire_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
