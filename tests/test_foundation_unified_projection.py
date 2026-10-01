@@ -37,6 +37,40 @@ class FoundationOfficialProjectionTests(unittest.TestCase):
             unified.base.canonical_url(self.post(url="https://ifac.or.kr/bbs/view.do?bbsSn=236087&key=m2501152808232")["url"]),
         )
 
+    def test_suwon_foundation_idx_survives_canonicalization(self):
+        first = "https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113884"
+        second = "https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113876"
+        self.assertNotEqual(
+            unified.canonical_url_multi(first),
+            unified.canonical_url_multi(second),
+        )
+        self.assertIn("idx=113884", unified.canonical_url_multi(first))
+        self.assertIn("idx=113876", unified.canonical_url_multi(second))
+
+    def test_suwon_distinct_official_posts_are_not_deduped(self):
+        first = unified.project_foundation_official(
+            self.post(
+                foundationRegistryId="gyeonggi:suwon",
+                foundationName="수원문화재단",
+                source="수원문화재단",
+                sourceIdentity="official-foundation:gyeonggi:suwon:a",
+                title="2026년 하반기 수원문화재단 직원 채용 공고",
+                url="https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113884",
+            )
+        )
+        second = unified.project_foundation_official(
+            self.post(
+                foundationRegistryId="gyeonggi:suwon",
+                foundationName="수원문화재단",
+                source="수원문화재단",
+                sourceIdentity="official-foundation:gyeonggi:suwon:b",
+                title="(재)수원문화재단 임원(비상임 이사) 공개모집",
+                url="https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113876",
+            )
+        )
+        rows, _ = unified.dedupe_multi_source([first, second])
+        self.assertEqual(len(rows), 2)
+
     def test_municipal_board_other_employers_do_not_become_foundation_jobs(self):
         other = self.post(
             foundationRegistryId="incheon:seohae", foundationName="인천서해구문화재단",
