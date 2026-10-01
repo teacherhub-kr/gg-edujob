@@ -150,7 +150,7 @@ JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv
 EXPLICIT_EMPTY_RE=re.compile(
     r"등록된\s*(?:글|게시물|공고|자료|정보|채용공고)[이가]\s*없|게시물이\s*없|"
     r"검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|"
-    r"진행\s*중\s*채용공고\s*0건|진행\s*중인\s*채용공고가\s*없|진행\s*중인\s*채용이\s*없",
+    r"진행\s*중\s*채용공고\s*0\s*건|진행\s*중인\s*채용공고가\s*없|진행\s*중인\s*채용이\s*없",
     re.I,
 )
 SAAS_EXPLICIT_EMPTY_HOSTS={
@@ -507,6 +507,14 @@ def generic_official_rows(session,foundation,board_url):
     unverified_deadlines=[]
     for identity,meta in list(candidates.items())[:80]:
         try:
+            list_registered=meta.get("registered")
+            list_context=base.normalize_space(str(meta.get("listContext") or ""))
+            list_apply_end=base.extract_apply_end(list_context,list_registered) if list_registered else None
+            if list_apply_end and list_apply_end<today:
+                continue
+            if list_registered and not list_apply_end and list_registered<today-base.timedelta(days=30):
+                continue
+
             detail=resilient_request(session,str(meta["url"]))
             detail_soup=BeautifulSoup(detail.text,"html.parser")
             detail_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
@@ -530,7 +538,7 @@ def generic_official_rows(session,foundation,board_url):
             if not registered or registered>today or registered<today-base.timedelta(days=120):
                 continue
             full_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
-            apply_end=base.extract_apply_end(full_text,registered)
+            apply_end=base.extract_apply_end(full_text,registered) or list_apply_end
             if not apply_end and str(foundation.get("id") or "")=="incheon:metropolitan":
                 apply_end=ifac_title_deadline(list_title,registered)
             if apply_end and apply_end<today:
