@@ -285,6 +285,20 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
             request.assert_called_once_with(None, expected)
 
+    def test_explicit_zero_count_allows_spacing(self):
+        self.assertRegex(
+            "진행 중 채용공고 0 건",
+            crawler.EXPLICIT_EMPTY_RE,
+        )
+
+    def test_list_deadline_can_close_stale_candidate_before_detail_fetch(self):
+        today = crawler.base.date(2026, 10, 1)
+        registered = crawler.base.date(2026, 8, 7)
+        context = "2026-08-07 ~ 2026-08-18 마감"
+        apply_end = crawler.base.extract_apply_end(context, registered)
+        self.assertEqual(apply_end, crawler.base.date(2026, 8, 18))
+        self.assertLess(apply_end, today)
+
     def test_recent_post_without_deadline_is_not_verified_open(self):
         today = crawler.base.date(2026, 9, 27)
         self.assertFalse(crawler.verified_open_deadline(crawler.base.date(2026, 9, 15), None, today))
