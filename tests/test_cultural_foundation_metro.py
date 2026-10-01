@@ -358,6 +358,16 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("metaCode1=RECRUIT", url)
         self.assertNotIn("applyin.co.kr", url)
 
+    def test_jungnang_uses_ninehire_public_recruitment_contract(self):
+        from pathlib import Path
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        self.assertEqual(rows["seoul:jungnang"]["officialRecruitmentUrl"], "https://recruit.jnfac.or.kr/")
+        source = Path("scripts/crawl_official_foundation_jobs_v2.py").read_text(encoding="utf-8")
+        self.assertIn("def ninehire_rows", source)
+        self.assertIn("https://api.ninehire.com/identity-access/homepage/recruitments", source)
+        self.assertIn('"countPerPage":100', source)
+        self.assertIn('"explicitEmpty":True', source)
+
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
