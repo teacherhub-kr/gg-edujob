@@ -24,42 +24,113 @@ jobs:
           python - <<'PY'
           import json,re,requests
           from bs4 import BeautifulSoup
+          from urllib.parse import urljoin
+          H={"User-Agent":"Mozilla/5.0"}
           urls=[
             "https://www.gdfac.or.kr/community/ko/notice",
             "https://www.caci.or.kr/community/ko/notice",
             "https://seochocf.applyin.co.kr/",
             "https://naruart.applyin.co.kr/",
             "https://recruit.efac.or.kr/sub01/sub01.php",
-            "https://recruit.jnfac.or.kr/",
+            "https://recruit.jnfac.or.kr/recruit",
             "https://www.dbfac.or.kr/front/board/boardContentsListPage.do?board_id=7",
             "https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo",
-            "https://www.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=86&page=1&searchCategory=92&searchType=total&searchWord=",
+            "https://www.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=5&page=1&searchCategory=92&searchType=total&searchWord=",
           ]
-          headers={"User-Agent":"Mozilla/5.0"}
+          def clean(x): return " ".join(str(x or "").split())
           for url in urls:
             print("\n===== URL",url)
             try:
-              r=requests.get(url,headers=headers,timeout=25,allow_redirects=True)
+              r=requests.get(url,headers=H,timeout=25,allow_redirects=True)
               print("STATUS",r.status_code,"FINAL",r.url,"BYTES",len(r.content),"CTYPE",r.headers.get("content-type"))
+              print("RAW_PREFIX",repr(r.content[:300]))
               r.encoding=r.apparent_encoding or r.encoding
               soup=BeautifulSoup(r.text,"html.parser")
-              print("TITLE",soup.title.get_text(" ",strip=True)[:240] if soup.title else "")
-              txt=" ".join(soup.get_text(" ",strip=True).split())
-              print("TEXT",txt[:900])
-              print("SCRIPTS",json.dumps([s.get("src") for s in soup.find_all("script") if s.get("src")][:40],ensure_ascii=False))
-              hints=[]
-              for s in soup.find_all("script"):
-                raw=s.string or s.get_text(" ",strip=False) or ""
-                low=raw.lower()
-                if any(k in low for k in ("api","notice","article","pager","recruit","announcement","ajax","board")):
-                  hints.append(" ".join(raw.split())[:2200])
-              print("INLINE_HINTS",json.dumps(hints[:8],ensure_ascii=False))
+              print("TITLE",clean(soup.title.get_text(" ",strip=True) if soup.title else "")[:240])
+              txt=clean(soup.get_text(" ",strip=True))
+              print("TEXT",txt[:1200])
+              print("SCRIPTS",json.dumps([s.get("src") for s in soup.find_all("script") if s.get("src")][:50],ensure_ascii=False))
+              rawhtml=r.text
+              contexts=[]
+              for m in re.finditer("채용",rawhtml):
+                contexts.append(clean(rawhtml[max(0,m.start()-350):m.start()+900])[:1400])
+                if len(contexts)>=12: break
+              print("RECRUIT_CONTEXTS",json.dumps(contexts,ensure_ascii=False))
+
+              # ApplyIn app bundle route/API hints.
+              if "applyin.co.kr" in r.url:
+                for src in [s.get("src") for s in soup.find_all("script") if s.get("src")][:5]:
+                  try:
+                    js=requests.get(urljoin(r.url,src),headers=H,timeout=25).text
+                    hints=sorted(set(re.findall(r'["\']([^"\']{0,100}(?:api|recruit|announcement|application)[^"\']{0,100})["\']',js,re.I)))
+                    print("APPLYIN_JS",src,"HINTS",json.dumps(hints[:80],ensure_ascii=False))
+                  except Exception as e:
+                    print("APPLYIN_JS_ERROR",src,type(e).__name__,str(e))
+
+              # Next.js recruitment page: inspect server props for vacancy-ish values.
+              nd=soup.find("script",id="__NEXT_DATA__")
+              if nd and nd.string:
+                try:
+                  data=json.loads(nd.string)
+                  vals=[]
+                  def walk(v,path=""):
+                    if isinstance(v,dict):
+                      for k,x in v.items(): walk(x,path+"/"+str(k))
+                    elif isinstance(v,list):
+                      for i,x in enumerate(v): walk(x,path+"/"+str(i))
+                    elif isinstance(v,(str,int,float,bool)) and any(k in str(v).lower() for k in ("채용","recruit","job","position","vacancy","announcement")):
+                      vals.append((path,str(v)[:500]))
+                  walk(data)
+                  print("NEXT_DATA_HINTS",json.dumps(vals[:120],ensure_ascii=False))
+                except Exception as e:
+                  print("NEXT_DATA_ERROR",type(e).__name__,str(e))
+
+              # Eunpyeong-style table status evidence and JS detail ids.
+              if "recruit.efac.or.kr" in r.url:
+                rows=[]
+                for tr in soup.find_all("tr"):
+                  tx=clean(tr.get_text(" ",strip=True))
+                  if "채용" in tx or "모집" in tx:
+                    rows.append({"text":tx[:500],"html":str(tr)[:1800]})
+                print("EFAC_ROWS",json.dumps(rows[:20],ensure_ascii=False))
+
+              # Dobong AJAX list contract.
+              if "dbfac.or.kr" in r.url:
+                form=soup.find("form",id="listFrm") or soup.find("form")
+                data={}
+                if form:
+                  for inp in form.find_all(["input","select"]):
+                    n=inp.get("name")
+                    if not n: continue
+                    if inp.name=="select":
+                      opt=inp.find("option",selected=True) or inp.find("option")
+                      data[n]=opt.get("value","") if opt else ""
+                    else:
+                      data[n]=inp.get("value","")
+                data["board_id"]="7"
+                data.setdefault("miv_pageNo","1")
+                data.setdefault("miv_pageSize","20")
+                print("DBFAC_FORM",json.dumps(data,ensure_ascii=False))
+                rr=requests.post("https://www.dbfac.or.kr/front/board/boardContentsList.do",headers=H,data=data,timeout=25)
+                rr.encoding=rr.apparent_encoding or rr.encoding
+                print("DBFAC_AJAX",rr.status_code,len(rr.content),clean(rr.text)[:3000])
+                ss=BeautifulSoup(rr.text,"html.parser")
+                arr=[]
+                for a in ss.find_all("a"):
+                  tx=clean(a.get_text(" ",strip=True))
+                  oc=str(a.get("onclick") or "")
+                  if tx or oc:
+                    arr.append({"text":tx[:300],"href":str(a.get("href") or "")[:300],"onclick":oc[:500]})
+                print("DBFAC_AJAX_ANCHORS",json.dumps(arr[:50],ensure_ascii=False))
+
               anchors=[]
               for a in soup.find_all("a",href=True):
-                text=" ".join(a.get_text(" ",strip=True).split())
-                if any(k in text for k in ("채용","모집","공고","입사지원")):
-                  anchors.append({"text":text[:180],"href":str(a.get("href"))[:400],"onclick":str(a.get("onclick") or "")[:400]})
-              print("ANCHORS",json.dumps(anchors[:25],ensure_ascii=False))
+                tx=clean(a.get_text(" ",strip=True))
+                href=str(a.get("href") or "")
+                onclick=str(a.get("onclick") or "")
+                if any(k in tx for k in ("채용","모집","공고","입사지원")) or "reg_view" in href or "reg_view" in onclick:
+                  anchors.append({"text":tx[:180],"href":href[:400],"onclick":onclick[:400]})
+              print("ANCHORS",json.dumps(anchors[:40],ensure_ascii=False))
             except Exception as e:
               print("ERROR",type(e).__name__,str(e))
           PY
