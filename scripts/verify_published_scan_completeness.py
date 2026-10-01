@@ -56,14 +56,33 @@ def ledger_current_ids(ledger: dict[str, Any]) -> set[str]:
 
 
 def published_job_ids(payload: dict[str, Any]) -> set[str]:
+    """Return every official source identity represented by the published rows.
+
+    One canonical vacancy can legitimately represent the same posting observed on
+    multiple official boards. Reconciliation preserves those source-native
+    occurrences in sourceIdentities while canonical_source_id returns the primary
+    identity used for the merged row. Completeness must use the same representation
+    semantics as reconcile_source_ids.dataset_source_ids; otherwise merged
+    support-office occurrences are falsely reported as missing.
+    """
     jobs = payload.get("jobs") or []
     if not isinstance(jobs, list) or len(jobs) < 100:
-        raise VerificationError(f"published jobs snapshot is suspicious: {len(jobs) if isinstance(jobs, list) else 'invalid'}")
-    return {
-        sid
-        for sid in (canonical_source_id(job) for job in jobs)
-        if sid
-    }
+        raise VerificationError(
+            f"published jobs snapshot is suspicious: {len(jobs) if isinstance(jobs, list) else 'invalid'}"
+        )
+
+    represented: set[str] = set()
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        primary = canonical_source_id(job)
+        if primary:
+            represented.add(primary)
+        for sid in job.get("sourceIdentities") or []:
+            value = str(sid or "").strip()
+            if value:
+                represented.add(value)
+    return represented
 
 
 def _summary(report: dict[str, Any], label: str) -> dict[str, Any]:
