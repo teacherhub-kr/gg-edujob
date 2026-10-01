@@ -11,43 +11,25 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Install diagnostics dependencies
-        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
-      - name: Extract Seocho ApplyIn public contract only
+      - name: Install dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Verify Seocho ApplyIn jobs endpoint
         run: |
           python - <<'PY'
-          import re,requests
-          from bs4 import BeautifulSoup
-          from urllib.parse import urljoin
-          H={"User-Agent":"Mozilla/5.0"}
-          base="https://seochocf.applyin.co.kr/"
-          r=requests.get(base,headers=H,timeout=25)
-          r.encoding=r.apparent_encoding or r.encoding
-          soup=BeautifulSoup(r.text,"html.parser")
-          print("ROOT",r.status_code,r.url,len(r.content))
-          for src in [s.get("src") for s in soup.find_all("script") if s.get("src")]:
-              js=requests.get(urljoin(base,src),headers=H,timeout=25).text
-              print("BUNDLE",src,len(js))
-              for needle in [
-                  "fetchRecruitResource","loadRecruitResource","SET_RECRUIT_COLLECTION",
-                  "recruitCollectionItems","RecruitingList","RecruitResource","axios.get",
-                  "axios.post","/recruiting/","recruit-list","recruitResource",
-              ]:
-                  pos=0
-                  while True:
-                      i=js.find(needle,pos)
-                      if i<0: break
-                      print("CTX",needle,js[max(0,i-2500):i+3500].replace("\n"," ")[:7000])
-                      pos=i+len(needle)
-              lits=sorted(set(re.findall(r'["\']([^"\']{1,180})["\']',js)))
-              for x in lits:
-                  low=x.lower()
-                  if ("recruit" in low or "job" in low) and ("/" in x or "http" in low):
-                      print("LIT",x)
+          import json,requests
+          H={"User-Agent":"Mozilla/5.0","Accept":"application/json"}
+          s=requests.Session()
+          root=s.get("https://seochocf.applyin.co.kr/",headers=H,timeout=25)
+          print("ROOT",root.status_code,root.url,len(root.content))
+          for params in ({},{"page":1,"itemsPerPage":100},{"page":1,"perPage":100}):
+              r=s.get("https://seochocf.applyin.co.kr/jobs",headers=H,params=params,timeout=25)
+              print("JOBS",r.status_code,r.url,len(r.content),r.headers.get("content-type"))
+              try: print("JSON",json.dumps(r.json(),ensure_ascii=False)[:30000])
+              except Exception: print("TEXT",r.text[:10000])
           PY
