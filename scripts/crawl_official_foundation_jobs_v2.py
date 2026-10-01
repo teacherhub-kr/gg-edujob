@@ -500,6 +500,116 @@ def list_detail_candidates(session,foundation,board_url):
     return r,soup,candidates,dated_list_rows
 
 
+def vue_notice_filter(category_id:int,page:int=1,page_size:int=30):
+    return {
+        "PerformanceID":None,"PerformanceName":None,"CategoryID":category_id,
+        "SearchType":1,"SearchName":"제목","SearchText":None,
+        "DepartmentID":1,"PageIndex":page,"PageSize":page_size,
+    }
+
+
+def vue_notice_rows(session,foundation,board_url,category_id:int):
+    today=datetime.now(KST).date()
+    parsed=urlparse(board_url)
+    origin=f"{parsed.scheme}://{parsed.netloc}"
+    jobs=[]; discovered=0; inspected=0; errors=[]; unverified=[]
+    seen=set()
+    for page in range(1,5):
+        filt=vue_notice_filter(category_id,page)
+        create=session.post(
+            origin+"/api/historyBack/create",
+            data={"value":json.dumps(filt,ensure_ascii=False,separators=(",",":"))},
+            timeout=25,
+            headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},
+        )
+        create.raise_for_status()
+        payload=create.json()
+        key=payload.get("Tag") if payload.get("Code")==0 else None
+        if not key:
+            raise RuntimeError("official Vue board failed to create search key")
+        search=session.get(
+            origin+"/community/notice/search",
+            params={"q":key},timeout=25,
+            headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},
+        )
+        search.raise_for_status()
+        data=search.json()
+        tag=(data or {}).get("Tag") or {}
+        articles=tag.get("ArticleTitles") or []
+        if not isinstance(articles,list):
+            raise RuntimeError("official Vue board search returned malformed articles")
+        if not articles:
+            break
+        discovered+=len(articles)
+        oldest=None
+        for item in articles:
+            title=base.normalize_space(str((item or {}).get("Title") or ""))
+            category=int((item or {}).get("CategoryID") or 0)
+            if category!=category_id or not official_position_title(title):
+                continue
+            registered=base.parse_date_text(str((item or {}).get("CreateDate") or ""))
+            if registered:
+                oldest=registered if oldest is None or registered<oldest else oldest
+            if not registered or registered>today or registered<today-base.timedelta(days=120):
+                continue
+            detail_path=str((item or {}).get("DetailsUrl") or "").strip()
+            if not detail_path:
+                errors.append({"title":title[:180],"error":"missing official detail URL"})
+                continue
+            detail_url=urljoin(origin,detail_path)
+            identity=detail_identity(detail_url)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            try:
+                detail=resilient_request(session,detail_url)
+                ds=BeautifulSoup(detail.text,"html.parser")
+                text=base.normalize_space(ds.get_text(" ",strip=True))
+                if not text or title.replace(" ","")[:18] not in text.replace(" ",""):
+                    raise RuntimeError("Vue official detail does not contain list title")
+                resolved_title=base.detail_title(ds,title)
+                if not official_position_title(resolved_title):
+                    continue
+                apply_end=base.extract_apply_end(text,registered)
+                if apply_end and apply_end<today:
+                    continue
+                if not apply_end and registered<today-base.timedelta(days=30):
+                    continue
+                if not apply_end:
+                    unverified.append({"url":detail.url[:240],"title":title[:180]})
+                    continue
+                inspected+=1
+                fid=str(foundation.get("id") or "")
+                sid="official-foundation:"+fid+":"+hashlib.sha1((identity+"|"+detail.url).encode()).hexdigest()[:20]
+                jobs.append({
+                    "sourceIdentity":sid,"foundationRegistryId":fid,
+                    "foundationName":foundation.get("name") or "","organization":foundation.get("name") or "",
+                    "source":foundation.get("name") or "","sourceType":"문화재단 공식채용/모집",
+                    "sourceSurface":"cultural-foundation","sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 공식 채용·인력모집",
+                    "sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "",
+                    "region":foundation.get("municipality") or "","regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+                    "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+                    "title":resolved_title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),
+                    "url":detail.url,"originalUrl":detail.url,"detailUrl":detail.url,"boardUrl":board_url,
+                    "detailLinkVerified":True,"detailLinkReason":"official-foundation-vue-search-exact-detail","transportVerified":True,
+                })
+            except Exception as exc:
+                errors.append({"url":detail_url[:240],"error":f"{type(exc).__name__}: {str(exc)[:180]}"})
+        if oldest and oldest<today-base.timedelta(days=120):
+            break
+    if errors:
+        raise RuntimeError(f"official Vue board detail verification failed: {errors[:2]}")
+    if unverified:
+        raise RuntimeError(f"official Vue recent recruitment lacks verified deadline: {unverified[:2]}")
+    return jobs,{
+        "adapter":"vue-official-recruitment-category-v1",
+        "surfacesChecked":[board_url,origin+"/community/notice/search"],
+        "categoryId":category_id,"discoveredDetailLinks":discovered,
+        "inspectedDetailLinks":inspected,"publishedCurrentJobs":len(jobs),
+        "identityVerified":True,
+    }
+
+
 def efac_list_rows(soup):
     rows=[]
     for tr in soup.find_all("tr"):
@@ -691,6 +801,10 @@ def collect_with_verified_fallback(session, foundation, board_url):
         h=(urlparse(url).hostname or "").lower()
         if h=="nsart.or.kr" or h.endswith(".nsart.or.kr"):
             return base.nsart_rows(session,foundation,url)
+        if h in {"gdfac.or.kr","www.gdfac.or.kr"}:
+            return vue_notice_rows(session,foundation,url,17)
+        if h in {"caci.or.kr","www.caci.or.kr"}:
+            return vue_notice_rows(session,foundation,url,19)
         if h=="ayac.saramin.co.kr":
             return designated_saramin_rows(session,foundation,url)
         if h=="recruit.efac.or.kr":
