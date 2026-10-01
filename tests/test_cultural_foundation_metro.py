@@ -501,6 +501,28 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             "boardId:13000",
         )
 
+    def test_observed_official_detail_query_contracts_are_specific(self):
+        cases = [
+            (
+                "https://www.guri.go.kr/www/selectBbsNttList.do?bbsNo=41&key=389",
+                "https://www.guri.go.kr/www/selectBbsNttView.do?bbsNo=41&key=389&nttNo=146597&pageIndex=1",
+                "nttNo:146597",
+            ),
+            (
+                "https://www.nyjcf.or.kr/www/25",
+                "https://www.nyjcf.or.kr/www/25?action=read&action-value=38119bc1c9df4b61e8ce45b9ceef28fe",
+                "action-value:38119bc1c9df4b61e8ce45b9ceef28fe",
+            ),
+            (
+                "https://www.yjcf.or.kr/brd/board/217/L/menu/342",
+                "https://www.yjcf.or.kr/brd/board/217/L/menu/342?bbIdx=2504&brdType=R&thisPage=1",
+                "bbIdx:2504",
+            ),
+        ]
+        for board_url, detail_url, expected_identity in cases:
+            self.assertTrue(crawler.looks_like_detail_url(board_url, detail_url), detail_url)
+            self.assertEqual(crawler.detail_identity(detail_url), expected_identity)
+
     def test_board_navigation_cannot_be_published_as_detail(self):
         self.assertFalse(crawler.official_position_title("채용공고"))
         self.assertFalse(crawler.looks_like_detail_url(
