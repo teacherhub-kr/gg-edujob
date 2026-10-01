@@ -795,6 +795,64 @@ def efac_rows(session,foundation,board_url):
     }
 
 
+def applyin_rows(session,foundation,board_url):
+    today=datetime.now(KST).date()
+    jobs_url=urljoin(board_url.rstrip("/")+"/","jobs")
+    r=resilient_request(session,jobs_url)
+    try:
+        payload=r.json()
+    except Exception as exc:
+        raise RuntimeError("ApplyIn jobs endpoint returned non-JSON payload") from exc
+    rows=payload.get("data")
+    organization=payload.get("organization") or {}
+    org_name=base.normalize_space(str(organization.get("name") or organization.get("ORG_NM") or ""))
+    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
+    if not isinstance(rows,list) or not any(base.normalize_space(x).replace(" ","") in org_name.replace(" ","") for x in aliases if base.normalize_space(x)):
+        raise RuntimeError(f"ApplyIn foundation identity/collection unproved: organization={org_name!r}")
+    jobs=[]; errors=[]
+    for item in rows:
+        title=base.normalize_space(str(item.get("title") or ""))
+        registered=base.parse_date_text(str(item.get("start") or ""))
+        apply_end=base.parse_date_text(str(item.get("end") or item.get("close") or ""))
+        detail_url=str(((item.get("links") or {}).get("jobs.show")) or "").strip()
+        rec_id=str(item.get("id") or "").strip()
+        if not title or not official_position_title(title):
+            continue
+        if not registered or not apply_end or not detail_url or not rec_id:
+            errors.append({"id":rec_id,"title":title[:160],"start":str(item.get("start") or "")[:80],"end":str(item.get("end") or "")[:80]})
+            continue
+        if registered>today or apply_end<today:
+            continue
+        detail=resilient_request(session,detail_url)
+        detail_text=base.normalize_space(BeautifulSoup(detail.text,"html.parser").get_text(" ",strip=True))
+        if title.replace(" ","")[:18] not in detail_text.replace(" ",""):
+            errors.append({"id":rec_id,"title":title[:160],"error":"detail-title-mismatch"})
+            continue
+        fid=str(foundation.get("id") or "")
+        sid="official-foundation:"+fid+":"+hashlib.sha1(("applyin:"+rec_id+"|"+detail.url).encode()).hexdigest()[:20]
+        jobs.append({
+            "sourceIdentity":sid,"foundationRegistryId":fid,
+            "foundationName":foundation.get("name") or "","organization":foundation.get("name") or "",
+            "source":foundation.get("name") or "","sourceType":"문화재단 공식채용/모집",
+            "sourceSurface":"cultural-foundation","sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 공식 채용·인력모집",
+            "sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "",
+            "region":foundation.get("municipality") or "","regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+            "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+            "title":title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),
+            "url":detail.url,"originalUrl":detail.url,"detailUrl":detail.url,"boardUrl":board_url,
+            "detailLinkVerified":True,"detailLinkReason":"official-foundation-applyin-exact-detail","transportVerified":True,
+        })
+    if errors:
+        raise RuntimeError(f"ApplyIn active recruitment schema/detail verification failed: {errors[:2]}")
+    return jobs,{
+        "adapter":"applyin-public-jobs-v1",
+        "surfacesChecked":[r.url],"organization":org_name,
+        "discoveredDetailLinks":len(rows),"inspectedDetailLinks":len(jobs),
+        "publishedCurrentJobs":len(jobs),"identityVerified":True,
+        "explicitEmpty":not jobs,
+    }
+
+
 def ninehire_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     page_url=board_url.rstrip("/")+"/recruit"
@@ -1028,6 +1086,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return designated_saramin_rows(session,foundation,url)
         if h=="recruit.efac.or.kr":
             return efac_rows(session,foundation,url)
+        if h=="seochocf.applyin.co.kr":
+            return applyin_rows(session,foundation,url)
         if h=="recruit.jnfac.or.kr":
             return ninehire_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
