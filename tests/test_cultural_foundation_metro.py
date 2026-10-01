@@ -163,6 +163,33 @@ class CulturalFoundationMetroTests(unittest.TestCase):
                 {},
             )
 
+    def test_shared_board_navigation_fragment_is_not_treated_as_recruitment_row(self):
+        foundation = {
+            "id": "gyeonggi:bucheon",
+            "name": "부천문화재단",
+            "aliases": ["(재)부천문화재단", "재단법인 부천문화재단"],
+        }
+        html = """
+        <html><head><title>부천시 채용정보</title></head><body>
+          <div>부천문화재단</div>
+          <nav><a href="#none">부천시채용공고(채용시험)</a></nav>
+          <table><tr><td>부천문화재단</td><td><a href="./view?boardtypeid=26756&encid=abc123">임원 공개모집 공고</a></td></tr></table>
+        </body></html>
+        """
+        response = SimpleNamespace(
+            url="https://www.bucheon.go.kr/site/program/board/basicboard/list?boardtypeid=26756",
+            text=html,
+            content=html.encode(),
+        )
+        self.assertTrue(
+            crawler.verify_board_surface(
+                BeautifulSoup(html, "html.parser"),
+                foundation,
+                response,
+                {"encid:abc123": {"url": "https://www.bucheon.go.kr/site/program/board/basicboard/view?boardtypeid=26756&encid=abc123"}},
+            )
+        )
+
     def test_https_redirect_to_http_fails(self):
         response = SimpleNamespace(url="http://ypcf.or.kr/recruit", encoding="utf-8", raise_for_status=lambda: None)
         session = SimpleNamespace(get=lambda *args, **kwargs: response)
