@@ -476,6 +476,13 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             self.assertIsNotNone(resolved, board_url)
             self.assertIn(expected, resolved, board_url)
 
+    def test_recruitment_result_notice_is_not_an_open_position(self):
+        self.assertFalse(
+            crawler.official_position_title(
+                "(재)금천문화재단 제6대 임원(이사장,대표이사) 공개모집 결과 공고"
+            )
+        )
+
     def test_native_detail_identity_prefers_query_id(self):
         self.assertEqual(
             crawler.detail_identity("https://recruit.efac.or.kr/sub01/sub01.php?type=view&uid=5098"),
