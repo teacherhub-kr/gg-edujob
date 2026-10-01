@@ -83,14 +83,16 @@ ARTMORE_PROMOTE_WORKFLOW = "promote-artmore.yml"
 PRIVATE_REFRESH_IDLE_ACTIONS = {
     "skip-healthy",
     # When verified official production is already fresh enough that execution
-    # reaches the non-Fast audit branch, overdue private recruitment sources
-    # take precedence over non-P0 Recovery / routine Completeness work.
-    # Registry/P0/Fast/Unified gates are evaluated earlier and still win.
+    # reaches an otherwise idle/backed-off branch, overdue private recruitment
+    # sources may use that slot. A runnable Fast or Unified action still wins;
+    # only blocked/backed-off Unified is treated as idle.
     "recovery",
     "completeness",
     "skip-recovery-circuit-open",
     "skip-recovery-backoff",
     "skip-completeness-circuit-open",
+    "skip-unified-circuit-open",
+    "skip-unified-backoff",
 }
 TARGETS = {
     **CORE_TARGETS,
