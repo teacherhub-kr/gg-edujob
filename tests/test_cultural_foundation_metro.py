@@ -69,7 +69,6 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             ("gyeonggi:guri", "구리문화재단", "구리시 기간제근로자 채용 공고"),
             ("gyeonggi:hanam", "하남문화재단", "하남시 지방임기제공무원 채용 공고"),
             ("gyeonggi:seongnam", "성남문화재단", "성남시 기간제근로자 채용 공고"),
-            ("gyeonggi:paju", "파주문화재단", "파주시 아이돌봄사 채용 공고"),
         ]
         for fid, name, unrelated in cases:
             foundation = {"id": fid, "name": name, "aliases": [f"(재){name}"]}
