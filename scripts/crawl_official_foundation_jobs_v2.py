@@ -85,7 +85,7 @@ RECRUITMENT_RE=re.compile(
 NON_POSITION_RE=re.compile(
     r"참여자|참가자|관람객|서포터즈|동아리|대관|지원사업|공모전|작품\s*공모|"
     r"예술활동증명|입찰|제안서\s*평가위원|수강생|시민\s*모집|체험|공연\s*모집|"
-    r"채용\s*과정\s*공개|후보자\s*추천\s*공고",
+    r"채용\s*과정\s*공개|후보자\s*추천\s*공고|모집\s*결과",
     re.I,
 )
 GENERIC_OFFICIAL_HOSTS={
@@ -517,7 +517,12 @@ def generic_official_rows(session,foundation,board_url):
             list_title=base.normalize_space(str(meta.get("fallbackTitle") or ""))
             title_prefix=list_title.replace(" ","")[:20]
             if not detail_text or (title_prefix and title_prefix not in detail_text.replace(" ","")):
-                raise RuntimeError("official detail does not contain its recruitment title")
+                detail_heading=base.detail_title(detail_soup,"")
+                raise RuntimeError(
+                    "official detail does not contain its recruitment title: "
+                    f"listTitle={list_title[:180]!r}, detailHeading={detail_heading[:180]!r}, "
+                    f"detailText={detail_text[:260]!r}"
+                )
             title=base.detail_title(detail_soup,str(meta.get("fallbackTitle") or ""))
             if not official_position_title(title):
                 continue
@@ -533,7 +538,14 @@ def generic_official_rows(session,foundation,board_url):
             if not apply_end and registered<today-base.timedelta(days=30):
                 continue
             if not apply_end:
-                unverified_deadlines.append(detail.url[:250])
+                unverified_deadlines.append({
+                    "url":detail.url[:250],
+                    "listTitle":list_title[:180],
+                    "registered":base.format_date(registered),
+                    "listContext":base.normalize_space(str(meta.get("listContext") or ""))[:360],
+                    "detailHeading":base.detail_title(detail_soup,"")[:180],
+                    "detailDateHints":[base.format_date(d) for d in base.parse_all_dates(full_text)[:8]],
+                })
                 continue
             inspected+=1
             fid=str(foundation.get("id") or "")
