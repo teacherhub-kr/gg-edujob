@@ -351,6 +351,13 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         url = "https://www.bucheon.go.kr/site/program/board/basicboard/view?boardtypeid=26756&encid=BZJJFP82CPkJg4%2BYB5twEA%3D%3D"
         self.assertTrue(crawler.detail_identity(url).startswith("encid:"))
 
+    def test_seocho_uses_foundation_owned_recruitment_category(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        url = rows["seoul:seocho"]["officialRecruitmentUrl"]
+        self.assertIn("seochocf.or.kr/site/main/archive/post/category/", url)
+        self.assertIn("metaCode1=RECRUIT", url)
+        self.assertNotIn("applyin.co.kr", url)
+
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
