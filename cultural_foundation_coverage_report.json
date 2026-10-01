@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T07:45:29+09:00",
+  "generatedAt": "2026-10-01T22:33:14+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -21,9 +21,9 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 10,
-    "cleaneye": 9,
-    "artmore": 0,
+    "official": 12,
+    "cleaneye": 10,
+    "artmore": 11,
     "ancf": 1,
     "lessoninfo-discovery": 14
   },
@@ -109,13 +109,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 0,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:gangnam",
@@ -203,15 +203,15 @@
       "region": "서울",
       "municipality": "구로구",
       "sourceCounts": {
-        "official": 0,
-        "cleaneye": 0,
+        "official": 1,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": true,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:geumcheon",
@@ -365,13 +365,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 0,
+        "artmore": 2,
         "ancf": 0,
         "lessoninfo-discovery": 4
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:yangcheon",
@@ -461,13 +461,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 0,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:yongsan",
@@ -509,13 +509,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 0,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "gyeonggi:gwacheon",
@@ -653,11 +653,11 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 2,
-        "artmore": 0,
+        "artmore": 2,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 4,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     },
@@ -667,13 +667,13 @@
       "region": "경기",
       "municipality": "수원시",
       "sourceCounts": {
-        "official": 1,
+        "official": 2,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -861,11 +861,11 @@
       "sourceCounts": {
         "official": 2,
         "cleaneye": 2,
-        "artmore": 0,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 4,
+      "currentStrongSignals": 5,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -877,11 +877,11 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 1,
-        "artmore": 0,
+        "artmore": 3,
         "ancf": 0,
         "lessoninfo-discovery": 3
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 4,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     },

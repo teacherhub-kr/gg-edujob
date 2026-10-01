@@ -1,14 +1,23 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 7218,
+  "totalRows": 7574,
   "nonDirectBeforeRepair": 0,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 0,
-  "cultureFoundationRows": 28,
+  "cultureFoundationRows": 31,
   "cultureFoundationNonDirectRows": 0,
   "recoveredExamples": [],
   "nonDirectExamples": [],
   "cultureFoundationExamples": [
+    {
+      "sourceIdentity": "official-foundation:gyeonggi:suwon:fc9c307f63b789a0439b",
+      "source": "수원문화재단",
+      "title": "2026년 하반기 수원문화재단 직원 채용 공고",
+      "school": "수원문화재단",
+      "url": "https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113884",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
     {
       "sourceIdentity": "artmore:95164",
       "source": "아트모아",
@@ -16,6 +25,24 @@
       "school": "대림문화재단",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95164",
       "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "official-foundation:seoul:guro:d48f90f111c56a0f4519",
+      "source": "구로문화재단",
+      "title": "구로문화재단 육아휴직 대체 기간제 공개경쟁채용 모집공고 NEW",
+      "school": "구로문화재단",
+      "url": "https://www.guro.go.kr/www/selectBbsNttView.do?bbsNo=664&nttNo=240832&&pageUnit=10&key=1792&pageIndex=1",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "cleaneye:2026:B000267:000015",
+      "source": "클린아이 잡플러스",
+      "title": "구로문화재단 육아휴직 대체 기간제 공개경쟁채용 모집공고(2차 재공고)",
+      "school": "구로문화재단",
+      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000015&ypEntId=B000267",
+      "reason": "unclassified-nongeneric-url",
       "direct": true
     },
     {
