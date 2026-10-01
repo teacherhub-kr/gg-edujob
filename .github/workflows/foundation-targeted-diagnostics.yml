@@ -19,61 +19,82 @@ jobs:
           python-version: '3.12'
       - name: Install diagnostics dependencies
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
-      - name: Probe exact remaining contracts
+      - name: Probe only five unresolved foundation contracts
         run: |
           python - <<'PY'
           import json,re,requests
           from bs4 import BeautifulSoup
-          from urllib.parse import urljoin
+          from urllib.parse import urlencode,urljoin
           H={"User-Agent":"Mozilla/5.0"}
+          S=requests.Session()
           def clean(x): return " ".join(str(x or "").split())
-          def around(raw,needle,r=1800):
-            i=raw.find(needle)
-            return clean(raw[max(0,i-r):i+r]) if i>=0 else ""
-
-          for base in ["https://www.gdfac.or.kr/community/ko/notice","https://www.caci.or.kr/community/ko/notice"]:
-            rr=requests.get(base,headers=H,timeout=25); rr.encoding=rr.apparent_encoding or rr.encoding
-            soup=BeautifulSoup(rr.text,"html.parser")
-            print("\n===== VUE",base)
-            for src in [s.get("src") for s in soup.find_all("script") if s.get("src")]:
+          def show(name,url,method="get",data=None):
+              print("\n=====",name,url)
               try:
-                js=requests.get(urljoin(base,src),headers=H,timeout=20).text
-              except Exception:
-                continue
-              if "createHistoryBackKey" in js:
-                print("HISTORY_JS",src,around(js,"createHistoryBackKey",3500))
-            print("INLINE_GETSEARCH",around(rr.text,"getSearchResults",4500))
+                  r=(S.post(url,headers=H,data=data,timeout=25,allow_redirects=True)
+                     if method=="post" else S.get(url,headers=H,timeout=25,allow_redirects=True))
+                  r.encoding=r.apparent_encoding or r.encoding
+                  soup=BeautifulSoup(r.text,"html.parser")
+                  print("STATUS",r.status_code,"FINAL",r.url,"BYTES",len(r.content))
+                  print("TITLE",clean(soup.title.get_text(" ",strip=True) if soup.title else "")[:240])
+                  text=clean(soup.get_text(" ",strip=True))
+                  print("TEXT",text[:2200])
+                  rows=[]
+                  for tr in soup.find_all("tr"):
+                      tx=clean(tr.get_text(" ",strip=True))
+                      if any(k in tx for k in ("동작문화재단","성동문화재단","서초문화재단","중랑문화재단","부천문화재단","채용","모집")):
+                          rows.append({"text":tx[:800],"html":str(tr)[:2200]})
+                  print("ROWS",json.dumps(rows[:30],ensure_ascii=False))
+                  anchors=[]
+                  for a in soup.find_all("a"):
+                      tx=clean(a.get_text(" ",strip=True)); href=str(a.get("href") or ""); oc=str(a.get("onclick") or "")
+                      if any(k in tx for k in ("동작문화재단","성동문화재단","서초문화재단","중랑문화재단","부천문화재단","채용","모집")):
+                          anchors.append({"text":tx[:500],"href":href[:700],"onclick":oc[:700]})
+                  print("ANCHORS",json.dumps(anchors[:50],ensure_ascii=False))
+                  scripts=[]
+                  for s in soup.find_all("script"):
+                      raw=s.string or s.get_text(" ",strip=False) or ""
+                      if any(k in raw.lower() for k in ("recruit","job_posting","searchwrd","searchcnd","catid","boardmanagementno","contentsview","api.ninehire")):
+                          scripts.append(clean(raw)[:6000])
+                  print("SCRIPT_HINTS",json.dumps(scripts[:8],ensure_ascii=False))
+                  return r
+              except Exception as e:
+                  print("ERROR",type(e).__name__,str(e))
+                  return None
 
-          # ApplyIn candidate public routes and bundle request literals.
-          base="https://seochocf.applyin.co.kr/"
-          rr=requests.get(base,headers=H,timeout=25); rr.encoding=rr.apparent_encoding or rr.encoding
-          soup=BeautifulSoup(rr.text,"html.parser")
-          for path in ["/recruiting/recruiting-list","/api/recruits","/api/recruiting","/api/recruitments","/recruits"]:
-            try:
-              x=requests.get(urljoin(base,path),headers=H,timeout=20)
-              x.encoding=x.apparent_encoding or x.encoding
-              print("APPLY_ROUTE",path,x.status_code,x.url,len(x.content),clean(x.text)[:1200])
-            except Exception as e: print("APPLY_ROUTE_ERR",path,type(e).__name__,str(e))
-          for src in [s.get("src") for s in soup.find_all("script") if s.get("src")]:
-            js=requests.get(urljoin(base,src),headers=H,timeout=25).text
-            lits=sorted(set(re.findall(r'["\']([^"\']*(?:recruit|job)[^"\']*)["\']',js,re.I)))
-            api=[x for x in lits if "/" in x and len(x)<220]
-            print("APPLY_LITERALS",src,json.dumps(api[:250],ensure_ascii=False))
+          # 1) Dongjak: Seoul Culture Portal filtered official mirror.
+          for params in [
+              {"menuNo":"200052","pageIndex":"1","searchCnd":"1","searchWrd":"동작문화재단"},
+              {"menuNo":"200052","pageIndex":"1","searchCnd":"2","searchWrd":"동작문화재단"},
+              {"menuNo":"200052","pageIndex":"1","searchType":"1","searchWord":"동작문화재단"},
+          ]:
+              show("DONGJAK", "https://culture.seoul.go.kr/culture/bbs/B0000002/list.do?"+urlencode(params))
 
-          # Dobong exact current detail contract.
-          for cid in ["caf299857022408fbcbfff2375dc5e5f","84288269650f42f8bf38f69c2011a27b"]:
-            url="https://www.dbfac.or.kr/front/board/boardContentsView.do?board_id=7&contents_id="+cid
-            x=requests.get(url,headers=H,timeout=25); x.encoding=x.apparent_encoding or x.encoding
-            print("DBFAC_DETAIL",cid,x.status_code,x.url,len(x.content),clean(BeautifulSoup(x.text,"html.parser").get_text(" ",strip=True))[:3500])
+          # 2) Seongdong: district official recruitment board.
+          show("SEONGDONG","https://www.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1")
 
-          # Jungnang Next chunks: strings around job-posting/API concepts.
-          base="https://recruit.jnfac.or.kr/recruit"
-          rr=requests.get(base,headers=H,timeout=25); rr.encoding=rr.apparent_encoding or rr.encoding
-          soup=BeautifulSoup(rr.text,"html.parser")
-          for src in [s.get("src") for s in soup.find_all("script") if s.get("src")]:
-            if not src.startswith("/_next/"): continue
-            js=requests.get(urljoin(base,src),headers=H,timeout=20).text
-            if any(k in js for k in ("job_posting","recruitment","jobPosting","recruit")):
-              hints=sorted(set(re.findall(r'["\']([^"\']{0,120}(?:api|recruit|job)[^"\']{0,120})["\']',js,re.I)))
-              if hints: print("JNFAC_CHUNK",src,json.dumps(hints[:160],ensure_ascii=False))
+          # 3) Seocho: foundation homepage notice surface and ApplyIn current state.
+          for url in [
+              "https://www.seochocf.or.kr/site/main/archive/post/list",
+              "https://www.seochocf.or.kr/site/main/archive/post/list?catId=2",
+              "https://www.seochocf.or.kr/site/main/archive/post/list?catId=7",
+              "https://seochocf.applyin.co.kr/",
+          ]:
+              show("SEOCHO",url)
+
+          # 4) Jungnang: current recruitment page.
+          r=show("JUNGNANG","https://recruit.jnfac.or.kr/recruit")
+          if r:
+              soup=BeautifulSoup(r.text,"html.parser")
+              nd=soup.find("script",id="__NEXT_DATA__")
+              if nd and nd.string:
+                  data=json.loads(nd.string)
+                  print("JUNGNANG_NEXT_KEYS",json.dumps(data,ensure_ascii=False)[:30000])
+
+          # 5) Bucheon: city official recruitment board.
+          for url in [
+              "https://www.bucheon.go.kr/site/program/board/basicboard//list?boardtypeid=26756&menuid=148002004001&pagesize=20&currentpage=1",
+              "https://culturebc.bcf.or.kr/base/board/list?boardManagementNo=25&menuLevel=2&menuNo=86",
+          ]:
+              show("BUCHEON",url)
           PY
