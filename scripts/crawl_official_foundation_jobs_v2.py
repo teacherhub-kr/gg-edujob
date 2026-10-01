@@ -61,6 +61,9 @@ def resilient_request(session,url,*,extra_headers=None):
         r=session.get(url,timeout=25,headers=headers,allow_redirects=True)
         r.raise_for_status()
     except requests.exceptions.SSLError:
+        host=(urlparse(url).hostname or "").lower()
+        if host not in {"sd.go.kr","www.sd.go.kr"}:
+            raise
         r=browser_verified_request(url)
     if urlparse(url).scheme.lower()=="https" and urlparse(r.url).scheme.lower()!="https":
         raise RuntimeError(f"HTTPS official URL downgraded in redirect: {url[:180]} -> {r.url[:180]}")
@@ -211,7 +214,8 @@ SAAS_EXPLICIT_EMPTY_HOSTS={
 
 def verify_board_surface(soup, foundation, response, candidates):
     visible=base.normalize_space(soup.get_text(" ",strip=True))
-    if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
+    raw_block=BLOCK_PAGE_RE.search(response.text[:4000])
+    if BLOCK_PAGE_RE.search(visible[:4000]) or (raw_block and len(visible)<600):
         raise RuntimeError("official board returned an access-control page")
     if not candidates and JS_SHELL_RE.search(response.text):
         raise RuntimeError("official board is a JS-rendered shell without parsed details")
@@ -1147,7 +1151,8 @@ def generic_official_rows(session,foundation,board_url):
             detail=resilient_request(session,str(meta["url"]))
             detail_soup=BeautifulSoup(detail.text,"html.parser")
             detail_text=base.normalize_space(detail_soup.get_text(" ",strip=True))
-            if BLOCK_PAGE_RE.search(detail.text[:4000]) or BLOCK_PAGE_RE.search(detail_text[:4000]):
+            raw_block=BLOCK_PAGE_RE.search(detail.text[:4000])
+            if BLOCK_PAGE_RE.search(detail_text[:4000]) or (raw_block and len(detail_text)<600):
                 raise RuntimeError("official detail returned an access-control page")
             if JS_SHELL_RE.search(detail.text) and len(detail_text)<100:
                 raise RuntimeError("official detail returned an unrendered JavaScript shell")
