@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T22:59:46+09:00",
+  "generatedAt": "2026-10-02T00:16:48+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": true,
   "registryInstitutions": 55,
@@ -21,8 +21,8 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 12,
-    "cleaneye": 10,
+    "official": 10,
+    "cleaneye": 9,
     "artmore": 11,
     "ancf": 1,
     "lessoninfo-discovery": 14
@@ -123,13 +123,13 @@
       "region": "서울",
       "municipality": "강남구",
       "sourceCounts": {
-        "official": 1,
-        "cleaneye": 2,
+        "official": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -923,15 +923,15 @@
       "region": "인천",
       "municipality": "서해구",
       "sourceCounts": {
-        "official": 1,
+        "official": 0,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "incheon:yeonsu",

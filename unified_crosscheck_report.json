@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-01T22:59:41+09:00",
+  "generatedAt": "2026-10-02T00:16:45+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4258,
+  "privateJobs": 4264,
   "officialJobs": 20591,
   "privateSources": {
     "lessoninfo": {
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 25
+      "canonicalCount": 31
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -87,10 +87,10 @@
       "officialGapCandidates": 3
     },
     "gonggonggangsa": {
-      "jobs": 25,
+      "jobs": 31,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 2
+      "officialGapCandidates": 3
     },
     "seekle": {
       "jobs": 6,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 40,
+  "officialGapCandidates": 41,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -566,6 +566,18 @@
       ],
       "registered": "2026-08-14",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:23753",
+      "privateTitle": "명지대학교 국제교류처 한국어교육센터 한국어강사 모집 공고 ⦁ 인문(서울)캠퍼스 ⦁ - 한국어/다문화",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-09-30",
+      "url": "https://00gangsa.com/recruitments/23753",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
