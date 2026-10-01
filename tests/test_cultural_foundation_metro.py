@@ -363,6 +363,28 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn('extra_headers={"Accept":"application/json"}', source)
         self.assertIn('"naruart.applyin.co.kr"', source)
 
+    def test_seongdong_uses_official_city_board_with_verified_browser_tls_fallback(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        row = rows["seoul:seongdong"]
+        self.assertIn("sd.go.kr/main/selectBbsNttList.do", row["officialRecruitmentUrl"])
+        self.assertIn("seoul:seongdong", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+        self.assertIn("sd.go.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+        source = Path("scripts/crawl_official_foundation_jobs_v2.py").read_text(encoding="utf-8")
+        self.assertIn("def browser_verified_request", source)
+        self.assertNotIn("--ignore-certificate-errors", source)
+        self.assertIn('"sd.go.kr","www.sd.go.kr"', source)
+
+    def test_seongnam_uses_cleaneye_official_institution_registry(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        row = rows["gyeonggi:seongnam"]
+        self.assertEqual(row["officialRecruitmentUrl"], "https://job.cleaneye.go.kr/user/ypRecruitment.do")
+        self.assertEqual(row["officialRecruitmentRole"], "primary-official-government-registry")
+        source = Path("scripts/crawl_official_foundation_jobs_v2.py").read_text(encoding="utf-8")
+        self.assertIn("def cleaneye_official_rows", source)
+        self.assertIn("selectYpRecruitment.do", source)
+        self.assertIn("ypCareersData.do", source)
+        self.assertIn('"official-cleaneye-exact-institution-detail"', source)
+
     def test_jungnang_uses_ninehire_public_recruitment_contract(self):
         from pathlib import Path
         rows = {x["id"]: x for x in self.registry["institutions"]}
@@ -378,6 +400,8 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
         self.assertEqual(rows["seoul:dongjak"]["verifiedFallbackRole"], "secondary-official-mirror")
         self.assertNotIn("verifiedFallbackRecruitmentUrl", rows["gyeonggi:seongnam"])
+        self.assertIn("job.cleaneye.go.kr", rows["gyeonggi:seongnam"]["officialRecruitmentUrl"])
+        self.assertIn("sd.go.kr", rows["seoul:seongdong"]["officialRecruitmentUrl"])
         self.assertIn("gm.go.kr/pt/user/bbs/BD_selectBbsList.do", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
         self.assertIn("q_searchVal=", rows["gyeonggi:gwangmyeong"]["officialRecruitmentUrl"])
         self.assertIn("goyang.go.kr/jobs", rows["gyeonggi:goyang"]["officialRecruitmentUrl"])
