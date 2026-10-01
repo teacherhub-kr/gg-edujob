@@ -225,6 +225,11 @@ def verify_board_surface(soup, foundation, response, candidates):
     for a in soup.find_all("a",href=True):
         if not official_position_title(a.get_text(" ",strip=True)):
             continue
+        if str(foundation.get("id") or "") in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
+            if not candidate_belongs_to_foundation(
+                foundation, container_text(a), shared_board=True
+            ):
+                continue
         uses_js=(
             str(a.get("href") or "").strip().lower().startswith(("javascript:","#"))
             or a.has_attr("onclick")
