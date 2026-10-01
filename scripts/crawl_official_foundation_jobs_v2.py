@@ -795,6 +795,114 @@ def efac_rows(session,foundation,board_url):
     }
 
 
+def ninehire_rows(session,foundation,board_url):
+    today=datetime.now(KST).date()
+    page_url=board_url.rstrip("/")+"/recruit"
+    page=resilient_request(session,page_url)
+    soup=BeautifulSoup(page.text,"html.parser")
+    next_data=soup.find("script",id="__NEXT_DATA__")
+    if not next_data or not next_data.string:
+        raise RuntimeError("NineHire recruitment page missing __NEXT_DATA__ identity")
+    try:
+        payload=json.loads(next_data.string)
+    except Exception as exc:
+        raise RuntimeError("NineHire recruitment page returned malformed __NEXT_DATA__") from exc
+    homepage_props=((payload.get("props") or {}).get("pageProps") or {}).get("homepageProps") or {}
+    info=homepage_props.get("info") or {}
+    company_id=str(info.get("companyId") or "").strip()
+    company_name=base.normalize_space(str(info.get("companyName") or ""))
+    aliases=[foundation.get("name"),*(foundation.get("aliases") or [])]
+    if not company_id or not any(base.normalize_space(x).replace(" ","") in company_name.replace(" ","") for x in aliases if base.normalize_space(x)):
+        raise RuntimeError(f"NineHire foundation identity unproved: company={company_name!r}")
+    api_url="https://api.ninehire.com/identity-access/homepage/recruitments"
+    api=session.get(
+        api_url,
+        params={"companyId":company_id,"page":1,"countPerPage":100},
+        timeout=25,
+        headers={"User-Agent":UA,"Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"},
+    )
+    api.raise_for_status()
+    try:
+        data=api.json()
+    except Exception as exc:
+        raise RuntimeError("NineHire recruitment API returned non-JSON payload") from exc
+    count=data.get("count")
+    results=data.get("results")
+    if not isinstance(count,int) or not isinstance(results,list):
+        raise RuntimeError("NineHire recruitment API contract malformed")
+    if count==0:
+        if results:
+            raise RuntimeError("NineHire zero-count contract returned nonempty results")
+        return [],{
+            "adapter":"ninehire-public-recruitment-v1",
+            "surfacesChecked":[page.url,api.url],
+            "companyId":company_id,
+            "discoveredDetailLinks":0,
+            "inspectedDetailLinks":0,
+            "publishedCurrentJobs":0,
+            "explicitEmpty":True,
+            "identityVerified":True,
+        }
+    if count!=len(results):
+        # One page is deliberately oversized. If the service still paginates,
+        # do not publish an incomplete candidate.
+        raise RuntimeError(f"NineHire recruitment API pagination incomplete: count={count}, results={len(results)}")
+    jobs=[]; errors=[]
+    for item in results:
+        title=base.normalize_space(str(
+            item.get("title") or item.get("recruitmentTitle") or item.get("externalTitle") or item.get("name") or ""
+        ))
+        address=str(item.get("addressKey") or "").strip()
+        recruitment_id=str(item.get("recruitmentId") or item.get("id") or "").strip()
+        end_raw=(
+            item.get("closingAt") or item.get("closeAt") or item.get("deadline") or
+            item.get("endAt") or item.get("applicationEndAt") or item.get("receiptEndAt")
+        )
+        registered_raw=(
+            item.get("openingAt") or item.get("openAt") or item.get("publishedAt") or
+            item.get("createdAt") or item.get("startAt")
+        )
+        registered=base.parse_date_text(str(registered_raw or ""))
+        apply_end=base.parse_date_text(str(end_raw or ""))
+        if not title or not official_position_title(title) or not address or not registered or not apply_end:
+            errors.append({
+                "title":title[:160],"addressKey":address[:100],
+                "registered":str(registered_raw or "")[:100],"deadline":str(end_raw or "")[:100],
+            })
+            continue
+        if registered>today or apply_end<today:
+            continue
+        detail_url=urljoin(page.url,"/job_posting/"+address)
+        detail=resilient_request(session,detail_url)
+        detail_text=base.normalize_space(BeautifulSoup(detail.text,"html.parser").get_text(" ",strip=True))
+        if title.replace(" ","")[:18] not in detail_text.replace(" ",""):
+            errors.append({"title":title[:160],"addressKey":address[:100],"error":"detail-title-mismatch"})
+            continue
+        fid=str(foundation.get("id") or "")
+        identity="ninehire:"+(recruitment_id or address)
+        sid="official-foundation:"+fid+":"+hashlib.sha1((identity+"|"+detail.url).encode()).hexdigest()[:20]
+        jobs.append({
+            "sourceIdentity":sid,"foundationRegistryId":fid,
+            "foundationName":foundation.get("name") or "","organization":foundation.get("name") or "",
+            "source":foundation.get("name") or "","sourceType":"문화재단 공식채용/모집",
+            "sourceSurface":"cultural-foundation","sourceSurfaceLabel":f"{foundation.get('name') or '문화재단'} 공식 채용·인력모집",
+            "sourceRole":"primary-official","trustLevel":"공식","province":foundation.get("region") or "",
+            "region":foundation.get("municipality") or "","regions":[foundation.get("municipality")] if foundation.get("municipality") else [],
+            "location":" ".join(x for x in [foundation.get("region"),foundation.get("municipality")] if x),
+            "title":title,"registered":base.format_date(registered),"applyEnd":base.format_date(apply_end),
+            "url":detail.url,"originalUrl":detail.url,"detailUrl":detail.url,"boardUrl":page.url,
+            "detailLinkVerified":True,"detailLinkReason":"official-foundation-ninehire-exact-detail","transportVerified":True,
+        })
+    if errors:
+        raise RuntimeError(f"NineHire active recruitment schema/detail verification failed: {errors[:2]}")
+    return jobs,{
+        "adapter":"ninehire-public-recruitment-v1",
+        "surfacesChecked":[page.url,api.url],"companyId":company_id,
+        "discoveredDetailLinks":count,"inspectedDetailLinks":len(jobs),
+        "publishedCurrentJobs":len(jobs),"identityVerified":True,
+    }
+
+
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
@@ -920,6 +1028,8 @@ def collect_with_verified_fallback(session, foundation, board_url):
             return designated_saramin_rows(session,foundation,url)
         if h=="recruit.efac.or.kr":
             return efac_rows(session,foundation,url)
+        if h=="recruit.jnfac.or.kr":
+            return ninehire_rows(session,foundation,url)
         if h=="sfac.saramin.co.kr":
             found,meta=sfac_rows(session,foundation,url)
             # Careerlink is a secondary official contract surface. A markup change
