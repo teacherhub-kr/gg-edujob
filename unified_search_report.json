@@ -1,31 +1,33 @@
 {
-  "generatedAt": "2026-10-02T06:15:48+09:00",
-  "policy": "unified-search-v3-multi-private-strong-evidence-only",
+  "generatedAt": "2026-10-02T07:18:35+09:00",
+  "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 20483,
   "canonicalFoundationOfficialJobs": 12,
-  "canonicalPrivateJobs": 4265,
+  "canonicalPrivateJobs": 4481,
   "selectedCanonicalOfficialJobs": 3273,
   "selectedFoundationOfficialJobs": 10,
   "selectedOfficialJobs": 3283,
-  "selectedPrivateJobs": 4250,
-  "publishedJobs": 7345,
+  "selectedPrivateJobs": 4466,
+  "publishedJobs": 7557,
   "perFeed": {
     "official": 3095,
-    "private": 4250
+    "private": 4462
   },
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
       "configuredPublicationEnabled": true,
-      "publicationEnabled": false,
-      "degraded": true,
-      "ok": false,
+      "publicationEnabled": true,
+      "degraded": false,
+      "ok": true,
       "candidateCount": 212,
-      "count": 0,
+      "count": 212,
       "lastVerifiedAt": "2026-10-02T02:02:27+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 0
+      "publicationPolicy": "source-labelled-user-judgment",
+      "unverifiedLinkCount": 176,
+      "displayedAsPrivate": 208
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -38,6 +40,8 @@
       "lastVerifiedAt": "2026-10-01T07:57:21+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
       "displayedAsPrivate": 8
     },
     "jobteacher": {
@@ -51,6 +55,8 @@
       "lastVerifiedAt": "2026-10-02T00:50:26+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
       "displayedAsPrivate": 4021
     },
     "artmore": {
@@ -59,12 +65,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 189,
-      "count": 189,
-      "lastVerifiedAt": "2026-10-01T07:38:39+09:00",
+      "candidateCount": 192,
+      "count": 192,
+      "lastVerifiedAt": "2026-10-02T06:19:35+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 189
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
+      "displayedAsPrivate": 192
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -72,12 +80,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 31,
-      "count": 31,
-      "lastVerifiedAt": "2026-10-01T23:38:32+09:00",
+      "candidateCount": 32,
+      "count": 32,
+      "lastVerifiedAt": "2026-10-02T06:46:06+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
-      "displayedAsPrivate": 31
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
+      "displayedAsPrivate": 32
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -90,6 +100,8 @@
       "lastVerifiedAt": "2026-10-02T05:20:05+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
       "displayedAsPrivate": 0
     },
     "boramyc": {
@@ -103,16 +115,16 @@
       "lastVerifiedAt": "2026-10-02T05:37:20+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
+      "publicationPolicy": "verified-source",
+      "unverifiedLinkCount": 0,
       "displayedAsPrivate": 1
     }
   },
   "protectedOfficialIds": 18981,
-  "explicitOfficialAliasGroupsMerged": 0,
+  "explicitOfficialAliasGroupsMerged": 4,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
-  "degradedPrivateSources": [
-    "lessoninfo"
-  ],
-  "allPublicationEnabledSourcesHealthy": false
+  "degradedPrivateSources": [],
+  "allPublicationEnabledSourcesHealthy": true
 }

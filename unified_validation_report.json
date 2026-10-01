@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-10-02T06:15:49+09:00",
+  "generatedAt": "2026-10-02T07:18:35+09:00",
   "healthy": true,
-  "total": 7345,
+  "total": 7557,
   "official": 3095,
-  "privateDisplayed": 4250,
+  "privateDisplayed": 4462,
   "enabledPrivateSources": [
+    "lessoninfo",
     "cleaneye",
     "jobteacher",
     "artmore",
@@ -12,12 +13,10 @@
     "seekle",
     "boramyc"
   ],
-  "degradedPrivateSources": [
-    "lessoninfo"
-  ],
-  "privateStableIds": 4250,
-  "privateRepresentedDirectly": 4250,
-  "privateRepresentedByOfficial": 0,
+  "degradedPrivateSources": [],
+  "privateStableIds": 4466,
+  "privateRepresentedDirectly": 4462,
+  "privateRepresentedByOfficial": 4,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
     "lessoninfo": 0,
@@ -47,14 +46,216 @@
   "nonDirectPrivateLinkExamples": [],
   "verifiedLessoninfoCultureLinks": 0,
   "verifiedLessoninfoCultureLinkExamples": [],
-  "failClosedLessoninfoCultureLinks": 0,
-  "failClosedLessoninfoCultureLinkExamples": [],
+  "failClosedLessoninfoCultureLinks": 122,
+  "failClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95170",
+      "title": "[장앤파트너스그룹] Research Assistant(연구보조 인턴) 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95159",
+      "title": "[서울 전지역] (주)종이나라에서 종이접기 선생님을 모십니다."
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95074",
+      "title": "[놀씨어터] NOL씨어터 합정 동양생명홀 Audience Officer 모집"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95073",
+      "title": "[장앤파트너스그룹] Research Assistant(연구보조 인턴) 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95067",
+      "title": "2026 성남아트센터 공연장안내원 모집공고 (~10/11)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95055",
+      "title": "[피크닉 piknic] 전시 운영 부매니저 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95054",
+      "title": "[피크닉 piknic] 전시 운영 스태프 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95053",
+      "title": "(복사) 2026년도 국립극장 공연안내원 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95052",
+      "title": "[서울사진센터] 전시·콘텐츠 코디네이터 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95051",
+      "title": "[핸드투홈 서울] 공예 큐레이션 스토어 파트타이머 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95050",
+      "title": "롯데콘서트홀 하우스어텐던트(공연장 안내원) 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95047",
+      "title": "[마크923] 공연 홍보.마케팅 담당자 채용 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95045",
+      "title": "[오픈갤러리] 고객관리팀 신입 채용 (미술 작품 추천 및 운영)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95044",
+      "title": "[오픈갤러리] 학예팀 신입 채용 (미술 작품 큐레이션)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95043",
+      "title": "[오픈갤러리] 마케팅팀 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95041",
+      "title": "(재)서울시립교향악단 발달장애 예술인 모집 (기간제(장애인 제한) 채용)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95036",
+      "title": "(복사) 2026년 제5차 주식회사 컬처브릿지 서울 남산국악당 및 돈화문국악당 직원 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95033",
+      "title": "(재)국립발레단 계약직 직원 채용 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95032",
+      "title": "엘림 연기학원에서 함께 수업을 진행할 외래강사를 모집합니다."
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95031",
+      "title": "롯데콘서트홀 하우스어텐던트(공연장 안내원) 모집 공고"
+    }
+  ],
   "projectedVerifiedLessoninfoCultureLinks": 0,
   "projectedVerifiedLessoninfoCultureLinkExamples": [],
   "projectedNonDirectPrivateLinks": 0,
   "projectedNonDirectPrivateLinkExamples": [],
-  "projectedFailClosedLessoninfoCultureLinks": 0,
-  "projectedFailClosedLessoninfoCultureLinkExamples": [],
+  "projectedFailClosedLessoninfoCultureLinks": 54,
+  "projectedFailClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95168",
+      "title": "[두산아트센터] 조명감독 채용 공고 (~26.10.14)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95167",
+      "title": "2026년 제5회 (재)화성시문화관광재단 직원 채용 공고 (하반기 화성시 공공기관 통합채용)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95166",
+      "title": "역량 있는 공연 제작 PD 모집합니다"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95165",
+      "title": "[PKM갤러리] 인하우스 디자이너 채용 (재공고)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95164",
+      "title": "[대림문화재단] 대림미술관 크루 모집(전시/뮤지엄샵)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95163",
+      "title": "광림아트센터 무대(기계)조감독 채용공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95162",
+      "title": "[피크닉 piknic] 전시 운영 스태프 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95161",
+      "title": "[피크닉 piknic] 전시 운영 부매니저 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95160",
+      "title": "아트사이드 갤러리 직원모집"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95145",
+      "title": "푸투라 서울(Futura Seoul) 어시스턴트 큐레이터/큐레이터 부문, 운영 대관 및 경영지원 부문 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95144",
+      "title": "예술의전당 음악당 하우스 어텐던트 2026년 하반기 10월 모집 (9/29 ~ 10/6)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95142",
+      "title": "극단 은산 연출 모집 공고 (*타 분야 상시 모집)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95137",
+      "title": "2026년 제3회 (재)화성시문화관광재단 공연장 안내원 모집"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95136",
+      "title": "롯데콘서트홀 하우스어텐던트(공연장 안내원) 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95135",
+      "title": "[핸드투홈 서울] 공예 큐레이션 스토어 파트타이머 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95134",
+      "title": "[CJ ENM] 뮤지컬 마케팅 프리랜서 PD (경력직) 채용 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95133",
+      "title": "서울문화재단 문화예술 지원 업무 보조 구인(서울무용센터_명지대 인근)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95132",
+      "title": "(주)인사이트모션 회계(경력) 직원 채용 재공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95131",
+      "title": "[두산아트센터] 사무보조 아르바이트 채용"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95130",
+      "title": "2027 (주)수컴퍼니 제작 연극 조연출을 모집합니다"
+    }
+  ],
   "projectedUnknownPrivateSources": 0,
   "projectedUnknownPrivateSourceExamples": [],
   "duplicateStableIds": 0,
@@ -63,7 +264,7 @@
   "sourceValidationPopulations": {
     "lessoninfo": {
       "rawCount": 212,
-      "currentCount": 0
+      "currentCount": 212
     },
     "cleaneye": {
       "rawCount": 11,
@@ -74,12 +275,12 @@
       "currentCount": 4021
     },
     "artmore": {
-      "rawCount": 189,
-      "currentCount": 189
+      "rawCount": 192,
+      "currentCount": 192
     },
     "gonggonggangsa": {
-      "rawCount": 31,
-      "currentCount": 31
+      "rawCount": 32,
+      "currentCount": 32
     },
     "seekle": {
       "rawCount": 6,
@@ -91,7 +292,5 @@
     }
   },
   "errors": [],
-  "warnings": [
-    "레슨인포 is degraded and excluded from this unified publication"
-  ]
+  "warnings": []
 }
