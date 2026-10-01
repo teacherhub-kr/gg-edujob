@@ -351,12 +351,15 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         url = "https://www.bucheon.go.kr/site/program/board/basicboard/view?boardtypeid=26756&encid=BZJJFP82CPkJg4%2BYB5twEA%3D%3D"
         self.assertTrue(crawler.detail_identity(url).startswith("encid:"))
 
-    def test_seocho_uses_foundation_owned_recruitment_category(self):
+    def test_seocho_uses_applyin_public_jobs_contract(self):
+        from pathlib import Path
         rows = {x["id"]: x for x in self.registry["institutions"]}
         url = rows["seoul:seocho"]["officialRecruitmentUrl"]
-        self.assertIn("seochocf.or.kr/site/main/archive/post/category/", url)
-        self.assertIn("metaCode1=RECRUIT", url)
-        self.assertNotIn("applyin.co.kr", url)
+        self.assertEqual(url, "https://seochocf.applyin.co.kr/")
+        source = Path("scripts/crawl_official_foundation_jobs_v2.py").read_text(encoding="utf-8")
+        self.assertIn("def applyin_rows", source)
+        self.assertIn('"applyin-public-jobs-v1"', source)
+        self.assertIn('"jobs.show"', source)
 
     def test_jungnang_uses_ninehire_public_recruitment_contract(self):
         from pathlib import Path
