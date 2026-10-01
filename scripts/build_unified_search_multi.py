@@ -35,6 +35,8 @@ def canonical_url_multi(raw):
             # notices on the same board into one URL and can silently discard valid official jobs.
             return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"act":"read","bpoId":bpo}),""))
         idx=str((q.get("idx") or [""])[0])
+        if idx.isdigit() and host in {"swcf.or.kr", "www.swcf.or.kr"} and str((q.get("p") or [""])[0]) == "116":
+            return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"p":"116","viewMode":"view","idx":idx}),""))
         if idx.isdigit() and host.endswith("seekle.or.kr") and p.path.endswith("/sub07/sub01.php"):
             return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"idx":idx,"ptype":"view"}),""))
         if idx.isdigit() and host.endswith("boramyc.or.kr") and p.path.endswith("/sub06/sub01.php"):
