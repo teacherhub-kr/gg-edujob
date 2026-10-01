@@ -515,6 +515,21 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
         )
 
+    def test_dbfac_ajax_rows_pair_recruitment_with_later_stage(self):
+        soup = BeautifulSoup(
+            """<table>
+            <tr><td><a href="javascript:contentsViewAll('caf299857022408fbcbfff2375dc5e5f','7')">[채용] [제2026-04호] 도봉문화재단 기간제근로자 채용 공고</a></td><td>2026-09-10</td></tr>
+            <tr><td><a href="javascript:contentsViewAll('84288269650f42f8bf38f69c2011a27b','7')">[발표] [제2026-04호] 도봉문화재단 기간제근로자 채용 서류전형 합격자 발표 및 면접전형 안내</a></td><td>2026-09-28</td></tr>
+            </table>""",
+            "html.parser",
+        )
+        rows = crawler.dbfac_list_rows(soup)
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]["noticeKey"], "2026-4")
+        self.assertFalse(rows[0]["resultLike"])
+        self.assertTrue(rows[1]["resultLike"])
+        self.assertGreater(rows[1]["registered"], rows[0]["registered"])
+
     def test_vue_recruitment_filters_use_verified_category_contracts(self):
         gangdong = crawler.vue_notice_filter(17, 1)
         junggu = crawler.vue_notice_filter(19, 2)
