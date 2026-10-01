@@ -2,6 +2,11 @@ name: Official completeness deep audit
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/verify_published_scan_completeness.py'
+      - 'tests/test_verify_published_scan_completeness.py'
+      - '.github/workflows/official-completeness-audit.yml'
 
 permissions:
   contents: read
@@ -11,7 +16,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify snapshot-bound completeness classification
+        run: python -m unittest tests.test_verify_published_scan_completeness
+
   audit:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -24,8 +40,6 @@ jobs:
           python-version: '3.12'
       - name: Install collector dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Verify snapshot-bound completeness classification
-        run: python -m unittest tests.test_verify_published_scan_completeness
       - name: Preserve the published scan evidence for omission accounting
         run: |
           cp jobs.json /tmp/production_jobs.json
