@@ -368,7 +368,7 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("gyeonggi:goyang", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
         self.assertIn("gyeonggi:gwangmyeong", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
         self.assertIn("yfac.fairyhr.com", crawler.GENERIC_OFFICIAL_HOSTS)
-        self.assertNotIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+        self.assertIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
 
     def test_position_scope_includes_foundation_front_of_house_staff(self):
         self.assertTrue(
