@@ -84,4 +84,23 @@ jobs:
           fetch("SEONGNAM_CITY_NOWWW","https://seongnam.go.kr/bbs010402")
           fetch("SEONGNAM_FOUNDATION_RECRUIT","https://www.snart.or.kr/main/pst/list.do?pst_id=recruit")
           fetch("SEONGNAM_FOUNDATION","https://www.snart.or.kr/")
+
+          import shutil, subprocess
+          chrome=shutil.which("google-chrome") or shutil.which("google-chrome-stable") or shutil.which("chromium")
+          print("\n=== CHROME ===",chrome)
+          if chrome:
+              for label,url in [
+                  ("CHROME_SEONGDONG_CITY","https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageUnit=10"),
+                  ("CHROME_SEONGNAM_FOUNDATION","https://www.snart.or.kr/main/pst/list.do?pst_id=recruit"),
+              ]:
+                  try:
+                      cp=subprocess.run([chrome,"--headless=new","--no-sandbox","--disable-gpu","--dump-dom",url],text=True,capture_output=True,timeout=45)
+                      body=cp.stdout
+                      print("\n===",label,"===","RC",cp.returncode,"BYTES",len(body),"ERR",cp.stderr[-1000:])
+                      text=" ".join(BeautifulSoup(body,"html.parser").get_text(" ",strip=True).split())
+                      for needle in ("성동문화재단","성남문화재단","채용","모집"):
+                          pos=text.find(needle)
+                          if pos>=0: print("CHROME_HIT",needle,text[max(0,pos-250):pos+1000])
+                  except Exception as e:
+                      print("\n===",label,"===","ERROR",type(e).__name__,str(e))
           PY
