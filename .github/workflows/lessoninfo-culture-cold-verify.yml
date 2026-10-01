@@ -2,6 +2,9 @@ name: Verify Lessoninfo culture links cold
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Lessoninfo recruitment jobs"]
+    types: [completed]
 permissions:
   contents: write
 
