@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01 16:51 KST",
+  "updatedAt": "2026-10-01 21:44 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -194,7 +194,7 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 319,
+          "count": 320,
           "rawRows": 442,
           "ok": true,
           "state": "complete",
@@ -205,7 +205,7 @@
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
               "pagesScanned": 32,
               "rawRows": 322,
-              "recentRows": 300,
+              "recentRows": 301,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1267,8 +1267,8 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 673,
-          "rawRows": 771,
+          "count": 674,
+          "rawRows": 781,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1300,9 +1300,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 58,
-              "rawRows": 581,
-              "recentRows": 555,
+              "pagesScanned": 59,
+              "rawRows": 591,
+              "recentRows": 556,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1311,7 +1311,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 77,
+          "pagesScanned": 78,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1418,7 +1418,7 @@
       "central": {
         "name": "경기도교육청 통합 구인구직",
         "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502",
-        "count": 9547,
+        "count": 9549,
         "ok": true,
         "state": "ok"
       }
@@ -1792,7 +1792,7 @@
       "central": {
         "name": "서울교육일자리포털",
         "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term",
-        "count": 422,
+        "count": 418,
         "ok": true,
         "state": "ok"
       }
@@ -1806,7 +1806,7 @@
           "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
         ],
         "requiredBoardCount": 2,
-        "count": 2506,
+        "count": 2507,
         "ok": true,
         "state": "ok",
         "coverageComplete": true,
@@ -1819,7 +1819,7 @@
             "bbsId": "1981",
             "lookbackDays": 90,
             "pagesScanned": 248,
-            "count": 2459,
+            "count": 2460,
             "coverageComplete": true,
             "accessError": "",
             "paginationRepeated": false,
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261001172441",
+                  "/js/include.js?v=20261001221807",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,12 +2670,12 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-01 17:30 KST",
+    "checkedAt": "2026-10-01 22:24 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 1/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
-      "total": 6585,
-      "resolved": 6585,
+      "total": 6588,
+      "resolved": 6588,
       "unresolved": 0,
       "examples": []
     },
@@ -2697,8 +2697,8 @@
         }
       ]
     },
-    "previousTotal": 20383,
-    "currentTotal": 20580
+    "previousTotal": 20588,
+    "currentTotal": 20590
   },
   "jobs": [
     {
@@ -2727,11 +2727,10 @@
       "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1105507",
       "boardUrl": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
       "sourceIdentity": "mircms:www.goean.kr:2801:1105507",
-      "detailLinkResolved": true,
       "nttSn": "1105507",
       "bbsId": "2801",
       "mi": "4565",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-central-3385710",
@@ -3238,10 +3237,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959422",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1959422",
-      "detailLinkResolved": true,
       "nttSn": "1959422",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -3518,11 +3517,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5153&mi=9229&nttSn=1141726",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153",
       "sourceIdentity": "mircms:www.gpoe.kr:5153:1141726",
-      "detailLinkResolved": true,
       "nttSn": "1141726",
       "bbsId": "5153",
       "mi": "9229",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-61644",
@@ -3869,10 +3867,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228268",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228268",
-      "detailLinkResolved": true,
       "nttSn": "1228268",
       "bbsId": "5088",
       "mi": "8754",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -3901,11 +3899,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1141699",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
       "sourceIdentity": "mircms:www.gpoe.kr:5218:1141699",
-      "detailLinkResolved": true,
       "nttSn": "1141699",
       "bbsId": "5218",
       "mi": "9406",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-11a7b664867415a13650",
@@ -3933,11 +3930,10 @@
       "url": "https://www.goesh.kr/goesh/na/ntt/selectNttInfo.do?bbsId=5518&mi=9018&nttSn=533949",
       "boardUrl": "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5518&mi=9018",
       "sourceIdentity": "mircms:www.goesh.kr:5518:533949",
-      "detailLinkResolved": true,
       "nttSn": "533949",
       "bbsId": "5518",
       "mi": "9018",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-b2290295a971788410fb",
@@ -3996,10 +3992,10 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2121&mi=2198&nttSn=1253681",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
       "sourceIdentity": "mircms:www.goepc.kr:2121:1253681",
-      "detailLinkResolved": true,
       "nttSn": "1253681",
       "bbsId": "2121",
       "mi": "2198",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -4482,6 +4478,32 @@
       "sourceIdentity": "goe-central:61628"
     },
     {
+      "id": "goe-61747",
+      "province": "경기",
+      "school": "태성고등학교",
+      "title": "2학기 기초학력 보장 프로그램 두드림 강사 모집 공고 (수학,영어)",
+      "subject": "영어, 수학",
+      "region": "용인시",
+      "regions": [
+        "용인시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/01",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/19",
+      "workEnd": "2027/01/29",
+      "registered": "2026/10/01",
+      "headcount": "2",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61747",
+      "sourceIdentity": "goe-central:61747"
+    },
+    {
       "id": "goe-61724",
       "province": "경기",
       "school": "한율초등학교",
@@ -4636,32 +4658,6 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61663",
       "sourceIdentity": "goe-central:61663"
-    },
-    {
-      "id": "sen-111323",
-      "province": "서울",
-      "school": "서울서래초등학교",
-      "title": "(서래초) 3학년 시간강사님을 모십니다.",
-      "subject": "3학년 담임수업",
-      "region": "서초구",
-      "regions": [
-        "서초구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/01",
-      "applyEnd": "2026/10/08",
-      "workStart": "2026/10/08",
-      "workEnd": "2026/10/08",
-      "registered": "2026/10/01",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111323",
-      "sourceIdentity": "seoul-central:111323"
     },
     {
       "id": "sen-111320",
@@ -5108,11 +5104,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1234594",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1234594",
-      "detailLinkResolved": true,
       "nttSn": "1234594",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-b2c7e31126c2902c7e43",
@@ -5171,11 +5166,10 @@
       "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttInfo.do?bbsId=1906&mi=3608&nttSn=1067360",
       "boardUrl": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
       "sourceIdentity": "mircms:www.goeyp.kr:1906:1067360",
-      "detailLinkResolved": true,
       "nttSn": "1067360",
       "bbsId": "1906",
       "mi": "3608",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-91bbd97ba3590fb69904",
@@ -5234,10 +5228,10 @@
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10069&mi=10054&nttSn=2570666",
       "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
       "sourceIdentity": "mircms:www.goept.kr:10069:2570666",
-      "detailLinkResolved": true,
       "nttSn": "2570666",
       "bbsId": "10069",
       "mi": "10054",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -5269,8 +5263,60 @@
       "detailLinkResolved": true,
       "nttSn": "1410518",
       "bbsId": "8653",
-      "mi": "16003",
-      "periodStatus": "parsed"
+      "mi": "16003"
+    },
+    {
+      "id": "sen-111323",
+      "province": "서울",
+      "school": "서울서래초등학교",
+      "title": "(서래초) 3학년 시간강사님을 모십니다.",
+      "subject": "3학년 담임수업",
+      "region": "서초구",
+      "regions": [
+        "서초구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/01",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/08",
+      "workEnd": "2026/10/08",
+      "registered": "2026/10/01",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111323",
+      "sourceIdentity": "seoul-central:111323",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
+    },
+    {
+      "id": "goe-61746",
+      "province": "경기",
+      "school": "안산공업고등학교",
+      "title": "안산공업고등학교 기간제교사 초빙 공고(통합사회) 4차 채용 공고(일반사회, 지리, 공통사회 지원 가능)",
+      "subject": "",
+      "region": "",
+      "regions": [],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/02",
+      "applyEnd": "2026/10/07",
+      "workStart": "2026/10/13",
+      "workEnd": "2026/11/20",
+      "registered": "2026/10/01",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61746",
+      "sourceIdentity": "goe-central:61746"
     },
     {
       "id": "goe-61741",
@@ -6439,10 +6485,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959441",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1959441",
-      "detailLinkResolved": true,
       "nttSn": "1959441",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -6506,8 +6552,7 @@
       "nttSn": "1353000",
       "bbsId": "7202",
       "mi": "10838",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-central-3385731",
@@ -6760,11 +6805,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228297",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228297",
-      "detailLinkResolved": true,
       "nttSn": "1228297",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-f2361a4e7d0c370a87a3",
@@ -6793,11 +6837,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228200",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228200",
-      "detailLinkResolved": true,
       "nttSn": "1228200",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-b1ce3b73c0d86a0a6c32",
@@ -6826,11 +6869,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228191",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228191",
-      "detailLinkResolved": true,
       "nttSn": "1228191",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-fb98aee838d4aa9d81de",
@@ -6859,11 +6901,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1410482",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1410482",
-      "detailLinkResolved": true,
       "nttSn": "1410482",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-7e8458edc9bca2a0e17e",
@@ -6892,11 +6933,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1410477",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1410477",
-      "detailLinkResolved": true,
       "nttSn": "1410477",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-fb42f14854c75d3a98ef",
@@ -6924,11 +6964,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5153&mi=9229&nttSn=1141648",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153",
       "sourceIdentity": "mircms:www.gpoe.kr:5153:1141648",
-      "detailLinkResolved": true,
       "nttSn": "1141648",
       "bbsId": "5153",
       "mi": "9229",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-e3b19b3573435ffe34e0",
@@ -6987,11 +7026,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1234532",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1234532",
-      "detailLinkResolved": true,
       "nttSn": "1234532",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-c49a48c179afe2cb4427",
@@ -7050,10 +7088,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17803&mi=23490&nttSn=1959360",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803",
       "sourceIdentity": "mircms:www.goesn.kr:17803:1959360",
-      "detailLinkResolved": true,
       "nttSn": "1959360",
       "bbsId": "17803",
       "mi": "23490",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -7114,7 +7152,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111261",
       "sourceIdentity": "seoul-central:111261",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -7182,32 +7220,10 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61711",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:61711"
-    },
-    {
-      "id": "goe-61746",
-      "province": "경기",
-      "school": "안산공업고등학교",
-      "title": "안산공업고등학교 기간제교사 초빙 공고(통합사회) 4차 채용 공고(일반사회, 지리, 공통사회 지원 가능)",
-      "subject": "",
-      "region": "",
-      "regions": [],
-      "type": "기간제교원",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/02",
-      "applyEnd": "2026/10/07",
-      "workStart": "2026/10/13",
-      "workEnd": "2026/11/20",
-      "registered": "2026/10/01",
-      "headcount": "1",
-      "source": "경기도교육청 통합 구인구직",
-      "checkedSources": [
-        "경기도교육청 통합 구인구직"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61746",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:61746"
+      "sourceIdentity": "goe-central:61711",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "goe-complete-8860ff1d0d48f4864a",
@@ -7224,8 +7240,8 @@
       "schoolLevel": "기타",
       "applyStart": "",
       "applyEnd": "2026/10/07",
-      "workStart": "",
-      "workEnd": "",
+      "workStart": "2026/11/02",
+      "workEnd": "2026/11/06",
       "registered": "2026/10/01",
       "headcount": "",
       "source": "동두천양주교육지원청",
@@ -7240,7 +7256,11 @@
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686301",
       "nttSn": "1686301",
       "bbsId": "10228",
-      "mi": "10336"
+      "mi": "10336",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-61736",
@@ -8231,32 +8251,6 @@
       "sourceIdentity": "seoul-central:111324"
     },
     {
-      "id": "sen-111345",
-      "province": "서울",
-      "school": "서울서래초등학교",
-      "title": "(서래초) 2학년 시간강사님을 모십니다.",
-      "subject": "2학년 담임수업",
-      "region": "서초구",
-      "regions": [
-        "서초구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/01",
-      "applyEnd": "2026/10/06",
-      "workStart": "2026/10/06",
-      "workEnd": "2026/10/06",
-      "registered": "2026/10/01",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111345",
-      "sourceIdentity": "seoul-central:111345"
-    },
-    {
       "id": "sen-111322",
       "province": "서울",
       "school": "중랑중학교",
@@ -8790,10 +8784,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959482",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1959482",
-      "detailLinkResolved": true,
       "nttSn": "1959482",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -8822,10 +8816,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959400",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1959400",
-      "detailLinkResolved": true,
       "nttSn": "1959400",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -8854,10 +8848,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959399",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1959399",
-      "detailLinkResolved": true,
       "nttSn": "1959399",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -8918,11 +8912,10 @@
       "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7162&mi=10759&nttSn=1353129",
       "boardUrl": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
       "sourceIdentity": "mircms:www.goepj.kr:7162:1353129",
-      "detailLinkResolved": true,
       "nttSn": "1353129",
       "bbsId": "7162",
       "mi": "10759",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-287037e00076306078a3",
@@ -8953,8 +8946,35 @@
       "nttSn": "1352993",
       "bbsId": "7202",
       "mi": "10838",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
+    },
+    {
+      "id": "ice-central-3385782",
+      "province": "인천",
+      "school": "인천관교초등학교",
+      "title": "인천관교초등학교 기간제교원(상담교사) 채용 공고(2차)",
+      "subject": "",
+      "region": "",
+      "regions": [],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/12",
+      "workEnd": "2027/01/09",
+      "registered": "2026/10/01",
+      "headcount": "",
+      "source": "인천광역시교육청 채용공고",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "checkedSources": [
+        "인천광역시교육청 채용공고"
+      ],
+      "sourceType": "통합게시판",
+      "recruitmentStatus": "대기중",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385782",
+      "nttSn": "3385782",
+      "bbsId": "1981",
+      "sourceIdentity": "ice-central:3385782"
     },
     {
       "id": "ice-central-3385738",
@@ -9263,11 +9283,10 @@
       "url": "https://www.goegy.kr/goegy/na/ntt/selectNttInfo.do?bbsId=11674&mi=21048&nttSn=1231946",
       "boardUrl": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
       "sourceIdentity": "mircms:www.goegy.kr:11674:1231946",
-      "detailLinkResolved": true,
       "nttSn": "1231946",
       "bbsId": "11674",
       "mi": "21048",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-623c7b3b7f81c647e4f1",
@@ -9326,11 +9345,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260774",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260774",
-      "detailLinkResolved": true,
       "nttSn": "1260774",
       "bbsId": "4225",
       "mi": "5826",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-b49c90b96ce1b0abf663",
@@ -9359,11 +9377,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228313",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228313",
-      "detailLinkResolved": true,
       "nttSn": "1228313",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-848092e97f74a6a0d1e1",
@@ -9392,11 +9409,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228306",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228306",
-      "detailLinkResolved": true,
       "nttSn": "1228306",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-4057d56067a754bf957b",
@@ -9457,11 +9473,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1410376",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1410376",
-      "detailLinkResolved": true,
       "nttSn": "1410376",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-c2c8259e861502221dcb",
@@ -9523,11 +9538,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8655&mi=14083&nttSn=1410411",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
       "sourceIdentity": "mircms:www.goegn.kr:8655:1410411",
-      "detailLinkResolved": true,
       "nttSn": "1410411",
       "bbsId": "8655",
       "mi": "14083",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-3197c97227b9e10ebfa6",
@@ -9617,11 +9631,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1234635",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1234635",
-      "detailLinkResolved": true,
       "nttSn": "1234635",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-8fb78b2b477c52b00106",
@@ -9681,11 +9694,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6327&mi=11084&nttSn=1234595",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
       "sourceIdentity": "mircms:www.goebc.kr:6327:1234595",
-      "detailLinkResolved": true,
       "nttSn": "1234595",
       "bbsId": "6327",
       "mi": "11084",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-2ee0d4aa7caa16751058",
@@ -9713,10 +9725,10 @@
       "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1105520",
       "boardUrl": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
       "sourceIdentity": "mircms:www.goean.kr:2801:1105520",
-      "detailLinkResolved": true,
       "nttSn": "1105520",
       "bbsId": "2801",
       "mi": "4565",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -9745,11 +9757,10 @@
       "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12219&mi=20165&nttSn=1573924",
       "boardUrl": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
       "sourceIdentity": "mircms:www.goeyi.kr:12219:1573924",
-      "detailLinkResolved": true,
       "nttSn": "1573924",
       "bbsId": "12219",
       "mi": "20165",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-3fd328bb3845b77b9513",
@@ -9780,6 +9791,38 @@
       "nttSn": "2570491",
       "bbsId": "10077",
       "mi": "10064",
+      "detailLinkResolved": true,
+      "periodStatus": "parsed"
+    },
+    {
+      "id": "goe-office-b90279d412b178e790c7",
+      "province": "경기",
+      "school": "고덕함박초등학교",
+      "title": "2026 고덕함박초등학교 기간제교사(초등 담임) 채용 공고",
+      "subject": "",
+      "region": "평택시",
+      "regions": [
+        "평택시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/01",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/12",
+      "workEnd": "2027/01/09",
+      "registered": "2026/10/01",
+      "headcount": "",
+      "source": "평택교육지원청",
+      "checkedSources": [
+        "평택교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&mi=10118&nttSn=2570727",
+      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2570727",
+      "nttSn": "2570727",
+      "bbsId": "10111",
+      "mi": "10118",
       "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
@@ -9840,10 +9883,10 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2121&mi=2198&nttSn=1253695",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
       "sourceIdentity": "mircms:www.goepc.kr:2121:1253695",
-      "detailLinkResolved": true,
       "nttSn": "1253695",
       "bbsId": "2121",
       "mi": "2198",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -9872,11 +9915,71 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2121&mi=2198&nttSn=1253663",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
       "sourceIdentity": "mircms:www.goepc.kr:2121:1253663",
-      "detailLinkResolved": true,
       "nttSn": "1253663",
       "bbsId": "2121",
       "mi": "2198",
+      "detailLinkResolved": true
+    },
+    {
+      "id": "goe-office2-1308be19a9084b1584",
+      "province": "경기",
+      "school": "나룰초",
+      "title": "[나룰초] 2026 계약제교원[6학년 담임] (3차 공고)",
+      "subject": "",
+      "region": "",
+      "regions": [
+        "광주시",
+        "하남시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/02",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/08",
+      "workEnd": "2026/11/07",
+      "registered": "2026/10/01",
+      "headcount": "",
+      "source": "광주하남교육지원청",
+      "checkedSources": [
+        "광주하남교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228404",
+      "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
+      "detailLinkResolved": true,
+      "nttSn": "1228404",
+      "bbsId": "5088",
+      "mi": "8754",
       "periodStatus": "parsed"
+    },
+    {
+      "id": "sen-111345",
+      "province": "서울",
+      "school": "서울서래초등학교",
+      "title": "(서래초) 2학년 시간강사님을 모십니다.",
+      "subject": "2학년 담임수업",
+      "region": "서초구",
+      "regions": [
+        "서초구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/01",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/06",
+      "workEnd": "2026/10/06",
+      "registered": "2026/10/01",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111345",
+      "sourceIdentity": "seoul-central:111345",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "goe-61706",
@@ -9903,37 +10006,10 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61706",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:61706"
-    },
-    {
-      "id": "ice-central-3385782",
-      "province": "인천",
-      "school": "인천관교초등학교",
-      "title": "인천관교초등학교 기간제교원(상담교사) 채용 공고(2차)",
-      "subject": "",
-      "region": "",
-      "regions": [],
-      "type": "기간제교원",
-      "schoolLevel": "초등학교",
-      "applyStart": "",
-      "applyEnd": "2026/10/06",
-      "workStart": "2026/10/12",
-      "workEnd": "2027/01/09",
-      "registered": "2026/10/01",
-      "headcount": "",
-      "source": "인천광역시교육청 채용공고",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "checkedSources": [
-        "인천광역시교육청 채용공고",
-        "인천광역시교육청 채용공고"
-      ],
-      "sourceType": "통합게시판",
-      "recruitmentStatus": "대기중",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385782",
-      "nttSn": "3385782",
-      "bbsId": "1981",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "ice-central:3385782"
+      "sourceIdentity": "goe-central:61706",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "goe-61737",
@@ -10821,10 +10897,10 @@
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686354",
       "boardUrl": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686354",
-      "detailLinkResolved": true,
       "nttSn": "1686354",
       "bbsId": "10228",
       "mi": "10336",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -10859,8 +10935,7 @@
         "job_seq": "8325"
       },
       "sourceIdentity": "seoul:gdspedu.sen.go.kr:8325",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-central-3385728",
@@ -11003,11 +11078,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260804",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260804",
-      "detailLinkResolved": true,
       "nttSn": "1260804",
       "bbsId": "4225",
       "mi": "5826",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-a6cbaa6c7a03211483b5",
@@ -11036,11 +11110,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1410523",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1410523",
-      "detailLinkResolved": true,
       "nttSn": "1410523",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-61645",
@@ -11068,7 +11141,7 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61645",
       "sourceIdentity": "goe-central:61645",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -11309,11 +11382,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260792",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260792",
-      "detailLinkResolved": true,
       "nttSn": "1260792",
       "bbsId": "4225",
       "mi": "5826",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-61707",
@@ -11462,8 +11534,7 @@
       "detailLinkResolved": true,
       "nttSn": "1410434",
       "bbsId": "8653",
-      "mi": "16003",
-      "periodStatus": "parsed"
+      "mi": "16003"
     },
     {
       "id": "sen-111340",
@@ -11596,7 +11667,7 @@
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul-central:111287",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -11624,7 +11695,10 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61683",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:61683"
+      "sourceIdentity": "goe-central:61683",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "sen-111328",
@@ -11651,7 +11725,10 @@
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111328",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul-central:111328"
+      "sourceIdentity": "seoul-central:111328",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "sen-111325",
@@ -11677,7 +11754,10 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111325",
-      "sourceIdentity": "seoul-central:111325"
+      "sourceIdentity": "seoul-central:111325",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "sen-111319",
@@ -11703,7 +11783,10 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111319",
-      "sourceIdentity": "seoul-central:111319"
+      "sourceIdentity": "seoul-central:111319",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "goe-office-d15b7b262045c235c670",
@@ -11731,10 +11814,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260781",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260781",
-      "detailLinkResolved": true,
       "nttSn": "1260781",
       "bbsId": "4225",
       "mi": "5826",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -11795,10 +11878,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1141733",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
       "sourceIdentity": "mircms:www.gpoe.kr:5218:1141733",
-      "detailLinkResolved": true,
       "nttSn": "1141733",
       "bbsId": "5218",
       "mi": "9406",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -11827,10 +11910,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1141669",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
       "sourceIdentity": "mircms:www.gpoe.kr:5218:1141669",
-      "detailLinkResolved": true,
       "nttSn": "1141669",
       "bbsId": "5218",
       "mi": "9406",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -11859,10 +11942,10 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1141665",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
       "sourceIdentity": "mircms:www.gpoe.kr:5218:1141665",
-      "detailLinkResolved": true,
       "nttSn": "1141665",
       "bbsId": "5218",
       "mi": "9406",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -12019,10 +12102,10 @@
       "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1105477",
       "boardUrl": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
       "sourceIdentity": "mircms:www.goean.kr:2801:1105477",
-      "detailLinkResolved": true,
       "nttSn": "1105477",
       "bbsId": "2801",
       "mi": "4565",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -12058,6 +12141,38 @@
       "periodStatus": "unavailable"
     },
     {
+      "id": "goe-office-6f1d722870546b92bbfd",
+      "province": "경기",
+      "school": "시범학교",
+      "title": "2026 교무행정교사제 시범학교 기간제교원 3차 채용 공고",
+      "subject": "",
+      "region": "평택시",
+      "regions": [
+        "평택시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "",
+      "applyEnd": "",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/01",
+      "headcount": "",
+      "source": "평택교육지원청",
+      "checkedSources": [
+        "평택교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10069&mi=10054&nttSn=2570725",
+      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
+      "sourceIdentity": "mircms:www.goept.kr:10069:2570725",
+      "nttSn": "2570725",
+      "bbsId": "10069",
+      "mi": "10054",
+      "detailLinkResolved": true,
+      "periodStatus": "unavailable"
+    },
+    {
       "id": "goe-office-8ce2e020a0e44fa7c55a",
       "province": "경기",
       "school": "포천교육지원청",
@@ -12083,10 +12198,10 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2103&mi=2192&nttSn=1253673",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
       "sourceIdentity": "mircms:www.goepc.kr:2103:1253673",
-      "detailLinkResolved": true,
       "nttSn": "1253673",
       "bbsId": "2103",
       "mi": "2192",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -12121,37 +12236,6 @@
       "periodStatus": "error"
     },
     {
-      "id": "goe-office2-6bd805570988a81a66",
-      "province": "경기",
-      "school": "시범학교",
-      "title": "2026 교무행정교사제 시범학교 기간제교원 3차 채용 공고",
-      "subject": "",
-      "region": "평택시",
-      "regions": [
-        "평택시"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "고등학교",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/10/01",
-      "headcount": "",
-      "source": "평택교육지원청",
-      "checkedSources": [
-        "평택교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10069&mi=10054&nttSn=2570725",
-      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
-      "detailLinkResolved": true,
-      "nttSn": "2570725",
-      "bbsId": "10069",
-      "mi": "10054",
-      "periodStatus": "unavailable"
-    },
-    {
       "id": "goe-office-0b2afd87365a4da3ac1a",
       "province": "경기",
       "school": "부천남초등학교",
@@ -12183,7 +12267,7 @@
       "mi": "",
       "periodStatus": "parsed",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -12223,10 +12307,10 @@
       "periodStatus": "unavailable"
     },
     {
-      "id": "goe-complete-b4efa04a5b03bb0f7d",
+      "id": "goe-complete-90130ee1d9374adcd5",
       "province": "경기",
-      "school": "고덕함박초등학교",
-      "title": "2026 고덕함박초등학교 기간제교사(초등 담임) 채용 공고",
+      "school": "시범학교",
+      "title": "2026 교무행정교사제 시범학교 기간제교원 3차 채용 공고",
       "subject": "",
       "region": "",
       "regions": [
@@ -12245,12 +12329,12 @@
         "평택교육지원청"
       ],
       "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2570727&mi=10118",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2570729&mi=10118",
       "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
       "detailLinkResolved": true,
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "mircms:www.goept.kr:10111:2570727",
-      "nttSn": "2570727",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2570729",
+      "nttSn": "2570729",
       "bbsId": "10111",
       "mi": "10118"
     },
@@ -13222,7 +13306,7 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61495",
       "sourceIdentity": "goe-central:61495",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -14029,7 +14113,7 @@
       "bbsId": "8653",
       "mi": "16003",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -17855,7 +17939,7 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61512",
       "sourceIdentity": "goe-central:61512",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -18921,7 +19005,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111161",
       "sourceIdentity": "seoul-central:111161",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -25450,7 +25534,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111125",
       "sourceIdentity": "seoul-central:111125",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -27022,7 +27106,7 @@
       "detailLinkResolved": true,
       "periodStatus": "parsed",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -31896,7 +31980,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111117",
       "sourceIdentity": "seoul-central:111117",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -31925,7 +32009,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111149",
       "sourceIdentity": "seoul-central:111149",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -31954,7 +32038,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111139",
       "sourceIdentity": "seoul-central:111139",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -31983,7 +32067,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111106",
       "sourceIdentity": "seoul-central:111106",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32012,7 +32096,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111101",
       "sourceIdentity": "seoul-central:111101",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32041,7 +32125,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111097",
       "sourceIdentity": "seoul-central:111097",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32070,7 +32154,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111073",
       "sourceIdentity": "seoul-central:111073",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32099,7 +32183,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111043",
       "sourceIdentity": "seoul-central:111043",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -34002,7 +34086,7 @@
       "mi": "16003",
       "detailLinkResolved": true,
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41442,7 +41526,7 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61275",
       "sourceIdentity": "goe-central:61275",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41471,7 +41555,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111035",
       "sourceIdentity": "seoul-central:111035",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41500,7 +41584,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111033",
       "sourceIdentity": "seoul-central:111033",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41529,7 +41613,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111005",
       "sourceIdentity": "seoul-central:111005",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41558,7 +41642,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111029",
       "sourceIdentity": "seoul-central:111029",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41587,7 +41671,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111026",
       "sourceIdentity": "seoul-central:111026",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41616,7 +41700,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111003",
       "sourceIdentity": "seoul-central:111003",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41645,7 +41729,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110987",
       "sourceIdentity": "seoul-central:110987",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41674,7 +41758,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110996",
       "sourceIdentity": "seoul-central:110996",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41703,7 +41787,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110984",
       "sourceIdentity": "seoul-central:110984",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41732,7 +41816,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110971",
       "sourceIdentity": "seoul-central:110971",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41761,7 +41845,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110978",
       "sourceIdentity": "seoul-central:110978",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41790,7 +41874,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110951",
       "sourceIdentity": "seoul-central:110951",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -45424,7 +45508,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110890",
       "sourceIdentity": "seoul-central:110890",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -47617,7 +47701,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110931",
       "sourceIdentity": "seoul-central:110931",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -47646,7 +47730,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110926",
       "sourceIdentity": "seoul-central:110926",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -57837,7 +57921,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110862",
       "sourceIdentity": "seoul-central:110862",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -57866,7 +57950,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110868",
       "sourceIdentity": "seoul-central:110868",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -57895,7 +57979,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110872",
       "sourceIdentity": "seoul-central:110872",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -57924,7 +58008,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110850",
       "sourceIdentity": "seoul-central:110850",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -57953,7 +58037,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110848",
       "sourceIdentity": "seoul-central:110848",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -67976,7 +68060,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110794",
       "sourceIdentity": "seoul-central:110794",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -68008,7 +68092,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110784",
       "sourceIdentity": "seoul-central:110784",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -73315,7 +73399,7 @@
       "detailLinkResolved": true,
       "periodStatus": "parsed",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -262821,7 +262905,7 @@
       "bbsId": "6381",
       "detailLinkResolved": true,
       "mi": "",
-      "periodStatus": "unavailable"
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-office-bb367d4820610c681c6d",
@@ -263080,7 +263164,7 @@
       "bbsId": "6381",
       "detailLinkResolved": true,
       "mi": "",
-      "periodStatus": "unavailable"
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-office-02e4bcd0ff3623905fa0",
@@ -588402,53 +588486,53 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-01 17:24 KST",
+      "checkedAt": "2026-10-01 22:18 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
       "needsCheck": 0,
-      "recentJobsRead": 765,
+      "recentJobsRead": 766,
       "lookbackDays": 21,
       "maxPages": 0
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-01 17:29 KST",
+    "checkedAt": "2026-10-01 22:23 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-01 17:29 KST",
+    "checkedAt": "2026-10-01 22:23 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
-    "freshCount": 17896,
-    "previousCount": 20383,
-    "mergedCount": 20560,
-    "carriedForward": 2664,
-    "officialIdProtected": 18828,
-    "officialIdCarryForward": 1059,
-    "enrichedFromPrevious": 6115,
+    "freshCount": 17897,
+    "previousCount": 20588,
+    "mergedCount": 20570,
+    "carriedForward": 2673,
+    "officialIdProtected": 18993,
+    "officialIdCarryForward": 1025,
+    "enrichedFromPrevious": 6166,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-01 17:28 KST"
+    "generatedAt": "2026-10-01 22:21 KST"
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6048,
-    "gyeonggiTotal": 6048,
+    "gyeonggiExact": 6050,
+    "gyeonggiTotal": 6050,
     "seoulExact": 297,
     "seoulTotal": 297
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-01 17:28 KST",
+    "checkedAt": "2026-10-01 22:21 KST",
     "parserVersion": 2,
-    "recentSupportJobs": 5363,
-    "detailPagesParsed": 2153,
-    "fieldsFilledThisRun": 164,
+    "recentSupportJobs": 5366,
+    "detailPagesParsed": 2126,
+    "fieldsFilledThisRun": 10,
     "missingApplicationPeriod": 927,
     "missingWorkPeriod": 1816,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-01 17:29 KST",
+      "checkedAt": "2026-10-01 22:22 KST",
       "candidates": 153,
       "detailPagesConfirmed": 147,
       "cacheEntriesImproved": 0,
@@ -588460,18 +588544,18 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-01 17:35:47 KST",
+    "generatedAt": "2026-10-01 22:29:48 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18993,
-    "datasetIdCountBefore": 20653,
-    "missingBefore": 8,
-    "recoveredNow": 8,
+    "officialIdCount": 18991,
+    "datasetIdCountBefore": 20663,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261001T083103Z-36832671897-1"
+    "scanId": "20261001T132505Z-36863689178-1"
   }
 }

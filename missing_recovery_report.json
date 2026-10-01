@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 17896,
-    "previousCount": 20383,
-    "mergedCount": 20560,
-    "carriedForward": 2664,
-    "officialIdProtected": 18828,
-    "officialIdCarryForward": 1059,
-    "enrichedFromPrevious": 6115,
+    "freshCount": 17897,
+    "previousCount": 20588,
+    "mergedCount": 20570,
+    "carriedForward": 2673,
+    "officialIdProtected": 18993,
+    "officialIdCarryForward": 1025,
+    "enrichedFromPrevious": 6166,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-01 17:28 KST"
+    "generatedAt": "2026-10-01 22:21 KST"
   },
   "carried": [
     {
@@ -25,12 +25,23 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "서울서래초등학교",
+      "title": "(서래초) 3학년 시간강사님을 모십니다.",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/08",
+      "sourceIdentity": "seoul-central:111323",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111323"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "서울강남초등학교",
       "title": "(서울강남초)5학년 영어 및 6학년 과학 시간강사님을 모십니다.",
       "registered": "2026/10/01",
       "applyEnd": "2026/10/07",
       "sourceIdentity": "seoul-central:111261",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111261"
     },
     {
@@ -47,12 +58,56 @@
     {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
+      "school": "동백중학교",
+      "title": "2026학년도 시간강사 채용 공고(국어)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/07",
+      "sourceIdentity": "goe-central:61711",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61711"
+    },
+    {
+      "province": "경기",
+      "source": "동두천양주교육지원청",
+      "school": "동두천사동유치원",
+      "title": "동두천사동유치원 계약제교원(시간강사) 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/07",
+      "sourceIdentity": "mircms:www.goedy.kr:10228:1686301",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&nttSn=1686301&mi=10336"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울서래초등학교",
+      "title": "(서래초) 2학년 시간강사님을 모십니다.",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/06",
+      "sourceIdentity": "seoul-central:111345",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111345"
+    },
+    {
+      "province": "경기",
+      "source": "경기도교육청 통합 구인구직",
+      "school": "다솜초등학교",
+      "title": "다솜초등학교 기간제교원 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/06",
+      "sourceIdentity": "goe-central:61706",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61706"
+    },
+    {
+      "province": "경기",
+      "source": "경기도교육청 통합 구인구직",
       "school": "부천남초등학교",
       "title": "2026학년도 부천남초 계약제교원(기간제교사) 채용 공고 2차 (기초학력전담교원)",
       "registered": "2026/10/01",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "goe-central:61645",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61645"
     },
     {
@@ -74,8 +129,52 @@
       "registered": "2026/10/01",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111287",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111287"
+    },
+    {
+      "province": "경기",
+      "source": "경기도교육청 통합 구인구직",
+      "school": "하길초등학교",
+      "title": "2026학년도 하길초 기간제교원(시간강사) 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "goe-central:61683",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61683"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울묘곡초등학교",
+      "title": "(서울묘곡초)초등 4학년 영어 강사 모십니다.(월4시간,화6시간, 주당 10시간, 총 47시간)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111328",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111328"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울금북초등학교",
+      "title": "10.7.(수) 1일 서울금북초 1학년 시간강사",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/01",
+      "sourceIdentity": "seoul-central:111325",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111325"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울신답초등학교",
+      "title": "2026.10.2.(금)(1일)_급식실_영양교사",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/01",
+      "sourceIdentity": "seoul-central:111319",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111319"
     },
     {
       "province": "경기",
@@ -85,7 +184,7 @@
       "registered": "2026/10/01",
       "applyEnd": "",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1234459",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1234459"
     },
     {
@@ -129,7 +228,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/12",
       "sourceIdentity": "goe-central:61495",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61495"
     },
     {
@@ -151,7 +250,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1409892",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1409892"
     },
     {
@@ -173,7 +272,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/06",
       "sourceIdentity": "goe-central:61512",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61512"
     },
     {
@@ -239,7 +338,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111161",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111161"
     },
     {
@@ -448,7 +547,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/06",
       "sourceIdentity": "seoul-central:111125",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111125"
     },
     {
@@ -525,7 +624,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/04",
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686019",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686019"
     },
     {
@@ -690,7 +789,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111117",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111117"
     },
     {
@@ -701,7 +800,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111149",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111149"
     },
     {
@@ -712,7 +811,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111139",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111139"
     },
     {
@@ -723,7 +822,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111106",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111106"
     },
     {
@@ -734,7 +833,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111101",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111101"
     },
     {
@@ -745,7 +844,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111097",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111097"
     },
     {
@@ -756,7 +855,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111073",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111073"
     },
     {
@@ -767,7 +866,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111043",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111043"
     },
     {
@@ -899,7 +998,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1409414",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1409414"
     },
     {
@@ -998,7 +1097,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "goe-central:61275",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61275"
     },
     {
@@ -1009,7 +1108,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111035",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111035"
     },
     {
@@ -1020,7 +1119,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111033",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111033"
     },
     {
@@ -1031,7 +1130,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111005",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111005"
     },
     {
@@ -1042,7 +1141,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111029",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111029"
     },
     {
@@ -1053,7 +1152,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111026",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111026"
     },
     {
@@ -1064,7 +1163,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:111003",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111003"
     },
     {
@@ -1075,7 +1174,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110987",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110987"
     },
     {
@@ -1086,7 +1185,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110996",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110996"
     },
     {
@@ -1097,7 +1196,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110984",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110984"
     },
     {
@@ -1108,7 +1207,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110971",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110971"
     },
     {
@@ -1119,7 +1218,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110978",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110978"
     },
     {
@@ -1130,7 +1229,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110951",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110951"
     },
     {
@@ -1449,7 +1548,7 @@
       "registered": "2026/09/23",
       "applyEnd": "2026/10/16",
       "sourceIdentity": "seoul-central:110890",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110890"
     },
     {
@@ -1570,7 +1669,7 @@
       "registered": "2026/09/23",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110931",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110931"
     },
     {
@@ -1581,7 +1680,7 @@
       "registered": "2026/09/23",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110926",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110926"
     },
     {
@@ -2439,7 +2538,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110862",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110862"
     },
     {
@@ -2450,7 +2549,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110868",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110868"
     },
     {
@@ -2461,7 +2560,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110872",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110872"
     },
     {
@@ -2472,7 +2571,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110850",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110850"
     },
     {
@@ -2483,7 +2582,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110848",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110848"
     },
     {
@@ -3220,7 +3319,7 @@
       "registered": "2026/09/21",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110794",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110794"
     },
     {
@@ -3231,7 +3330,7 @@
       "registered": "2026/09/21",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110784",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110784"
     },
     {
@@ -3473,7 +3572,7 @@
       "registered": "2026/09/21",
       "applyEnd": "2026/09/27",
       "sourceIdentity": "mircms:www.goedy.kr:10228:1685281",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1685281"
     },
     {

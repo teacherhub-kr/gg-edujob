@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T09:03:34.159274+00:00",
+  "generatedAt": "2026-10-01T13:58:01.599922+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,8 +11,8 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6048,
-    "gyeonggiTotal": 6048,
+    "gyeonggiExact": 6050,
+    "gyeonggiTotal": 6050,
     "seoulExact": 297,
     "seoulTotal": 297
   },
@@ -211,7 +211,7 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 319,
+          "count": 320,
           "rawRows": 442,
           "ok": true,
           "state": "complete",
@@ -222,7 +222,7 @@
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
               "pagesScanned": 32,
               "rawRows": 322,
-              "recentRows": 300,
+              "recentRows": 301,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1284,8 +1284,8 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 673,
-          "rawRows": 771,
+          "count": 674,
+          "rawRows": 781,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1317,9 +1317,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 58,
-              "rawRows": 581,
-              "recentRows": 555,
+              "pagesScanned": 59,
+              "rawRows": 591,
+              "recentRows": 556,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1328,7 +1328,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 77,
+          "pagesScanned": 78,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261001172441",
+                  "/js/include.js?v=20261001221807",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
