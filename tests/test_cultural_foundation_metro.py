@@ -319,6 +319,20 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         anchor['onclick']="goView('../../bad', '');"
         self.assertIsNone(crawler.ifac_detail_url(anchor,board))
 
+    def test_gwangjin_uses_verified_official_mirror_for_5xx_primary(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        row = rows["seoul:gwangjin"]
+        self.assertIn("naruart.applyin.co.kr", row["officialRecruitmentUrl"])
+        self.assertIn("gwangjin.go.kr/portal/bbs/B0000004/list.do", row["verifiedFallbackRecruitmentUrl"])
+        self.assertEqual(row["verifiedFallbackRole"], "secondary-official-mirror")
+        self.assertIn("seoul:gwangjin", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+
+    def test_paju_prefers_foundation_owned_official_board(self):
+        rows = {x["id"]: x for x in self.registry["institutions"]}
+        self.assertIn("pajucf.or.kr/community/notice.php", rows["gyeonggi:paju"]["officialRecruitmentUrl"])
+        self.assertNotIn("gyeonggi:paju", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
+        self.assertIn("pajucf.or.kr", crawler.GENERIC_OFFICIAL_HOSTS)
+
     def test_transport_fallbacks_are_explicit_and_bounded(self):
         rows = {x["id"]: x for x in self.registry["institutions"]}
         self.assertIn("culture.seoul.go.kr", rows["seoul:dongjak"]["verifiedFallbackRecruitmentUrl"])
