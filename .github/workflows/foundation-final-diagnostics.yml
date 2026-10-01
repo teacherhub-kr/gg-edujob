@@ -72,8 +72,10 @@ jobs:
           fetch("BUCHEON_CITY","https://www.bucheon.go.kr/site/program/board/basicboard/list?boardtypeid=26756&menuid=148002004001&pagesize=20&currentpage=1")
           fetch("SEONGDONG_FOUNDATION","https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo")
           fetch("SEONGDONG_CITY_WWW","https://www.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
+          fetch("SEONGDONG_CITY_NOWWW","https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
           fetch("SEONGDONG_CITY_BOGUNSO","https://bogunso.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
           fetch("SEONGNAM_CITY_WWW","https://www.seongnam.go.kr/bbs010402")
           fetch("SEONGNAM_CITY_NOWWW","https://seongnam.go.kr/bbs010402")
+          fetch("SEONGNAM_FOUNDATION_RECRUIT","https://www.snart.or.kr/main/pst/list.do?pst_id=recruit")
           fetch("SEONGNAM_FOUNDATION","https://www.snart.or.kr/")
           PY
