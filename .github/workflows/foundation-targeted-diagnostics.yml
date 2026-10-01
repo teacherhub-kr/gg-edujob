@@ -19,37 +19,35 @@ jobs:
           python-version: '3.12'
       - name: Install diagnostics dependencies
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
-      - name: Verify only Seocho board and Jungnang public API
+      - name: Extract Seocho ApplyIn public contract only
         run: |
           python - <<'PY'
-          import json,requests
+          import re,requests
           from bs4 import BeautifulSoup
+          from urllib.parse import urljoin
           H={"User-Agent":"Mozilla/5.0"}
-          s=requests.Session()
-
-          seo="https://www.seochocf.or.kr/site/main/archive/post/category/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD?metaCode1=RECRUIT"
-          r=s.get(seo,headers=H,timeout=25,allow_redirects=True)
+          base="https://seochocf.applyin.co.kr/"
+          r=requests.get(base,headers=H,timeout=25)
           r.encoding=r.apparent_encoding or r.encoding
           soup=BeautifulSoup(r.text,"html.parser")
-          print("SEOCHO",r.status_code,r.url,len(r.content),soup.title.get_text(" ",strip=True) if soup.title else "")
-          rows=[]
-          for a in soup.find_all("a",href=True):
-              text=" ".join(a.get_text(" ",strip=True).split())
-              if "채용" in text or "모집" in text:
-                  rows.append({"text":text[:300],"href":str(a.get("href"))[:700]})
-          print("SEOCHO_ROWS",json.dumps(rows[:40],ensure_ascii=False))
-
-          api="https://api.ninehire.com/identity-access/homepage/recruitments"
-          params={
-              "companyId":"81a087a0-8219-11f0-a147-4f7234c30f38",
-              "page":1,
-              "countPerPage":20,
-          }
-          x=s.get(api,params=params,headers=H,timeout=25)
-          print("NINE",x.status_code,x.url,len(x.content),x.headers.get("content-type"))
-          try:
-              data=x.json()
-              print("NINE_JSON",json.dumps(data,ensure_ascii=False)[:30000])
-          except Exception:
-              print("NINE_TEXT",x.text[:10000])
+          print("ROOT",r.status_code,r.url,len(r.content))
+          for src in [s.get("src") for s in soup.find_all("script") if s.get("src")]:
+              js=requests.get(urljoin(base,src),headers=H,timeout=25).text
+              print("BUNDLE",src,len(js))
+              for needle in [
+                  "fetchRecruitResource","loadRecruitResource","SET_RECRUIT_COLLECTION",
+                  "recruitCollectionItems","RecruitingList","RecruitResource","axios.get",
+                  "axios.post","/recruiting/","recruit-list","recruitResource",
+              ]:
+                  pos=0
+                  while True:
+                      i=js.find(needle,pos)
+                      if i<0: break
+                      print("CTX",needle,js[max(0,i-2500):i+3500].replace("\n"," ")[:7000])
+                      pos=i+len(needle)
+              lits=sorted(set(re.findall(r'["\']([^"\']{1,180})["\']',js)))
+              for x in lits:
+                  low=x.lower()
+                  if ("recruit" in low or "job" in low) and ("/" in x or "http" in low):
+                      print("LIT",x)
           PY
