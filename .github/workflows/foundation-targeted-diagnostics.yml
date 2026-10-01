@@ -11,7 +11,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -19,89 +19,37 @@ jobs:
           python-version: '3.12'
       - name: Install diagnostics dependencies
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
-      - name: Probe only Seongdong Seocho Jungnang
+      - name: Verify only Seocho board and Jungnang public API
         run: |
           python - <<'PY'
-          import json,re,requests
+          import json,requests
           from bs4 import BeautifulSoup
-          from urllib.parse import urljoin
           H={"User-Agent":"Mozilla/5.0"}
-          S=requests.Session()
-          def clean(x): return " ".join(str(x or "").split())
-          def get(url):
-              try:
-                  r=S.get(url,headers=H,timeout=25,allow_redirects=True)
-                  r.encoding=r.apparent_encoding or r.encoding
-                  print("GET",url,"=>",r.status_code,r.url,len(r.content),r.headers.get("content-type"))
-                  return r
-              except Exception as e:
-                  print("GET_ERROR",url,type(e).__name__,str(e)); return None
-          def around(raw,needle,radius=2000,limit=8):
-              out=[]; pos=0
-              while len(out)<limit:
-                  i=raw.find(needle,pos)
-                  if i<0: break
-                  out.append(clean(raw[max(0,i-radius):i+radius]))
-                  pos=i+len(needle)
-              return out
+          s=requests.Session()
 
-          print("\n===== SEONGDONG")
-          for url in [
-              "https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10",
-              "https://bogunso.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10",
-              "https://sd.go.kr/main/selectBbsNttView.do?bbsNo=185&key=1474&nttNo=361544",
-          ]:
-              r=get(url)
-              if r:
-                  soup=BeautifulSoup(r.text,"html.parser")
-                  txt=clean(soup.get_text(" ",strip=True))
-                  print("SD_TEXT",txt[:5000])
-                  rows=[]
-                  for tr in soup.find_all("tr"):
-                      tx=clean(tr.get_text(" ",strip=True))
-                      if "성동문화재단" in tx:
-                          rows.append({"text":tx[:800],"html":str(tr)[:2200]})
-                  print("SD_ROWS",json.dumps(rows[:10],ensure_ascii=False))
+          seo="https://www.seochocf.or.kr/site/main/archive/post/category/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD?metaCode1=RECRUIT"
+          r=s.get(seo,headers=H,timeout=25,allow_redirects=True)
+          r.encoding=r.apparent_encoding or r.encoding
+          soup=BeautifulSoup(r.text,"html.parser")
+          print("SEOCHO",r.status_code,r.url,len(r.content),soup.title.get_text(" ",strip=True) if soup.title else "")
+          rows=[]
+          for a in soup.find_all("a",href=True):
+              text=" ".join(a.get_text(" ",strip=True).split())
+              if "채용" in text or "모집" in text:
+                  rows.append({"text":text[:300],"href":str(a.get("href"))[:700]})
+          print("SEOCHO_ROWS",json.dumps(rows[:40],ensure_ascii=False))
 
-          print("\n===== SEOCHO")
-          roots=[
-              "https://www.seochocf.or.kr/",
-              "https://www.seochocf.or.kr/site/main/home",
-              "https://www.seochocf.or.kr/site/main/archive/post/list",
-          ]
-          for url in roots:
-              r=get(url)
-              if not r: continue
-              soup=BeautifulSoup(r.text,"html.parser")
-              print("SEOCHO_TITLE",clean(soup.title.get_text(" ",strip=True) if soup.title else "")[:300])
-              links=[]
-              for a in soup.find_all("a",href=True):
-                  tx=clean(a.get_text(" ",strip=True)); href=urljoin(r.url,str(a.get("href") or ""))
-                  if "채용" in tx or "recruit" in href.lower() or "archive/post" in href.lower():
-                      links.append({"text":tx[:300],"href":href[:700]})
-              print("SEOCHO_LINKS",json.dumps(links[:100],ensure_ascii=False))
-              for needle in ["채용공고","archive/post","catId","category"]:
-                  print("SEOCHO_CTX",needle,json.dumps(around(r.text,needle,1800,10),ensure_ascii=False))
-
-          print("\n===== JUNGNANG")
-          page=get("https://recruit.jnfac.or.kr/recruit")
-          if page:
-              soup=BeautifulSoup(page.text,"html.parser")
-              chunks=[urljoin(page.url,s.get("src")) for s in soup.find_all("script") if s.get("src") and str(s.get("src")).startswith("/_next/")]
-              for src in chunks:
-                  jsr=get(src)
-                  if not jsr: continue
-                  js=jsr.text
-                  if any(k in js for k in ("getHomepageJobPostings","identity-access/homepage/recruitments","getHomepageCareerAPIKey")):
-                      print("NINE_CHUNK",src)
-                      for needle in ["getHomepageJobPostings","identity-access/homepage/recruitments","getHomepageCareerAPIKey","getHomepageEmploymentsAPIKey","api.ninehire.com"]:
-                          ctx=around(js,needle,3500,8)
-                          if ctx: print("NINE_CTX",needle,json.dumps(ctx,ensure_ascii=False))
-              nd=soup.find("script",id="__NEXT_DATA__")
-              if nd and nd.string:
-                  data=json.loads(nd.string)
-                  company=((data.get("props") or {}).get("pageProps") or {}).get("homepageProps",{}).get("homepage",{}).get("companyId")
-                  info=((data.get("props") or {}).get("pageProps") or {}).get("homepageProps",{}).get("info",{})
-                  print("NINE_COMPANY",company)
-                  print("NINE_INFO",json.dumps(info,ensure_ascii=False)[:8000])
+          api="https://api.ninehire.com/identity-access/homepage/recruitments"
+          params={
+              "companyId":"81a087a0-8219-11f0-a147-4f7234c30f38",
+              "page":1,
+              "countPerPage":20,
+          }
+          x=s.get(api,params=params,headers=H,timeout=25)
+          print("NINE",x.status_code,x.url,len(x.content),x.headers.get("content-type"))
+          try:
+              data=x.json()
+              print("NINE_JSON",json.dumps(data,ensure_ascii=False)[:30000])
+          except Exception:
+              print("NINE_TEXT",x.text[:10000])
           PY
