@@ -89,8 +89,8 @@ jobs:
           PY
       - name: Historical private-source parser and direct-link regressions
         run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture
-      - name: Verify Incheon foundation official projection and municipal ownership
-        run: python -m unittest tests.test_foundation_unified_projection
+      - name: Verify foundation projection and degraded-section isolation
+        run: python -m unittest tests.test_foundation_unified_projection tests.test_foundation_degradation
       - name: Build disposable multi-source unified candidate
         id: build_candidate
         continue-on-error: true
