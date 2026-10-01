@@ -30,8 +30,8 @@ class BrowserVerifiedResponse:
 def browser_verified_request(url):
     """Use the runner browser only for a narrowly allowlisted TLS-chain failure.
 
-    Chrome keeps normal certificate validation enabled. This is not a bypass:
-    no --ignore-certificate-errors or insecure TLS option is permitted.
+    Chrome keeps normal certificate validation enabled. Certificate-error
+    bypass flags and insecure TLS options are not permitted.
     """
     host=(urlparse(url).hostname or "").lower()
     if host not in {"sd.go.kr","www.sd.go.kr"}:
