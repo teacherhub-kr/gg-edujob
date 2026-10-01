@@ -81,18 +81,18 @@ class CulturalFoundationMetroTests(unittest.TestCase):
 
     def test_foundation_owned_host_is_only_supporting_evidence(self):
         foundation = {
-            "id": "seoul:seongdong",
-            "name": "성동문화재단",
-            "homepage": "https://www.sdfac.or.kr/",
+            "id": "gyeonggi:yangpyeong",
+            "name": "양평문화재단",
+            "homepage": "https://ypcf.or.kr/",
         }
         self.assertTrue(
             crawler.foundation_owned_board_host(
                 foundation,
-                "https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo",
+                "https://ypcf.or.kr/recruit",
             )
         )
         html = "<html><body>채용 공고 <a href='/jobs/23'>직원 채용</a></body></html>"
-        response = SimpleNamespace(url="https://www.sdfac.or.kr/recruit", text=html, content=html.encode())
+        response = SimpleNamespace(url="https://ypcf.or.kr/recruit", text=html, content=html.encode())
         with self.assertRaisesRegex(RuntimeError, "identity unproved"):
             crawler.verify_board_surface(BeautifulSoup(html, "html.parser"), foundation, response, {"/jobs/23": {}})
         shared = {
