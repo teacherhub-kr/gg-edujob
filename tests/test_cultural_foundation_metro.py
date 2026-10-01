@@ -338,6 +338,11 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("yfac.fairyhr.com", crawler.GENERIC_OFFICIAL_HOSTS)
         self.assertNotIn("seoul:dongjak", crawler.SHARED_OFFICIAL_BOARD_FOUNDATION_IDS)
 
+    def test_position_scope_includes_foundation_front_of_house_staff(self):
+        self.assertTrue(
+            crawler.official_position_title("2026년 3차 구리문화재단 공연장 안내원 추가 모집")
+        )
+
     def test_position_scope_includes_jobs_and_teaching_people(self):
         included = [
             "2026년 제7회 직원 채용 공고",
