@@ -515,6 +515,19 @@ class CulturalFoundationMetroTests(unittest.TestCase):
             )
         )
 
+    def test_efac_closed_row_contract_is_explicit(self):
+        soup = BeautifulSoup(
+            """<table><tr class="list" onclick="reg_view('5098')">
+            <td><span>마감</span></td><td>(재)은평문화재단 2026년 제2회 직원 채용 공고</td>
+            <td>은평문화재단</td><td>4,017</td><td>2026-05-28</td></tr></table>""",
+            "html.parser",
+        )
+        rows = crawler.efac_list_rows(soup)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["uid"], "5098")
+        self.assertTrue(rows[0]["closed"])
+        self.assertEqual(rows[0]["registered"], crawler.base.date(2026, 5, 28))
+
     def test_native_detail_identity_prefers_query_id(self):
         self.assertEqual(
             crawler.detail_identity("https://recruit.efac.or.kr/sub01/sub01.php?type=view&uid=5098"),
