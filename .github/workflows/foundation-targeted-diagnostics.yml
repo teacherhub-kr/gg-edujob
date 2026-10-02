@@ -1,0 +1,43 @@
+name: Foundation targeted read-only diagnostics
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundation-targeted-diagnostics.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify Seongdong TLS with system trust only
+        run: |
+          set -e
+          URL='https://www.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10'
+          echo '=== CURL ==='
+          if curl --fail --silent --show-error --location --max-time 25 -o /tmp/sd.html -w 'status=%{http_code} final=%{url_effective} size=%{size_download}\n' "$URL"; then
+            grep -o '성동문화재단[^<]*' /tmp/sd.html | head -5 || true
+          else
+            echo 'CURL_FAILED'
+          fi
+          echo '=== URLLIB SYSTEM CA ==='
+          python - <<'PY'
+          import ssl,urllib.request
+          url='https://www.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10'
+          ctx=ssl.create_default_context(cafile='/etc/ssl/certs/ca-certificates.crt')
+          try:
+              with urllib.request.urlopen(url,timeout=25,context=ctx) as r:
+                  body=r.read()
+                  print('URLLIB',r.status,r.geturl(),len(body),'성동문화재단'.encode('utf-8') in body)
+          except Exception as e:
+              print('URLLIB_FAILED',type(e).__name__,str(e))
+          PY
+          echo '=== OPENSSL VERIFY ==='
+          echo | openssl s_client -connect www.sd.go.kr:443 -servername www.sd.go.kr -verify_return_error 2>&1 | tail -30
