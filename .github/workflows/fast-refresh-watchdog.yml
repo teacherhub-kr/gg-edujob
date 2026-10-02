@@ -72,13 +72,14 @@ jobs:
             private-foundation) workflow='cultural-foundation-coverage.yml' ;;
             *) echo "Unknown action: $ACTION" >&2; exit 2 ;;
           esac
-          # Re-check the selected writer immediately before dispatch. The supervisor
-          # decision may be stale by the time this step runs, and API-read failures
-          # must fail closed rather than creating a duplicate queued writer.
+          # Re-check the selected writer immediately before dispatch using the
+          # selected workflow's unfiltered run list. This intentionally differs from
+          # the supervisor's repository-wide backstop so one API view can cover the
+          # other's visibility/filtering edge cases. API failures remain fail-closed.
           active="$(gh api \
             -H 'Accept: application/vnd.github+json' \
-            "/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100" \
-            --jq --arg path ".github/workflows/${workflow}" '[.workflow_runs[] | select(.path == $path and .event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/runs?per_page=100" \
+            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
           if [ "${active:-0}" -gt 0 ]; then
             echo "Production workflow already active; no duplicate dispatch: ${workflow}."
             exit 0
