@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-02T22:00:09+09:00",
+  "generatedAt": "2026-10-02T23:45:40+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
-  "healthy": true,
+  "healthy": false,
   "registryInstitutions": 55,
   "officialBoardsConfigured": 21,
   "officialCoverageComplete": false,
@@ -22,13 +22,25 @@
   "failedAvailableComponents": [],
   "currentMappedBySource": {
     "official": 10,
-    "cleaneye": 9,
-    "artmore": 11,
+    "cleaneye": 12,
+    "artmore": 12,
     "ancf": 1,
     "lessoninfo-discovery": 15
   },
-  "coverageGapCount": 0,
-  "coverageGaps": [],
+  "coverageGapCount": 1,
+  "coverageGaps": [
+    {
+      "foundationRegistryId": "seoul:mapo",
+      "foundationName": "마포문화재단",
+      "source": "artmore",
+      "strength": "strong-cross-check",
+      "sourceIdentity": "artmore:95181",
+      "title": "진행중 마포아트센터 공연장 안내원 모집(2026년 3차)",
+      "registered": "2026-10-01",
+      "applyEnd": "2026-10-12",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95181"
+    }
+  ],
   "discoveryOnlyGapCount": 0,
   "discoveryOnlyGaps": [],
   "unmappedStrongSourceRows": {},
@@ -153,14 +165,14 @@
       "municipality": "금천구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
-        "artmore": 0,
+        "cleaneye": 2,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:nowon",
@@ -234,13 +246,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 0,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:seongdong",
@@ -249,14 +261,14 @@
       "municipality": "성동구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 0,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 0,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
-      "coverageOutcome": "no-current-crosscheck-signal"
+      "coverageOutcome": "current-seen"
     },
     {
       "foundationRegistryId": "seoul:seocho",
@@ -794,11 +806,11 @@
       "sourceCounts": {
         "official": 2,
         "cleaneye": 2,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 5,
+      "currentStrongSignals": 4,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
