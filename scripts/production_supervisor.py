@@ -402,7 +402,8 @@ def gh_runs(repo: str, filename: str) -> list[dict[str, Any]]:
                 "gh",
                 "api",
                 f"/repos/{repo}/actions/workflows/{filename}/runs?branch=main&event={event}&per_page=30",
-            ]
+            ],
+            check=True,
         )
         try:
             runs = (json.loads(raw) or {}).get("workflow_runs", []) or []
@@ -472,6 +473,88 @@ def private_refresh_due(
     if last_refresh is None:
         return True
     return now - last_refresh > timedelta(hours=max_age_hours)
+
+
+def choose_private_refresh_action(
+    *,
+    now: datetime,
+    all_runs: dict[str, list[dict[str, Any]]],
+    private_refresh_times: dict[str, datetime | None],
+    private_freshness: dict[str, dict[str, Any]],
+    active_private: list[str],
+) -> tuple[str | None, str | None]:
+    """Choose one guarded private refresh without weakening official fail-closed gates."""
+    if active_private:
+        return (
+            "skip-private-active",
+            "active private refresh workflows: " + ",".join(active_private),
+        )
+
+    candidate_time = git_commit_time("artmore_reconciliation_report.candidate.json")
+    canonical_artmore_time = git_commit_time("artmore_reconciliation_report.json")
+    candidate_report = load_json("artmore_reconciliation_report.candidate.json", {})
+    artmore_ready = bool(
+        candidate_time
+        and (canonical_artmore_time is None or candidate_time > canonical_artmore_time)
+        and candidate_report.get("healthy") is True
+        and candidate_report.get("traversalComplete") is True
+        and int(candidate_report.get("missingAfterCount") or 0) == 0
+    )
+
+    private_candidates: list[tuple[float, str]] = []
+    if artmore_ready:
+        private_candidates.append((10_000.0, ARTMORE_PROMOTE_KEY))
+    for key, spec in PRIVATE_REFRESH_TARGETS.items():
+        refreshed_at = private_refresh_times.get(key)
+        if not private_refresh_due(refreshed_at, now, int(spec["maxAgeHours"])):
+            continue
+        age_hours = (
+            (now - refreshed_at).total_seconds() / 3600
+            if refreshed_at is not None
+            else 10_000.0
+        )
+        private_candidates.append(
+            (age_hours / float(spec["maxAgeHours"]), key)
+        )
+
+    skipped_private: list[str] = []
+    for _, key in sorted(private_candidates, reverse=True):
+        runs = all_runs[key]
+        blocked, failures, _ = circuit_blocked(key, runs, now)
+        latest = latest_completed(runs)
+        latest_time = completed_at(latest)
+        recent_failure = bool(
+            latest
+            and latest.get("conclusion") in REAL_FAILURES
+            and latest_time
+            and now - latest_time < timedelta(hours=1)
+        )
+        if blocked or recent_failure:
+            skipped_private.append(
+                f"{key}:{'circuit' if blocked else 'backoff'}:{failures}"
+            )
+            continue
+        if key == ARTMORE_PROMOTE_KEY:
+            return (
+                key,
+                "verified ArtMore candidate is newer than canonical publication",
+            )
+        freshness = private_freshness[key]
+        return (
+            key,
+            (
+                f"private source refresh overdue: {key}, "
+                f"ageHours={freshness['ageHours']}, "
+                f"maxAgeHours={freshness['maxAgeHours']}"
+            ),
+        )
+
+    if private_candidates and skipped_private:
+        return (
+            "skip-private-backoff",
+            "private refreshes are temporarily backed off: " + ",".join(skipped_private),
+        )
+    return None, None
 
 
 def previous_reconciliation_report() -> dict[str, Any] | None:
@@ -639,6 +722,26 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
     if active:
         action = "skip-active-run"
         reason = "active workflows: " + ",".join(active)
+        # Fast writes the canonical official artifacts, while private refresh writers
+        # update isolated source reports. Allow exactly one overdue private writer to
+        # use this otherwise blocked watchdog slot; active_private still serializes
+        # private refreshes and all source-specific circuit/backoff rules remain intact.
+        if set(active) == {"fast"}:
+            private_action, private_reason = choose_private_refresh_action(
+                now=now,
+                all_runs=all_runs,
+                private_refresh_times=private_refresh_times,
+                private_freshness=private_freshness,
+                active_private=active_private,
+            )
+            if private_action and private_action.startswith("private-"):
+                action = private_action
+                reason = (
+                    "Fast refresh is already active; using one isolated private refresh slot. "
+                    + str(private_reason or "")
+                )
+            elif private_reason:
+                reason += "; " + private_reason
     else:
         fast_needed = (
             not required_registry
@@ -927,71 +1030,16 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             # wait indefinitely. Keep the official incident open while using this
             # otherwise idle watchdog slot for one separately guarded refresh.
             if action in PRIVATE_REFRESH_IDLE_ACTIONS:
-                if active_private:
-                    action = "skip-private-active"
-                    reason = "active private refresh workflows: " + ",".join(active_private)
-                else:
-                    candidate_time = git_commit_time("artmore_reconciliation_report.candidate.json")
-                    canonical_artmore_time = git_commit_time("artmore_reconciliation_report.json")
-                    candidate_report = load_json("artmore_reconciliation_report.candidate.json", {})
-                    artmore_ready = bool(
-                        candidate_time
-                        and (canonical_artmore_time is None or candidate_time > canonical_artmore_time)
-                        and candidate_report.get("healthy") is True
-                        and candidate_report.get("traversalComplete") is True
-                        and int(candidate_report.get("missingAfterCount") or 0) == 0
-                    )
-
-                    private_candidates: list[tuple[float, str]] = []
-                    if artmore_ready:
-                        private_candidates.append((10_000.0, ARTMORE_PROMOTE_KEY))
-                    for key, spec in PRIVATE_REFRESH_TARGETS.items():
-                        refreshed_at = private_refresh_times.get(key)
-                        if not private_refresh_due(refreshed_at, now, int(spec["maxAgeHours"])):
-                            continue
-                        age_hours = (
-                            (now - refreshed_at).total_seconds() / 3600
-                            if refreshed_at is not None
-                            else 10_000.0
-                        )
-                        private_candidates.append(
-                            (age_hours / float(spec["maxAgeHours"]), key)
-                        )
-
-                    skipped_private: list[str] = []
-                    for _, key in sorted(private_candidates, reverse=True):
-                        runs = all_runs[key]
-                        blocked, failures, _ = circuit_blocked(key, runs, now)
-                        latest = latest_completed(runs)
-                        latest_time = completed_at(latest)
-                        recent_failure = bool(
-                            latest
-                            and latest.get("conclusion") in REAL_FAILURES
-                            and latest_time
-                            and now - latest_time < timedelta(hours=1)
-                        )
-                        if blocked or recent_failure:
-                            skipped_private.append(
-                                f"{key}:{'circuit' if blocked else 'backoff'}:{failures}"
-                            )
-                            continue
-                        action = key
-                        if key == ARTMORE_PROMOTE_KEY:
-                            reason = (
-                                "verified ArtMore candidate is newer than canonical publication"
-                            )
-                        else:
-                            freshness = private_freshness[key]
-                            reason = (
-                                f"private source refresh overdue: {key}, "
-                                f"ageHours={freshness['ageHours']}, "
-                                f"maxAgeHours={freshness['maxAgeHours']}"
-                            )
-                        break
-                    else:
-                        if private_candidates and skipped_private:
-                            action = "skip-private-backoff"
-                            reason = "private refreshes are temporarily backed off: " + ",".join(skipped_private)
+                private_action, private_reason = choose_private_refresh_action(
+                    now=now,
+                    all_runs=all_runs,
+                    private_refresh_times=private_refresh_times,
+                    private_freshness=private_freshness,
+                    active_private=active_private,
+                )
+                if private_action:
+                    action = private_action
+                    reason = private_reason or reason
 
     if action == "fast" and watchdog_lag:
         reason += (
