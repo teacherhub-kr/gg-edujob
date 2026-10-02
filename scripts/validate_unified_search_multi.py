@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from build_unified_search import RESULT_RE, private_current
-from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -112,6 +112,8 @@ def main():
     for spec in PRIVATE_SOURCES:
         source_path = spec.get("full_jobs") if spec.get("key") == "lessoninfo" and spec.get("full_jobs") else spec["jobs"]
         raw_src = rows_from(load(source_path, []))
+        if spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
+            raw_src = merge_lessoninfo_full_candidates(raw_src, rows_from(load(spec["jobs"], [])))
         rep = load(spec["report"], {})
         drep = load(spec["detail_report"], {}) if spec.get("detail_report") else None
         configured_enabled = publication_enabled(rep)
