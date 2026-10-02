@@ -187,16 +187,6 @@ def crawl_official_ids():
         ))
         all_rows.extend(rows)
 
-    # Read the live Seoul central board immediately before the workflow's independent
-    # central proof, rather than letting a full support-office traversal separate them.
-    # Keep both the independent scan and its existing bounded-drift gate unchanged.
-    se_central = primary.scrape_seoul_central()
-    sources.insert(1, source_status(
-        "서울", primary.SEOUL["central"]["name"], se_central,
-        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
-    ))
-    all_rows.extend(se_central)
-
     # Incheon central + all five support offices are independently traversed. Registry presence
     # alone never satisfies completeness; every logical source must provide current traversal proof.
     incheon_rows, incheon_meta = incheon.scrape_incheon_central(lookback_days=cov.LOOKBACK_DAYS)
@@ -229,6 +219,16 @@ def crawl_official_ids():
         insert_at += 1
         all_rows.extend(rows)
 
+    # Seoul central is intentionally the final live network read in this full reconciliation.
+    # The workflow runs the independent central proof immediately after this script returns,
+    # so this ordering minimizes live-board drift without weakening any count threshold.
+    se_central = primary.scrape_seoul_central()
+    sources.insert(1, source_status(
+        "서울", primary.SEOUL["central"]["name"], se_central,
+        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
+    ))
+    all_rows.extend(se_central)
+
     by_id = {}
     for row in all_rows:
         if not is_recruitment_row(row):
@@ -249,6 +249,8 @@ def main():
     entries = old_ledger.get("entries", {}) if isinstance(old_ledger, dict) else {}
 
     sources, official = crawl_official_ids()
+    # generatedAt must describe completed evidence, not module-import/script-start time.
+    generated_at = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S KST")
     dataset_ids_before = {sid for j in jobs if is_recruitment_row(j) for sid in dataset_source_ids(j)}
     official_ids = set(official)
     missing_before = sorted(official_ids - dataset_ids_before)
@@ -290,7 +292,7 @@ def main():
             "sourceIdentity": sid, "province": province, "source": source,
             "title": row.get("title", ""), "school": row.get("school", ""),
             "registered": row.get("registered", ""), "url": row.get("url", ""),
-            "firstSeen": old.get("firstSeen") or NOW_S, "lastSeen": NOW_S,
+            "firstSeen": old.get("firstSeen") or generated_at, "lastSeen": generated_at,
             "seenCount": int(old.get("seenCount") or 0) + 1,
             "presentInLatestOfficialScan": True,
         }
@@ -317,7 +319,7 @@ def main():
 
     payload["jobs"] = jobs
     payload["sourceReconciliation"] = {
-        "generatedAt": NOW_S, "lookbackDays": cov.LOOKBACK_DAYS,
+        "generatedAt": generated_at, "lookbackDays": cov.LOOKBACK_DAYS,
         "populationPolicy": RECONCILIATION_POLICY,
         "officialIdCount": len(official_ids),
         "datasetIdCountBefore": len(dataset_ids_before),
@@ -332,7 +334,7 @@ def main():
     JOBS_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     LEDGER_PATH.write_text(json.dumps({
-        "generatedAt": NOW_S,
+        "generatedAt": generated_at,
         "populationPolicy": RECONCILIATION_POLICY,
         "policy": "append-only stable official recruitment posting IDs across every registered official source; result/selection notices are excluded by title policy; title similarity never deletes source evidence",
         "officialIdCount": len(current_official),
@@ -340,7 +342,7 @@ def main():
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
     report = {
-        "generatedAt": NOW_S, "lookbackDays": cov.LOOKBACK_DAYS,
+        "generatedAt": generated_at, "lookbackDays": cov.LOOKBACK_DAYS,
         "populationPolicy": RECONCILIATION_POLICY,
         "summary": payload["sourceReconciliation"],
         "incompleteSources": incomplete_sources,
