@@ -110,6 +110,12 @@ def project_private_generic(job,source_name):
         else:
             verified_url=str(job.get("verifiedUrl") or ""); row["url"]=verified_url; row["originalUrl"]=verified_url; row["detailLinkVerified"]=True
 
+    if source_name=="레슨인포" and row.get("fullCandidate") is True:
+        status=str(row.get("statusLabel") or "검증 필요")
+        subject=str(row.get("subject") or "").strip()
+        prefix=f"민간출처 · {status}"
+        row["subject"]=prefix + (f" · {subject}" if subject else "")
+
     row["searchText"]=base.norm(" ".join(map(str,[row.get("school"),row.get("title"),row.get("subject"),row.get("region")," ".join(row.get("regions") or []),row.get("province")," ".join(row.get("provinces") or []),row.get("location"),row.get("source"),row.get("sourceSurfaceLabel"),row.get("type")," ".join(row.get("categories") or [])])))
     return row
 
