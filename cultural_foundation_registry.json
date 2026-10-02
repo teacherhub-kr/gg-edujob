@@ -75,7 +75,7 @@
         "(재)강남문화재단",
         "재단법인 강남문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.gangnam.go.kr/office/gfac/",
       "officialRecruitmentUrl": "https://www.gangnam.go.kr/office/gfac/board/gfac_staffrec/list.do?mid=gfac_staffRec",
       "enabled": true
     },
@@ -90,7 +90,7 @@
         "재단법인 강동문화재단"
       ],
       "homepage": "https://www.gdfac.or.kr/",
-      "officialRecruitmentUrl": "",
+      "officialRecruitmentUrl": "https://www.gdfac.or.kr/community/ko/notice",
       "enabled": true
     },
     {
@@ -103,8 +103,8 @@
         "(재)강북문화재단",
         "재단법인 강북문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.gbcf.or.kr/",
+      "officialRecruitmentUrl": "https://gbcf.fairyhr.com/",
       "enabled": true
     },
     {
@@ -117,8 +117,8 @@
         "(재)관악문화재단",
         "재단법인 관악문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://gfac.or.kr/",
+      "officialRecruitmentUrl": "https://gfac.or.kr/site/main/recruit/list?arcStatus=publish&listType=list",
       "enabled": true
     },
     {
@@ -132,8 +132,10 @@
         "재단법인 광진문화재단"
       ],
       "homepage": "http://www.naruart.or.kr/",
-      "officialRecruitmentUrl": "",
-      "enabled": true
+      "officialRecruitmentUrl": "https://naruart.applyin.co.kr/",
+      "enabled": true,
+      "verifiedFallbackRecruitmentUrl": "https://www.gwangjin.go.kr/portal/bbs/B0000004/list.do?menuNo=200193",
+      "verifiedFallbackRole": "secondary-official-mirror"
     },
     {
       "id": "seoul:guro",
@@ -145,7 +147,7 @@
         "(재)구로문화재단",
         "재단법인 구로문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.guro.go.kr/",
       "officialRecruitmentUrl": "https://www.guro.go.kr/www/selectBbsNttList.do?bbsNo=664&key=1792",
       "enabled": true
     },
@@ -159,8 +161,8 @@
         "(재)금천문화재단",
         "재단법인 금천문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://gcfac.or.kr/",
+      "officialRecruitmentUrl": "https://gcfac.or.kr/board/recruit?gcfac_menu_cd=U0140",
       "enabled": true
     },
     {
@@ -173,7 +175,7 @@
         "(재)노원문화재단",
         "재단법인 노원문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://nowonarts.kr/",
       "officialRecruitmentUrl": "https://nowonarts.kr/channels/job/posts",
       "enabled": true
     },
@@ -187,8 +189,8 @@
         "(재)도봉문화재단",
         "재단법인 도봉문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.dbfac.or.kr/",
+      "officialRecruitmentUrl": "https://www.dbfac.or.kr/front/board/boardContentsListPage.do?board_id=7",
       "enabled": true
     },
     {
@@ -201,8 +203,8 @@
         "(재)동대문문화재단",
         "재단법인 동대문문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://ddmac.or.kr/",
+      "officialRecruitmentUrl": "https://ddmac.or.kr/sub04/sub03.php",
       "enabled": true
     },
     {
@@ -215,9 +217,11 @@
         "(재)동작문화재단",
         "재단법인 동작문화재단"
       ],
-      "homepage": "http://www.idfac.or.kr/",
-      "officialRecruitmentUrl": "",
-      "enabled": true
+      "homepage": "https://www.idfac.or.kr/",
+      "officialRecruitmentUrl": "https://www.idfac.or.kr/bbs/board.php?bo_table=job",
+      "enabled": true,
+      "verifiedFallbackRecruitmentUrl": "https://culture.seoul.go.kr/culture/bbs/B0000002/list.do?menuNo=200052&pageIndex=1&searchCnd=1&searchWrd=%EB%8F%99%EC%9E%91%EB%AC%B8%ED%99%94%EC%9E%AC%EB%8B%A8",
+      "verifiedFallbackRole": "secondary-official-mirror"
     },
     {
       "id": "seoul:mapo",
@@ -229,8 +233,8 @@
         "(재)마포문화재단",
         "재단법인 마포문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.mfac.or.kr/",
+      "officialRecruitmentUrl": "https://www.mfac.or.kr/communication/notice_all_list.jsp?sc_type=3",
       "enabled": true
     },
     {
@@ -243,8 +247,8 @@
         "(재)성동문화재단",
         "재단법인 성동문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.sdfac.or.kr/",
+      "officialRecruitmentUrl": "https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageUnit=10",
       "enabled": true
     },
     {
@@ -257,8 +261,8 @@
         "(재)서초문화재단",
         "재단법인 서초문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.seochocf.or.kr/",
+      "officialRecruitmentUrl": "https://seochocf.applyin.co.kr/",
       "enabled": true
     },
     {
@@ -272,7 +276,7 @@
         "재단법인 성북문화재단"
       ],
       "homepage": "https://www.sbculture.or.kr/",
-      "officialRecruitmentUrl": "",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/sbculture/",
       "enabled": true
     },
     {
@@ -285,8 +289,8 @@
         "(재)송파문화재단",
         "재단법인 송파문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.songpafac.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/songpafac/job/",
       "enabled": true
     },
     {
@@ -299,7 +303,7 @@
         "(재)양천문화재단",
         "재단법인 양천문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://yfac.kr/",
       "officialRecruitmentUrl": "https://yfac.kr/main/contents.do?a_num=78696582&v_page=1",
       "enabled": true
     },
@@ -313,7 +317,7 @@
         "(재)영등포문화재단",
         "재단법인 영등포문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.ydpcf.or.kr/",
       "officialRecruitmentUrl": "https://www.ydpcf.or.kr/board.do?bid=3&category=17&p=1",
       "enabled": true
     },
@@ -327,8 +331,8 @@
         "(재)은평문화재단",
         "재단법인 은평문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://efac.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.efac.or.kr/sub01/sub01.php",
       "enabled": true
     },
     {
@@ -341,8 +345,8 @@
         "(재)종로문화재단",
         "재단법인 종로문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.jfac.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/jongrofac/",
       "enabled": true
     },
     {
@@ -355,8 +359,8 @@
         "(재)중구문화재단",
         "재단법인 중구문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.caci.or.kr/",
+      "officialRecruitmentUrl": "https://www.caci.or.kr/community/ko/notice",
       "enabled": true
     },
     {
@@ -369,8 +373,8 @@
         "(재)중랑문화재단",
         "재단법인 중랑문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.jnfac.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.jnfac.or.kr/",
       "enabled": true
     },
     {
@@ -383,8 +387,8 @@
         "(재)용산문화재단",
         "재단법인 용산문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.yongsanfac.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/yongsanfac/",
       "enabled": true
     },
     {
@@ -398,7 +402,7 @@
         "재단법인 경기문화재단"
       ],
       "homepage": "https://www.ggcf.kr/",
-      "officialRecruitmentUrl": "",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/ggcf/",
       "enabled": true
     },
     {
@@ -411,8 +415,8 @@
         "(재)고양문화재단",
         "재단법인 고양문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.artgy.or.kr/",
+      "officialRecruitmentUrl": "https://www.goyang.go.kr/jobs/user/bbs/BD_selectBbsList.do?q_bbsCode=1082&q_currPage=1&q_searchKey=1000&q_searchVal=%EA%B3%A0%EC%96%91%EB%AC%B8%ED%99%94%EC%9E%AC%EB%8B%A8",
       "enabled": true
     },
     {
@@ -425,7 +429,7 @@
         "(재)과천문화재단",
         "재단법인 과천문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.gcart.or.kr/",
       "officialRecruitmentUrl": "https://www.gcart.or.kr/kr/commu/recruitList.do",
       "enabled": true
     },
@@ -439,8 +443,8 @@
         "(재)광명문화재단",
         "재단법인 광명문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.gmcf.or.kr/",
+      "officialRecruitmentUrl": "https://www.gm.go.kr/pt/user/bbs/BD_selectBbsList.do?q_bbsCode=2034&q_searchKey=1000&q_searchVal=%EA%B4%91%EB%AA%85%EB%AC%B8%ED%99%94%EC%9E%AC%EB%8B%A8",
       "enabled": true
     },
     {
@@ -454,8 +458,8 @@
         "(재)광주시문화재단",
         "재단법인 광주시문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.nsart.or.kr/",
+      "officialRecruitmentUrl": "https://www.nsart.or.kr/board/recruit.do",
       "enabled": true
     },
     {
@@ -468,8 +472,8 @@
         "(재)구리문화재단",
         "재단법인 구리문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.guri.go.kr/",
+      "officialRecruitmentUrl": "https://www.guri.go.kr/www/selectBbsNttList.do?bbsNo=41&key=389",
       "enabled": true
     },
     {
@@ -482,8 +486,8 @@
         "(재)군포문화재단",
         "재단법인 군포문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.gunpocf.or.kr/",
+      "officialRecruitmentUrl": "https://gunpocf.incruit.com/hire/hirelist.asp",
       "enabled": true
     },
     {
@@ -496,7 +500,7 @@
         "(재)김포문화재단",
         "재단법인 김포문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.gcf.or.kr/",
       "officialRecruitmentUrl": "https://www.gcf.or.kr/main/pst/list.do?pst_id=recruit&pst_se=C",
       "enabled": true
     },
@@ -511,7 +515,7 @@
         "재단법인 남양주문화재단"
       ],
       "homepage": "https://www.nyjcf.or.kr/",
-      "officialRecruitmentUrl": "",
+      "officialRecruitmentUrl": "https://www.nyjcf.or.kr/www/25",
       "enabled": true
     },
     {
@@ -524,8 +528,8 @@
         "(재)부천문화재단",
         "재단법인 부천문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.bcf.or.kr/",
+      "officialRecruitmentUrl": "https://www.bucheon.go.kr/site/program/board/basicboard/list?boardtypeid=26756&menuid=148002004001&pagesize=20&currentpage=1",
       "enabled": true
     },
     {
@@ -538,9 +542,10 @@
         "(재)성남문화재단",
         "재단법인 성남문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
-      "enabled": true
+      "homepage": "https://www.snart.or.kr/",
+      "officialRecruitmentUrl": "https://job.cleaneye.go.kr/user/ypRecruitment.do",
+      "enabled": true,
+      "officialRecruitmentRole": "primary-official-government-registry"
     },
     {
       "id": "gyeonggi:suwon",
@@ -552,7 +557,7 @@
         "(재)수원문화재단",
         "재단법인 수원문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.swcf.or.kr/",
       "officialRecruitmentUrl": "https://www.swcf.or.kr/?p=116",
       "enabled": true
     },
@@ -566,7 +571,7 @@
         "(재)안산문화재단",
         "재단법인 안산문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.ansanart.com/",
       "officialRecruitmentUrl": "https://www.ansanart.com/lay1/bbs/S1T84C408/A/62/list.do",
       "enabled": true
     },
@@ -581,8 +586,8 @@
         "(재)안양문화예술재단",
         "재단법인 안양문화예술재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://ayac.or.kr/",
+      "officialRecruitmentUrl": "https://ayac.saramin.co.kr/",
       "enabled": true
     },
     {
@@ -610,8 +615,8 @@
         "(재)여주세종문화관광재단",
         "재단법인 여주세종문화관광재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.yjcf.or.kr/",
+      "officialRecruitmentUrl": "https://www.yjcf.or.kr/brd/board/217/L/menu/342",
       "enabled": true
     },
     {
@@ -624,8 +629,8 @@
         "(재)오산문화재단",
         "재단법인 오산문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.osanart.net/",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/osanart/",
       "enabled": true
     },
     {
@@ -638,8 +643,8 @@
         "(재)용인문화재단",
         "재단법인 용인문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.yicf.or.kr/",
+      "officialRecruitmentUrl": "https://yicf.incruit.com/hire/hirelist.asp",
       "enabled": true
     },
     {
@@ -653,7 +658,7 @@
         "재단법인 의정부문화재단",
         "의정부예술의전당"
       ],
-      "homepage": "",
+      "homepage": "https://uac.or.kr/",
       "officialRecruitmentUrl": "https://uac.or.kr/newuac/community/community_09.php",
       "enabled": true
     },
@@ -667,7 +672,7 @@
         "(재)이천문화재단",
         "재단법인 이천문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.artic.or.kr/",
       "officialRecruitmentUrl": "https://www.artic.or.kr/base/board/list?boardManagementNo=15&menuLevel=3&menuNo=50",
       "enabled": true
     },
@@ -681,8 +686,8 @@
         "(재)파주문화재단",
         "재단법인 파주문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.pajucf.or.kr/",
+      "officialRecruitmentUrl": "https://www.pajucf.or.kr/community/notice.php",
       "enabled": true
     },
     {
@@ -696,8 +701,8 @@
         "(재)평택시문화재단",
         "재단법인 평택시문화재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.pccf.or.kr/",
+      "officialRecruitmentUrl": "https://www.pccf.or.kr/bbs/list.do?key=2603120031",
       "enabled": true
     },
     {
@@ -705,13 +710,15 @@
       "region": "경기",
       "municipality": "포천시",
       "level": "기초",
-      "name": "포천문화재단",
+      "name": "포천문화관광재단",
       "aliases": [
         "(재)포천문화재단",
-        "재단법인 포천문화재단"
+        "재단법인 포천문화재단",
+        "(재)포천문화관광재단",
+        "재단법인 포천문화관광재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.pcfac.or.kr/",
+      "officialRecruitmentUrl": "https://www.pcfac.or.kr/sub07/sub03.php",
       "enabled": true
     },
     {
@@ -724,7 +731,7 @@
         "(재)하남문화재단",
         "재단법인 하남문화재단"
       ],
-      "homepage": "",
+      "homepage": "https://www.hanam.go.kr/",
       "officialRecruitmentUrl": "https://www.hanam.go.kr/www/selectGosiList.do?key=174&not_ancmt_se_code=05&pageIndex=1&searchCnd=all&searchKrwd=",
       "enabled": true
     },
@@ -740,8 +747,8 @@
         "(재)화성시문화관광재단",
         "재단법인 화성시문화관광재단"
       ],
-      "homepage": "",
-      "officialRecruitmentUrl": "",
+      "homepage": "https://www.hcf.or.kr/",
+      "officialRecruitmentUrl": "https://recruit.incruit.com/hcf/",
       "enabled": true
     },
     {

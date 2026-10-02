@@ -1,0 +1,106 @@
+name: Foundation final read-only diagnostics
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundation-final-diagnostics.yml'
+      - 'cultural_foundation_registry.json'
+      - 'scripts/crawl_official_foundation_jobs_v2.py'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install diagnostics dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
+      - name: Probe remaining five foundation surfaces
+        run: |
+          python - <<'PY'
+          import json, requests
+          from bs4 import BeautifulSoup
+          H={"User-Agent":"Mozilla/5.0","Cache-Control":"no-cache, no-store, max-age=0","Pragma":"no-cache"}
+          s=requests.Session()
+
+          def fetch(label,url,*,accept_json=False):
+              h=dict(H)
+              if accept_json:
+                  h["Accept"]="application/json"
+              try:
+                  r=s.get(url,headers=h,timeout=25,allow_redirects=True)
+                  print("\n===",label,"===")
+                  print("HTTP",r.status_code,"FINAL",r.url,"BYTES",len(r.content),"TYPE",r.headers.get("content-type"))
+                  if accept_json:
+                      try:
+                          p=r.json()
+                          print("JSON_KEYS",list(p) if isinstance(p,dict) else type(p).__name__)
+                          print("ORG",json.dumps((p.get("organization") or {}) if isinstance(p,dict) else {},ensure_ascii=False)[:1200])
+                          print("ROWS",len(p.get("data") or []) if isinstance(p,dict) else -1)
+                          for row in (p.get("data") or [])[:5]:
+                              print("ROW",json.dumps({k:row.get(k) for k in ("id","title","start","end","close","statusCode","links")},ensure_ascii=False)[:3000])
+                          return
+                      except Exception as e:
+                          print("JSON_ERROR",type(e).__name__,str(e),repr(r.text[:1000]))
+                  soup=BeautifulSoup(r.text,"html.parser")
+                  title=soup.title.get_text(" ",strip=True) if soup.title else ""
+                  text=" ".join(soup.get_text(" ",strip=True).split())
+                  print("TITLE",title[:300])
+                  if len(r.content) < 1500 or not title:
+                      print("RAW",repr(r.text[:5000]))
+                      print("HEADERS",dict(r.headers))
+                      print("SCRIPTS",[x.get("src") for x in soup.find_all("script") if x.get("src")][:30])
+                      print("IFRAMES",[x.get("src") for x in soup.find_all("iframe") if x.get("src")][:20])
+                  for needle in ("광진문화재단","성동문화재단","서초문화재단","부천문화재단","성남문화재단","채용","모집"):
+                      pos=text.find(needle)
+                      if pos>=0:
+                          print("HIT",needle,text[max(0,pos-220):pos+700])
+                  shown=0
+                  for a in soup.find_all("a",href=True):
+                      t=" ".join(a.get_text(" ",strip=True).split())
+                      if any(x in t for x in ("문화재단","채용","모집")):
+                          print("LINK",t[:220],str(a.get("href"))[:700],str(a.get("onclick") or "")[:500])
+                          shown+=1
+                          if shown>=20: break
+              except Exception as e:
+                  print("\n===",label,"===")
+                  print("ERROR",type(e).__name__,str(e))
+
+          fetch("GWANGJIN_APPLYIN","https://naruart.applyin.co.kr/jobs",accept_json=True)
+          fetch("SEOCHO_APPLYIN","https://seochocf.applyin.co.kr/jobs",accept_json=True)
+          fetch("BUCHEON_CITY","https://www.bucheon.go.kr/site/program/board/basicboard/list?boardtypeid=26756&menuid=148002004001&pagesize=20&currentpage=1")
+          fetch("SEONGDONG_FOUNDATION","https://www.sdfac.or.kr/kor/recruit/board/rctdata_list.do?gotoMenuNo")
+          fetch("SEONGDONG_FOUNDATION_MAIN","https://www.sdfac.or.kr/kor/recruit/main/main.do?gotoMenuNo=")
+          fetch("SEONGDONG_CITY_WWW","https://www.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
+          fetch("SEONGDONG_CITY_NOWWW","https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
+          fetch("SEONGDONG_CITY_BOGUNSO","https://bogunso.sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageIndex=1&pageUnit=10")
+          fetch("SEONGNAM_CITY_WWW","https://www.seongnam.go.kr/bbs010402")
+          fetch("SEONGNAM_CITY_NOWWW","https://seongnam.go.kr/bbs010402")
+          fetch("SEONGNAM_FOUNDATION_RECRUIT","https://www.snart.or.kr/main/pst/list.do?pst_id=recruit")
+          fetch("SEONGNAM_FOUNDATION","https://www.snart.or.kr/")
+
+          import shutil, subprocess
+          chrome=shutil.which("google-chrome") or shutil.which("google-chrome-stable") or shutil.which("chromium")
+          print("\n=== CHROME ===",chrome)
+          if chrome:
+              for label,url in [
+                  ("CHROME_SEONGDONG_CITY","https://sd.go.kr/main/selectBbsNttList.do?bbsNo=185&key=1474&pageUnit=10"),
+                  ("CHROME_SEONGNAM_FOUNDATION","https://www.snart.or.kr/main/pst/list.do?pst_id=recruit"),
+              ]:
+                  try:
+                      cp=subprocess.run([chrome,"--headless=new","--no-sandbox","--disable-gpu","--dump-dom",url],text=True,capture_output=True,timeout=45)
+                      body=cp.stdout
+                      print("\n===",label,"===","RC",cp.returncode,"BYTES",len(body),"ERR",cp.stderr[-1000:])
+                      text=" ".join(BeautifulSoup(body,"html.parser").get_text(" ",strip=True).split())
+                      for needle in ("성동문화재단","성남문화재단","채용","모집"):
+                          pos=text.find(needle)
+                          if pos>=0: print("CHROME_HIT",needle,text[max(0,pos-250):pos+1000])
+                  except Exception as e:
+                      print("\n===",label,"===","ERROR",type(e).__name__,str(e))
+          PY
