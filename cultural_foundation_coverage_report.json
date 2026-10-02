@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T23:45:40+09:00",
+  "generatedAt": "2026-10-03T00:41:17+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": false,
   "registryInstitutions": 55,
@@ -21,8 +21,8 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 10,
-    "cleaneye": 12,
+    "official": 9,
+    "cleaneye": 9,
     "artmore": 12,
     "ancf": 1,
     "lessoninfo-discovery": 15
@@ -69,14 +69,14 @@
       "municipality": "강남구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:gangdong",
@@ -804,13 +804,13 @@
       "region": "경기",
       "municipality": "하남시",
       "sourceCounts": {
-        "official": 2,
-        "cleaneye": 2,
+        "official": 1,
+        "cleaneye": 1,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 4,
+      "currentStrongSignals": 2,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -821,12 +821,12 @@
       "municipality": "화성시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 3,
         "ancf": 0,
         "lessoninfo-discovery": 4
       },
-      "currentStrongSignals": 4,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     },

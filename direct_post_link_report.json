@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9528,
+  "totalRows": 9182,
   "nonDirectBeforeRepair": 1221,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1221,
-  "cultureFoundationRows": 184,
+  "cultureFoundationRows": 179,
   "cultureFoundationNonDirectRows": 152,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -1073,15 +1073,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000480:000005",
-      "source": "클린아이 잡플러스",
-      "title": "2026년 제5회 재단법인하남문화재단 직원채용(육아휴직대체) 공고",
-      "school": "하남문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000005&ypEntId=B000480",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
       "sourceIdentity": "culture:id:95110",
       "source": "레슨인포",
       "title": "(재)인천광역시부평구문화재단 대표이사 채용 공고",
@@ -1154,33 +1145,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "gonggonggangsa:23690",
-      "source": "공공강사",
-      "title": "2026년 10월 강남문화재단 동복합문화센터 지도강사 채용 공고 (B권역)",
-      "school": "강남문화재단",
-      "url": "https://00gangsa.com/recruitments/23690",
-      "reason": "gonggonggangsa-detail-id",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "gonggonggangsa:23686",
-      "source": "공공강사",
-      "title": "2026년 10월 강남문화재단 동복합문화센터 지도강사 채용 공고 (D권역)",
-      "school": "강남문화재단",
-      "url": "https://00gangsa.com/recruitments/23686",
-      "reason": "gonggonggangsa-detail-id",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "gonggonggangsa:23685",
-      "source": "공공강사",
-      "title": "2026년 10월 강남문화재단 동복합문화센터 지도강사 채용 공고 (C권역)",
-      "school": "강남문화재단",
-      "url": "https://00gangsa.com/recruitments/23685",
-      "reason": "gonggonggangsa-detail-id",
-      "direct": true
-    },
-    {
       "sourceIdentity": "cleaneye:2026:B000426:000021",
       "source": "클린아이 잡플러스",
       "title": "2026.성남아트리움 공연장 안내원 모집 공고",
@@ -1235,20 +1199,11 @@
       "direct": true
     },
     {
-      "sourceIdentity": "official-foundation:gyeonggi:hanam:f046a5193a9443f829b2",
+      "sourceIdentity": "official-foundation:gyeonggi:hanam:08400349e78ed13244af",
       "source": "하남문화재단",
-      "title": "2026년 제5회 하남문화재단 직원 채용 공고",
+      "title": "(재)하남문화재단 임원(비상임이사) 공개모집 공고",
       "school": "하남문화재단",
-      "url": "https://www.hanam.go.kr/www/selectGosiData.do?key=174&not_ancmt_mgt_no=52679&not_ancmt_se_code=05",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "cleaneye:2026:B000264:000027",
-      "source": "클린아이 잡플러스",
-      "title": "2026년 강남국악관현악단 단무장 모집 공고",
-      "school": "강남문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000027&ypEntId=B000264",
+      "url": "https://www.hanam.go.kr/www/selectGosiData.do?key=174&not_ancmt_mgt_no=52682&not_ancmt_se_code=05",
       "reason": "unclassified-nongeneric-url",
       "direct": true
     },
@@ -1806,6 +1761,51 @@
       "source": "레슨인포",
       "title": "2026 서울문화재단 서울연극창작센터 하우스 안내원 4기 모집(~08.13.)",
       "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94351",
+      "source": "레슨인포",
+      "title": "(재)광진문화재단 2026 꿈의 오케스트라 ‘광진’ 음악감독 모집공고",
+      "school": "광진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94335",
+      "source": "레슨인포",
+      "title": "(재)광진문화재단 임원(본부장) 공개모집 공고",
+      "school": "광진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94329",
+      "source": "레슨인포",
+      "title": "2026년 제3차 파주문화재단 직원채용 공고",
+      "school": "파주문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94327",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 교육문화파트 인턴 채용공고",
+      "school": "대림문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94318",
+      "source": "레슨인포",
+      "title": "[소전문화재단] 인문학 레지던시 두내원 리셉션 채용",
+      "school": "소전문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
