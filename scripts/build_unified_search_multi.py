@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import build_unified_search as base
-from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -206,6 +206,8 @@ def main():
         pdata=load(source_path,[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
         jobs=rows_from(pdata)
         if spec["key"]=="lessoninfo" and spec.get("full_jobs"):
+            active_rows=rows_from(load(spec["jobs"],[]))
+            jobs=merge_lessoninfo_full_candidates(jobs,active_rows)
             selected=[j for j in jobs if lessoninfo_full_candidate_publishable(j)]
         else:
             selected=[j for j in jobs if base.private_current(j)]
