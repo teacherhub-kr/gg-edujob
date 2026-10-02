@@ -1,5 +1,17 @@
 import sys
+import types
 import unittest
+
+try:
+    import playwright.async_api  # noqa: F401
+except ModuleNotFoundError:
+    playwright = types.ModuleType("playwright")
+    async_api = types.ModuleType("playwright.async_api")
+    async_api.async_playwright = lambda: None
+    async_api.TimeoutError = TimeoutError
+    playwright.async_api = async_api
+    sys.modules["playwright"] = playwright
+    sys.modules["playwright.async_api"] = async_api
 
 sys.path.insert(0, "scripts")
 import crawl_lessoninfo_browser as lesson
