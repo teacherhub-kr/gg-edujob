@@ -72,6 +72,17 @@ jobs:
             private-foundation) workflow='cultural-foundation-coverage.yml' ;;
             *) echo "Unknown action: $ACTION" >&2; exit 2 ;;
           esac
+          # Re-check the selected writer immediately before dispatch. The supervisor
+          # decision may be stale by the time this step runs, and API-read failures
+          # must fail closed rather than creating a duplicate queued writer.
+          active="$(gh api \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/runs?per_page=30" \
+            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Production workflow already active; no duplicate dispatch: ${workflow}."
+            exit 0
+          fi
           gh api --method POST \
             -H 'Accept: application/vnd.github+json' \
             "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/dispatches" \
