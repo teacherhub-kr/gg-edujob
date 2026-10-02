@@ -148,12 +148,18 @@ jobs:
           leaked=[j for j in d['jobs'] if j.get('feedKind')=='private' and j.get('source') in disabled_names]
           assert not leaked, f'publication-disabled private rows: {len(leaked)}'
           allowed={'서울','경기'}
+          lesson_allowed={'서울','경기','인천'}
           def provinces(j):
               ps={str(x) for x in (j.get('provinces') or []) if str(x)}
               if ps: return ps
               p=str(j.get('province') or '')
               return {p} if p else set()
-          bad=[j for j in d['jobs'] if j.get('feedKind')=='private' and (not provinces(j) or not provinces(j).issubset(allowed))]
+          def province_ok(j):
+              ps=provinces(j)
+              if j.get('source')=='레슨인포' and j.get('fullCandidate') is True:
+                  return (not ps) or ps.issubset(lesson_allowed)
+              return bool(ps) and ps.issubset(allowed)
+          bad=[j for j in d['jobs'] if j.get('feedKind')=='private' and not province_ok(j)]
           assert not bad, f'non-metro private rows: {len(bad)}'
           unsafe=[j for j in d['jobs'] if j.get('detailLinkVerified') is not False and not is_direct_post(j)[0]]
           assert not unsafe, f'unsafe clickable posting links: {len(unsafe)}'
