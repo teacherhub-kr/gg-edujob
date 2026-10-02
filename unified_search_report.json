@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-03T02:30:37+09:00",
+  "generatedAt": "2026-10-03T05:15:25+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 20784,
   "canonicalFoundationOfficialJobs": 10,
-  "canonicalPrivateJobs": 6077,
+  "canonicalPrivateJobs": 6073,
   "selectedCanonicalOfficialJobs": 3315,
   "selectedFoundationOfficialJobs": 9,
   "selectedOfficialJobs": 3324,
@@ -90,9 +90,9 @@
       "ok": true,
       "candidateCount": 28,
       "count": 28,
-      "rawCandidateCount": 32,
-      "excludedFromUnifiedCount": 4,
-      "lastVerifiedAt": "2026-10-02T21:14:21+09:00",
+      "rawCandidateCount": 28,
+      "excludedFromUnifiedCount": 0,
+      "lastVerifiedAt": "2026-10-03T04:31:42+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-03T02:30:43+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-03T05:15:34+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
