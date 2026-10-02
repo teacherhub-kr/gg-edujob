@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-02 20:05:18 KST",
+  "generatedAt": "2026-10-02 21:57:26 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-02 20:05:18 KST",
+    "generatedAt": "2026-10-02 21:57:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
     "officialIdCount": 19298,
-    "datasetIdCountBefore": 20919,
-    "missingBefore": 14,
-    "recoveredNow": 14,
+    "datasetIdCountBefore": 20933,
+    "missingBefore": 0,
+    "recoveredNow": 0,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261002T110014Z-36994489761-1"
+    "scanId": "20261002T122218Z-36997022391-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -105,9 +105,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9700,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 9703,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 9703,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -128,6 +128,90 @@
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
       "inDatasetAfter": 436,
+      "missingAfterCount": 0,
+      "missingAfterExamples": [],
+      "reconciled": true
+    },
+    {
+      "province": "경기",
+      "name": "가평교육지원청",
+      "boards": [
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
+      ],
+      "officialIdCount": 77,
+      "coverageComplete": true,
+      "pagesScanned": 21,
+      "accessErrors": 0,
+      "boardHealth": [
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
+          "pagesScanned": 4,
+          "rawRows": 40,
+          "recentRows": 27,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
+          "pagesScanned": 5,
+          "rawRows": 50,
+          "recentRows": 18,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
+          "pagesScanned": 6,
+          "rawRows": 60,
+          "recentRows": 30,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
+          "pagesScanned": 3,
+          "rawRows": 30,
+          "recentRows": 2,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743",
+          "pagesScanned": 3,
+          "rawRows": 30,
+          "recentRows": 0,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        }
+      ],
+      "inDatasetBefore": 77,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
+      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -189,9 +273,9 @@
           ]
         }
       ],
-      "inDatasetBefore": 2534,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 2535,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 2535,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -873,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261002203358",
+              "/js/include.js?v=20261002215702",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -988,90 +1072,6 @@
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
       "inDatasetAfter": 66,
-      "missingAfterCount": 0,
-      "missingAfterExamples": [],
-      "reconciled": true
-    },
-    {
-      "province": "경기",
-      "name": "가평교육지원청",
-      "boards": [
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
-      ],
-      "officialIdCount": 77,
-      "coverageComplete": true,
-      "pagesScanned": 21,
-      "accessErrors": 0,
-      "boardHealth": [
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
-          "pagesScanned": 4,
-          "rawRows": 40,
-          "recentRows": 27,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
-          "pagesScanned": 5,
-          "rawRows": 50,
-          "recentRows": 18,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
-          "pagesScanned": 6,
-          "rawRows": 60,
-          "recentRows": 30,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
-          "pagesScanned": 3,
-          "rawRows": 30,
-          "recentRows": 2,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743",
-          "pagesScanned": 3,
-          "rawRows": 30,
-          "recentRows": 0,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        }
-      ],
-      "inDatasetBefore": 77,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2178,9 +2178,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 321,
-      "missingBeforeCount": 2,
-      "recoveredNowCount": 2,
+      "inDatasetBefore": 323,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 323,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2339,9 +2339,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 681,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 685,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 685,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2397,9 +2397,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 170,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 171,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 171,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2547,9 +2547,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 9,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 12,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 12,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2921,9 +2921,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9700,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 9703,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 9703,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2944,6 +2944,90 @@
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
       "inDatasetAfter": 436,
+      "missingAfterCount": 0,
+      "missingAfterExamples": [],
+      "reconciled": true
+    },
+    {
+      "province": "경기",
+      "name": "가평교육지원청",
+      "boards": [
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
+        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
+      ],
+      "officialIdCount": 77,
+      "coverageComplete": true,
+      "pagesScanned": 21,
+      "accessErrors": 0,
+      "boardHealth": [
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
+          "pagesScanned": 4,
+          "rawRows": 40,
+          "recentRows": 27,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
+          "pagesScanned": 5,
+          "rawRows": 50,
+          "recentRows": 18,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
+          "pagesScanned": 6,
+          "rawRows": 60,
+          "recentRows": 30,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
+          "pagesScanned": 3,
+          "rawRows": 30,
+          "recentRows": 2,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        },
+        {
+          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743",
+          "pagesScanned": 3,
+          "rawRows": 30,
+          "recentRows": 0,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "crossedLookback": true,
+          "naturalEnd": false,
+          "coverageComplete": true
+        }
+      ],
+      "inDatasetBefore": 77,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
+      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3005,9 +3089,9 @@
           ]
         }
       ],
-      "inDatasetBefore": 2534,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 2535,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 2535,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -3689,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261002203358",
+              "/js/include.js?v=20261002215702",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -3804,90 +3888,6 @@
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
       "inDatasetAfter": 66,
-      "missingAfterCount": 0,
-      "missingAfterExamples": [],
-      "reconciled": true
-    },
-    {
-      "province": "경기",
-      "name": "가평교육지원청",
-      "boards": [
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
-        "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743"
-      ],
-      "officialIdCount": 77,
-      "coverageComplete": true,
-      "pagesScanned": 21,
-      "accessErrors": 0,
-      "boardHealth": [
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
-          "pagesScanned": 4,
-          "rawRows": 40,
-          "recentRows": 27,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2718&mi=3276",
-          "pagesScanned": 5,
-          "rawRows": 50,
-          "recentRows": 18,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3289&bbsId=2725",
-          "pagesScanned": 6,
-          "rawRows": 60,
-          "recentRows": 30,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=4386&bbsId=3312",
-          "pagesScanned": 3,
-          "rawRows": 30,
-          "recentRows": 2,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        },
-        {
-          "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?mi=3312&bbsId=2743",
-          "pagesScanned": 3,
-          "rawRows": 30,
-          "recentRows": 0,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "crossedLookback": true,
-          "naturalEnd": false,
-          "coverageComplete": true
-        }
-      ],
-      "inDatasetBefore": 77,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 77,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -4994,9 +4994,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 321,
-      "missingBeforeCount": 2,
-      "recoveredNowCount": 2,
+      "inDatasetBefore": 323,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 323,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5155,9 +5155,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 681,
-      "missingBeforeCount": 4,
-      "recoveredNowCount": 4,
+      "inDatasetBefore": 685,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 685,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5213,9 +5213,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 170,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 171,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 171,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5363,9 +5363,9 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 9,
-      "missingBeforeCount": 3,
-      "recoveredNowCount": 3,
+      "inDatasetBefore": 12,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 12,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261002T110014Z-36994489761-1"
+  "scanId": "20261002T122218Z-36997022391-1"
 }

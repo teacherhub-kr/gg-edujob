@@ -1,7 +1,7 @@
 {
   "fast": {
     "state": "success",
-    "updatedAt": "2026-10-02T20:34:51+09:00",
+    "updatedAt": "2026-10-02T21:58:17+09:00",
     "jobsCount": 20860,
     "artifacts": {
       "jobLedger": true,
@@ -16,19 +16,19 @@
     },
     "stage": "complete",
     "lastFailureAt": "2026-09-17T06:33:18+09:00",
-    "lastSuccessAt": "2026-10-02T20:34:51+09:00",
+    "lastSuccessAt": "2026-10-02T21:58:17+09:00",
     "artifactGeneratedAt": {
-      "coverageReport": "2026-10-02T11:34:45.866474+00:00",
-      "sourceReconciliationReport": "2026-10-02 20:05:18 KST",
-      "sourceIdLedger": "2026-10-02 20:05:18 KST",
-      "centralPaginationReport": "2026-10-02 20:34:41 KST",
+      "coverageReport": "2026-10-02T12:58:12.470855+00:00",
+      "sourceReconciliationReport": "2026-10-02 21:57:26 KST",
+      "sourceIdLedger": "2026-10-02 21:57:26 KST",
+      "centralPaginationReport": "2026-10-02 21:58:08 KST",
       "missingRecoveryReport": "",
       "boardDiscoveryReport": "",
-      "incheonOfficialReport": "2026-10-02 19:50:29 KST",
-      "collectionState": "2026-10-02 20:00:10 KST"
+      "incheonOfficialReport": "2026-10-02 21:11:36 KST",
+      "collectionState": "2026-10-02 21:22:15 KST"
     },
     "coverageEvidence": {
-      "generatedAt": "2026-10-02T11:34:45.866474+00:00",
+      "generatedAt": "2026-10-02T12:58:12.470855+00:00",
       "ageHours": 0.0,
       "freshWithinHours": 30,
       "fresh": true,
@@ -46,7 +46,7 @@
       "currentComplete": true,
       "proof": "support-coverage+44-source-reconciliation",
       "supportCoverage": {
-        "generatedAt": "2026-10-02T11:34:45.866474+00:00",
+        "generatedAt": "2026-10-02T12:58:12.470855+00:00",
         "ageHours": 0.0,
         "freshWithinHours": 30,
         "fresh": true,
@@ -64,8 +64,8 @@
         "currentComplete": true
       },
       "sourceReconciliation": {
-        "generatedAt": "2026-10-02 20:05:18 KST",
-        "ageHours": 0.49,
+        "generatedAt": "2026-10-02 21:57:26 KST",
+        "ageHours": 0.01,
         "freshWithinHours": 30,
         "fresh": true,
         "expectedSources": 44,
@@ -73,14 +73,14 @@
         "totalSources": 44,
         "missingAfter": 0,
         "centralPaginationComplete": true,
-        "centralGeneratedAt": "2026-10-02 20:34:41 KST",
+        "centralGeneratedAt": "2026-10-02 21:58:08 KST",
         "centralAgeHours": 0.0,
         "ledgerPresent": true,
-        "ledgerGeneratedAt": "2026-10-02 20:05:18 KST",
-        "ledgerAgeHours": 0.49,
+        "ledgerGeneratedAt": "2026-10-02 21:57:26 KST",
+        "ledgerAgeHours": 0.01,
         "sameScanWindow": true,
         "reportLedgerSkewHours": 0.0,
-        "reportCentralSkewHours": 0.49,
+        "reportCentralSkewHours": 0.012,
         "requiredOfficialIds": 19298,
         "currentMatchedOfficialIds": 19298,
         "missingOfficialIdsFromCurrentDataset": 0,
