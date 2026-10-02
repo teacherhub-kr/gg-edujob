@@ -63,6 +63,31 @@ class IncheonTransientRetryTests(unittest.TestCase):
         self.assertFalse(ice.is_transient_all_empty(meta_for(access_error="timeout"), []))
         self.assertFalse(ice.is_transient_all_empty(meta_for(count=1), [{"id": "x"}]))
 
+
+    @patch.object(ice, "reset_session")
+    @patch.object(ice, "parse_table_rows")
+    @patch.object(ice, "fetch_with_one_explicit_retry")
+    def test_official_alias_fallback_accepts_only_parseable_first_party_rows(self, fetch, parse, reset):
+        class Response:
+            text = "<html>board</html>"
+            content = b"<html>board</html>"
+            url = "https://iss.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
+
+        fetch.return_value = Response()
+        parse.return_value = ([{"id": "ice-central:1"}], {"rawRows": 1})
+
+        response, rows, meta, evidence = ice.try_official_fetch_aliases(
+            ice.LIST_URL, ice.REQUIRED_BOARDS[0], 90
+        )
+
+        self.assertIsNotNone(response)
+        self.assertEqual(rows, [{"id": "ice-central:1"}])
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertTrue(evidence["success"])
+        self.assertTrue(all(host.endswith(".ice.go.kr") for host in ice.OFFICIAL_FETCH_ALIASES))
+        self.assertIn("iss.ice.go.kr", fetch.call_args.args[0])
+        reset.assert_called_once_with()
+
     @patch.object(ice, "reset_session")
     @patch.object(ice.time, "sleep")
     @patch.object(ice, "scrape_incheon_central")
