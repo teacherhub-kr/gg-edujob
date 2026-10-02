@@ -218,7 +218,10 @@ const dayDiff=(v)=>{
   return Math.round((d-today0())/86400000);
 };
 const isToday=(v)=>{const d=parseDate(v),t=today0();return !!d&&d.getFullYear()===t.getFullYear()&&d.getMonth()===t.getMonth()&&d.getDate()===t.getDate()};
-const activeJob=(j)=>{const d=dayDiff(j.applyEnd);return d===null||d>=0};
+const activeJob=(j)=>{
+  if(j?.source==='레슨인포'&&j?.fullCandidate===true)return true;
+  const d=dayDiff(j.applyEnd);return d===null||d>=0
+};
 const fmtDate=(v)=>{const d=parseDate(v);return d?`${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`:''};
 const registeredLabel=(v)=>{
   const d=parseDate(v);if(!d)return '';
@@ -433,6 +436,11 @@ const writeSnapshot=(p)=>{
 
 const badgeData=(j)=>{
   const out=[];
+  if(j?.source==='레슨인포'&&j?.fullCandidate===true){
+    out.push(['private','민간출처']);
+    if(j.statusLabel)out.push(['status',String(j.statusLabel)]);
+    return out.slice(0,2);
+  }
   const d=dayDiff(j.applyEnd);
   if(d!==null&&d>=0&&d<=3)out.push(['deadline','마감임박']);
   if(isToday(j.registered))out.push(['new','신규']);
