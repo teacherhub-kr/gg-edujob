@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03 01:15 KST",
+  "updatedAt": "2026-10-03 06:15 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261003014939",
+                  "/js/include.js?v=20261003065344",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,12 +2670,12 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-03 01:55 KST",
+    "checkedAt": "2026-10-03 07:01 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 2/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
-      "total": 6685,
-      "resolved": 6685,
+      "total": 6684,
+      "resolved": 6684,
       "unresolved": 0,
       "examples": []
     },
@@ -2708,8 +2708,8 @@
         }
       ]
     },
-    "previousTotal": 20860,
-    "currentTotal": 20784
+    "previousTotal": 20784,
+    "currentTotal": 20780
   },
   "jobs": [
     {
@@ -8974,11 +8974,10 @@
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10077&mi=10064&nttSn=2571030",
       "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
       "sourceIdentity": "mircms:www.goept.kr:10077:2571030",
-      "detailLinkResolved": true,
       "nttSn": "2571030",
       "bbsId": "10077",
       "mi": "10064",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-bfeffb4c6c2324877f53",
@@ -41269,7 +41268,7 @@
       "detailLinkResolved": true,
       "periodStatus": "unavailable",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -48857,7 +48856,7 @@
       "sourceIdentity": "seoul:nbedu.sen.go.kr:11398",
       "detailLinkResolved": true,
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -58142,7 +58141,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110946",
       "sourceIdentity": "seoul-central:110946",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -68236,7 +68235,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110852",
       "sourceIdentity": "seoul-central:110852",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -591131,133 +591130,6 @@
       "boardUrl": "https://dbedu.sen.go.kr/CMS/school/school04/school0409/school040903/index.html"
     },
     {
-      "id": "goe-office-56356cba12012799a6ba",
-      "province": "경기",
-      "school": "성남푸른유치원",
-      "title": "2026학년도 성남푸른유치원 여름방학 중 방과후 과정 운영인력 채용 공고",
-      "subject": "",
-      "region": "성남시",
-      "regions": [
-        "성남시"
-      ],
-      "type": "기타",
-      "schoolLevel": "유치원",
-      "applyStart": "",
-      "applyEnd": "2026/07/11",
-      "workStart": "2026/07/20",
-      "workEnd": "2026/08/18",
-      "registered": "2026/07/05",
-      "headcount": "",
-      "source": "성남교육지원청",
-      "checkedSources": [
-        "성남교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1941325",
-      "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-      "sourceIdentity": "mircms:www.goesn.kr:17872:1941325",
-      "nttSn": "1941325",
-      "bbsId": "17872",
-      "mi": "23603",
-      "detailLinkResolved": true,
-      "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
-      "reconciliationCarryForward": true
-    },
-    {
-      "id": "ice-central-3376917",
-      "province": "인천",
-      "school": "인평자동차고등학교",
-      "title": "2026학년도 2학기 물리 계약제교원(시간강사) 채용공고",
-      "subject": "",
-      "region": "",
-      "regions": [],
-      "type": "기간제교원",
-      "schoolLevel": "고등학교",
-      "applyStart": "",
-      "applyEnd": "2026/07/10",
-      "workStart": "2026/08/18",
-      "workEnd": "",
-      "registered": "2026/07/05",
-      "headcount": "",
-      "source": "인천광역시교육청 채용공고",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "checkedSources": [
-        "인천광역시교육청 채용공고"
-      ],
-      "sourceType": "통합게시판",
-      "recruitmentStatus": "모집종료",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376917",
-      "nttSn": "3376917",
-      "bbsId": "1981",
-      "sourceIdentity": "ice-central:3376917",
-      "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
-      "reconciliationCarryForward": true
-    },
-    {
-      "id": "ice-central-3376913",
-      "province": "인천",
-      "school": "인천윤슬초등학교",
-      "title": "2026년도 인천윤슬초등학교 교육공무직원 급식배식원 채용 공고",
-      "subject": "",
-      "region": "",
-      "regions": [],
-      "type": "교육공무직/기간제근로자",
-      "schoolLevel": "초등학교",
-      "applyStart": "",
-      "applyEnd": "2026/07/10",
-      "workStart": "2026/08/18",
-      "workEnd": "2026/12/31",
-      "registered": "2026/07/05",
-      "headcount": "",
-      "source": "인천광역시교육청 채용공고",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "checkedSources": [
-        "인천광역시교육청 채용공고"
-      ],
-      "sourceType": "통합게시판",
-      "recruitmentStatus": "모집종료",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376913",
-      "nttSn": "3376913",
-      "bbsId": "1981",
-      "sourceIdentity": "ice-central:3376913",
-      "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
-      "reconciliationCarryForward": true
-    },
-    {
-      "id": "ice-central-3376941",
-      "province": "인천",
-      "school": "송도고등학교",
-      "title": "2026년도 2학기 송도고등학교 디지털튜터 채용 공고",
-      "subject": "",
-      "region": "",
-      "regions": [],
-      "type": "시간강사/강사",
-      "schoolLevel": "고등학교",
-      "applyStart": "",
-      "applyEnd": "2026/07/09",
-      "workStart": "2026/08/10",
-      "workEnd": "2026/12/04",
-      "registered": "2026/07/05",
-      "headcount": "",
-      "source": "인천광역시교육청 채용공고",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "checkedSources": [
-        "인천광역시교육청 채용공고"
-      ],
-      "sourceType": "통합게시판",
-      "recruitmentStatus": "모집종료",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376941",
-      "nttSn": "3376941",
-      "bbsId": "1981",
-      "sourceIdentity": "ice-central:3376941",
-      "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
-      "reconciliationCarryForward": true
-    },
-    {
       "id": "goe-51600",
       "province": "경기",
       "school": "탄벌중학교",
@@ -594087,7 +593959,7 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-03 01:49 KST",
+      "checkedAt": "2026-10-03 06:53 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
@@ -594098,42 +593970,42 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-03 01:54 KST",
+    "checkedAt": "2026-10-03 06:59 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-03 01:54 KST",
+    "checkedAt": "2026-10-03 06:59 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
     "freshCount": 18169,
-    "previousCount": 20860,
-    "mergedCount": 20763,
-    "carriedForward": 2594,
-    "officialIdProtected": 19298,
-    "officialIdCarryForward": 1060,
-    "enrichedFromPrevious": 6266,
+    "previousCount": 20784,
+    "mergedCount": 20759,
+    "carriedForward": 2590,
+    "officialIdProtected": 19294,
+    "officialIdCarryForward": 1052,
+    "enrichedFromPrevious": 6267,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-03 01:53 KST"
+    "generatedAt": "2026-10-03 06:58 KST"
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 6154,
-    "gyeonggiTotal": 6154,
+    "gyeonggiExact": 6153,
+    "gyeonggiTotal": 6153,
     "seoulExact": 287,
     "seoulTotal": 287
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-03 01:53 KST",
+    "checkedAt": "2026-10-03 06:58 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5351,
-    "detailPagesParsed": 2123,
-    "fieldsFilledThisRun": 4,
+    "detailPagesParsed": 2122,
+    "fieldsFilledThisRun": 0,
     "missingApplicationPeriod": 938,
     "missingWorkPeriod": 1805,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-03 01:53 KST",
+      "checkedAt": "2026-10-03 06:58 KST",
       "candidates": 144,
       "detailPagesConfirmed": 139,
       "cacheEntriesImproved": 0,
@@ -594145,11 +594017,11 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-03 02:28:21 KST",
+    "generatedAt": "2026-10-03 07:37:26 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
     "officialIdCount": 19294,
-    "datasetIdCountBefore": 20857,
+    "datasetIdCountBefore": 20853,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0,
@@ -594157,6 +594029,6 @@
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261002T165601Z-37032506857-1"
+    "scanId": "20261002T220107Z-37065599804-1"
   }
 }

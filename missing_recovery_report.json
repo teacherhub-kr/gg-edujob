@@ -1,14 +1,14 @@
 {
   "summary": {
     "freshCount": 18169,
-    "previousCount": 20860,
-    "mergedCount": 20763,
-    "carriedForward": 2594,
-    "officialIdProtected": 19298,
-    "officialIdCarryForward": 1060,
-    "enrichedFromPrevious": 6266,
+    "previousCount": 20784,
+    "mergedCount": 20759,
+    "carriedForward": 2590,
+    "officialIdProtected": 19294,
+    "officialIdCarryForward": 1052,
+    "enrichedFromPrevious": 6267,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-03 01:53 KST"
+    "generatedAt": "2026-10-03 06:58 KST"
   },
   "carried": [
     {
@@ -1042,7 +1042,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul:sbedu.sen.go.kr:5598",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://sbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=5598"
     },
     {
@@ -1647,7 +1647,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul:nbedu.sen.go.kr:11398",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://nbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=11398"
     },
     {
@@ -2373,7 +2373,7 @@
       "registered": "2026/09/23",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:110946",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110946"
     },
     {
@@ -3275,7 +3275,7 @@
       "registered": "2026/09/22",
       "applyEnd": "2026/10/03",
       "sourceIdentity": "seoul-central:110852",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110852"
     },
     {
@@ -27642,50 +27642,6 @@
       "sourceIdentity": "mircms:www.goept.kr:10111:2557609",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2557609&mi=10118"
-    },
-    {
-      "province": "경기",
-      "source": "성남교육지원청",
-      "school": "성남푸른유치원",
-      "title": "2026학년도 성남푸른유치원 여름방학 중 방과후 과정 운영인력 채용 공고",
-      "registered": "2026/07/05",
-      "applyEnd": "2026/07/11",
-      "sourceIdentity": "mircms:www.goesn.kr:17872:1941325",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1941325"
-    },
-    {
-      "province": "인천",
-      "source": "인천광역시교육청 채용공고",
-      "school": "인평자동차고등학교",
-      "title": "2026학년도 2학기 물리 계약제교원(시간강사) 채용공고",
-      "registered": "2026/07/05",
-      "applyEnd": "2026/07/10",
-      "sourceIdentity": "ice-central:3376917",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376917"
-    },
-    {
-      "province": "인천",
-      "source": "인천광역시교육청 채용공고",
-      "school": "인천윤슬초등학교",
-      "title": "2026년도 인천윤슬초등학교 교육공무직원 급식배식원 채용 공고",
-      "registered": "2026/07/05",
-      "applyEnd": "2026/07/10",
-      "sourceIdentity": "ice-central:3376913",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376913"
-    },
-    {
-      "province": "인천",
-      "source": "인천광역시교육청 채용공고",
-      "school": "송도고등학교",
-      "title": "2026년도 2학기 송도고등학교 디지털튜터 채용 공고",
-      "registered": "2026/07/05",
-      "applyEnd": "2026/07/09",
-      "sourceIdentity": "ice-central:3376941",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3376941"
     },
     {
       "province": "경기",
