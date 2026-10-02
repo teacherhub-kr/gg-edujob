@@ -35,6 +35,9 @@ jobs:
       - name: Syntax check
         run: python -m py_compile scripts/crawl_lessoninfo_jobs.py scripts/crawl_lessoninfo_browser.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_integrated.py scripts/run_lessoninfo_browser_resilient.py
 
+      - name: Lessoninfo full-view regressions
+        run: python -m unittest tests.test_lessoninfo_full_view
+
       - name: Snapshot previous Lessoninfo health baseline
         run: |
           if [ -f lessoninfo_reconciliation_report.json ]; then
