@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import build_unified_search as base
-from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, publication_enabled, source_health
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -61,6 +61,14 @@ def project_private_generic(job,source_name):
     row["source"]=str(job.get("source") or source_name)
     row["sourceSurfaceLabel"]=str(job.get("sourceSurfaceLabel") or source_name)
     row["sourceRole"]=str(job.get("sourceRole") or "supplemental")
+    if source_name=="레슨인포" and "statusGroup" in job:
+        row["fullCandidate"]=True
+        row["statusGroup"]=str(job.get("statusGroup") or "review")
+        row["statusLabel"]=str(job.get("statusLabel") or "검증 필요")
+        row["classificationReason"]=str(job.get("classificationReason") or "")
+        row["isCurrent"]=job.get("isCurrent") is True
+        row["clickable"]=job.get("clickable") is True
+        row["sourceDisclosure"]="민간출처"
     if row.get("school")=="레슨인포 구인" and source_name!="레슨인포": row["school"]=source_name+" 구인"
     explicit_provinces=[str(x) for x in (job.get("provinces") or []) if str(x)]
     if explicit_provinces:
@@ -194,14 +202,20 @@ def main():
     projected_official=projected_canonical_official+projected_foundation_official
     all_private=[]; private_meta={}; canonical_private_total=0; enabled_private_sources=0; degraded_private_sources=[]
     for spec in PRIVATE_SOURCES:
-        pdata=load(spec["jobs"],[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
-        jobs=rows_from(pdata); projected=[project_private_generic(j,spec["name"]) for j in jobs if base.private_current(j)]
+        source_path=spec.get("full_jobs") if spec["key"]=="lessoninfo" and spec.get("full_jobs") else spec["jobs"]
+        pdata=load(source_path,[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
+        jobs=rows_from(pdata)
+        if spec["key"]=="lessoninfo" and spec.get("full_jobs"):
+            selected=[j for j in jobs if lessoninfo_full_candidate_publishable(j)]
+        else:
+            selected=[j for j in jobs if base.private_current(j)]
+        projected=[project_private_generic(j,spec["name"]) for j in selected]
         configured_enabled=publication_enabled(preport); healthy=source_health(spec,preport,dreport); effective_enabled=configured_enabled and healthy
         if effective_enabled:
             enabled_private_sources+=1; canonical_private_total+=len(jobs); all_private.extend(projected)
         elif configured_enabled and not healthy: degraded_private_sources.append(spec["key"])
-        unverified_links=sum(1 for j in jobs if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
-        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+        unverified_links=sum(1 for j in selected if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
+        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
     remaining_private,explicit_aliases,ambiguous_aliases=base.merge_explicit_official_aliases(projected_official,all_private)
     rows,exact_url_groups=dedupe_multi_source(projected_official+remaining_private)
     rows.sort(key=lambda j:(j.get("registered") or "",j.get("applyEnd") or "9999-12-31",j.get("sourceIdentity") or ""),reverse=True)
