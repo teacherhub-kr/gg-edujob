@@ -1,0 +1,86 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'app.html'
+      - 'app.css'
+      - 'app.js'
+      - 'user-store.js'
+      - 'direct-link-guard.js'
+      - 'manifest.webmanifest'
+      - 'sw.js'
+      - 'alert-client.js'
+      - 'alert-config.js'
+      - 'tests/test_diffday_calendar.js'
+      - 'tests/test_app_frontend_contract.py'
+      - 'tests/test_user_store_contract.py'
+      - 'tests/test_push_alert_contract.py'
+      - 'scripts/audit_sort_policy_b.py'
+      - '.github/workflows/frontend-ci.yml'
+      - '.github/workflows/job-alerts.yml'
+      - 'supabase/migrations/20260918_create_push_subscriptions.sql'
+      - 'supabase/functions/push-dispatch/index.ts'
+      - 'supabase/functions/push-subscription/index.ts'
+      - 'supabase/functions/_shared/alerts.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify production JavaScript syntax
+        run: |
+          node --check app.js
+          node --check user-store.js
+          node --check direct-link-guard.js
+          node --check alert-config.js
+          node --check alert-client.js
+          node --check sw.js
+      - name: Verify frontend and account contracts
+        run: |
+          python tests/test_app_frontend_contract.py
+          python tests/test_user_store_contract.py
+          python tests/test_push_alert_contract.py
+      - name: Verify production app shell
+        run: |
+          grep -q 'id="appHeader"' index.html
+          grep -q 'app.css?v=20260923pwa1' index.html
+          grep -q 'app.js?v=20260926pwa3' index.html
+          grep -q 'manifest.webmanifest' index.html
+          ! grep -q 'edujob-final-ui' index.html
+          ! grep -q 'mobile-ui.js' index.html
+          test -f app.html
+      - name: Verify calendar-day deadline semantics
+        run: node tests/test_diffday_calendar.js
+      - name: Protect data and collector scope on diffDay changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$BASE" "$HEAD"
+          changed="$(git diff --name-only "$BASE" "$HEAD")"
+          if ! printf '%s\n' "$changed" | grep -Eq '^(app\.js|tests/test_diffday_calendar\.js)$'; then
+            echo 'No diffDay-scoped change; skip immutable-data proof.'
+            exit 0
+          fi
+          git diff --exit-code "$BASE" "$HEAD" --             unified_jobs.json jobs.json '*_jobs.json' '*_ledger.json' source_id_ledger.json             || { echo '::error::diffDay changes must not modify collected data'; exit 1; }
+          git diff --exit-code "$BASE" "$HEAD" -- scripts/ direct-link-guard.js sources.json             || { echo '::error::diffDay changes must not modify collectors or link/ID logic'; exit 1; }
+      - name: Verify production sort policy B
+        run: |
+          grep -q 'const deadlineSortKey=(r)=>' app.js
+          grep -q "if(state.sort==='deadline')return compareDeadline(a,b)" app.js
+          python scripts/audit_sort_policy_b.py
