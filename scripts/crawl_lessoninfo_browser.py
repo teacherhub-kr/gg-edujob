@@ -24,6 +24,7 @@ from playwright.async_api import async_playwright, TimeoutError as PlaywrightTim
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "lessoninfo_jobs.json"
+ALL_OUT = ROOT / "lessoninfo_all_candidates.json"
 LEDGER = ROOT / "lessoninfo_source_id_ledger.json"
 REPORT = ROOT / "lessoninfo_reconciliation_report.json"
 STATE = ROOT / "lessoninfo_collection_state.json"
@@ -92,6 +93,88 @@ def read_json(path: Path, default):
 
 def write_json(path: Path, obj) -> None:
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+CANDIDATE_STATUS = {
+    "active": ("current", "현재 공고"),
+    "retained-on-detail-error": ("current", "현재 공고 · 직전 정상정보"),
+    "detail-route-mismatch": ("unverified-link", "상세링크 미검증"),
+    "detail-content-mismatch": ("review", "상세내용 불일치"),
+    "stale-without-deadline": ("deadline-unknown", "마감여부 미확인"),
+    "no-date-no-deadline": ("date-unknown", "일정 미확인"),
+    "invalid-date-no-deadline": ("date-unknown", "일정 확인 필요"),
+    "closed-marker": ("closed", "마감"),
+    "expired-deadline": ("closed", "마감"),
+    "outside-seoul-gyeonggi": ("out-of-scope", "수도권 외"),
+    "region-unconfirmed": ("review", "지역 미확인"),
+    "future-registration-date": ("review", "등록일 확인 필요"),
+    "non-recruitment": ("excluded", "비구인"),
+    "detail-error": ("review", "수집 오류"),
+    "unclassified": ("review", "미분류"),
+}
+
+
+def candidate_status(reason: str) -> tuple[str, str]:
+    return CANDIDATE_STATUS.get(str(reason or ""), ("review", "검증 필요"))
+
+
+def infer_candidate_region(item: dict) -> str:
+    signal = " ".join(
+        str(item.get(k) or "") for k in ("titleHint", "rowText")
+    )
+    if re.search(r"서울(?:특별시)?|\b서울\b", signal):
+        return "서울"
+    if re.search(r"인천(?:광역시)?|\b인천\b", signal):
+        return "인천"
+    if re.search(
+        r"경기(?:도)?|수원|성남|용인|고양|화성|안산|평택|파주|김포|남양주|부천|안양|시흥|광명|광주|군포|이천|오산|안성|의왕|하남|여주|양평|과천|의정부|양주|구리|포천|동두천|가평|연천",
+        signal,
+    ):
+        return "경기"
+    return ""
+
+
+def project_candidate(item: dict, reason: str, active_job: dict | None, now: str) -> dict:
+    job = dict(active_job or {})
+    status_group, status_label = candidate_status(reason)
+    is_current = bool(active_job) and reason in {"active", "retained-on-detail-error"}
+    candidate_url = str(item.get("url") or "")
+    unsafe_reason = reason in {"detail-route-mismatch", "detail-content-mismatch", "detail-error", "unclassified"}
+
+    if is_current:
+        safe_url = str(job.get("originalUrl") or job.get("url") or "")
+    elif unsafe_reason:
+        safe_url = ""
+    else:
+        safe_url = candidate_url
+
+    province = str(job.get("metroRegion") or job.get("province") or infer_candidate_region(item))
+    title = str(job.get("title") or item.get("titleHint") or "레슨인포 공고").strip()
+    registered = str(job.get("registered") or item.get("registeredHint") or "")
+    return {
+        "sourceIdentity": str(item.get("sourceIdentity") or ""),
+        "source": "레슨인포",
+        "sourceType": "민간 구인",
+        "trustLevel": "민간출처",
+        "sourceSurface": str(item.get("sourceSurface") or job.get("sourceSurface") or ""),
+        "sourceSurfaceLabel": str(item.get("sourceSurfaceLabel") or job.get("sourceSurfaceLabel") or "레슨인포"),
+        "title": title[:300],
+        "registered": registered,
+        "applyEnd": str(job.get("applyEnd") or ""),
+        "province": province,
+        "metroRegion": province if province in {"서울", "경기", "인천"} else "",
+        "location": str(job.get("location") or province or ""),
+        "classificationReason": str(reason or "unclassified"),
+        "statusGroup": status_group,
+        "statusLabel": status_label,
+        "isCurrent": is_current,
+        "clickable": bool(safe_url),
+        "url": safe_url,
+        "originalUrl": safe_url,
+        "unverifiedDetailUrl": "" if safe_url else candidate_url,
+        "detailLinkVerified": job.get("detailLinkVerified"),
+        "collectedAt": str(job.get("collectedAt") or now),
+    }
 
 
 def parse_date(text: str, ref: datetime | None = None) -> str:
@@ -386,6 +469,7 @@ async def fetch_detail(context, sem: asyncio.Semaphore, item: dict) -> tuple[str
 
 async def run() -> int:
     previous = read_json(OUT, {"jobs": []})
+    previous_all = read_json(ALL_OUT, {"jobs": []})
     prev_jobs = previous if isinstance(previous, list) else previous.get("jobs", [])
     prev_by_id = {j.get("sourceIdentity"): j for j in prev_jobs if j.get("sourceIdentity")}
     source_reports = []
@@ -456,8 +540,33 @@ async def run() -> int:
             "policy": "active-only-browser-v1",
             "jobs": jobs,
         })
+        all_candidates = [
+            project_candidate(item, classifications.get(sid, "unclassified"), active.get(sid), now)
+            for sid, item in candidates.items()
+        ]
+        all_candidates.sort(
+            key=lambda j: (j.get("registered") or "", j.get("sourceIdentity") or ""),
+            reverse=True,
+        )
+        all_status_counts = {}
+        for row in all_candidates:
+            key = str(row.get("classificationReason") or "unclassified")
+            all_status_counts[key] = all_status_counts.get(key, 0) + 1
+        write_json(ALL_OUT, {
+            "updatedAt": now_kst().strftime("%Y-%m-%d %H:%M KST"),
+            "source": "레슨인포",
+            "category": "private-recruitment-discovery",
+            "policy": "lessoninfo-120d-all-candidates-v1",
+            "discoveryDays": DISCOVERY_DAYS,
+            "candidateCount": len(all_candidates),
+            "currentCount": len(jobs),
+            "classificationCounts": all_status_counts,
+            "jobs": all_candidates,
+        })
     else:
         jobs = prev_jobs
+        previous_all_rows = previous_all if isinstance(previous_all, list) else previous_all.get("jobs", [])
+        all_candidates = list(previous_all_rows or [])
 
     published_ids = {j.get("sourceIdentity") for j in jobs if j.get("sourceIdentity")}
     active_ids = {sid for sid, reason in classifications.items() if reason in {"active", "retained-on-detail-error"}}
@@ -497,6 +606,7 @@ async def run() -> int:
         "candidateIdCount": len(candidates),
         "activeIdCount": len(active) if healthy else 0,
         "publishedIdCount": len(published_ids),
+        "allCandidatePublishedCount": len(all_candidates),
         "perSurfaceActive": per_surface_active,
         "missingAfterCount": len(missing_after),
         "missingAfterExamples": missing_after[:20],

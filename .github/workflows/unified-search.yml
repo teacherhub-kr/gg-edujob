@@ -18,11 +18,13 @@ on:
       - 'scripts/apply_unified_frontend.py'
       - 'scripts/crawl_seekle_instructor_jobs.py'
       - 'scripts/crawl_boramyc_instructor_jobs.py'
+      - 'scripts/crawl_lessoninfo_browser.py'
       - 'scripts/publication_transaction.py'
       - 'tests/test_boramyc_historical_fixture.py'
       - 'tests/fixtures/boramyc_25441.html'
       - 'tests/test_seekle_historical_fixture.py'
       - 'tests/test_foundation_unified_projection.py'
+      - 'tests/test_lessoninfo_full_view.py'
       - 'tests/fixtures/seekle_21827.html'
       - 'verified_foundation_official_sources.json'
       - 'official_foundation_jobs.json'
@@ -37,6 +39,8 @@ on:
       - 'metro-ui.js'
       - 'mobile-ui.js'
       - 'direct-link-guard.js'
+      - 'lessoninfo-jobs.html'
+      - '.github/workflows/update-lessoninfo-jobs.yml'
       - '.github/workflows/unified-search.yml'
 permissions:
   contents: write
@@ -69,7 +73,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Syntax check unified multi-source pipeline and UI
         run: |
-          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/mark_foundation_degraded.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py
+          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/mark_foundation_degraded.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py scripts/crawl_lessoninfo_browser.py
           node --check unified-ui.js
           node --check metro-ui.js
           node --check mobile-ui.js
@@ -88,7 +92,7 @@ jobs:
           print('registry check', official, private)
           PY
       - name: Historical private-source parser and direct-link regressions
-        run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture
+        run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view
       - name: Verify foundation projection and degraded-section isolation
         run: python -m unittest tests.test_foundation_unified_projection tests.test_foundation_degradation
       - name: Build disposable multi-source unified candidate
