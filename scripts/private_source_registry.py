@@ -82,6 +82,24 @@ def lessoninfo_full_candidate_publishable(row) -> bool:
     # Lessoninfo full view but do not enter the metro unified search.
     return str(row.get("statusGroup") or "") not in {"out-of-scope", "excluded"}
 
+def merge_lessoninfo_full_candidates(full_rows, active_rows):
+    active_by_id = {
+        str((row or {}).get("sourceIdentity") or ""): row
+        for row in (active_rows or [])
+        if str((row or {}).get("sourceIdentity") or "")
+    }
+    out = []
+    status_keys = ("statusGroup", "statusLabel", "classificationReason", "isCurrent", "clickable", "unverifiedDetailUrl")
+    for raw in full_rows or []:
+        row = dict(raw or {})
+        status = {key: row.get(key) for key in status_keys if key in row}
+        active = active_by_id.get(str(row.get("sourceIdentity") or ""))
+        if active:
+            row.update(active)
+            row.update(status)
+        out.append(row)
+    return out
+
 def _lessoninfo_exact_link_coverage(spec) -> bool:
     try:
         data = json.loads(Path(spec["jobs"]).read_text(encoding="utf-8"))
