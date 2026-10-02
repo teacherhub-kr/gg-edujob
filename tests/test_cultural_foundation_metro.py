@@ -41,6 +41,10 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("인천중구문화재단", rows["incheon:jemulpo"]["aliases"])
         self.assertEqual(rows["incheon:seohae"]["name"], "인천서해구문화재단")
         self.assertIn("인천서구문화재단", rows["incheon:seohae"]["aliases"])
+        self.assertEqual(
+            rows["incheon:seohae"]["officialRecruitmentUrl"],
+            "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1",
+        )
         self.assertTrue(all(x.get("officialRecruitmentUrl") for x in rows.values()))
         self.assertIn("namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
         self.assertIn("namdongcf.or.kr", rows["incheon:namdong"]["canonicalRecruitmentUrl"])
