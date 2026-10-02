@@ -1,16 +1,27 @@
 {
   "summary": {
-    "freshCount": 17881,
-    "previousCount": 20591,
-    "mergedCount": 20462,
-    "carriedForward": 2581,
-    "officialIdProtected": 18991,
+    "freshCount": 17963,
+    "previousCount": 20483,
+    "mergedCount": 20554,
+    "carriedForward": 2591,
+    "officialIdProtected": 18981,
     "officialIdCarryForward": 1040,
-    "enrichedFromPrevious": 6173,
+    "enrichedFromPrevious": 6170,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-02 03:04 KST"
+    "generatedAt": "2026-10-02 11:08 KST"
   },
   "carried": [
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울명신초등학교",
+      "title": "(11.4.~11.6.) 보건 시간강사 채용",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/11/03",
+      "sourceIdentity": "seoul-central:111278",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111278"
+    },
     {
       "province": "경기",
       "source": "동두천양주교육지원청",
@@ -21,6 +32,17 @@
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686269",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686269"
+    },
+    {
+      "province": "인천",
+      "source": "인천광역시교육청 채용공고",
+      "school": "인천장서초등학교",
+      "title": "인천장서초등학교 기간제 조리실무사 채용 공고(2026.11.02.자 채용)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/12",
+      "sourceIdentity": "ice-central:3385712",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385712"
     },
     {
       "province": "서울",
@@ -122,6 +144,39 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61615"
     },
     {
+      "province": "경기",
+      "source": "평택교육지원청",
+      "school": "부용초등학교",
+      "title": "2026학년도 2학기 부용초등학교 특수교육 협력강사 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/03",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2570496",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&mi=10118&nttSn=2570496"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울이수초등학교",
+      "title": "(이수초) 10.7.(수) 5학년 담임업무 대체 강사 채용(2~5교시, 급식지도)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111340",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111340"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울삼광초등학교",
+      "title": "(삼광초)초등 4학년 담임 시간강사(2026. 10. 16.)(급식포함 5시간)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111311",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111311"
+    },
+    {
       "province": "서울",
       "source": "서울교육일자리포털",
       "school": "서울동자초등학교",
@@ -167,6 +222,17 @@
     },
     {
       "province": "경기",
+      "source": "광명교육지원청",
+      "school": "광일초등학교",
+      "title": "방과후·돌봄 자원봉사자(안전지도) 모집 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "",
+      "sourceIdentity": "mircms:www.goegm.kr:4225:1260781",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260781"
+    },
+    {
+      "province": "경기",
       "source": "부천교육지원청",
       "school": "부천남초등학교",
       "title": "2026학년도 부천남초 계약제교원(기간제교사) 채용 공고 2차 (기초학력전담교원)",
@@ -197,6 +263,17 @@
       "sourceIdentity": "mircms:www.goept.kr:10111:2570729",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2570729&mi=10118"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "광양고등학교",
+      "title": "광양고등학교 시간강사(체육)",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/11/16",
+      "sourceIdentity": "seoul-central:111166",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111166"
     },
     {
       "province": "경기",
@@ -382,7 +459,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111169",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111169"
     },
     {
@@ -393,7 +470,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111170",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111170"
     },
     {
@@ -685,12 +762,67 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "송파중학교",
+      "title": "[송파중]역사 시간강사 채용 공고",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111146",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111146"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "공항중학교",
+      "title": "공항중학교 계약제 교원(기간제 교사-특수)",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111144",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111144"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울구암유치원",
+      "title": "(서울구암유)2026. 특수시간강사 채용 공고(특수 유초중등)",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111099",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111099"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "거원중학교",
+      "title": "거원중학교 <체육> 기간제교사 채용",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111060",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111060"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "송파중학교",
+      "title": "[송파중]영어 시간강사 채용 공고",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/02",
+      "sourceIdentity": "seoul-central:111054",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111054"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "은평메디텍고등학교",
       "title": "2026학년도 산학일체형 도제학교 도제전담자 채용 공고",
       "registered": "2026/09/29",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111151",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111151"
     },
     {
@@ -701,7 +833,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111137",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111137"
     },
     {
@@ -712,7 +844,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:111071",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111071"
     },
     {
@@ -1053,7 +1185,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:110967",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110967"
     },
     {
@@ -1108,7 +1240,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110966",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110966"
     },
     {
@@ -1119,7 +1251,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul-central:110979",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110979"
     },
     {
@@ -1319,6 +1451,17 @@
       "sourceIdentity": "seoul-central:110998",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110998"
+    },
+    {
+      "province": "경기",
+      "source": "구리남양주교육지원청",
+      "school": "구리남양주교육지원청",
+      "title": "2026년 구리중 시간강사 채용공고(영어)",
+      "registered": "2026/09/28",
+      "applyEnd": "2026/09/30",
+      "sourceIdentity": "mircms:www.goegn.kr:8653:1409223",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1409223"
     },
     {
       "province": "서울",
@@ -3341,7 +3484,7 @@
       "registered": "2026/09/21",
       "applyEnd": "2026/10/01",
       "sourceIdentity": "seoul:nbedu.sen.go.kr:11396",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://nbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=11396"
     },
     {
@@ -18323,19 +18466,8 @@
       "registered": "2026/09/01",
       "applyEnd": "2026/10/02",
       "sourceIdentity": "seoul-central:109446",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=109446"
-    },
-    {
-      "province": "서울",
-      "source": "강동송파교육지원청",
-      "school": "서울솔방울유치원",
-      "title": "특수(유치원) 기간제교원",
-      "registered": "2026/09/01",
-      "applyEnd": "2026/10/01",
-      "sourceIdentity": "seoul:gdspedu.sen.go.kr:8309",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://gdspedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=8309"
     },
     {
       "province": "경기",
@@ -27521,28 +27653,6 @@
       "sourceIdentity": "mircms:www.goept.kr:10111:2557609",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2557609&mi=10118"
-    },
-    {
-      "province": "경기",
-      "source": "경기도교육청 통합 구인구직",
-      "school": "수노을유치원",
-      "title": "마감 수노을유치원 여름방학 중 방과후 운영인력 채용 공고",
-      "registered": "2026/07/04",
-      "applyEnd": "2026/07/22",
-      "sourceIdentity": "goe-central:51773",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=51773"
-    },
-    {
-      "province": "경기",
-      "source": "안성교육지원청",
-      "school": "문기초등학교",
-      "title": "지방공무원(시설관리직) 대체 공개 채용 공고",
-      "registered": "2026/07/04",
-      "applyEnd": "2026/07/13",
-      "sourceIdentity": "mircms:www.goean.kr:2801:1099860",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goean.kr/goean/na/ntt/selectNttInfo.do?bbsId=2801&mi=4565&nttSn=1099860"
     },
     {
       "province": "경기",
