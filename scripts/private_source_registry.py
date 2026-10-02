@@ -11,6 +11,7 @@ PRIVATE_SOURCES = (
         "key": "lessoninfo",
         "name": "레슨인포",
         "jobs": "lessoninfo_jobs.json",
+        "full_jobs": "lessoninfo_all_candidates.json",
         "report": "lessoninfo_reconciliation_report.json",
         "detail_report": None,
         "detail_url_patterns": (
@@ -73,6 +74,13 @@ def detail_url_is_specific(spec, url: str) -> bool:
 def lessoninfo_culture_failclosed(row) -> bool:
     row = row or {}
     return str(row.get("sourceSurface") or "") == "culture-arts" and row.get("detailLinkVerified") is not True
+
+def lessoninfo_full_candidate_publishable(row) -> bool:
+    row = row or {}
+    # Keep the Edujob main feed scoped to plausible recruitment candidates.
+    # Explicitly out-of-scope and non-recruitment rows remain available in the dedicated
+    # Lessoninfo full view but do not enter the metro unified search.
+    return str(row.get("statusGroup") or "") not in {"out-of-scope", "excluded"}
 
 def _lessoninfo_exact_link_coverage(spec) -> bool:
     try:
