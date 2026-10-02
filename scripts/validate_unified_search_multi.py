@@ -16,6 +16,7 @@ DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 BANNED = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
 ALLOWED_PROVINCES = {"서울", "경기"}
+LESSONINFO_ALLOWED_PROVINCES = {"서울", "경기", "인천"}
 
 
 def load(path, default=None):
@@ -155,7 +156,7 @@ def main():
             ps = row_provinces(j)
             lessoninfo_full = spec.get("key") == "lessoninfo" and "statusGroup" in j
             if lessoninfo_full:
-                if ps and not ps.issubset(ALLOWED_PROVINCES):
+                if ps and not ps.issubset(LESSONINFO_ALLOWED_PROVINCES):
                     non_metro += 1
             elif not ps or not ps.issubset(ALLOWED_PROVINCES):
                 non_metro += 1
@@ -274,7 +275,7 @@ def main():
     for j in private:
         ps = row_provinces(j)
         if j.get("source") == "레슨인포" and j.get("fullCandidate") is True:
-            if ps and not ps.issubset(ALLOWED_PROVINCES):
+            if ps and not ps.issubset(LESSONINFO_ALLOWED_PROVINCES):
                 projected_non_metro.append(j)
         elif not ps or not ps.issubset(ALLOWED_PROVINCES):
             projected_non_metro.append(j)
