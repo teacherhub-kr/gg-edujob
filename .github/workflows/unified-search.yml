@@ -39,9 +39,6 @@ on:
       - 'metro-ui.js'
       - 'mobile-ui.js'
       - 'direct-link-guard.js'
-      - 'app.js'
-      - 'app.css'
-      - 'index.html'
       - 'lessoninfo-jobs.html'
       - '.github/workflows/update-lessoninfo-jobs.yml'
       - '.github/workflows/unified-search.yml'
@@ -80,7 +77,6 @@ jobs:
           node --check unified-ui.js
           node --check metro-ui.js
           node --check mobile-ui.js
-          node --check app.js
           node --check direct-link-guard.js
       - name: Verify source registries resolve independently
         run: |
