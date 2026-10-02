@@ -77,10 +77,15 @@ def lessoninfo_culture_failclosed(row) -> bool:
 
 def lessoninfo_full_candidate_publishable(row) -> bool:
     row = row or {}
-    # Keep the Edujob main feed scoped to plausible recruitment candidates.
-    # Explicitly out-of-scope and non-recruitment rows remain available in the dedicated
-    # Lessoninfo full view but do not enter the metro unified search.
-    return str(row.get("statusGroup") or "") not in {"out-of-scope", "excluded"}
+    # Keep the Edujob main feed scoped to plausible metro recruitment candidates.
+    # Lessoninfo's legacy collector labels every non-Seoul/Gyeonggi row as out-of-scope,
+    # but Edujob's actual metro scope also includes Incheon.
+    status = str(row.get("statusGroup") or "")
+    if status == "excluded":
+        return False
+    if status == "out-of-scope":
+        return str(row.get("metroRegion") or row.get("province") or "") == "인천"
+    return True
 
 def merge_lessoninfo_full_candidates(full_rows, active_rows):
     active_by_id = {
