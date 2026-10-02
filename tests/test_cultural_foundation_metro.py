@@ -41,6 +41,10 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("인천중구문화재단", rows["incheon:jemulpo"]["aliases"])
         self.assertEqual(rows["incheon:seohae"]["name"], "인천서해구문화재단")
         self.assertIn("인천서구문화재단", rows["incheon:seohae"]["aliases"])
+        self.assertEqual(
+            rows["incheon:seohae"]["officialRecruitmentUrl"],
+            "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1",
+        )
         self.assertTrue(all(x.get("officialRecruitmentUrl") for x in rows.values()))
         self.assertIn("namdong.go.kr", rows["incheon:namdong"]["officialRecruitmentUrl"])
         self.assertIn("namdongcf.or.kr", rows["incheon:namdong"]["canonicalRecruitmentUrl"])
@@ -81,6 +85,77 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         with patch.object(crawler, "resilient_request", return_value=Response()):
             _, _, candidates, _ = crawler.list_detail_candidates(None, foundation, board_url)
         self.assertEqual(candidates, {}, "surrounding foundation branding cannot make a hospital job a foundation post")
+
+    def test_seohae_shared_board_allows_verified_current_zero_without_hiding_parser_miss(self):
+        foundation = {
+            "id": "incheon:seohae",
+            "name": "인천서해구문화재단",
+            "aliases": ["인천서구문화재단"],
+        }
+
+        class Response:
+            url = "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1"
+            content = b"fixture"
+            text = ""
+
+        other_only = BeautifulSoup(
+            """<html><title>채용소식</title><body>
+            <h2>채용소식</h2>
+            <a href="/open_content/main/bbs/bbsMsgDetail.do?bcd=job&msg_seq=6000">
+              방사선실 기간제근로자 채용 공고
+            </a>
+            </body></html>""",
+            "html.parser",
+        )
+        self.assertTrue(
+            crawler.seohae_shared_board_zero_is_structurally_verified(
+                other_only, foundation, Response()
+            )
+        )
+        self.assertTrue(crawler.verify_board_surface(other_only, foundation, Response(), {}))
+
+        missed_foundation = BeautifulSoup(
+            """<html><title>채용소식</title><body>
+            <h2>채용소식</h2>
+            <div>2026년 제7회 (재)인천서해구문화재단 직원채용 공고</div>
+            <a href="/open_content/main/bbs/bbsMsgDetail.do?bcd=job&msg_seq=5075">
+              상세보기
+            </a>
+            </body></html>""",
+            "html.parser",
+        )
+        self.assertFalse(
+            crawler.seohae_shared_board_zero_is_structurally_verified(
+                missed_foundation, foundation, Response()
+            )
+        )
+        with self.assertRaisesRegex(RuntimeError, "no parseable details"):
+            crawler.verify_board_surface(missed_foundation, foundation, Response(), {})
+
+    def test_seohae_shared_board_zero_requires_exact_job_detail_contract(self):
+        foundation = {
+            "id": "incheon:seohae",
+            "name": "인천서해구문화재단",
+            "aliases": ["인천서구문화재단"],
+        }
+
+        class Response:
+            url = "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1"
+            content = b"fixture"
+            text = ""
+
+        malformed = BeautifulSoup(
+            """<html><title>채용소식</title><body>
+            <h2>채용소식</h2>
+            <a href="/open_content/main/bbs/bbsMsgDetail.do?bcd=job">채용 공고</a>
+            </body></html>""",
+            "html.parser",
+        )
+        self.assertFalse(
+            crawler.seohae_shared_board_zero_is_structurally_verified(
+                malformed, foundation, Response()
+            )
+        )
 
     def test_hanam_municipal_board_requires_foundation_in_post_title(self):
         foundation={"id":"gyeonggi:hanam","name":"하남문화재단","aliases":["(재)하남문화재단"]}

@@ -98,6 +98,56 @@ BLOCK_PAGE_RE=re.compile(r"WELLCONN|TRACER|접근\s*대기|접근이\s*차단|�
 JS_SHELL_RE=re.compile(r"\{\{\s*[\w.$]+\s*\}\}|\bng-(?:app|repeat|click)\s*=|\bv-(?:for|if)\s*=",re.I)
 EXPLICIT_EMPTY_RE=re.compile(r"등록된\s*(?:글|게시물|공고|자료)이\s*없|게시물이\s*없|검색된\s*(?:결과|자료)가\s*없|현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없",re.I)
 
+def seohae_shared_board_zero_is_structurally_verified(soup, foundation, response) -> bool:
+    """Accept current-zero only on the exact shared Seohae recruitment board contract.
+
+    The municipal board contains many employers, so zero *foundation* candidates is
+    not the same as an empty board.  We accept zero only when exact job-detail links
+    are parseable and no full foundation alias is visibly present.  If a foundation
+    posting is visible but our candidate parser missed it, verification still fails
+    closed instead of hiding a parser regression.
+    """
+    fid=str(foundation.get("id") or "")
+    if fid!="incheon:seohae":
+        return False
+    parsed=urlparse(str(response.url or ""))
+    host=(parsed.hostname or "").lower()
+    query=parse_qs(parsed.query)
+    if host not in {"seohae.go.kr","www.seohae.go.kr"}:
+        return False
+    if not parsed.path.endswith("/bbs/bbsMsgList.do") or str((query.get("bcd") or [""])[0])!="job":
+        return False
+
+    visible=base.normalize_space(soup.get_text(" ",strip=True))
+    normalized=visible.replace(" ","")
+    aliases=[
+        base.normalize_space(x).replace(" ","")
+        for x in [foundation.get("name"),*(foundation.get("aliases") or [])]
+        if base.normalize_space(x)
+    ]
+    if any(alias in normalized for alias in aliases):
+        return False
+
+    for anchor in soup.find_all("a",href=True):
+        href=str(anchor.get("href") or "").strip()
+        if not href or href.lower().startswith(("javascript:","#","mailto:","tel:")):
+            continue
+        absolute=urljoin(response.url,href)
+        detail=urlparse(absolute)
+        detail_query=parse_qs(detail.query)
+        detail_host=(detail.hostname or "").lower()
+        msg_seq=str((detail_query.get("msg_seq") or [""])[0]).strip()
+        bcd=str((detail_query.get("bcd") or [""])[0]).strip()
+        if (
+            detail_host in {"seohae.go.kr","www.seohae.go.kr"}
+            and detail.path.endswith("/bbs/bbsMsgDetail.do")
+            and bcd=="job"
+            and re.fullmatch(r"\d+",msg_seq)
+        ):
+            return True
+    return False
+
+
 def verify_board_surface(soup,foundation,response,candidates):
     visible=base.normalize_space(soup.get_text(" ",strip=True))
     if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
@@ -119,7 +169,11 @@ def verify_board_surface(soup,foundation,response,candidates):
     if not identity_ok:
         title=base.normalize_space(soup.title.get_text(" ",strip=True))[:100] if soup.title else ""
         raise RuntimeError(f"official board identity unproved: finalUrl={response.url[:200]!r}, title={title!r}, bytes={len(response.content)}, candidates={len(candidates)}")
-    if not candidates and not EXPLICIT_EMPTY_RE.search(visible):
+    shared_zero_verified=(
+        not candidates
+        and seohae_shared_board_zero_is_structurally_verified(soup,foundation,response)
+    )
+    if not candidates and not EXPLICIT_EMPTY_RE.search(visible) and not shared_zero_verified:
         raise RuntimeError("official board has no parseable details and no explicit empty state")
     return True
 
