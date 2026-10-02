@@ -123,6 +123,26 @@ def _lessoninfo_exact_link_coverage(spec) -> bool:
     except Exception:
         return False
 
+def _lessoninfo_full_candidate_coverage(spec, report) -> bool:
+    path = str(spec.get("full_jobs") or "")
+    if not path:
+        return False
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        rows = data if isinstance(data, list) else data.get("jobs", [])
+        expected = int((report or {}).get("allCandidatePublishedCount") or (report or {}).get("candidateIdCount") or 0)
+        ids = [str((row or {}).get("sourceIdentity") or "") for row in rows]
+        return bool(
+            expected > 0
+            and len(rows) == expected
+            and len(ids) == len(set(ids))
+            and all(ids)
+            and all(str((row or {}).get("statusGroup") or "") for row in rows)
+        )
+    except Exception:
+        return False
+
+
 def _generic_exact_link_coverage(spec) -> bool:
     try:
         data=json.loads(Path(spec["jobs"]).read_text(encoding="utf-8")); rows=data if isinstance(data,list) else data.get("jobs",[])
@@ -141,5 +161,7 @@ def source_health(spec, report, detail_report) -> bool:
     # labelled private-source cards; the unified projection keeps those rows non-clickable
     # until a cold verifier proves an exact destination. This prevents one weak link from
     # suppressing the entire private source.
+    if ok and spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
+        ok = _lessoninfo_full_candidate_coverage(spec, report)
     if ok and spec.get("key") == "cleaneye": ok = _generic_exact_link_coverage(spec)
     return ok
