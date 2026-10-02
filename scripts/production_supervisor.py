@@ -704,11 +704,29 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
 
     jobs_time = git_commit_time("jobs.json")
     unified_time = git_commit_time("unified_jobs.json")
-    private_refresh_times = {
+    private_report_times = {
         key: git_commit_time(str(spec["report"]))
         for key, spec in PRIVATE_REFRESH_TARGETS.items()
     }
-    publication_input_times = [jobs_time, *private_refresh_times.values()]
+    private_workflow_success_times = {
+        key: completed_at(latest_success(all_runs[key]))
+        for key in PRIVATE_REFRESH_TARGETS
+    }
+    private_refresh_times = {
+        key: max(
+            (
+                value
+                for value in (
+                    private_report_times.get(key),
+                    private_workflow_success_times.get(key),
+                )
+                if value is not None
+            ),
+            default=None,
+        )
+        for key in PRIVATE_REFRESH_TARGETS
+    }
+    publication_input_times = [jobs_time, *private_report_times.values()]
     latest_publication_input = max(
         (value for value in publication_input_times if value is not None),
         default=None,
@@ -724,6 +742,16 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         private_freshness[key] = {
             "workflow": spec["workflow"],
             "report": spec["report"],
+            "reportCommitAt": (
+                private_report_times.get(key).isoformat()
+                if private_report_times.get(key)
+                else None
+            ),
+            "lastWorkflowSuccessAt": (
+                private_workflow_success_times.get(key).isoformat()
+                if private_workflow_success_times.get(key)
+                else None
+            ),
             "lastRefreshAt": refreshed_at.isoformat() if refreshed_at else None,
             "ageHours": age_hours,
             "maxAgeHours": spec["maxAgeHours"],
@@ -761,21 +789,55 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         # use this otherwise blocked watchdog slot; active_private still serializes
         # private refreshes and all source-specific circuit/backoff rules remain intact.
         if set(active) == {"fast"}:
-            private_action, private_reason = choose_private_refresh_action(
-                now=now,
-                all_runs=all_runs,
-                private_refresh_times=private_refresh_times,
-                private_freshness=private_freshness,
-                active_private=active_private,
-            )
-            if private_action and private_action.startswith("private-"):
-                action = private_action
-                reason = (
-                    "Fast refresh is already active; using one isolated private refresh slot. "
-                    + str(private_reason or "")
+            # A completed private refresh can safely rebuild Unified from the last
+            # verified official dataset while the next Fast crawl continues. Publish
+            # that user-visible delta before launching another private collector.
+            if unified_publication_stale(latest_publication_input, unified_time):
+                unified_runs = all_runs["unified"]
+                blocked_unified, unified_failures, _ = circuit_blocked(
+                    "unified",
+                    unified_runs,
+                    now,
+                    allow_probe_after_change=unified_contract_changed_after_failure,
                 )
-            elif private_reason:
-                reason += "; " + private_reason
+                latest_unified = latest_completed(unified_runs)
+                latest_unified_time = completed_at(latest_unified)
+                recent_unified_failure = bool(
+                    not unified_contract_changed_after_failure
+                    and latest_unified
+                    and latest_unified.get("conclusion") in REAL_FAILURES
+                    and latest_unified_time
+                    and now - latest_unified_time < timedelta(hours=1)
+                )
+                if not blocked_unified and not recent_unified_failure:
+                    action = "unified"
+                    reason = (
+                        "publish newer verified private input while Fast remains active: "
+                        f"latestInput={latest_publication_input}, unified={unified_time}"
+                    )
+                else:
+                    reason += (
+                        "; Unified publication temporarily blocked while Fast is active: "
+                        f"circuit={blocked_unified}, failures={unified_failures}, "
+                        f"recentFailure={recent_unified_failure}"
+                    )
+
+            if action == "skip-active-run":
+                private_action, private_reason = choose_private_refresh_action(
+                    now=now,
+                    all_runs=all_runs,
+                    private_refresh_times=private_refresh_times,
+                    private_freshness=private_freshness,
+                    active_private=active_private,
+                )
+                if private_action and private_action.startswith("private-"):
+                    action = private_action
+                    reason = (
+                        "Fast refresh is already active; using one isolated private refresh slot. "
+                        + str(private_reason or "")
+                    )
+                elif private_reason:
+                    reason += "; " + private_reason
     else:
         fast_needed = (
             not required_registry
