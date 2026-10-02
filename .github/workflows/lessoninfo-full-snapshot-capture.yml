@@ -30,7 +30,8 @@ jobs:
           import asyncio, json, sys
           from pathlib import Path
           sys.path.insert(0,'scripts')
-          import crawl_lessoninfo_browser as b
+          import run_lessoninfo_browser_resilient as resilient
+          b=resilient.b
           from playwright.async_api import async_playwright
 
           ROOT=Path('.')
