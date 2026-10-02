@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-02T20:36:27+09:00",
+  "generatedAt": "2026-10-02T22:00:01+09:00",
   "healthy": true,
-  "total": 9545,
+  "total": 9519,
   "official": 3475,
-  "privateDisplayed": 6070,
+  "privateDisplayed": 6044,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 6074,
-  "privateRepresentedDirectly": 6070,
+  "privateStableIds": 6048,
+  "privateRepresentedDirectly": 6044,
   "privateRepresentedByOfficial": 4,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -46,7 +46,7 @@
   "nonDirectPrivateLinkExamples": [],
   "verifiedLessoninfoCultureLinks": 0,
   "verifiedLessoninfoCultureLinkExamples": [],
-  "failClosedLessoninfoCultureLinks": 1194,
+  "failClosedLessoninfoCultureLinks": 1165,
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -263,16 +263,16 @@
   "badCrossSourceAliasEvidence": 0,
   "sourceValidationPopulations": {
     "lessoninfo": {
-      "rawCount": 1826,
-      "currentCount": 1820
+      "rawCount": 1797,
+      "currentCount": 1791
     },
     "cleaneye": {
       "rawCount": 11,
       "currentCount": 8
     },
     "jobteacher": {
-      "rawCount": 4021,
-      "currentCount": 4021
+      "rawCount": 4024,
+      "currentCount": 4024
     },
     "artmore": {
       "rawCount": 192,
