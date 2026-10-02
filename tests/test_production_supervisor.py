@@ -362,6 +362,18 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertIn("Unified is blocked but official collection is due", source)
         self.assertIn("unified_contract_changed_after_failure", source)
 
+    def test_watchdog_cancels_only_stale_in_progress_fast_runs_after_timeout_grace(self):
+        from pathlib import Path
+
+        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        self.assertIn("Cancel stale Fast run beyond hard-timeout grace", text)
+        self.assertIn("HARD_TIMEOUT_GRACE_SECONDS = 130 * 60", text)
+        self.assertIn('run.get("status") != "in_progress"', text)
+        self.assertIn('run.get("event") != "workflow_dispatch"', text)
+        self.assertIn('run.get("head_branch") != "main"', text)
+        self.assertIn("/actions/runs/${run_id}/cancel", text)
+        self.assertIn("120-minute job timeout plus 10-minute grace", text)
+
     def test_watchdog_does_not_cancel_in_progress_decision(self):
         from pathlib import Path
 
