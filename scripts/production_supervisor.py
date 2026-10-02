@@ -417,6 +417,37 @@ def gh_runs(repo: str, filename: str) -> list[dict[str, Any]]:
     return production_runs(filename, list(found.values()))
 
 
+def gh_active_target_keys(repo: str) -> set[str]:
+    """Read one repository-wide active-run snapshot as a dispatch safety backstop."""
+    raw = run_text(
+        [
+            "gh",
+            "api",
+            f"/repos/{repo}/actions/runs?per_page=100",
+        ],
+        check=True,
+    )
+    payload = json.loads(raw) or {}
+    runs = payload.get("workflow_runs", []) or []
+    by_path = {
+        f".github/workflows/{filename}": key
+        for key, filename in TARGETS.items()
+    }
+    active: set[str] = set()
+    for run in runs:
+        key = by_path.get(str(run.get("path") or ""))
+        if not key:
+            continue
+        filename = TARGETS[key]
+        if (
+            run.get("status") in ACTIVE_STATES
+            and run.get("event") in PRODUCTION_EVENTS[filename]
+            and run.get("head_branch") == "main"
+        ):
+            active.add(key)
+    return active
+
+
 def git_commit_time(path: str) -> datetime | None:
     raw = run_text(["git", "log", "-1", "--format=%ct", "--", path])
     try:
@@ -586,15 +617,18 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         else None
     )
 
+    active_snapshot = gh_active_target_keys(repo)
     active = [
         key
         for key in CORE_TARGETS
-        if any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
+        if key in active_snapshot
+        or any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
     ]
     active_private = [
         key
         for key in (*PRIVATE_REFRESH_TARGETS.keys(), ARTMORE_PROMOTE_KEY)
-        if any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
+        if key in active_snapshot
+        or any(r.get("status") in ACTIVE_STATES for r in all_runs[key])
     ]
 
     root = load_json("collector_status.json", {})
