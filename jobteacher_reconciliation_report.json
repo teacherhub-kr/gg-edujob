@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T12:24:35+09:00",
+  "generatedAt": "2026-10-02T21:50:11+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
   "healthy": true,
@@ -9,19 +9,19 @@
       "surface": "seoul",
       "pagesExpected": 91,
       "pagesTraversed": 91,
-      "ids": 1747,
+      "ids": 1750,
       "complete": true
     },
     {
       "surface": "gyeonggi",
       "pagesExpected": 126,
       "pagesTraversed": 126,
-      "ids": 2436,
+      "ids": 2437,
       "complete": true
     }
   ],
-  "candidateIdCount": 4021,
-  "publishedIdCount": 4021,
+  "candidateIdCount": 4024,
+  "publishedIdCount": 4024,
   "missingAfterCount": 0,
   "missingAfter": [],
   "missingRegisteredCount": 0,
@@ -42,10 +42,10 @@
   "nextGate": "unified candidate + validator + regression",
   "currentPostingSemantics": {
     "policy": "source-visible-open-row-v1",
-    "verifiedAt": "2026-10-02T12:24:46+09:00",
+    "verifiedAt": "2026-10-02T21:50:22+09:00",
     "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
     "counts": {
-      "indefinite": 4004,
+      "indefinite": 4007,
       "dday": 4,
       "dated": 13
     },
