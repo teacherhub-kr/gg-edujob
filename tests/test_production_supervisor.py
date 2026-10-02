@@ -212,11 +212,21 @@ class ProductionSupervisorTests(unittest.TestCase):
         block = source.split("def gh_runs", 1)[1].split("def git_commit_time", 1)[0]
         self.assertIn("check=True", block)
 
+    def test_repository_wide_active_snapshot_backs_up_workflow_history(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn("def gh_active_target_keys", source)
+        self.assertIn('f"/repos/{repo}/actions/runs?per_page=100"', source)
+        self.assertIn("active_snapshot = gh_active_target_keys(repo)", source)
+
     def test_watchdog_rechecks_active_writer_immediately_before_dispatch(self):
         from pathlib import Path
 
         text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("Production workflow already active; no duplicate dispatch", text)
+        self.assertIn("/actions/runs?per_page=100", text)
+        self.assertIn('.path == $path', text)
         self.assertIn('.event == "workflow_dispatch"', text)
         self.assertIn('.head_branch == "main"', text)
         self.assertIn('.status == "waiting"', text)

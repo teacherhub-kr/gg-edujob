@@ -77,8 +77,8 @@ jobs:
           # must fail closed rather than creating a duplicate queued writer.
           active="$(gh api \
             -H 'Accept: application/vnd.github+json' \
-            "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/runs?per_page=30" \
-            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+            "/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100" \
+            --jq --arg path ".github/workflows/${workflow}" '[.workflow_runs[] | select(.path == $path and .event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
           if [ "${active:-0}" -gt 0 ]; then
             echo "Production workflow already active; no duplicate dispatch: ${workflow}."
             exit 0
