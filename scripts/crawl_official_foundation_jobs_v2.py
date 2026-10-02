@@ -264,6 +264,10 @@ def verify_board_surface(soup, foundation, response, candidates):
     stale_unresolved=[]
     today=datetime.now(KST).date()
     for a in soup.find_all("a",href=True):
+        anchor_href=str(a.get("href") or "").strip()
+        anchor_onclick=str(a.get("onclick") or "").strip()
+        if a.find_parent("nav") is not None and anchor_href.lower() in {"#none","#"} and not anchor_onclick:
+            continue
         if not official_position_title(a.get_text(" ",strip=True)):
             continue
         if str(foundation.get("id") or "") in SHARED_OFFICIAL_BOARD_FOUNDATION_IDS:
