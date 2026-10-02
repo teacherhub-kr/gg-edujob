@@ -10,6 +10,21 @@ on:
     - cron: '19 * * * *'
     - cron: '34 * * * *'
     - cron: '49 * * * *'
+  workflow_run:
+    # Completion wakeups remove dependence on cron latency while draining private
+    # refresh backlog. PR-triggered source runs are filtered at the job level.
+    workflows:
+      - Update Lessoninfo recruitment jobs
+      - Update JobTeacher recruitment jobs
+      - Update ArtMore candidate jobs
+      - Promote verified ArtMore jobs
+      - Update Gonggonggangsa jobs
+      - Update Seekle instructor jobs
+      - Update Boramae instructor jobs
+      - Cultural foundation coverage
+      - Unified recruitment search
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -22,6 +37,7 @@ concurrency:
 
 jobs:
   watchdog:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.event == 'workflow_dispatch' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
