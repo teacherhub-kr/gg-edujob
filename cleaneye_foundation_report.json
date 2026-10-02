@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T07:57:21+09:00",
+  "generatedAt": "2026-10-02T22:45:36+09:00",
   "source": "클린아이 잡플러스",
   "role": "public-foundation-safety-source",
   "policy": "cleaneye-exact-institution-current-v1",
@@ -9,16 +9,18 @@
   "missingAfterCount": 0,
   "registryInstitutions": 55,
   "institutionsQueried": 55,
-  "currentJobs": 11,
-  "institutionsWithCurrentJobs": 7,
+  "currentJobs": 13,
+  "institutionsWithCurrentJobs": 9,
   "institutionIdsWithCurrentJobs": [
     "gyeonggi:hanam",
     "gyeonggi:hwaseong",
     "gyeonggi:seongnam",
     "incheon:bupyeong",
     "seoul:gangnam",
+    "seoul:geumcheon",
     "seoul:guro",
-    "seoul:nowon"
+    "seoul:nowon",
+    "seoul:seongdong"
   ],
   "institutions": [
     {
@@ -39,7 +41,7 @@
       "reportedCount": 117,
       "foundationRegistryId": "seoul:gangnam",
       "foundationName": "강남문화재단",
-      "currentRows": 2
+      "currentRows": 1
     },
     {
       "query": "강동문화재단",
@@ -93,13 +95,13 @@
     },
     {
       "query": "금천문화재단",
-      "apiRows": 71,
-      "exactRows": 71,
+      "apiRows": 73,
+      "exactRows": 73,
       "pages": 8,
-      "reportedCount": 71,
+      "reportedCount": 73,
       "foundationRegistryId": "seoul:geumcheon",
       "foundationName": "금천문화재단",
-      "currentRows": 0
+      "currentRows": 2
     },
     {
       "query": "노원문화재단",
@@ -153,13 +155,13 @@
     },
     {
       "query": "성동문화재단",
-      "apiRows": 500,
-      "exactRows": 500,
-      "pages": 50,
-      "reportedCount": 500,
+      "apiRows": 501,
+      "exactRows": 501,
+      "pages": 51,
+      "reportedCount": 501,
       "foundationRegistryId": "seoul:seongdong",
       "foundationName": "성동문화재단",
-      "currentRows": 0
+      "currentRows": 1
     },
     {
       "query": "서초문화재단",

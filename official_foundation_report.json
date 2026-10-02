@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-01T07:56:25+09:00",
+  "generatedAt": "2026-10-02T22:44:55+09:00",
   "policy": "official-foundation-primary-fail-closed-v7-metro-generic",
   "healthy": true,
   "registryInstitutions": 55,
   "officialBoardsConfigured": 21,
   "supportedBoardsChecked": 21,
   "unsupportedConfiguredBoards": [],
-  "jobs": 12,
+  "jobs": 10,
   "errors": [],
   "boards": [
     {
@@ -48,8 +48,8 @@
       ],
       "discoveredDetailLinks": 1,
       "datedRecruitmentRowsOnList": 1,
-      "inspectedDetailLinks": 1,
-      "publishedCurrentJobs": 1,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
       "detailErrors": [],
       "recentPostsWithUnverifiedDeadline": 0,
       "identityVerified": true
@@ -63,8 +63,8 @@
       "surfacesChecked": [
         "https://www.guro.go.kr/www/selectBbsNttList.do?bbsNo=664&key=1792"
       ],
-      "discoveredDetailLinks": 2,
-      "datedRecruitmentRowsOnList": 2,
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
       "inspectedDetailLinks": 1,
       "publishedCurrentJobs": 1,
       "detailErrors": [],
@@ -310,16 +310,16 @@
     {
       "foundationRegistryId": "incheon:seohae",
       "foundationName": "인천서해구문화재단",
-      "boardUrl": "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgdiv=part",
+      "boardUrl": "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1",
       "healthy": true,
       "adapter": "generic-official-board-v1",
       "surfacesChecked": [
-        "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgdiv=part"
+        "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1"
       ],
-      "discoveredDetailLinks": 1,
-      "datedRecruitmentRowsOnList": 1,
-      "inspectedDetailLinks": 1,
-      "publishedCurrentJobs": 1,
+      "discoveredDetailLinks": 0,
+      "datedRecruitmentRowsOnList": 0,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
       "detailErrors": [],
       "recentPostsWithUnverifiedDeadline": 0,
       "identityVerified": true
