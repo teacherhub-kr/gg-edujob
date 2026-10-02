@@ -38,6 +38,41 @@ jobs:
           set -euo pipefail
           git fetch origin main
           git checkout -B main origin/main
+      - name: Cancel stale Fast run beyond hard-timeout grace
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          now_epoch="$(date -u +%s)"
+          gh api             -H 'Accept: application/vnd.github+json'             "/repos/${GITHUB_REPOSITORY}/actions/workflows/update-jobs.yml/runs?per_page=30"             > /tmp/fast-runs.json
+          stale_ids="$(NOW_EPOCH="$now_epoch" python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          HARD_TIMEOUT_GRACE_SECONDS = 130 * 60
+          now_epoch = int(os.environ["NOW_EPOCH"])
+          data = json.loads(Path("/tmp/fast-runs.json").read_text(encoding="utf-8"))
+          for run in data.get("workflow_runs", []):
+              if run.get("event") != "workflow_dispatch":
+                  continue
+              if run.get("head_branch") != "main" or run.get("status") != "in_progress":
+                  continue
+              raw = run.get("run_started_at") or run.get("created_at") or ""
+              try:
+                  started = datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(timezone.utc)
+              except Exception:
+                  continue
+              age_seconds = now_epoch - int(started.timestamp())
+              if age_seconds > HARD_TIMEOUT_GRACE_SECONDS:
+                  print(run.get("id"))
+          PY
+          )"
+          for run_id in $stale_ids; do
+            echo "Cancelling stale Fast run ${run_id}: exceeded 120-minute job timeout plus 10-minute grace."
+            gh api --method POST               -H 'Accept: application/vnd.github+json'               "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/cancel"
+          done
       - name: Decide one safe action and manage incidents
         id: gate
         shell: bash
