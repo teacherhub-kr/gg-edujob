@@ -6,7 +6,7 @@ on:
       - '.github/workflows/lessoninfo-full-snapshot-capture.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   capture:
@@ -102,3 +102,20 @@ jobs:
           path: lessoninfo_all_candidates.json
           if-no-files-found: error
           retention-days: 1
+
+      - name: Publish full snapshot to current main
+        run: |
+          cp lessoninfo_all_candidates.json /tmp/lessoninfo_all_candidates.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          git checkout -B main origin/main
+          cp /tmp/lessoninfo_all_candidates.json lessoninfo_all_candidates.json
+          git add lessoninfo_all_candidates.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish Lessoninfo 120-day full snapshot'
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin HEAD:main && break
+              sleep $((i*5))
+            done
+          fi
