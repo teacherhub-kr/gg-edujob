@@ -205,6 +205,33 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertNotIn("fast", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertNotIn("unified", PRIVATE_REFRESH_IDLE_ACTIONS)
 
+    def test_github_run_history_queries_fail_closed(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        block = source.split("def gh_runs", 1)[1].split("def git_commit_time", 1)[0]
+        self.assertIn("check=True", block)
+
+    def test_watchdog_rechecks_active_writer_immediately_before_dispatch(self):
+        from pathlib import Path
+
+        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        self.assertIn("Production workflow already active; no duplicate dispatch", text)
+        self.assertIn('.event == "workflow_dispatch"', text)
+        self.assertIn('.head_branch == "main"', text)
+        self.assertIn('.status == "waiting"', text)
+
+    def test_fast_active_slot_can_refresh_one_overdue_private_source(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn('if set(active) == {"fast"}:', source)
+        self.assertIn("choose_private_refresh_action(", source)
+        self.assertIn(
+            "Fast refresh is already active; using one isolated private refresh slot.",
+            source,
+        )
+
     def test_priority_contract_places_official_unified_backlog_before_fast(self):
         from pathlib import Path
 
