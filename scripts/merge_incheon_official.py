@@ -45,6 +45,9 @@ AFTERSCHOOL_LIST_URL = "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.d
 AFTERSCHOOL_DETAIL_PATH = "/afterschool/na/ntt/selectNttInfo.do"
 AFTERSCHOOL_BBS_ID = "1534"
 AFTERSCHOOL_MI = "10571"
+# Alternate official ICE hostnames serve the same first-party CMS. They are used only
+# when www.ice.go.kr returns the observed tiny HTTP-200 placeholder on page 1.
+OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr")
 
 REQUIRED_BOARDS = (
     {
@@ -205,6 +208,37 @@ def fetch_with_one_explicit_retry(url: str):
             if attempt == 0:
                 time.sleep(0.8)
     raise last_error
+
+
+def with_host(url: str, host: str) -> str:
+    parsed = urlparse(url)
+    return urlunparse((parsed.scheme, host, parsed.path, parsed.params, parsed.query, parsed.fragment))
+
+
+def try_official_fetch_aliases(page_url: str, board: dict, lookback_days: int):
+    """Try only first-party ICE host aliases after the canonical tiny-empty signature.
+
+    An alias is accepted only when the normal parser finds real posting rows. No alias
+    response can turn an empty or malformed board into completeness evidence.
+    """
+    evidence = []
+    for host in OFFICIAL_FETCH_ALIASES:
+        reset_session()
+        alias_url = with_host(page_url, host)
+        try:
+            response = fetch_with_one_explicit_retry(alias_url)
+            rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
+            evidence.append({
+                "host": host,
+                "finalUrl": str(response.url or ""),
+                "contentLength": len(response.content or b""),
+                "rawRows": int(meta.get("rawRows") or 0),
+            })
+            if meta.get("rawRows"):
+                return response, rows, meta, {"attempted": True, "success": True, "trials": evidence}
+        except Exception as exc:
+            evidence.append({"host": host, "error": f"{type(exc).__name__}: {str(exc)[:160]}"})
+    return None, [], {}, {"attempted": True, "success": False, "trials": evidence}
 
 
 def table_headers(table):
@@ -370,6 +404,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     stop_reason = ""
     access_error = ""
     empty_page_evidence = {}
+    alias_fallback_evidence = {}
 
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
@@ -397,6 +432,16 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
                 break
 
+        # If the canonical host still returns the same tiny placeholder after bootstrap,
+        # try only known first-party ICE aliases. Keep fail-closed semantics unless the
+        # normal parser sees actual posting rows.
+        if page == 1 and meta["rawRows"] == 0 and len(response.content or b"") <= 256:
+            alias_response, alias_rows, alias_meta, alias_fallback_evidence = try_official_fetch_aliases(
+                page_url, board, lookback_days
+            )
+            if alias_response is not None and alias_meta.get("rawRows"):
+                response, rows, meta = alias_response, alias_rows, alias_meta
+
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
             stop_reason = "repeated-page"
@@ -416,6 +461,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "contentType": str(response.headers.get("content-type") or ""),
                 "pageTextSample": clean(meta.get("pageText") or "")[:600],
                 "bootstrap": bootstrap_evidence,
+                "aliasFallback": alias_fallback_evidence,
             }
             stop_reason = "empty-page"
             break
