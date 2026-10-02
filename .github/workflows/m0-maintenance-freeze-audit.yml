@@ -5,9 +5,15 @@ on:
   pull_request:
     paths:
       - '.github/workflows/**'
+      - 'sources.json'
+      - 'cultural_foundation_registry.json'
       - 'scripts/audit_m0_maintenance_freeze.py'
       - 'scripts/production_supervisor.py'
+      - 'scripts/source_catalog.py'
+      - 'scripts/source_registry.py'
+      - 'scripts/private_source_registry.py'
       - 'tests/test_production_supervisor.py'
+      - 'tests/test_source_catalog.py'
       - 'app.js'
       - 'app.css'
       - 'index.html'
@@ -28,6 +34,10 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify canonical metropolitan source catalog
+        run: |
+          python scripts/source_catalog.py --validate
+          python -m unittest tests.test_source_catalog
       - name: Verify unattended supervisor safety logic
         run: python -m unittest tests.test_production_supervisor
       - name: Verify snapshot-bound completeness logic
