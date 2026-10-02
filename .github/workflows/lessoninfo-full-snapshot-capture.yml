@@ -1,0 +1,103 @@
+name: Capture Lessoninfo full snapshot
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/lessoninfo-full-snapshot-capture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt playwright
+          python -m playwright install --with-deps chromium
+      - name: Build full Lessoninfo snapshot from current list surfaces
+        env:
+          LESSONINFO_BROWSER_MAX_PAGES: '35'
+          LESSONINFO_BROWSER_DISCOVERY_DAYS: '120'
+        run: |
+          python - <<'PY'
+          import asyncio, json, sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import crawl_lessoninfo_browser as b
+          from playwright.async_api import async_playwright
+
+          ROOT=Path('.')
+          ledger=json.loads((ROOT/'lessoninfo_source_id_ledger.json').read_text(encoding='utf-8'))
+          report=json.loads((ROOT/'lessoninfo_reconciliation_report.json').read_text(encoding='utf-8'))
+          active_data=json.loads((ROOT/'lessoninfo_jobs.json').read_text(encoding='utf-8'))
+          active_jobs=active_data if isinstance(active_data,list) else (active_data.get('jobs') or [])
+          active_by_id={str(j.get('sourceIdentity') or ''):j for j in active_jobs if j.get('sourceIdentity')}
+          class_by_id={str(k):str((v or {}).get('classification') or 'unclassified') for k,v in (ledger.get('ids') or {}).items()}
+
+          async def main():
+              candidates={}
+              reports=[]
+              async with async_playwright() as p:
+                  browser=await p.chromium.launch(headless=True,args=['--disable-dev-shm-usage'])
+                  context=await browser.new_context(
+                      locale='ko-KR',timezone_id='Asia/Seoul',viewport={'width':1440,'height':1100},
+                      user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
+                  )
+                  await context.set_extra_http_headers({'Accept-Language':'ko-KR,ko;q=0.9,en;q=0.5'})
+                  for target in b.TARGETS:
+                      rows, sr=await b.crawl_list(context,target)
+                      reports.append(sr)
+                      for item in rows:
+                          candidates.setdefault(item['sourceIdentity'],item)
+                  await context.close(); await browser.close()
+
+              expected=int(report.get('candidateIdCount') or 0)
+              if len(candidates)!=expected:
+                  raise SystemExit(f'candidate mismatch from live list: {len(candidates)}/{expected}')
+              now=b.now_kst().isoformat(timespec='seconds')
+              rows=[]
+              for sid,item in candidates.items():
+                  reason=class_by_id.get(sid,'unclassified')
+                  active=active_by_id.get(sid)
+                  if active is not None and reason not in {'active','retained-on-detail-error'}:
+                      reason='active'
+                  rows.append(b.project_candidate(item,reason,active,now))
+              rows.sort(key=lambda j:(j.get('registered') or '',j.get('sourceIdentity') or ''),reverse=True)
+              if len({j.get('sourceIdentity') for j in rows})!=len(rows):
+                  raise SystemExit('duplicate source identities in full snapshot')
+              current={j.get('sourceIdentity') for j in rows if j.get('isCurrent') is True}
+              if current!=set(active_by_id):
+                  raise SystemExit(f'current-set mismatch: {len(current)}/{len(active_by_id)}')
+              counts={}
+              for row in rows:
+                  k=str(row.get('classificationReason') or 'unclassified'); counts[k]=counts.get(k,0)+1
+              payload={
+                  'updatedAt':b.now_kst().strftime('%Y-%m-%d %H:%M KST'),
+                  'source':'레슨인포',
+                  'category':'private-recruitment-discovery',
+                  'policy':'lessoninfo-120d-all-candidates-v1',
+                  'discoveryDays':b.DISCOVERY_DAYS,
+                  'candidateCount':len(rows),
+                  'currentCount':len(active_by_id),
+                  'classificationCounts':counts,
+                  'sourceReports':reports,
+                  'jobs':rows,
+              }
+              (ROOT/'lessoninfo_all_candidates.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
+              print(json.dumps({'candidateCount':len(rows),'currentCount':len(active_by_id),'classificationCounts':counts},ensure_ascii=False,indent=2))
+          asyncio.run(main())
+          PY
+      - name: Upload full snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: lessoninfo-all-candidates
+          path: lessoninfo_all_candidates.json
+          if-no-files-found: error
+          retention-days: 1
