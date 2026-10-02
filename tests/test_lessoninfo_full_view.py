@@ -25,6 +25,7 @@ class LessoninfoFullViewTests(unittest.TestCase):
         self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "unverified-link"}))
         self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "closed"}))
         self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope", "province": "인천"}))
         self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "excluded"}))
 
     def test_full_candidate_merge_preserves_status_and_active_link_evidence(self):
