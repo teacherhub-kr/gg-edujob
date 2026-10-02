@@ -225,8 +225,8 @@ class ProductionSupervisorTests(unittest.TestCase):
 
         text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("Production workflow already active; no duplicate dispatch", text)
-        self.assertIn("/actions/runs?per_page=100", text)
-        self.assertIn('.path == $path', text)
+        self.assertIn("/actions/workflows/${workflow}/runs?per_page=100", text)
+        self.assertNotIn('.path == $path', text)
         self.assertIn('.event == "workflow_dispatch"', text)
         self.assertIn('.head_branch == "main"', text)
         self.assertIn('.status == "waiting"', text)
