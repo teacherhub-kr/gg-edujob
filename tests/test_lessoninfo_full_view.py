@@ -15,9 +15,43 @@ except ModuleNotFoundError:
 
 sys.path.insert(0, "scripts")
 import crawl_lessoninfo_browser as lesson
+from private_source_registry import lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates
 
 
 class LessoninfoFullViewTests(unittest.TestCase):
+    def test_unified_publishable_excludes_only_explicit_out_of_scope_and_non_recruitment(self):
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "current"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "deadline-unknown"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "unverified-link"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "closed"}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope", "province": "인천"}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "excluded"}))
+
+    def test_full_candidate_merge_preserves_status_and_active_link_evidence(self):
+        full = [{
+            "sourceIdentity": "culture:id:777",
+            "statusGroup": "current",
+            "statusLabel": "현재 공고",
+            "classificationReason": "active",
+            "isCurrent": True,
+            "clickable": True,
+            "url": "",
+        }]
+        active = [{
+            "sourceIdentity": "culture:id:777",
+            "url": "https://example.org/official/777",
+            "originalUrl": "https://example.org/official/777",
+            "verifiedUrl": "https://example.org/official/777",
+            "detailLinkVerified": True,
+            "linkedOfficialUrls": ["https://example.org/official/777"],
+        }]
+        row = merge_lessoninfo_full_candidates(full, active)[0]
+        self.assertEqual(row["statusGroup"], "current")
+        self.assertTrue(row["isCurrent"])
+        self.assertEqual(row["verifiedUrl"], "https://example.org/official/777")
+        self.assertEqual(row["linkedOfficialUrls"], ["https://example.org/official/777"])
+
     def test_status_labels_are_explicit(self):
         self.assertEqual(lesson.candidate_status("active"), ("current", "현재 공고"))
         self.assertEqual(
