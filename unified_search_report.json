@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-04T02:53:29+09:00",
+  "generatedAt": "2026-10-04T03:45:50+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 20695,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 2046,
+  "canonicalPrivateJobs": 6069,
   "selectedCanonicalOfficialJobs": 3260,
   "selectedFoundationOfficialJobs": 9,
   "selectedOfficialJobs": 3269,
-  "selectedPrivateJobs": 2026,
-  "publishedJobs": 5114,
+  "selectedPrivateJobs": 6049,
+  "publishedJobs": 9137,
   "perFeed": {
     "official": 3091,
-    "private": 2023
+    "private": 6046
   },
   "privateSources": {
     "lessoninfo": {
@@ -50,20 +50,20 @@
     },
     "jobteacher": {
       "name": "잡티처",
-      "configuredPublicationEnabled": false,
-      "publicationEnabled": false,
+      "configuredPublicationEnabled": true,
+      "publicationEnabled": true,
       "degraded": false,
-      "ok": false,
+      "ok": true,
       "candidateCount": 4023,
-      "count": 0,
+      "count": 4023,
       "rawCandidateCount": 4023,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-03T14:21:27+09:00",
+      "lastVerifiedAt": "2026-10-04T03:18:49+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 0
+      "displayedAsPrivate": 4023
     },
     "artmore": {
       "name": "아트모아",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-04T02:53:35+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-04T03:45:58+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
