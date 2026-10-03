@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-02T22:45:35+09:00",
+  "generatedAt": "2026-10-03T23:16:20+09:00",
   "trials": [
     {
       "name": "empty",
       "request": {},
       "status": 200,
       "contentType": "application/json;charset=UTF-8",
-      "textPrefix": "{\"paginationInfo\":{\"currentPageNo\":1,\"recordCountPerPage\":10,\"pageSize\":10,\"totalRecordCount\":79042,\"totalPageCount\":0,\"firstPageNoOnPageList\":0,\"lastPageNoOnPageList\":0,\"firstRecordIndex\":0,\"lastRecordIndex\":10},\"cnt\":79042,\"list\":[{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000958\",\"entSeq\":\"000016\",\"sidoCd\":\"007011\",\"entName\":\"재단법인 한국유교문화진흥원\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"한국유교문화진흥원 2026년도 제7회 기간제근로자 공개채용 및 시험운영 계획(행정보조)\",\"employGb\":\"703001\",\"jobType\":\"702003\",\"localYn\":\"N\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000038\",\"entSeq\":\"000007\",\"sidoCd\":\"007011\",\"entName\":\"당진문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제3차 (재)당진문화재단 직원(기간제/환경관리) 공개경쟁 채용 재공고\",\"employGb\":\"703003\",\"jobType\":\"702003\",\"localYn\":\"Y\",\"localName\":\"충남 당진시\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000098\",\"entSeq\":\"000007\",\"sidoCd\":\"007012\",\"entName\":\"재단법인 전북특별자치도평생교",
+      "textPrefix": "{\"paginationInfo\":{\"currentPageNo\":1,\"recordCountPerPage\":10,\"pageSize\":10,\"totalRecordCount\":79042,\"totalPageCount\":0,\"firstPageNoOnPageList\":0,\"lastPageNoOnPageList\":0,\"firstRecordIndex\":0,\"lastRecordIndex\":10},\"cnt\":79042,\"list\":[{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000031\",\"entSeq\":\"000012\",\"sidoCd\":\"007011\",\"entName\":\"아산문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제9회 (재)아산문화재단 계약직 및 기간제 직원 공개채용 공고\",\"employGb\":\"703003\",\"jobType\":\"702006\",\"localYn\":\"N\",\"pubDate\":\"2026-10-03\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000038\",\"entSeq\":\"000007\",\"sidoCd\":\"007011\",\"entName\":\"당진문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제3차 (재)당진문화재단 직원(기간제/환경관리) 공개경쟁 채용 재공고\",\"employGb\":\"703003\",\"jobType\":\"702003\",\"localYn\":\"Y\",\"localName\":\"충남 당진시\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000098\",\"entSeq\":\"000007\",\"sidoCd\":\"007012\",\"entName\":\"재단법인 전북특별자치도평생교육장학진흥원\",\"entGb\":",
       "json": {
         "paginationInfo": {
           "currentPageNo": "1",
@@ -24,17 +24,17 @@
           {
             "status": "709001",
             "empyear": "2026",
-            "ypEntId": "B000958",
-            "entSeq": "000016",
+            "ypEntId": "B000031",
+            "entSeq": "000012",
             "sidoCd": "007011",
-            "entName": "재단법인 한국유교문화진흥원",
+            "entName": "아산문화재단",
             "entGb": "707004",
             "entKind": "708043",
-            "entTitle": "한국유교문화진흥원 2026년도 제7회 기간제근로자 공개채용 및 시험운영 계획(행정보조)",
-            "employGb": "703001",
-            "jobType": "702003",
+            "entTitle": "2026년 제9회 (재)아산문화재단 계약직 및 기간제 직원 공개채용 공고",
+            "employGb": "703003",
+            "jobType": "702006",
             "localYn": "N",
-            "pubDate": "2026-10-02",
+            "pubDate": "2026-10-03",
             "pubEndDate": "2026-10-12"
           },
           {
@@ -93,7 +93,7 @@
       },
       "status": 200,
       "contentType": "application/json;charset=UTF-8",
-      "textPrefix": "{\"paginationInfo\":{\"currentPageNo\":1,\"recordCountPerPage\":10,\"pageSize\":10,\"totalRecordCount\":79042,\"totalPageCount\":0,\"firstPageNoOnPageList\":0,\"lastPageNoOnPageList\":0,\"firstRecordIndex\":0,\"lastRecordIndex\":10},\"cnt\":79042,\"list\":[{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000958\",\"entSeq\":\"000016\",\"sidoCd\":\"007011\",\"entName\":\"재단법인 한국유교문화진흥원\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"한국유교문화진흥원 2026년도 제7회 기간제근로자 공개채용 및 시험운영 계획(행정보조)\",\"employGb\":\"703001\",\"jobType\":\"702003\",\"localYn\":\"N\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000038\",\"entSeq\":\"000007\",\"sidoCd\":\"007011\",\"entName\":\"당진문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제3차 (재)당진문화재단 직원(기간제/환경관리) 공개경쟁 채용 재공고\",\"employGb\":\"703003\",\"jobType\":\"702003\",\"localYn\":\"Y\",\"localName\":\"충남 당진시\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000098\",\"entSeq\":\"000007\",\"sidoCd\":\"007012\",\"entName\":\"재단법인 전북특별자치도평생교",
+      "textPrefix": "{\"paginationInfo\":{\"currentPageNo\":1,\"recordCountPerPage\":10,\"pageSize\":10,\"totalRecordCount\":79042,\"totalPageCount\":0,\"firstPageNoOnPageList\":0,\"lastPageNoOnPageList\":0,\"firstRecordIndex\":0,\"lastRecordIndex\":10},\"cnt\":79042,\"list\":[{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000031\",\"entSeq\":\"000012\",\"sidoCd\":\"007011\",\"entName\":\"아산문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제9회 (재)아산문화재단 계약직 및 기간제 직원 공개채용 공고\",\"employGb\":\"703003\",\"jobType\":\"702006\",\"localYn\":\"N\",\"pubDate\":\"2026-10-03\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000038\",\"entSeq\":\"000007\",\"sidoCd\":\"007011\",\"entName\":\"당진문화재단\",\"entGb\":\"707004\",\"entKind\":\"708043\",\"entTitle\":\"2026년 제3차 (재)당진문화재단 직원(기간제/환경관리) 공개경쟁 채용 재공고\",\"employGb\":\"703003\",\"jobType\":\"702003\",\"localYn\":\"Y\",\"localName\":\"충남 당진시\",\"pubDate\":\"2026-10-02\",\"pubEndDate\":\"2026-10-12\"},{\"status\":\"709001\",\"empyear\":\"2026\",\"ypEntId\":\"B000098\",\"entSeq\":\"000007\",\"sidoCd\":\"007012\",\"entName\":\"재단법인 전북특별자치도평생교육장학진흥원\",\"entGb\":",
       "json": {
         "paginationInfo": {
           "currentPageNo": "1",
@@ -111,17 +111,17 @@
           {
             "status": "709001",
             "empyear": "2026",
-            "ypEntId": "B000958",
-            "entSeq": "000016",
+            "ypEntId": "B000031",
+            "entSeq": "000012",
             "sidoCd": "007011",
-            "entName": "재단법인 한국유교문화진흥원",
+            "entName": "아산문화재단",
             "entGb": "707004",
             "entKind": "708043",
-            "entTitle": "한국유교문화진흥원 2026년도 제7회 기간제근로자 공개채용 및 시험운영 계획(행정보조)",
-            "employGb": "703001",
-            "jobType": "702003",
+            "entTitle": "2026년 제9회 (재)아산문화재단 계약직 및 기간제 직원 공개채용 공고",
+            "employGb": "703003",
+            "jobType": "702006",
             "localYn": "N",
-            "pubDate": "2026-10-02",
+            "pubDate": "2026-10-03",
             "pubEndDate": "2026-10-12"
           },
           {
