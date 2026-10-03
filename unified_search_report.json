@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-04T05:43:50+09:00",
+  "generatedAt": "2026-10-04T08:03:21+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 20695,
+  "canonicalOfficialJobs": 20225,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6069,
+  "canonicalPrivateJobs": 6063,
   "selectedCanonicalOfficialJobs": 3260,
   "selectedFoundationOfficialJobs": 9,
   "selectedOfficialJobs": 3269,
-  "selectedPrivateJobs": 6049,
-  "publishedJobs": 9137,
+  "selectedPrivateJobs": 6043,
+  "publishedJobs": 9131,
   "perFeed": {
     "official": 3091,
-    "private": 6046
+    "private": 6040
   },
   "privateSources": {
     "lessoninfo": {
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 199,
-      "count": 199,
-      "rawCandidateCount": 199,
+      "candidateCount": 193,
+      "count": 193,
+      "rawCandidateCount": 193,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-03T21:47:24+09:00",
+      "lastVerifiedAt": "2026-10-04T05:57:39+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 199
+      "displayedAsPrivate": 193
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -92,7 +92,7 @@
       "count": 27,
       "rawCandidateCount": 27,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-04T00:16:50+09:00",
+      "lastVerifiedAt": "2026-10-04T07:29:33+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -126,7 +126,7 @@
       "count": 1,
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-03T16:44:26+09:00",
+      "lastVerifiedAt": "2026-10-04T07:18:06+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-04T05:43:56+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-04T08:03:29+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
