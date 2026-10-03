@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-03T14:21:16+09:00",
+  "generatedAt": "2026-10-03T21:02:36+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
-  "healthy": true,
-  "traversalComplete": true,
+  "healthy": false,
+  "traversalComplete": false,
   "sourceReports": [
     {
       "surface": "seoul",
@@ -11,44 +11,52 @@
       "pagesTraversed": 91,
       "ids": 1749,
       "complete": true
-    },
-    {
-      "surface": "gyeonggi",
-      "pagesExpected": 126,
-      "pagesTraversed": 126,
-      "ids": 2437,
-      "complete": true
     }
   ],
-  "candidateIdCount": 4023,
-  "publishedIdCount": 4023,
+  "candidateIdCount": 3436,
+  "publishedIdCount": 3436,
   "missingAfterCount": 0,
   "missingAfter": [],
-  "missingRegisteredCount": 0,
-  "missingRegistered": [],
-  "detailDateFallbackRecoveredCount": 4,
-  "detailDateFallbackRecovered": [
-    "jobteacher:559286",
+  "missingRegisteredCount": 4,
+  "missingRegistered": [
     "jobteacher:203136",
-    "jobteacher:559294",
-    "jobteacher:559291"
+    "jobteacher:559286",
+    "jobteacher:559291",
+    "jobteacher:559294"
   ],
-  "detailDateFallbackErrors": [],
-  "errors": [],
-  "previousPublishedCount": 4022,
-  "severeDrop": false,
-  "preservedPreviousDataset": false,
-  "publicationEnabled": true,
-  "nextGate": "unified candidate + validator + regression",
-  "currentPostingSemantics": {
-    "policy": "source-visible-open-row-v1",
-    "verifiedAt": "2026-10-03T14:21:27+09:00",
-    "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
-    "counts": {
-      "indefinite": 4008,
-      "dday": 2,
-      "dated": 13
+  "detailDateFallbackRecoveredCount": 0,
+  "detailDateFallbackRecovered": [],
+  "detailDateFallbackErrors": [
+    {
+      "sourceIdentity": "jobteacher:559286",
+      "url": "https://www.jobteacher.kr/employ/detail/559286",
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/detail/559286\", waiting until \"domcontentloaded\"\n"
     },
-    "rejectedCount": 0
-  }
+    {
+      "sourceIdentity": "jobteacher:203136",
+      "url": "https://www.jobteacher.kr/employ/detail/203136",
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/detail/203136\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "sourceIdentity": "jobteacher:559294",
+      "url": "https://www.jobteacher.kr/employ/detail/559294",
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/detail/559294\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "sourceIdentity": "jobteacher:559291",
+      "url": "https://www.jobteacher.kr/employ/detail/559291",
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/detail/559291\", waiting until \"domcontentloaded\"\n"
+    }
+  ],
+  "errors": [
+    {
+      "surface": "gyeonggi",
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/lists/all/?is_search=yes&sel_area%5B%5D=2422&page=95\", waiting until \"domcontentloaded\"\n"
+    }
+  ],
+  "previousPublishedCount": 4023,
+  "severeDrop": false,
+  "preservedPreviousDataset": true,
+  "publicationEnabled": false,
+  "nextGate": "verify current-posting freshness semantics, then unified validator"
 }
