@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-04T03:45:53+09:00",
+  "generatedAt": "2026-10-04T04:32:20+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4481,
+  "privateJobs": 4467,
   "officialJobs": 20695,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 209
+      "canonicalCount": 195
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 209,
-      "strongOfficialMatches": 26,
+      "jobs": 195,
+      "strongOfficialMatches": 21,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 12
+      "officialGapCandidates": 9
     },
     "cleaneye": {
       "jobs": 10,
@@ -105,9 +105,9 @@
       "officialGapCandidates": 0
     }
   },
-  "strongOfficialMatches": 26,
+  "strongOfficialMatches": 21,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 54,
+  "officialGapCandidates": 51,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -402,76 +402,6 @@
           "evidence": "explicit-exact-official-url"
         }
       ]
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7621",
-      "privateTitle": "경기 용인시 초등학교 뮤지컬 전문 강사 채용 공고",
-      "matches": [
-        {
-          "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "마감 백암초등학교 수정분교장 뮤지컬 전문 강사 채용 공고",
-          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=58832",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7617",
-      "privateTitle": "용인시 중학교 음악 시간강사 채용 공고",
-      "matches": [
-        {
-          "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "마감 용인신릉중학교 시간강사(수학,과학,영어,음악,정보) 채용 공고",
-          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=58658",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7616",
-      "privateTitle": "경기도 초등학교 5학년 예술교육 외부강사 채용 공고(장구수업)",
-      "matches": [
-        {
-          "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "마감 시화나래초 5학년 예술교육 외부강사 채용 공고(장구수업)",
-          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=58700",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7615",
-      "privateTitle": "초등학교 1인1악기 강사 채용 공고",
-      "matches": [
-        {
-          "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "마감 2026 내손초등학교 1인1악기 강사 채용 공고",
-          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=58723",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7614",
-      "privateTitle": "오산시 특성화 강사(리코더) 모집",
-      "matches": [
-        {
-          "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "마감 특성화(치어댄스, 리코더) 강사 모집",
-          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=58717",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
     }
   ],
   "reviewCandidates": [],
@@ -582,42 +512,6 @@
       ],
       "registered": "2026-09-07",
       "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7622",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7620",
-      "privateTitle": "초등학교 국악강사 채용 공고",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-09-03",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7620",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7619",
-      "privateTitle": "유치원 특수교사 수업 부담 경감 협력강사 (음악치료분야) 채용",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-09-03",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7619",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7618",
-      "privateTitle": "서울 초등학교 타악기 강사 모집",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-09-03",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7618",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
