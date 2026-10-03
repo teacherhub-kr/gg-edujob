@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03 09:36:22 KST",
+  "generatedAt": "2026-10-03 11:46:14 KST",
   "name": "인천광역시교육청 채용공고",
   "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
   "boards": [
@@ -9,7 +9,7 @@
   "requiredBoardCount": 2,
   "lookbackDays": 90,
   "pagesScanned": 256,
-  "count": 2532,
+  "count": 2533,
   "coverageComplete": true,
   "accessError": "",
   "paginationRepeated": false,
@@ -23,19 +23,19 @@
       "bbsId": "1981",
       "lookbackDays": 90,
       "pagesScanned": 250,
-      "count": 2485,
+      "count": 2486,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
       "stopReason": "lookback-exhausted",
       "emptyPageEvidence": {},
-      "latestRegistered": "2026/10/02",
+      "latestRegistered": "2026/10/03",
       "sampleIds": [
+        "ice-central:3385877",
         "ice-central:3385777",
         "ice-central:3385817",
         "ice-central:3385788",
-        "ice-central:3385803",
-        "ice-central:3385824"
+        "ice-central:3385803"
       ]
     },
     {
@@ -61,16 +61,24 @@
       ]
     }
   ],
-  "latestRegistered": "2026/10/02",
+  "latestRegistered": "2026/10/03",
   "sampleIds": [
+    "ice-central:3385877",
     "ice-central:3385777",
     "ice-central:3385817",
     "ice-central:3385788",
-    "ice-central:3385803",
-    "ice-central:3385824"
+    "ice-central:3385803"
   ],
   "merged": true,
   "officialSample": [
+    {
+      "id": "ice-central:3385877",
+      "school": "동산고등학교",
+      "title": "2026학년도 기간제교사(특수교사) 채용공고(2차)",
+      "registered": "2026/10/03",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385877"
+    },
     {
       "id": "ice-central:3385777",
       "school": "인천외국어고등학교",
@@ -110,14 +118,6 @@
       "registered": "2026/10/02",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385824"
-    },
-    {
-      "id": "ice-central:3385841",
-      "school": "인천디자인고등학교",
-      "title": "2026학년도 인천디자인고등학교 (공통사회(일반사회, 지리, 역사 가능))시간강사 채용 공고",
-      "registered": "2026/10/02",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385841"
     }
   ]
 }
