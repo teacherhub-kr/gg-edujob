@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03 21:18:48 KST",
+  "generatedAt": "2026-10-04 02:08:13 KST",
   "name": "인천광역시교육청 채용공고",
   "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
   "boards": [
@@ -8,8 +8,8 @@
   ],
   "requiredBoardCount": 2,
   "lookbackDays": 90,
-  "pagesScanned": 256,
-  "count": 2533,
+  "pagesScanned": 252,
+  "count": 2490,
   "coverageComplete": true,
   "accessError": "",
   "paginationRepeated": false,
@@ -22,20 +22,20 @@
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
       "bbsId": "1981",
       "lookbackDays": 90,
-      "pagesScanned": 250,
-      "count": 2486,
+      "pagesScanned": 246,
+      "count": 2445,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
       "stopReason": "lookback-exhausted",
       "emptyPageEvidence": {},
-      "latestRegistered": "2026/10/03",
+      "latestRegistered": "2026/10/04",
       "sampleIds": [
+        "ice-central:3385884",
         "ice-central:3385877",
+        "ice-central:3385879",
         "ice-central:3385777",
-        "ice-central:3385817",
-        "ice-central:3385788",
-        "ice-central:3385803"
+        "ice-central:3385817"
       ]
     },
     {
@@ -45,7 +45,7 @@
       "bbsId": "1534",
       "lookbackDays": 90,
       "pagesScanned": 6,
-      "count": 47,
+      "count": 45,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
@@ -61,16 +61,24 @@
       ]
     }
   ],
-  "latestRegistered": "2026/10/03",
+  "latestRegistered": "2026/10/04",
   "sampleIds": [
+    "ice-central:3385884",
     "ice-central:3385877",
+    "ice-central:3385879",
     "ice-central:3385777",
-    "ice-central:3385817",
-    "ice-central:3385788",
-    "ice-central:3385803"
+    "ice-central:3385817"
   ],
   "merged": true,
   "officialSample": [
+    {
+      "id": "ice-central:3385884",
+      "school": "석정여자고등학교",
+      "title": "2026학년도 석정여자고등학교 영어 기간제교사 채용 공고",
+      "registered": "2026/10/04",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385884"
+    },
     {
       "id": "ice-central:3385877",
       "school": "동산고등학교",
@@ -78,6 +86,14 @@
       "registered": "2026/10/03",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385877"
+    },
+    {
+      "id": "ice-central:3385879",
+      "school": "인천한별초등학교",
+      "title": "인천한별초등학교 시간강사(2026.10.6~10.8) 모집",
+      "registered": "2026/10/03",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385879"
     },
     {
       "id": "ice-central:3385777",
@@ -102,22 +118,6 @@
       "registered": "2026/10/02",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385788"
-    },
-    {
-      "id": "ice-central:3385803",
-      "school": "인천보건고등학교",
-      "title": "인천보건고등학교 시간제 배식원 채용 공고(5차)",
-      "registered": "2026/10/02",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385803"
-    },
-    {
-      "id": "ice-central:3385824",
-      "school": "인천청인학교",
-      "title": "2026.10.19.자 인천청인학교 초등특수, 중등특수 기간제교사 채용(3차)(자격확대)",
-      "registered": "2026/10/02",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385824"
     }
   ]
 }
