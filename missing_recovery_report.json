@@ -1,14 +1,14 @@
 {
   "summary": {
     "freshCount": 18171,
-    "previousCount": 20784,
-    "mergedCount": 20764,
-    "carriedForward": 2593,
-    "officialIdProtected": 19297,
-    "officialIdCarryForward": 1054,
-    "enrichedFromPrevious": 6268,
+    "previousCount": 20785,
+    "mergedCount": 20766,
+    "carriedForward": 2595,
+    "officialIdProtected": 19295,
+    "officialIdCarryForward": 1053,
+    "enrichedFromPrevious": 6269,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-03 16:36 KST"
+    "generatedAt": "2026-10-03 21:24 KST"
   },
   "carried": [
     {
@@ -563,6 +563,17 @@
     },
     {
       "province": "경기",
+      "source": "경기도교육청 통합 구인구직",
+      "school": "이솔고등학교",
+      "title": "이솔고등학교 일반사회(시간강사) 모집 공고(2차)",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/06",
+      "sourceIdentity": "goe-central:61543",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61543"
+    },
+    {
+      "province": "경기",
       "source": "동두천양주교육지원청",
       "school": "회천초등학교",
       "title": "2026 회천초 기간제교사(체육 전담교사) 채용",
@@ -668,7 +679,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/03",
       "sourceIdentity": "seoul-central:111232",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111232"
     },
     {
@@ -690,7 +701,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/03",
       "sourceIdentity": "seoul-central:111239",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111239"
     },
     {
@@ -701,7 +712,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/03",
       "sourceIdentity": "seoul-central:111238",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111238"
     },
     {
@@ -1055,6 +1066,17 @@
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686019",
       "reason": "previously published posting still within application period",
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686019"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울공업고등학교",
+      "title": "2026학년도 토목건축과 산학겸임교사 채용 공고",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/03",
+      "sourceIdentity": "seoul-central:111114",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111114"
     },
     {
       "province": "서울",

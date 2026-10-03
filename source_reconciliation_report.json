@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-03 17:24:31 KST",
+  "generatedAt": "2026-10-03 22:01:39 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-03 17:24:31 KST",
+    "generatedAt": "2026-10-03 22:01:39 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 19295,
-    "datasetIdCountBefore": 20858,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "officialIdCount": 19296,
+    "datasetIdCountBefore": 20860,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261003T074112Z-37103970142-1"
+    "scanId": "20261003T122747Z-37120621053-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -27,7 +27,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9705,
+      "officialIdCount": 9704,
       "coverageComplete": true,
       "pagesScanned": 209,
       "accessErrors": 0,
@@ -49,7 +49,7 @@
           "name": "초중등시간강사",
           "pagesScanned": 74,
           "rawRows": 3700,
-          "acceptedRecentRows": 3559,
+          "acceptedRecentRows": 3558,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -105,10 +105,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9705,
+      "inDatasetBefore": 9704,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9705,
+      "inDatasetAfter": 9704,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 433,
+      "officialIdCount": 434,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 433,
+      "inDatasetBefore": 434,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 433,
+      "inDatasetAfter": 434,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -223,7 +223,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2533,
+      "officialIdCount": 2534,
       "coverageComplete": true,
       "pagesScanned": 256,
       "accessErrors": 0,
@@ -235,7 +235,7 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 250,
-          "count": 2486,
+          "count": 2487,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -244,10 +244,10 @@
           "latestRegistered": "2026/10/03",
           "sampleIds": [
             "ice-central:3385877",
+            "ice-central:3385879",
             "ice-central:3385777",
             "ice-central:3385817",
-            "ice-central:3385788",
-            "ice-central:3385803"
+            "ice-central:3385788"
           ]
         },
         {
@@ -274,9 +274,9 @@
         }
       ],
       "inDatasetBefore": 2533,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 2533,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 2534,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -957,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261003172354",
+              "/js/include.js?v=20261003220104",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2843,7 +2843,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9705,
+      "officialIdCount": 9704,
       "coverageComplete": true,
       "pagesScanned": 209,
       "accessErrors": 0,
@@ -2865,7 +2865,7 @@
           "name": "초중등시간강사",
           "pagesScanned": 74,
           "rawRows": 3700,
-          "acceptedRecentRows": 3559,
+          "acceptedRecentRows": 3558,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2921,10 +2921,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9705,
+      "inDatasetBefore": 9704,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9705,
+      "inDatasetAfter": 9704,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2935,15 +2935,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 433,
+      "officialIdCount": 434,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 433,
+      "inDatasetBefore": 434,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 433,
+      "inDatasetAfter": 434,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3039,7 +3039,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2533,
+      "officialIdCount": 2534,
       "coverageComplete": true,
       "pagesScanned": 256,
       "accessErrors": 0,
@@ -3051,7 +3051,7 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 250,
-          "count": 2486,
+          "count": 2487,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -3060,10 +3060,10 @@
           "latestRegistered": "2026/10/03",
           "sampleIds": [
             "ice-central:3385877",
+            "ice-central:3385879",
             "ice-central:3385777",
             "ice-central:3385817",
-            "ice-central:3385788",
-            "ice-central:3385803"
+            "ice-central:3385788"
           ]
         },
         {
@@ -3090,9 +3090,9 @@
         }
       ],
       "inDatasetBefore": 2533,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 2533,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 2534,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3773,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261003172354",
+              "/js/include.js?v=20261003220104",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261003T074112Z-37103970142-1"
+  "scanId": "20261003T122747Z-37120621053-1"
 }
