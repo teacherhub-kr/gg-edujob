@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-03T19:18:43+09:00",
+  "generatedAt": "2026-10-03T22:03:30+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 20785,
+  "canonicalOfficialJobs": 20788,
   "canonicalFoundationOfficialJobs": 10,
-  "canonicalPrivateJobs": 6072,
-  "selectedCanonicalOfficialJobs": 3321,
+  "canonicalPrivateJobs": 2050,
+  "selectedCanonicalOfficialJobs": 3324,
   "selectedFoundationOfficialJobs": 9,
-  "selectedOfficialJobs": 3330,
-  "selectedPrivateJobs": 6049,
-  "publishedJobs": 9190,
+  "selectedOfficialJobs": 3333,
+  "selectedPrivateJobs": 2027,
+  "publishedJobs": 5171,
   "perFeed": {
-    "official": 3144,
-    "private": 6046
+    "official": 3147,
+    "private": 2024
   },
   "privateSources": {
     "lessoninfo": {
@@ -50,12 +50,12 @@
     },
     "jobteacher": {
       "name": "잡티처",
-      "configuredPublicationEnabled": true,
-      "publicationEnabled": true,
+      "configuredPublicationEnabled": false,
+      "publicationEnabled": false,
       "degraded": false,
-      "ok": true,
+      "ok": false,
       "candidateCount": 4023,
-      "count": 4023,
+      "count": 0,
       "rawCandidateCount": 4023,
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-10-03T14:21:27+09:00",
@@ -63,7 +63,7 @@
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 4023
+      "displayedAsPrivate": 0
     },
     "artmore": {
       "name": "아트모아",
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 198,
-      "count": 198,
-      "rawCandidateCount": 198,
+      "candidateCount": 199,
+      "count": 199,
+      "rawCandidateCount": 199,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-03T16:10:12+09:00",
+      "lastVerifiedAt": "2026-10-03T21:47:24+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 198
+      "displayedAsPrivate": 199
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 19295,
+  "protectedOfficialIds": 19296,
   "explicitOfficialAliasGroupsMerged": 3,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-03T19:18:52+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-03T22:03:33+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
