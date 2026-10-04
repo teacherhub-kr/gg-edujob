@@ -407,7 +407,7 @@ def scrape_mircms_board(board, src):
                 if not region and len(regions)==1: region = regions[0]
                 out.append({
                     "id":"goe-office-"+hashlib.sha1(detail.encode("utf-8")).hexdigest()[:20],"province":"경기","school":school or office,"title":title,
-                    "subject":first_of(vals,["과목","분야"]),"region":region,"regions":regions,"type":guess_type(raw_type+" "+title),
+                    "subject":first_of(vals,["과목","분야"]),"region":region,"regions":regions,"type":guess_type(raw_type+" "+title+" "+subject),
                     "schoolLevel":normalize_school_level(raw_level,school,title),"applyStart":"","applyEnd":apply_end,
                     "workStart":"","workEnd":"","registered":registered,"headcount":"",
                     "source":office,"checkedSources":[office],"sourceType":"교육지원청 개별 게시판","url":detail,"boardUrl":board
@@ -550,6 +550,34 @@ def seoul_row_values(table, tr):
             vals[headers[i]] = clean(td.get_text(" ", strip=True))
     return vals
 
+
+SEOUL_EMPTY_FIELD_VALUES = {"", "-", "–", "—", "·"}
+
+
+def meaningful_seoul_value(value):
+    value = clean(value)
+    return "" if value in SEOUL_EMPTY_FIELD_VALUES else value
+
+
+def seoul_subject_from_values(vals):
+    field1 = meaningful_seoul_value(first_of(vals, ["분야1", "분야 1"]))
+    field2 = meaningful_seoul_value(first_of(vals, ["분야2", "분야 2"]))
+    parts = [value for value in (field1, field2) if value]
+    if parts:
+        return " / ".join(parts)
+    return meaningful_seoul_value(first_of(vals, ["분야(과목)", "과목", "분야"]))
+
+
+def seoul_title_from_values(vals, fallback=""):
+    explicit = meaningful_seoul_value(first_of(vals, ["제목", "공고명"]))
+    if explicit:
+        return explicit
+    subject = seoul_subject_from_values(vals)
+    if subject:
+        return subject
+    return meaningful_seoul_value(fallback)
+
+
 def scrape_seoul_office(src):
     from seoul_support_detail_metadata import exact_registration_from_detail
 
@@ -579,12 +607,15 @@ def scrape_seoul_office(src):
                 vals=seoul_row_values(table,tr)
                 detail_anchor=seoul_detail_anchor_for_seq(tr,seq)
                 anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]
-                title=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")
+                anchor_fallback=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")
+                if not meaningful_seoul_value(anchor_fallback):
+                    anchor_fallback=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
+                title=seoul_title_from_values(vals,anchor_fallback)
+                subject=seoul_subject_from_values(vals)
                 if not title:
-                    title=first_of(vals,["제목","공고명"])
-                if not title:
-                    title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
-                if len(title)<3 or EXCLUDE_WORDS.search(title): continue
+                    parse_incomplete += 1
+                    continue
+                if EXCLUDE_WORDS.search(title): continue
                 registered=date_norm(first_of(vals,["등록일","작성일"]))
                 if not registered and len(detail_registration) < 40:
                     school_for_detail=first_of(vals,["학교명","기관명","작성자"])
@@ -598,12 +629,10 @@ def scrape_seoul_office(src):
                 page_recent+=1
                 school=first_of(vals,["학교명","기관명","작성자"]) or school_from_title(title)
                 title_school_collision = bool(school and norm(title) == norm(school)) or norm(title) == norm(office)
-                if not registered or not detail_anchor or title_school_collision:
+                if not registered or title_school_collision:
                     parse_incomplete += 1
                     continue
                 raw_level=first_of(vals,["학교급별","학교급","대상"]); raw_type=first_of(vals,["직종","고용형태","구분"])
-                subject_parts=[first_of(vals,["분야1"]),first_of(vals,["분야2"])]
-                subject=" / ".join(x for x in subject_parts if x) or first_of(vals,["분야(과목)","분야","과목"])
                 apply_end=date_norm(first_of(vals,["마감일","접수마감일"])); region=first_of(vals,["지역"])
                 if region not in SEOUL_REGIONS: region=find_region(f"{region} {title} {school}",regions)
                 if not region and len(regions)==1: region=regions[0]
