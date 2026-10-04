@@ -10,19 +10,10 @@ on:
       - 'tests/test_seoul_support_exact_detail_metadata.py'
       - 'tests/test_seoul_support_three_link_title.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'scripts/harden_seoul_office_row_parser.py'
-      - 'scripts/scrape_jobs.py'
-      - 'scripts/complete_support_coverage.py'
-      - 'tests/test_seoul_support_three_link_title.py'
-      - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   verify:
@@ -98,23 +89,12 @@ jobs:
           after_coverage=$(sha256sum scripts/complete_support_coverage.py | cut -d' ' -f1)
           test "$before_scrape" = "$after_scrape"
           test "$before_coverage" = "$after_coverage"
-      - name: Persist hardened parsers on main only
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          if git diff --quiet -- scripts/scrape_jobs.py scripts/complete_support_coverage.py; then
-            echo 'Seoul support parsers already hardened'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/scrape_jobs.py scripts/complete_support_coverage.py
-          git commit -m 'Fix Seoul support-office multi-anchor title parsing'
-          for n in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
-            sleep $((n * 5))
-          done
-          git fetch origin main
-          git merge-base --is-ancestor HEAD origin/main || {
-            echo 'Seoul support parser hardening commit was not published to main' >&2
-            exit 1
-          }
+      - name: Upload generated parser candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-support-parser-candidates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            scripts/scrape_jobs.py
+            scripts/complete_support_coverage.py
+          if-no-files-found: error
+          retention-days: 7
