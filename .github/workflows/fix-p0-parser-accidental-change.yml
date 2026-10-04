@@ -1,0 +1,40 @@
+name: Fix P0 parser accidental edit (branch only)
+
+on:
+  push:
+    branches:
+      - fix/seoul-support-subject-parser-20261004
+    paths:
+      - 'scripts/fix_p0_parser_accidental_gyeonggi_change.py'
+      - '.github/workflows/fix-p0-parser-accidental-change.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: fix/seoul-support-subject-parser-20261004
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore only the accidental Gyeonggi edit
+        run: python scripts/fix_p0_parser_accidental_gyeonggi_change.py
+      - name: Compile scraper
+        run: python -m py_compile scripts/scrape_jobs.py
+      - name: Commit scraper correction only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/scrape_jobs.py
+          git diff --cached --check
+          git diff --cached --quiet && { echo 'No correction generated' >&2; exit 1; }
+          git commit -m 'Limit Seoul parser fix to Seoul code path'
+          git push origin HEAD:fix/seoul-support-subject-parser-20261004
