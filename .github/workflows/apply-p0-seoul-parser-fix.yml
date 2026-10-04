@@ -4,13 +4,16 @@ on:
   push:
     branches:
       - fix/seoul-support-subject-parser-20261004
+    paths:
+      - 'scripts/apply_p0_seoul_parser_fix.py'
+      - '.github/workflows/apply-p0-seoul-parser-fix.yml'
 
 permissions:
   contents: write
 
 concurrency:
   group: p0-seoul-parser-fix-branch
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   apply:
@@ -34,17 +37,13 @@ jobs:
         run: |
           python -m unittest discover -s tests -p test_seoul_support_exact_detail_metadata.py
           python -m unittest discover -s tests -p test_seoul_support_subject_row_parser.py
-      - name: Remove temporary patch machinery
-        run: |
-          git rm scripts/apply_p0_seoul_parser_fix.py
-          git rm .github/workflows/apply-p0-seoul-parser-fix.yml
-      - name: Commit reviewed target changes to fix branch
+      - name: Commit code and regression fixture only
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/scrape_jobs.py scripts/complete_support_coverage.py .github/workflows/seoul-office-row-parser-regression.yml tests/test_seoul_support_subject_row_parser.py
+          git add scripts/scrape_jobs.py scripts/complete_support_coverage.py tests/test_seoul_support_subject_row_parser.py
           git diff --cached --check
           git diff --cached --quiet && { echo 'No target changes generated' >&2; exit 1; }
           git commit -m 'Fix Seoul support subject-row parsing blind spot'
