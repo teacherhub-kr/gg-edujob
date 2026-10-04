@@ -348,6 +348,33 @@ def seoul_values(table, tr):
     return row_vals(tr, labels)
 
 
+SEOUL_EMPTY_FIELD_VALUES = {"", "-", "–", "—", "·"}
+
+
+def meaningful_seoul_value(value):
+    value = clean(value)
+    return "" if value in SEOUL_EMPTY_FIELD_VALUES else value
+
+
+def seoul_subject_from_values(vals):
+    field1 = meaningful_seoul_value(first_of(vals, ["분야1", "분야 1"]))
+    field2 = meaningful_seoul_value(first_of(vals, ["분야2", "분야 2"]))
+    parts = [value for value in (field1, field2) if value]
+    if parts:
+        return " / ".join(parts)
+    return meaningful_seoul_value(first_of(vals, ["분야(과목)", "과목", "분야"]))
+
+
+def seoul_title_from_values(vals, fallback=""):
+    explicit = meaningful_seoul_value(first_of(vals, ["제목", "공고명"]))
+    if explicit:
+        return explicit
+    subject = seoul_subject_from_values(vals)
+    if subject:
+        return subject
+    return meaningful_seoul_value(fallback)
+
+
 def seoul_items(soup, board, detail_registration):
     """Parse one SEN page; ambiguous rows stay incomplete instead of being guessed."""
     from seoul_support_detail_metadata import exact_registration_from_detail
@@ -366,7 +393,7 @@ def seoul_items(soup, board, detail_registration):
             if not seq:
                 continue
             vals = seoul_values(table, tr)
-            title = seoul_detail_title(tr, seq) or first_of(vals, ["제목", "공고명"])
+            title = seoul_title_from_values(vals, seoul_detail_title(tr, seq))
             school = first_of(vals, ["학교명", "기관명", "작성자"])
             registered = date_norm(first_of(vals, ["등록일", "작성일"]))
             if not registered and school and len(detail_registration) < 40:
@@ -474,14 +501,14 @@ def seoul_board(src):
             seen.add(seq)
             if not recent(registered):
                 continue
-            if len(title) < 3 or EXCLUDE_WORDS.search(title):
+            if EXCLUDE_WORDS.search(title):
                 continue
             school = first_of(vals, ["학교명", "기관명", "작성자"]) or school_from_title(title) or src["name"]
             open_url = urljoin(board, "/FUS/JO/JOV11.do")
             out.append({
                 "id": f"sen-complete-{urlparse(board).hostname}-{seq}", "province": "서울",
                 "school": school, "title": title,
-                "subject": " / ".join(x for x in (first_of(vals,["분야1"]), first_of(vals,["분야2"])) if x),
+                "subject": seoul_subject_from_values(vals),
                 "region": next((x for x in src.get("regions", []) if x in f"{title} {school}"), ""),
                 "regions": src.get("regions", []), "type": "기타", "schoolLevel": "기타",
                 "applyStart": "", "applyEnd": date_norm(first_of(vals, ["마감일", "접수마감일"])),
