@@ -9,6 +9,14 @@ on:
       - 'scripts/seoul_support_detail_metadata.py'
       - 'tests/test_seoul_support_exact_detail_metadata.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/harden_seoul_office_row_parser.py'
+      - 'scripts/scrape_jobs.py'
+      - 'scripts/complete_support_coverage.py'
+      - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
 permissions:
@@ -27,49 +35,82 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Apply idempotent Seoul parser hardening
         run: python scripts/harden_seoul_office_row_parser.py
-      - name: Compile scraper and independent coverage parser
+      - name: Compile collector and independent coverage parser
         run: python -m py_compile scripts/scrape_jobs.py scripts/complete_support_coverage.py scripts/seoul_support_detail_metadata.py scripts/harden_seoul_office_row_parser.py
       - name: Exact official-detail metadata regression
         run: python -m unittest discover -s tests -p test_seoul_support_exact_detail_metadata.py
-      - name: Regression fixture - detail anchor beats longer school anchor and dates map by header
+      - name: Regression fixture - labelled fields beat final repeated detail anchor
         run: |
           python - <<'PY'
           from bs4 import BeautifulSoup
           import scripts.scrape_jobs as s
-          html = '''<table><thead><tr><th>번호</th><th>학교명</th><th>제목</th><th>직종</th><th>등록일</th><th>마감일</th></tr></thead><tbody><tr><td>1</td><td><a href="/school">아주아주긴학교기관명초등학교</a></td><td><a href="#" onclick="fncDetailView('5593');">기간제교원 채용 공고</a></td><td>기간제교원</td><td>2026.09.05</td><td>2026.09.10</td></tr></tbody></table>'''
+          import scripts.complete_support_coverage as c
+
+          html = '''
+          <table>
+            <thead><tr><th>학교명</th><th>구분</th><th>분야1</th><th>분야2</th><th>등록일</th><th>마감일</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>서울신은초등학교병설유치원</td>
+                <td><a href="#" onclick="fncDetailView('15140');">대체강사</a></td>
+                <td><a href="#" onclick="fncDetailView('15140');">가을 단기방학 에듀케어 대체강사</a></td>
+                <td><a href="#" onclick="fncDetailView('15140');">-</a></td>
+                <td>2026.10.01</td><td>-</td>
+              </tr>
+              <tr>
+                <td>예시초등학교</td>
+                <td><a href="#" onclick="fncDetailView('15136');">기간제</a></td>
+                <td><a href="#" onclick="fncDetailView('15136');">6학년</a></td>
+                <td><a href="#" onclick="fncDetailView('15136');">영어</a></td>
+                <td>2026.10.01</td><td>2026.10.10</td>
+              </tr>
+            </tbody>
+          </table>'''
           soup = BeautifulSoup(html, 'html.parser')
-          table = soup.table; tr = table.tbody.tr
-          assert s.seoul_seq_from_row(tr) == '5593'
-          a = s.seoul_detail_anchor_for_seq(tr, '5593')
-          assert s.clean(a.get_text(' ', strip=True)) == '기간제교원 채용 공고'
-          vals = s.seoul_row_values(table, tr)
-          assert s.date_norm(s.first_of(vals, ['등록일','작성일'])) == '2026/09/05'
-          assert s.date_norm(s.first_of(vals, ['마감일','접수마감일'])) == '2026/09/10'
-          print('fixture ok')
+          rows = soup.tbody.find_all('tr')
+
+          vals = s.seoul_row_values(soup.table, rows[0])
+          assert s.seoul_seq_from_row(rows[0]) == '15140'
+          assert s.clean(s.seoul_detail_anchor_for_seq(rows[0], '15140').get_text(' ', strip=True)) == '-'
+          assert s.seoul_title_from_values(vals) == '가을 단기방학 에듀케어 대체강사'
+          assert s.seoul_subject_from_values(vals) == '가을 단기방학 에듀케어 대체강사'
+
+          vals2 = s.seoul_row_values(soup.table, rows[1])
+          assert s.seoul_title_from_values(vals2) == '6학년 영어'
+          assert s.seoul_subject_from_values(vals2) == '6학년 / 영어'
+
+          cvals = c.seoul_values(soup.table, rows[0])
+          assert c.seoul_title_from_values(cvals) == '가을 단기방학 에듀케어 대체강사'
+          cvals2 = c.seoul_values(soup.table, rows[1])
+          assert c.seoul_title_from_values(cvals2) == '6학년 영어'
+          print('three-link SEN fixture ok')
           PY
       - name: Fail if generated hardening is not idempotent
         run: |
-          before=$(sha256sum scripts/scrape_jobs.py | cut -d' ' -f1)
+          before_scrape=$(sha256sum scripts/scrape_jobs.py | cut -d' ' -f1)
+          before_coverage=$(sha256sum scripts/complete_support_coverage.py | cut -d' ' -f1)
           python scripts/harden_seoul_office_row_parser.py
-          after=$(sha256sum scripts/scrape_jobs.py | cut -d' ' -f1)
-          test "$before" = "$after"
-      - name: Persist hardened parser on main only
+          after_scrape=$(sha256sum scripts/scrape_jobs.py | cut -d' ' -f1)
+          after_coverage=$(sha256sum scripts/complete_support_coverage.py | cut -d' ' -f1)
+          test "$before_scrape" = "$after_scrape"
+          test "$before_coverage" = "$after_coverage"
+      - name: Persist hardened parsers on main only
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          if git diff --quiet -- scripts/scrape_jobs.py; then
-            echo 'scraper already hardened'
+          if git diff --quiet -- scripts/scrape_jobs.py scripts/complete_support_coverage.py; then
+            echo 'Seoul support parsers already hardened'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/scrape_jobs.py
-          git commit -m 'Harden Seoul office detail-row parsing'
+          git add scripts/scrape_jobs.py scripts/complete_support_coverage.py
+          git commit -m 'Fix Seoul support-office multi-anchor title parsing'
           for n in 1 2 3; do
             git pull --rebase origin main && git push origin HEAD:main && exit 0
             sleep $((n * 5))
           done
           git fetch origin main
           git merge-base --is-ancestor HEAD origin/main || {
-            echo 'parser hardening commit was not published to main' >&2
+            echo 'Seoul support parser hardening commit was not published to main' >&2
             exit 1
           }
