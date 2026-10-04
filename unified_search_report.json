@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-04T18:59:04+09:00",
+  "generatedAt": "2026-10-04T21:42:03+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 20317,
+  "canonicalOfficialJobs": 20318,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6063,
-  "selectedCanonicalOfficialJobs": 3332,
+  "canonicalPrivateJobs": 6066,
+  "selectedCanonicalOfficialJobs": 3329,
   "selectedFoundationOfficialJobs": 9,
-  "selectedOfficialJobs": 3341,
-  "selectedPrivateJobs": 6043,
+  "selectedOfficialJobs": 3338,
+  "selectedPrivateJobs": 6046,
   "publishedJobs": 9203,
   "perFeed": {
-    "official": 3163,
-    "private": 6040
+    "official": 3160,
+    "private": 6043
   },
   "privateSources": {
     "lessoninfo": {
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 193,
-      "count": 193,
-      "rawCandidateCount": 193,
+      "candidateCount": 196,
+      "count": 196,
+      "rawCandidateCount": 196,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-04T12:15:27+09:00",
+      "lastVerifiedAt": "2026-10-04T19:48:13+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 193
+      "displayedAsPrivate": 196
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -92,7 +92,7 @@
       "count": 27,
       "rawCandidateCount": 27,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-04T14:16:21+09:00",
+      "lastVerifiedAt": "2026-10-04T21:12:04+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -126,7 +126,7 @@
       "count": 1,
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-04T07:18:06+09:00",
+      "lastVerifiedAt": "2026-10-04T20:47:34+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18920,
+  "protectedOfficialIds": 18921,
   "explicitOfficialAliasGroupsMerged": 3,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-04T18:59:13+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-04T21:42:11+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
