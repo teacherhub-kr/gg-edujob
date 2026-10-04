@@ -1,16 +1,27 @@
 {
   "summary": {
-    "freshCount": 17727,
-    "previousCount": 20695,
+    "freshCount": 17726,
+    "previousCount": 20225,
     "mergedCount": 20205,
-    "carriedForward": 2478,
+    "carriedForward": 2479,
     "officialIdProtected": 18816,
-    "officialIdCarryForward": 1016,
+    "officialIdCarryForward": 1017,
     "enrichedFromPrevious": 6109,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-04 07:25 KST"
+    "generatedAt": "2026-10-04 12:25 KST"
   },
   "carried": [
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울묵현초등학교",
+      "title": "(묵현초)영어교과 대체 시간 강사 모집",
+      "registered": "2026/10/02",
+      "applyEnd": "2026/11/10",
+      "sourceIdentity": "seoul-central:111422",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111422"
+    },
     {
       "province": "경기",
       "source": "평택교육지원청",

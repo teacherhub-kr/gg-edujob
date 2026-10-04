@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-04 06:46 KST",
+  "updatedAt": "2026-10-04 11:44 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -1792,7 +1792,7 @@
       "central": {
         "name": "서울교육일자리포털",
         "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term",
-        "count": 430,
+        "count": 429,
         "ok": true,
         "state": "ok"
       }
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261004072053",
+                  "/js/include.js?v=20261004122104",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,7 +2670,7 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-04 07:27 KST",
+    "checkedAt": "2026-10-04 12:27 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 2/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
@@ -2708,10 +2708,37 @@
         }
       ]
     },
-    "previousTotal": 20695,
+    "previousTotal": 20225,
     "currentTotal": 20225
   },
   "jobs": [
+    {
+      "id": "sen-111435",
+      "province": "서울",
+      "school": "서울봉현초등학교",
+      "title": "(봉현초)2026 학교 내 대안교실 전담강사 채용공고",
+      "subject": "학교 내 대안교실 운영",
+      "region": "관악구",
+      "regions": [
+        "관악구"
+      ],
+      "type": "자원봉사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/04",
+      "applyEnd": "2026/10/11",
+      "workStart": "2026/10/15",
+      "workEnd": "2027/01/06",
+      "registered": "2026/10/04",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111435",
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul-central:111435"
+    },
     {
       "id": "ice-central-3385884",
       "province": "인천",
@@ -3088,7 +3115,10 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111422",
-      "sourceIdentity": "seoul-central:111422"
+      "sourceIdentity": "seoul-central:111422",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "ice-central-3385777",
@@ -578225,7 +578255,7 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-04 07:21 KST",
+      "checkedAt": "2026-10-04 12:21 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
@@ -578236,23 +578266,23 @@
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-04 07:26 KST",
+    "checkedAt": "2026-10-04 12:26 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-04 07:26 KST",
+    "checkedAt": "2026-10-04 12:26 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
-    "freshCount": 17727,
-    "previousCount": 20695,
+    "freshCount": 17726,
+    "previousCount": 20225,
     "mergedCount": 20205,
-    "carriedForward": 2478,
+    "carriedForward": 2479,
     "officialIdProtected": 18816,
-    "officialIdCarryForward": 1016,
+    "officialIdCarryForward": 1017,
     "enrichedFromPrevious": 6109,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-04 07:25 KST"
+    "generatedAt": "2026-10-04 12:25 KST"
   },
   "supportLinkResolution": {
     "gyeonggiExact": 5995,
@@ -578261,7 +578291,7 @@
     "seoulTotal": 272
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-04 07:25 KST",
+    "checkedAt": "2026-10-04 12:25 KST",
     "parserVersion": 2,
     "recentSupportJobs": 5242,
     "detailPagesParsed": 2075,
@@ -578271,7 +578301,7 @@
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-04 07:25 KST",
+      "checkedAt": "2026-10-04 12:25 KST",
       "candidates": 137,
       "detailPagesConfirmed": 133,
       "cacheEntriesImproved": 0,
@@ -578283,18 +578313,18 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-04 08:00:49 KST",
+    "generatedAt": "2026-10-04 13:02:11 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18816,
+    "officialIdCount": 18815,
     "datasetIdCountBefore": 20298,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261003T222732Z-37156138733-1"
+    "scanId": "20261004T032744Z-37171926476-1"
   }
 }

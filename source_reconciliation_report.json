@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-04 08:00:49 KST",
+  "generatedAt": "2026-10-04 13:02:11 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-04 08:00:49 KST",
+    "generatedAt": "2026-10-04 13:02:11 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18816,
+    "officialIdCount": 18815,
     "datasetIdCountBefore": 20298,
-    "missingBefore": 0,
-    "recoveredNow": 0,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261003T222732Z-37156138733-1"
+    "scanId": "20261004T032744Z-37171926476-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 430,
+      "officialIdCount": 429,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 430,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 430,
+      "inDatasetBefore": 428,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 429,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -957,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261004080011",
+              "/js/include.js?v=20261004130140",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2935,15 +2935,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 430,
+      "officialIdCount": 429,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 430,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 430,
+      "inDatasetBefore": 428,
+      "missingBeforeCount": 1,
+      "recoveredNowCount": 1,
+      "inDatasetAfter": 429,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3773,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261004080011",
+              "/js/include.js?v=20261004130140",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261003T222732Z-37156138733-1"
+  "scanId": "20261004T032744Z-37171926476-1"
 }
