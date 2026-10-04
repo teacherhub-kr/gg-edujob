@@ -407,7 +407,7 @@ def scrape_mircms_board(board, src):
                 if not region and len(regions)==1: region = regions[0]
                 out.append({
                     "id":"goe-office-"+hashlib.sha1(detail.encode("utf-8")).hexdigest()[:20],"province":"경기","school":school or office,"title":title,
-                    "subject":first_of(vals,["과목","분야"]),"region":region,"regions":regions,"type":guess_type(raw_type+" "+title+" "+subject),
+                    "subject":first_of(vals,["과목","분야"]),"region":region,"regions":regions,"type":guess_type(raw_type+" "+title),
                     "schoolLevel":normalize_school_level(raw_level,school,title),"applyStart":"","applyEnd":apply_end,
                     "workStart":"","workEnd":"","registered":registered,"headcount":"",
                     "source":office,"checkedSources":[office],"sourceType":"교육지원청 개별 게시판","url":detail,"boardUrl":board
