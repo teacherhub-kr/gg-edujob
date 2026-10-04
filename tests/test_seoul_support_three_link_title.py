@@ -1,6 +1,15 @@
+from pathlib import Path
+import sys
+
 from bs4 import BeautifulSoup
-import scripts.scrape_jobs as scraper
-import scripts.complete_support_coverage as coverage
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS = ROOT / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
+
+import scrape_jobs as scraper
+import complete_support_coverage as coverage
 
 
 def _rows():
