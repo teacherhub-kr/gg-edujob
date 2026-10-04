@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-04 15:17 KST",
+  "updatedAt": "2026-10-04 20:18 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -590,7 +590,7 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 863,
+          "count": 864,
           "rawRows": 900,
           "ok": true,
           "state": "complete",
@@ -601,7 +601,7 @@
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
               "pagesScanned": 82,
               "rawRows": 820,
-              "recentRows": 794,
+              "recentRows": 795,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1792,7 +1792,7 @@
       "central": {
         "name": "서울교육일자리포털",
         "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term",
-        "count": 427,
+        "count": 426,
         "ok": true,
         "state": "ok"
       }
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261004155353",
+                  "/js/include.js?v=20261004205559",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,12 +2670,12 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-04 16:02 KST",
+    "checkedAt": "2026-10-04 21:03 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 2/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
-      "total": 6582,
-      "resolved": 6582,
+      "total": 6593,
+      "resolved": 6593,
       "unresolved": 0,
       "examples": []
     },
@@ -2708,8 +2708,8 @@
         }
       ]
     },
-    "previousTotal": 20226,
-    "currentTotal": 20306
+    "previousTotal": 20317,
+    "currentTotal": 20318
   },
   "jobs": [
     {
@@ -2818,8 +2818,39 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111436",
-      "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul-central:111436"
+    },
+    {
+      "id": "goe-office-f18d5df4b084e4315baf",
+      "province": "경기",
+      "school": "구미초",
+      "title": "구미초 기간제교사 채용 공고(초등 담임)",
+      "subject": "",
+      "region": "성남시",
+      "regions": [
+        "성남시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "",
+      "applyEnd": "2026/10/06",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/04",
+      "headcount": "",
+      "source": "성남교육지원청",
+      "checkedSources": [
+        "성남교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1959899",
+      "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
+      "sourceIdentity": "mircms:www.goesn.kr:17872:1959899",
+      "detailLinkResolved": true,
+      "nttSn": "1959899",
+      "bbsId": "17872",
+      "mi": "23603",
+      "periodStatus": "parsed"
     },
     {
       "id": "sen-111452",
@@ -19282,32 +19313,6 @@
       "sourceIdentity": "goe-central:61641"
     },
     {
-      "id": "sen-111273",
-      "province": "서울",
-      "school": "장위중학교",
-      "title": "장위중 시간 강사(역사) 채용 공고",
-      "subject": "장위중 시간 강사(역사) 채용 공고",
-      "region": "성북구",
-      "regions": [
-        "성북구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "중학교",
-      "applyStart": "2026/10/02",
-      "applyEnd": "2026/10/06",
-      "workStart": "2026/11/02",
-      "workEnd": "2026/11/06",
-      "registered": "2026/10/01",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111273",
-      "sourceIdentity": "seoul-central:111273"
-    },
-    {
       "id": "sen-111347",
       "province": "서울",
       "school": "광장중학교",
@@ -19332,6 +19337,32 @@
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111347",
       "sourceIdentity": "seoul-central:111347"
+    },
+    {
+      "id": "sen-111273",
+      "province": "서울",
+      "school": "장위중학교",
+      "title": "장위중 시간 강사(역사) 채용 공고",
+      "subject": "장위중 시간 강사(역사) 채용 공고",
+      "region": "성북구",
+      "regions": [
+        "성북구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/02",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/11/02",
+      "workEnd": "2026/11/06",
+      "registered": "2026/10/01",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111273",
+      "sourceIdentity": "seoul-central:111273"
     },
     {
       "id": "sen-111338",
@@ -22468,32 +22499,6 @@
       "sourceIdentity": "seoul-central:111318"
     },
     {
-      "id": "sen-111317",
-      "province": "서울",
-      "school": "서울불암초등학교",
-      "title": "(불암초) 초등 기간제교사 채용 공고",
-      "subject": "6학년 음악, 6학년 도덕, 5학년 도덕",
-      "region": "노원구",
-      "regions": [
-        "노원구"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/01",
-      "applyEnd": "2026/10/04",
-      "workStart": "2026/10/09",
-      "workEnd": "2027/02/28",
-      "registered": "2026/10/01",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111317",
-      "sourceIdentity": "seoul-central:111317"
-    },
-    {
       "id": "sen-111251",
       "province": "서울",
       "school": "선사고등학교",
@@ -22551,6 +22556,34 @@
       "detailLinkResolved": true
     },
     {
+      "id": "sen-111317",
+      "province": "서울",
+      "school": "서울불암초등학교",
+      "title": "(불암초) 초등 기간제교사 채용 공고",
+      "subject": "6학년 음악, 6학년 도덕, 5학년 도덕",
+      "region": "노원구",
+      "regions": [
+        "노원구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/01",
+      "applyEnd": "2026/10/04",
+      "workStart": "2026/10/09",
+      "workEnd": "2027/02/28",
+      "registered": "2026/10/01",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111317",
+      "sourceIdentity": "seoul-central:111317",
+      "recoveryCarryForward": true,
+      "recoveryReason": "previously published posting still within application period"
+    },
+    {
       "id": "sen-111269",
       "province": "서울",
       "school": "서울양전초등학교",
@@ -22576,7 +22609,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111269",
       "sourceIdentity": "seoul-central:111269",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23851,8 +23884,7 @@
         "job_seq": "8324"
       },
       "sourceIdentity": "seoul:gdspedu.sen.go.kr:8324",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-central-3385656",
@@ -30527,7 +30559,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111237",
       "sourceIdentity": "seoul-central:111237",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -58064,7 +58096,9 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110901",
-      "sourceIdentity": "seoul-central:110901"
+      "sourceIdentity": "seoul-central:110901",
+      "recoveryCarryForward": true,
+      "recoveryReason": "previously published posting still within application period"
     },
     {
       "id": "ice-central-3385273",
@@ -254777,8 +254811,7 @@
         "job_seq": "3435"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3435",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "sen-office-jbedu.sen.go.kr-3434",
@@ -254813,8 +254846,7 @@
         "job_seq": "3434"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3434",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-57973",
@@ -281052,7 +281084,11 @@
       },
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15105",
-      "detailLinkResolved": true
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
     },
     {
       "id": "sen-108813",
@@ -284180,8 +284216,7 @@
         "job_seq": "15102"
       },
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15102",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-support-7f1ec5793600308443b9",
@@ -318460,8 +318495,7 @@
         "job_seq": "15099"
       },
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15099",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "ice-support-f4c60a824c1c153e4a36",
@@ -324576,6 +324610,46 @@
       "recoveryCarryForward": true,
       "recoveryReason": "present in latest independent official-ID reconciliation",
       "reconciliationCarryForward": true
+    },
+    {
+      "id": "sen-complete-jbedu.sen.go.kr-3431",
+      "province": "서울",
+      "school": "한강중학교",
+      "title": "수학",
+      "subject": "수학",
+      "region": "",
+      "regions": [
+        "종로구",
+        "중구",
+        "용산구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "2026/08/18",
+      "applyEnd": "2026/08/24",
+      "workStart": "2026/08/31",
+      "workEnd": "2026/12/31",
+      "registered": "2026/08/18",
+      "headcount": "",
+      "source": "중부교육지원청",
+      "checkedSources": [
+        "중부교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3431",
+      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "3431"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:jbedu.sen.go.kr:3431",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-56748",
@@ -337247,42 +337321,6 @@
         "ice-support:ganghwa.ice.go.kr:num:4198"
       ],
       "periodStatus": "unavailable"
-    },
-    {
-      "id": "sen-complete-jbedu.sen.go.kr-3431",
-      "province": "서울",
-      "school": "한강중학교",
-      "title": "수학",
-      "subject": "수학",
-      "region": "",
-      "regions": [
-        "종로구",
-        "중구",
-        "용산구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/08/18",
-      "headcount": "",
-      "source": "중부교육지원청",
-      "checkedSources": [
-        "중부교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3431",
-      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "3431"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3431",
-      "detailLinkResolved": true
     },
     {
       "id": "sen-office-dgedu.sen.go.kr-10219",
@@ -395341,8 +395379,7 @@
         "job_seq": "3426"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3426",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-26c7477a93c737b5b757",
@@ -396317,6 +396354,45 @@
       "periodStatus": "unavailable"
     },
     {
+      "id": "sen-complete-gsycedu.sen.go.kr-15079",
+      "province": "서울",
+      "school": "백석중학교",
+      "title": "백석중학교 교육공무직원(시설관리직) 대체 기간제근로자 채용",
+      "subject": "백석중학교 교육공무직원(시설관리직) 대체 기간제근로자 채용",
+      "region": "",
+      "regions": [
+        "강서구",
+        "양천구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "",
+      "applyEnd": "",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/08/10",
+      "headcount": "",
+      "source": "강서양천교육지원청",
+      "checkedSources": [
+        "강서양천교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15079",
+      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "15079"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15079",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
+    },
+    {
       "id": "sen-office-cms-93d8b6d2b2ab22191437",
       "province": "서울",
       "school": "남부교육지원청",
@@ -396365,41 +396441,6 @@
       "sourceIdentity": "seoul-cms:nbedu.sen.go.kr:4146:1358143",
       "url": "http://nbedu.sen.go.kr/CMS/admininfo/admininfo01/admininfo0102/1358143_4146.html",
       "boardUrl": "http://nbedu.sen.go.kr/CMS/admininfo/admininfo01/admininfo0102/1358143_4146.html"
-    },
-    {
-      "id": "sen-complete-gsycedu.sen.go.kr-15079",
-      "province": "서울",
-      "school": "백석중학교",
-      "title": "백석중학교 교육공무직원(시설관리직) 대체 기간제근로자 채용",
-      "subject": "백석중학교 교육공무직원(시설관리직) 대체 기간제근로자 채용",
-      "region": "",
-      "regions": [
-        "강서구",
-        "양천구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/08/10",
-      "headcount": "",
-      "source": "강서양천교육지원청",
-      "checkedSources": [
-        "강서양천교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15079",
-      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "15079"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15079",
-      "detailLinkResolved": true
     },
     {
       "id": "ice-central-3380397",
@@ -411888,7 +411929,11 @@
       },
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15074",
-      "detailLinkResolved": true
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
     },
     {
       "id": "goe-office-5fb5efdb62a6ced2c6c9",
@@ -416878,8 +416923,7 @@
         "job_seq": "3422"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3422",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-55065",
@@ -437301,8 +437345,7 @@
         "job_seq": "3421"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3421",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-54634",
@@ -438361,8 +438404,7 @@
         "job_seq": "3420"
       },
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3420",
-      "detailLinkResolved": true,
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-54574",
@@ -453423,6 +453465,46 @@
       "periodStatus": "error"
     },
     {
+      "id": "sen-complete-jbedu.sen.go.kr-3419",
+      "province": "서울",
+      "school": "서울봉래초등학교",
+      "title": "국악강사",
+      "subject": "국악강사",
+      "region": "",
+      "regions": [
+        "종로구",
+        "중구",
+        "용산구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "",
+      "applyEnd": "",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/07/28",
+      "headcount": "",
+      "source": "중부교육지원청",
+      "checkedSources": [
+        "중부교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3419",
+      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "3419"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:jbedu.sen.go.kr:3419",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
+    },
+    {
       "id": "sen-office-cms-b6ade21c46680fbd6eea",
       "province": "서울",
       "school": "동부교육지원청",
@@ -453471,42 +453553,6 @@
       "sourceIdentity": "seoul-cms:dbedu.sen.go.kr:9430:1357761",
       "url": "http://dbedu.sen.go.kr/CMS/school/school04/school0409/school040903/1357761_9430.html",
       "boardUrl": "https://dbedu.sen.go.kr/CMS/school/school04/school0409/school040903/index.html"
-    },
-    {
-      "id": "sen-complete-jbedu.sen.go.kr-3419",
-      "province": "서울",
-      "school": "서울봉래초등학교",
-      "title": "국악강사",
-      "subject": "국악강사",
-      "region": "",
-      "regions": [
-        "종로구",
-        "중구",
-        "용산구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/07/28",
-      "headcount": "",
-      "source": "중부교육지원청",
-      "checkedSources": [
-        "중부교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3419",
-      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "3419"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3419",
-      "detailLinkResolved": true
     },
     {
       "id": "goe-office-b9ba24a976a05131de94",
@@ -505088,7 +505134,11 @@
       },
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3414",
-      "detailLinkResolved": true
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
     },
     {
       "id": "ice-central-3378317",
@@ -544198,6 +544248,46 @@
       "reconciliationCarryForward": true
     },
     {
+      "id": "sen-complete-jbedu.sen.go.kr-3412",
+      "province": "서울",
+      "school": "서울서빙고초등학교병설유치원",
+      "title": "교육활동 지원인력",
+      "subject": "교육활동 지원인력",
+      "region": "",
+      "regions": [
+        "종로구",
+        "중구",
+        "용산구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "2026/07/10",
+      "applyEnd": "2026/07/14",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/07/10",
+      "headcount": "",
+      "source": "중부교육지원청",
+      "checkedSources": [
+        "중부교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3412",
+      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "3412"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:jbedu.sen.go.kr:3412",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-52838",
       "province": "경기",
       "school": "세마중학교",
@@ -547643,42 +547733,6 @@
       "sourceIdentity": "seoul-cms:bbedu.sen.go.kr:9278:1357379",
       "url": "http://bbedu.sen.go.kr/CMS/notice/notice07/1357379_9278.html",
       "boardUrl": "https://bbedu.sen.go.kr/CMS/notice/notice07/index.html"
-    },
-    {
-      "id": "sen-complete-jbedu.sen.go.kr-3412",
-      "province": "서울",
-      "school": "서울서빙고초등학교병설유치원",
-      "title": "교육활동 지원인력",
-      "subject": "교육활동 지원인력",
-      "region": "",
-      "regions": [
-        "종로구",
-        "중구",
-        "용산구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/07/10",
-      "headcount": "",
-      "source": "중부교육지원청",
-      "checkedSources": [
-        "중부교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3412",
-      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "3412"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3412",
-      "detailLinkResolved": true
     },
     {
       "id": "goe-52544",
@@ -555962,6 +556016,46 @@
       "reconciliationCarryForward": true
     },
     {
+      "id": "sen-complete-jbedu.sen.go.kr-3411",
+      "province": "서울",
+      "school": "한강중학교",
+      "title": "사회",
+      "subject": "사회",
+      "region": "",
+      "regions": [
+        "종로구",
+        "중구",
+        "용산구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "2026/07/09",
+      "applyEnd": "2026/07/13",
+      "workStart": "2026/08/19",
+      "workEnd": "2026/07/09",
+      "registered": "2026/07/09",
+      "headcount": "",
+      "source": "중부교육지원청",
+      "checkedSources": [
+        "중부교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3411",
+      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "3411"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:jbedu.sen.go.kr:3411",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-52615",
       "province": "경기",
       "school": "충현고등학교",
@@ -557898,42 +557992,6 @@
       "recoveryCarryForward": true,
       "recoveryReason": "present in latest independent official-ID reconciliation",
       "reconciliationCarryForward": true
-    },
-    {
-      "id": "sen-complete-jbedu.sen.go.kr-3411",
-      "province": "서울",
-      "school": "한강중학교",
-      "title": "사회",
-      "subject": "사회",
-      "region": "",
-      "regions": [
-        "종로구",
-        "중구",
-        "용산구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/07/09",
-      "headcount": "",
-      "source": "중부교육지원청",
-      "checkedSources": [
-        "중부교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3411",
-      "boardUrl": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "3411"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3411",
-      "detailLinkResolved": true
     },
     {
       "id": "goe-office-0391fa1aa4fbfa5b8b2c",
@@ -561009,6 +561067,45 @@
       "recoveryCarryForward": true,
       "recoveryReason": "present in latest independent official-ID reconciliation",
       "reconciliationCarryForward": true
+    },
+    {
+      "id": "sen-complete-gsycedu.sen.go.kr-15035",
+      "province": "서울",
+      "school": "강서양천교육지원청",
+      "title": "2027 수능 업무보조원",
+      "subject": "2027 수능 업무보조원",
+      "region": "",
+      "regions": [
+        "강서구",
+        "양천구"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "2026/07/08",
+      "applyEnd": "2026/07/14",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/07/08",
+      "headcount": "",
+      "source": "강서양천교육지원청",
+      "checkedSources": [
+        "강서양천교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15035",
+      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
+      "openMethod": "POST",
+      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
+      "openParams": {
+        "job_seq": "15035"
+      },
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15035",
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-52435",
@@ -568041,41 +568138,6 @@
       "sourceIdentities": [
         "ice-support:ganghwa.ice.go.kr:num:4161"
       ]
-    },
-    {
-      "id": "sen-complete-gsycedu.sen.go.kr-15035",
-      "province": "서울",
-      "school": "강서양천교육지원청",
-      "title": "2027 수능 업무보조원",
-      "subject": "2027 수능 업무보조원",
-      "region": "",
-      "regions": [
-        "강서구",
-        "양천구"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/07/08",
-      "headcount": "",
-      "source": "강서양천교육지원청",
-      "checkedSources": [
-        "강서양천교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15035",
-      "boardUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
-      "openMethod": "POST",
-      "openUrl": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do",
-      "openParams": {
-        "job_seq": "15035"
-      },
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15035",
-      "detailLinkResolved": true
     },
     {
       "id": "goe-52130",
@@ -578468,7 +578530,11 @@
       },
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul:jbedu.sen.go.kr:3408",
-      "detailLinkResolved": true
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
     },
     {
       "id": "goe-51904",
@@ -581387,57 +581453,57 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-04 15:54 KST",
+      "checkedAt": "2026-10-04 20:56 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
       "needsCheck": 0,
-      "recentJobsRead": 785,
+      "recentJobsRead": 786,
       "lookbackDays": 21,
       "maxPages": 0
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-04 16:00 KST",
+    "checkedAt": "2026-10-04 21:02 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-04 16:00 KST",
+    "checkedAt": "2026-10-04 21:02 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
     "freshCount": 17823,
-    "previousCount": 20226,
-    "mergedCount": 20286,
-    "carriedForward": 2463,
-    "officialIdProtected": 18815,
-    "officialIdCarryForward": 1017,
-    "enrichedFromPrevious": 6115,
+    "previousCount": 20317,
+    "mergedCount": 20298,
+    "carriedForward": 2475,
+    "officialIdProtected": 18920,
+    "officialIdCarryForward": 1025,
+    "enrichedFromPrevious": 6144,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-04 15:58 KST"
+    "generatedAt": "2026-10-04 21:00 KST"
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5995,
-    "gyeonggiTotal": 5995,
+    "gyeonggiExact": 5996,
+    "gyeonggiTotal": 5996,
     "seoulExact": 361,
     "seoulTotal": 361
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-04 15:58 KST",
+    "checkedAt": "2026-10-04 21:00 KST",
     "parserVersion": 2,
-    "recentSupportJobs": 5298,
-    "detailPagesParsed": 2104,
-    "fieldsFilledThisRun": 54,
-    "missingApplicationPeriod": 924,
-    "missingWorkPeriod": 1799,
+    "recentSupportJobs": 5304,
+    "detailPagesParsed": 2097,
+    "fieldsFilledThisRun": 4,
+    "missingApplicationPeriod": 928,
+    "missingWorkPeriod": 1804,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-04 15:59 KST",
-      "candidates": 175,
-      "detailPagesConfirmed": 171,
+      "checkedAt": "2026-10-04 21:01 KST",
+      "candidates": 184,
+      "detailPagesConfirmed": 180,
       "cacheEntriesImproved": 0,
-      "fieldsFilled": 0
+      "fieldsFilled": 8
     },
     "seoulCmsDiscoverySync": {
       "newCandidates": 0,
@@ -581445,18 +581511,18 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-04 16:37:45 KST",
+    "generatedAt": "2026-10-04 21:39:36 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18920,
-    "datasetIdCountBefore": 20379,
-    "missingBefore": 11,
-    "recoveredNow": 11,
+    "officialIdCount": 18921,
+    "datasetIdCountBefore": 20391,
+    "missingBefore": 0,
+    "recoveredNow": 0,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261004T070212Z-37182310376-1"
+    "scanId": "20261004T120341Z-37198229773-1"
   }
 }
