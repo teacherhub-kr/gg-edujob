@@ -1,0 +1,59 @@
+name: Prove Seoul support P0 live
+
+on:
+  push:
+    branches:
+      - proof/seoul-support-live-20261004
+    paths:
+      - '.github/workflows/prove-seoul-support-p0-live.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: proof/seoul-support-live-20261004
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Live-read Gangseo-Yangcheon and Jungbu official boards
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'scripts')
+          import scrape_jobs as s
+
+          registry=json.load(open('sources.json',encoding='utf-8'))
+          targets={'강서양천교육지원청','중부교육지원청'}
+          offices=[x for x in registry['seoul']['supportOffices'] if x.get('name') in targets]
+          assert {x.get('name') for x in offices}==targets, offices
+
+          result={}
+          for src in offices:
+              rows,meta=s.scrape_seoul_office(src)
+              ids={str(j.get('id','')).rsplit('-',1)[-1]:j for j in rows}
+              result[src['name']]={
+                  'count':len(rows),
+                  'rawRows':meta.get('rawRows'),
+                  'parseIncomplete':meta.get('seoulOfficeParseIncomplete'),
+                  'ok':meta.get('ok'),
+                  'sample':[(j.get('id'),j.get('title'),j.get('subject')) for j in rows[:10]],
+              }
+              assert meta.get('seoulOfficeParseIncomplete')==0, meta
+              assert meta.get('ok') is True, meta
+              if src['name']=='강서양천교육지원청':
+                  assert len(rows)>14, result[src['name']]
+                  assert '15140' in ids, ('15140 missing', result[src['name']])
+                  target=ids['15140']
+                  assert '에듀케어' in str(target.get('title','')), target
+              if src['name']=='중부교육지원청':
+                  assert len(rows)>4, result[src['name']]
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
