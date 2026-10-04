@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import unittest
 
 from bs4 import BeautifulSoup
 
@@ -37,25 +38,31 @@ def _rows():
     return soup.table, soup.tbody.find_all('tr')
 
 
-def test_scraper_uses_labelled_fields_not_final_repeated_anchor():
-    table, rows = _rows()
-    vals = scraper.seoul_row_values(table, rows[0])
-    assert scraper.seoul_seq_from_row(rows[0]) == '15140'
-    assert scraper.clean(scraper.seoul_detail_anchor_for_seq(rows[0], '15140').get_text(' ', strip=True)) == '-'
-    assert scraper.seoul_title_from_values(vals) == '가을 단기방학 에듀케어 대체강사'
-    assert scraper.seoul_subject_from_values(vals) == '가을 단기방학 에듀케어 대체강사'
+class SeoulSupportThreeLinkTitleTests(unittest.TestCase):
+    def test_scraper_uses_labelled_fields_not_final_repeated_anchor(self):
+        table, rows = _rows()
+        vals = scraper.seoul_row_values(table, rows[0])
+        self.assertEqual(scraper.seoul_seq_from_row(rows[0]), '15140')
+        self.assertEqual(
+            scraper.clean(scraper.seoul_detail_anchor_for_seq(rows[0], '15140').get_text(' ', strip=True)),
+            '-',
+        )
+        self.assertEqual(scraper.seoul_title_from_values(vals), '가을 단기방학 에듀케어 대체강사')
+        self.assertEqual(scraper.seoul_subject_from_values(vals), '가을 단기방학 에듀케어 대체강사')
+
+    def test_two_short_fields_are_kept_and_combined(self):
+        table, rows = _rows()
+        vals = scraper.seoul_row_values(table, rows[1])
+        self.assertEqual(scraper.seoul_title_from_values(vals), '6학년 영어')
+        self.assertEqual(scraper.seoul_subject_from_values(vals), '6학년 / 영어')
+
+    def test_coverage_parser_uses_same_raw_label_evidence(self):
+        table, rows = _rows()
+        vals = coverage.seoul_values(table, rows[0])
+        self.assertEqual(coverage.seoul_title_from_values(vals), '가을 단기방학 에듀케어 대체강사')
+        vals2 = coverage.seoul_values(table, rows[1])
+        self.assertEqual(coverage.seoul_title_from_values(vals2), '6학년 영어')
 
 
-def test_two_short_fields_are_kept_and_combined():
-    table, rows = _rows()
-    vals = scraper.seoul_row_values(table, rows[1])
-    assert scraper.seoul_title_from_values(vals) == '6학년 영어'
-    assert scraper.seoul_subject_from_values(vals) == '6학년 / 영어'
-
-
-def test_coverage_parser_uses_same_raw_label_evidence():
-    table, rows = _rows()
-    vals = coverage.seoul_values(table, rows[0])
-    assert coverage.seoul_title_from_values(vals) == '가을 단기방학 에듀케어 대체강사'
-    vals2 = coverage.seoul_values(table, rows[1])
-    assert coverage.seoul_title_from_values(vals2) == '6학년 영어'
+if __name__ == '__main__':
+    unittest.main()
