@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-05T00:27:53+09:00",
+  "generatedAt": "2026-10-05T04:26:40+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4464,
-  "officialJobs": 20318,
+  "privateJobs": 4457,
+  "officialJobs": 20248,
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 195
+      "canonicalCount": 188
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 195,
+      "jobs": 188,
       "strongOfficialMatches": 21,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 9
@@ -131,7 +131,7 @@
       "matches": [
         {
           "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "계약제교원(시간강사)채용 공고(음악,한문,영어)",
+          "officialTitle": "오늘마감 계약제교원(시간강사)채용 공고(음악,한문,영어)",
           "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60979",
           "evidence": "explicit-exact-official-url"
         }
