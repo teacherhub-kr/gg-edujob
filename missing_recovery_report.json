@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 17726,
-    "previousCount": 20225,
-    "mergedCount": 20205,
-    "carriedForward": 2479,
-    "officialIdProtected": 18816,
+    "freshCount": 17823,
+    "previousCount": 20226,
+    "mergedCount": 20286,
+    "carriedForward": 2463,
+    "officialIdProtected": 18815,
     "officialIdCarryForward": 1017,
-    "enrichedFromPrevious": 6109,
+    "enrichedFromPrevious": 6115,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-04 12:25 KST"
+    "generatedAt": "2026-10-04 15:58 KST"
   },
   "carried": [
     {
@@ -19,7 +19,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/11/10",
       "sourceIdentity": "seoul-central:111422",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111422"
     },
     {
@@ -351,6 +351,17 @@
       "sourceIdentity": "goe-central:61645",
       "reason": "previously published posting still within application period",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61645"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울양전초등학교",
+      "title": "(양전초)학폭시수경감 및 교육지원팀 시수경감강사 2-3학년",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/04",
+      "sourceIdentity": "seoul-central:111269",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111269"
     },
     {
       "province": "경기",
@@ -696,6 +707,28 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "녹천중학교",
+      "title": "녹천중학교 방과후학교 강사 채용",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/04",
+      "sourceIdentity": "seoul-central:111207",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111207"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울가재울초등학교병설유치원",
+      "title": "(가재울병유) 특수시간강사 채용",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/04",
+      "sourceIdentity": "seoul-central:111237",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111237"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "서울우이유치원",
       "title": "2학기 순회시간강사 채용",
       "registered": "2026/09/30",
@@ -923,17 +956,6 @@
       "sourceIdentity": "mircms:www.goegn.kr:8653:1409825",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1409825"
-    },
-    {
-      "province": "서울",
-      "source": "중부교육지원청",
-      "school": "서울혜화초등학교병설유치원",
-      "title": "시간제",
-      "registered": "2026/09/30",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3443",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3443"
     },
     {
       "province": "경기",
@@ -1715,17 +1737,6 @@
       "sourceIdentity": "seoul-central:111141",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111141"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울등마초등학교",
-      "title": "특기적성",
-      "registered": "2026/09/29",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15138",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15138"
     },
     {
       "province": "경기",
@@ -3334,17 +3345,6 @@
       "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15137"
     },
     {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울공항초등학교",
-      "title": "기간제",
-      "registered": "2026/09/23",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15136",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15136"
-    },
-    {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직 + 평택교육지원청",
       "school": "비전중학교",
@@ -4225,17 +4225,6 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17803&nttSn=1957160&mi=23490"
     },
     {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울경인유치원",
-      "title": "기간제",
-      "registered": "2026/09/22",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15135",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15135"
-    },
-    {
       "province": "경기",
       "source": "평택교육지원청",
       "school": "비전중학교",
@@ -4797,39 +4786,6 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110778"
     },
     {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "학교통합지원과",
-      "title": "비정규직",
-      "registered": "2026/09/21",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15134",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15134"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울치현초등학교",
-      "title": "비정규직",
-      "registered": "2026/09/21",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15131",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15131"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울등마초등학교",
-      "title": "1~2학년 전래놀이 강사",
-      "registered": "2026/09/21",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15133",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15133"
-    },
-    {
       "province": "경기",
       "source": "구리남양주교육지원청",
       "school": "다산한강유치원",
@@ -5334,17 +5290,6 @@
       "sourceIdentity": "goe-central:60533",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60533"
-    },
-    {
-      "province": "서울",
-      "source": "중부교육지원청",
-      "school": "서울서빙고초등학교병설유치원",
-      "title": "시간제",
-      "registered": "2026/09/18",
-      "applyEnd": "2026/09/22",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3442",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3442"
     },
     {
       "province": "서울",
@@ -6720,17 +6665,6 @@
       "sourceIdentity": "seoul-central:110541",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110541"
-    },
-    {
-      "province": "서울",
-      "source": "중부교육지원청",
-      "school": "서울특별시중부교육지원청",
-      "title": "기간제",
-      "registered": "2026/09/16",
-      "applyEnd": "2026/09/22",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3441",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3441"
     },
     {
       "province": "서울",
@@ -8315,17 +8249,6 @@
       "sourceIdentity": "seoul-central:110393",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110393"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "학교통합지원과",
-      "title": "[2차공고] ('26. 10월~12월 채용 예정) 서울특별시강서양천교육지원청 관내 공립 초·중·고·특수학교 시간강사 채용 공고",
-      "registered": "2026/09/15",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15129",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15129"
     },
     {
       "province": "서울",
@@ -10933,17 +10856,6 @@
       "sourceIdentity": "seoul-central:110169",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110169"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울경인유치원",
-      "title": "비정규직",
-      "registered": "2026/09/11",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15126",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15126"
     },
     {
       "province": "서울",
@@ -14577,28 +14489,6 @@
     },
     {
       "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울금낭화유치원",
-      "title": "기간제",
-      "registered": "2026/09/08",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15123",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15123"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "학교통합지원과",
-      "title": "[서울특별시강서양천교육지원청] 관내 월촌중학교 지방공무원(시설관리) 대체직원 채용계획 공고",
-      "registered": "2026/09/08",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15124",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15124"
-    },
-    {
-      "province": "서울",
       "source": "남부교육지원청",
       "school": "남부교육지원청",
       "title": "2027학년도 중학교 입학 배정 등 업무보조원 채용 공고",
@@ -14717,28 +14607,6 @@
       "sourceIdentity": "seoul-central:109783",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=109783"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "학교통합지원과",
-      "title": "[서울특별시강서양천교육지원청] 2026년 9월 지방공무원[행정·시설관리] 대체 인력풀 모집 공고",
-      "registered": "2026/09/07",
-      "applyEnd": "2026/09/18",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15122",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15122"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "학교통합지원과",
-      "title": "[서울특별시강서양천교육지원청] 2026년 9월 교원 결원대체 시간강사 인력풀 모집 공고",
-      "registered": "2026/09/07",
-      "applyEnd": "2026/09/18",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15121",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15121"
     },
     {
       "province": "서울",
@@ -16117,17 +15985,6 @@
     },
     {
       "province": "서울",
-      "source": "중부교육지원청",
-      "school": "서울혜화초등학교병설유치원",
-      "title": "시간제",
-      "registered": "2026/09/07",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:jbedu.sen.go.kr:3440",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://jbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=3440"
-    },
-    {
-      "province": "서울",
       "source": "강남서초교육지원청",
       "school": "강남서초교육지원청",
       "title": "청담고등학교 2026학년도 2학기 기간제교원(특수(중등)) 채용 공고",
@@ -17049,28 +16906,6 @@
       "sourceIdentity": "seoul-central:109753",
       "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=109753"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울양동초등학교병설유치원",
-      "title": "비정규직",
-      "registered": "2026/09/04",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15119",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15119"
-    },
-    {
-      "province": "서울",
-      "source": "강서양천교육지원청",
-      "school": "서울경인유치원",
-      "title": "유치원 특수교육실무사 육아시간 대체",
-      "registered": "2026/09/04",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gsycedu.sen.go.kr:15117",
-      "reason": "previously published recent posting not rediscovered in this crawl",
-      "url": "https://gsycedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=15117"
     },
     {
       "province": "경기",
@@ -21913,17 +21748,6 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=55180"
     },
     {
-      "province": "서울",
-      "source": "강남서초교육지원청",
-      "school": "원촌중학교",
-      "title": "시간강사",
-      "registered": "2026/08/06",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gnscedu.sen.go.kr:14214",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://gnscedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=14214"
-    },
-    {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
       "school": "안양해솔학교",
@@ -22903,6 +22727,17 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=54472"
     },
     {
+      "province": "서울",
+      "source": "강남서초교육지원청",
+      "school": "밀알학교",
+      "title": "늘봄학교 맞춤형 교실 강사(특수체육,예술신체놀이,미술)",
+      "registered": "2026/07/29",
+      "applyEnd": "2026/08/01",
+      "sourceIdentity": "seoul:gnscedu.sen.go.kr:14207",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://gnscedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=14207"
+    },
+    {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
       "school": "광남고등학교",
@@ -23187,6 +23022,17 @@
       "sourceIdentity": "goe-central:54323",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=54323"
+    },
+    {
+      "province": "서울",
+      "source": "강남서초교육지원청",
+      "school": "서울신구유치원",
+      "title": "2026 여름방학 방과후 과정 대체강사",
+      "registered": "2026/07/27",
+      "applyEnd": "",
+      "sourceIdentity": "seoul:gnscedu.sen.go.kr:14200",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://gnscedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=14200"
     },
     {
       "province": "경기",
@@ -24485,17 +24331,6 @@
       "sourceIdentity": "mircms:www.goept.kr:10111:2559700",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2559700&mi=10118"
-    },
-    {
-      "province": "서울",
-      "source": "강남서초교육지원청",
-      "school": "서울남현유치원",
-      "title": "[마감]기간제 근로자(대체강사)",
-      "registered": "2026/07/16",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gnscedu.sen.go.kr:14188",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://gnscedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=14188"
     },
     {
       "province": "경기",
@@ -25805,17 +25640,6 @@
       "sourceIdentity": "goe-central:52508",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=52508"
-    },
-    {
-      "province": "서울",
-      "source": "강남서초교육지원청",
-      "school": "서울강현유치원",
-      "title": "여름방학 방과후과정 대체강사",
-      "registered": "2026/07/09",
-      "applyEnd": "",
-      "sourceIdentity": "seoul:gnscedu.sen.go.kr:14178",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://gnscedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=14178"
     },
     {
       "province": "서울",

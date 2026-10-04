@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T04:03:01.881573+00:00",
+  "generatedAt": "2026-10-04T07:38:26.797140+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -13,8 +13,8 @@
   "supportLinkResolution": {
     "gyeonggiExact": 5995,
     "gyeonggiTotal": 5995,
-    "seoulExact": 272,
-    "seoulTotal": 272
+    "seoulExact": 361,
+    "seoulTotal": 361
   },
   "provinces": {
     "gyeonggi": {
@@ -1575,7 +1575,7 @@
           "boards": [
             "https://jbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 4,
+          "count": 35,
           "rawRows": 60,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1586,7 +1586,7 @@
               "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 6,
               "rawRows": 60,
-              "recentRows": 4,
+              "recentRows": 35,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1608,7 +1608,7 @@
           "boards": [
             "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 3,
+          "count": 4,
           "rawRows": 7,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1619,7 +1619,7 @@
               "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
               "rawRows": 7,
-              "recentRows": 3,
+              "recentRows": 4,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1641,7 +1641,7 @@
           "boards": [
             "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 14,
+          "count": 89,
           "rawRows": 110,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
@@ -1652,7 +1652,7 @@
               "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 11,
               "rawRows": 110,
-              "recentRows": 14,
+              "recentRows": 89,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261004122104",
+                  "/js/include.js?v=20261004155353",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],

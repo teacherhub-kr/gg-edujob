@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-04 13:02:11 KST",
+  "generatedAt": "2026-10-04 16:37:45 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-04 13:02:11 KST",
+    "generatedAt": "2026-10-04 16:37:45 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18815,
-    "datasetIdCountBefore": 20298,
-    "missingBefore": 1,
-    "recoveredNow": 1,
+    "officialIdCount": 18920,
+    "datasetIdCountBefore": 20379,
+    "missingBefore": 11,
+    "recoveredNow": 11,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261004T032744Z-37171926476-1"
+    "scanId": "20261004T070212Z-37182310376-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 429,
+      "officialIdCount": 426,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 428,
+      "inDatasetBefore": 425,
       "missingBeforeCount": 1,
       "recoveredNowCount": 1,
-      "inDatasetAfter": 429,
+      "inDatasetAfter": 426,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -223,7 +223,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2490,
+      "officialIdCount": 2491,
       "coverageComplete": true,
       "pagesScanned": 252,
       "accessErrors": 0,
@@ -235,7 +235,7 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 246,
-          "count": 2445,
+          "count": 2446,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -243,11 +243,11 @@
           "emptyPageEvidence": {},
           "latestRegistered": "2026/10/04",
           "sampleIds": [
+            "ice-central:3385886",
             "ice-central:3385884",
             "ice-central:3385877",
             "ice-central:3385879",
-            "ice-central:3385777",
-            "ice-central:3385817"
+            "ice-central:3385777"
           ]
         },
         {
@@ -273,10 +273,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2490,
+      "inDatasetBefore": 2491,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2490,
+      "inDatasetAfter": 2491,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -957,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261004130140",
+              "/js/include.js?v=20261004163719",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2596,7 +2596,7 @@
       "boards": [
         "https://jbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 4,
+      "officialIdCount": 35,
       "coverageComplete": true,
       "pagesScanned": 6,
       "accessErrors": 0,
@@ -2605,13 +2605,48 @@
           "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 4,
+          "recentRows": 35,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
           "naturalEnd": false,
           "gotTable": true,
           "crossedLookback": true,
+          "seoulOfficeParseIncomplete": 0,
+          "coverageComplete": true,
+          "paginationMethod": "GET"
+        }
+      ],
+      "inDatasetBefore": 29,
+      "missingBeforeCount": 6,
+      "recoveredNowCount": 6,
+      "inDatasetAfter": 35,
+      "missingAfterCount": 0,
+      "missingAfterExamples": [],
+      "reconciled": true
+    },
+    {
+      "province": "서울",
+      "name": "강동송파교육지원청",
+      "boards": [
+        "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
+      ],
+      "officialIdCount": 4,
+      "coverageComplete": true,
+      "pagesScanned": 2,
+      "accessErrors": 0,
+      "boardHealth": [
+        {
+          "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
+          "pagesScanned": 2,
+          "rawRows": 7,
+          "recentRows": 4,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "naturalEnd": true,
+          "gotTable": true,
+          "crossedLookback": false,
           "seoulOfficeParseIncomplete": 0,
           "coverageComplete": true,
           "paginationMethod": "GET"
@@ -2627,46 +2662,11 @@
     },
     {
       "province": "서울",
-      "name": "강동송파교육지원청",
-      "boards": [
-        "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
-      ],
-      "officialIdCount": 3,
-      "coverageComplete": true,
-      "pagesScanned": 2,
-      "accessErrors": 0,
-      "boardHealth": [
-        {
-          "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 2,
-          "rawRows": 7,
-          "recentRows": 3,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "naturalEnd": true,
-          "gotTable": true,
-          "crossedLookback": false,
-          "seoulOfficeParseIncomplete": 0,
-          "coverageComplete": true,
-          "paginationMethod": "GET"
-        }
-      ],
-      "inDatasetBefore": 3,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 3,
-      "missingAfterCount": 0,
-      "missingAfterExamples": [],
-      "reconciled": true
-    },
-    {
-      "province": "서울",
       "name": "강서양천교육지원청",
       "boards": [
         "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 14,
+      "officialIdCount": 89,
       "coverageComplete": true,
       "pagesScanned": 11,
       "accessErrors": 0,
@@ -2675,7 +2675,7 @@
           "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 14,
+          "recentRows": 89,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -2687,10 +2687,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 14,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 14,
+      "inDatasetBefore": 85,
+      "missingBeforeCount": 4,
+      "recoveredNowCount": 4,
+      "inDatasetAfter": 89,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2935,15 +2935,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 429,
+      "officialIdCount": 426,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 428,
+      "inDatasetBefore": 425,
       "missingBeforeCount": 1,
       "recoveredNowCount": 1,
-      "inDatasetAfter": 429,
+      "inDatasetAfter": 426,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3039,7 +3039,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2490,
+      "officialIdCount": 2491,
       "coverageComplete": true,
       "pagesScanned": 252,
       "accessErrors": 0,
@@ -3051,7 +3051,7 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 246,
-          "count": 2445,
+          "count": 2446,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -3059,11 +3059,11 @@
           "emptyPageEvidence": {},
           "latestRegistered": "2026/10/04",
           "sampleIds": [
+            "ice-central:3385886",
             "ice-central:3385884",
             "ice-central:3385877",
             "ice-central:3385879",
-            "ice-central:3385777",
-            "ice-central:3385817"
+            "ice-central:3385777"
           ]
         },
         {
@@ -3089,10 +3089,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2490,
+      "inDatasetBefore": 2491,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2490,
+      "inDatasetAfter": 2491,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3773,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261004130140",
+              "/js/include.js?v=20261004163719",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5412,7 +5412,7 @@
       "boards": [
         "https://jbedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 4,
+      "officialIdCount": 35,
       "coverageComplete": true,
       "pagesScanned": 6,
       "accessErrors": 0,
@@ -5421,13 +5421,48 @@
           "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 6,
           "rawRows": 60,
-          "recentRows": 4,
+          "recentRows": 35,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
           "naturalEnd": false,
           "gotTable": true,
           "crossedLookback": true,
+          "seoulOfficeParseIncomplete": 0,
+          "coverageComplete": true,
+          "paginationMethod": "GET"
+        }
+      ],
+      "inDatasetBefore": 29,
+      "missingBeforeCount": 6,
+      "recoveredNowCount": 6,
+      "inDatasetAfter": 35,
+      "missingAfterCount": 0,
+      "missingAfterExamples": [],
+      "reconciled": true
+    },
+    {
+      "province": "서울",
+      "name": "강동송파교육지원청",
+      "boards": [
+        "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
+      ],
+      "officialIdCount": 4,
+      "coverageComplete": true,
+      "pagesScanned": 2,
+      "accessErrors": 0,
+      "boardHealth": [
+        {
+          "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
+          "pagesScanned": 2,
+          "rawRows": 7,
+          "recentRows": 4,
+          "paginationRepeated": false,
+          "accessError": false,
+          "explicitEmpty": false,
+          "naturalEnd": true,
+          "gotTable": true,
+          "crossedLookback": false,
           "seoulOfficeParseIncomplete": 0,
           "coverageComplete": true,
           "paginationMethod": "GET"
@@ -5443,46 +5478,11 @@
     },
     {
       "province": "서울",
-      "name": "강동송파교육지원청",
-      "boards": [
-        "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
-      ],
-      "officialIdCount": 3,
-      "coverageComplete": true,
-      "pagesScanned": 2,
-      "accessErrors": 0,
-      "boardHealth": [
-        {
-          "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
-          "pagesScanned": 2,
-          "rawRows": 7,
-          "recentRows": 3,
-          "paginationRepeated": false,
-          "accessError": false,
-          "explicitEmpty": false,
-          "naturalEnd": true,
-          "gotTable": true,
-          "crossedLookback": false,
-          "seoulOfficeParseIncomplete": 0,
-          "coverageComplete": true,
-          "paginationMethod": "GET"
-        }
-      ],
-      "inDatasetBefore": 3,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 3,
-      "missingAfterCount": 0,
-      "missingAfterExamples": [],
-      "reconciled": true
-    },
-    {
-      "province": "서울",
       "name": "강서양천교육지원청",
       "boards": [
         "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
       ],
-      "officialIdCount": 14,
+      "officialIdCount": 89,
       "coverageComplete": true,
       "pagesScanned": 11,
       "accessErrors": 0,
@@ -5491,7 +5491,7 @@
           "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 14,
+          "recentRows": 89,
           "paginationRepeated": false,
           "accessError": false,
           "explicitEmpty": false,
@@ -5503,10 +5503,10 @@
           "paginationMethod": "GET"
         }
       ],
-      "inDatasetBefore": 14,
-      "missingBeforeCount": 0,
-      "recoveredNowCount": 0,
-      "inDatasetAfter": 14,
+      "inDatasetBefore": 85,
+      "missingBeforeCount": 4,
+      "recoveredNowCount": 4,
+      "inDatasetAfter": 89,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261004T032744Z-37171926476-1"
+  "scanId": "20261004T070212Z-37182310376-1"
 }
