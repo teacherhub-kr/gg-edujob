@@ -2,82 +2,82 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TARGET = ROOT / "scripts" / "scrape_jobs.py"
+SCRAPER = ROOT / "scripts" / "scrape_jobs.py"
+COVERAGE = ROOT / "scripts" / "complete_support_coverage.py"
 
-HELPER_MARKER = "def seoul_detail_anchor_for_seq(tr, seq):"
+SCRAPER_HELPER_MARKER = "def seoul_support_title(vals, detail_anchor=None, anchors=()):"
+SCRAPER_HELPER = r'''
 
-HELPERS = r'''
+def seoul_support_title(vals, detail_anchor=None, anchors=()):
+    """Prefer SEN subject columns over duplicated detail anchors for the visible title."""
+    placeholders = {"", "-", "--", "해당없음", "없음"}
+    parts = []
+    for key in ("분야1", "분야2"):
+        value = clean(first_of(vals, [key]))
+        if value not in placeholders and value not in parts:
+            parts.append(value)
+    if parts:
+        return " ".join(parts)
 
-def seoul_detail_anchor_for_seq(tr, seq):
-    """Return the anchor that actually opens this SEN job_seq detail row."""
-    seq = str(seq or "")
-    if not seq:
-        return None
-    for a in tr.find_all("a"):
-        raw = " ".join((a.get("href", "") or "", a.get("onclick", "") or ""))
-        if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", raw, re.I):
-            return a
-        if re.search(rf"job_seq\s*[=,'\"() ]+{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
-        if re.search(rf"JOV11\.do[^\n]*?(?:job_seq\D*)?{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
-    return None
+    explicit = clean(first_of(vals, ["제목", "공고명"]))
+    if explicit not in placeholders:
+        return explicit
 
+    if detail_anchor is not None:
+        linked = clean(detail_anchor.get_text(" ", strip=True))
+        if linked not in placeholders:
+            return linked
 
-def seoul_row_values(table, tr):
-    """Map SEN row cells using the most specific header row with matching width."""
-    tds = tr.find_all("td")
-    if not tds:
-        return {}
-    candidates = []
-    for hr in table.find_all("tr"):
-        if hr is tr:
-            break
-        ths = hr.find_all("th")
-        if not ths:
-            continue
-        headers = [clean(x.get_text(" ", strip=True)) for x in ths]
-        if len(headers) != len(tds):
-            continue
-        score = sum(any(k in h for k in ("제목", "학교", "기관", "직종", "분야", "등록일", "작성일", "마감")) for h in headers)
-        candidates.append((score, headers))
-    headers = max(candidates, key=lambda x: x[0])[1] if candidates else table_headers(table)
-    vals = {}
-    for i, td in enumerate(tds):
-        if i < len(headers) and headers[i]:
-            vals[headers[i]] = clean(td.get_text(" ", strip=True))
-    return vals
+    candidates = [clean(a.get_text(" ", strip=True)) for a in (anchors or [])]
+    candidates = [x for x in candidates if x not in placeholders]
+    return max(candidates, key=len, default="")
 '''
 
-OLD_INSERT = '''def scrape_seoul_office(src):\n'''
+COVERAGE_HELPER_MARKER = "def seoul_support_title(vals, fallback=\"\"):"
+COVERAGE_HELPER = r'''
 
-OLD_VALUES = '''                vals={}\n                for i,td in enumerate(tds):\n                    if i<len(headers) and headers[i]: vals[headers[i]]=clean(td.get_text(" ",strip=True))\n                anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]\n                title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))\n                if not title: title=first_of(vals,["제목","공고명","분야1","분야"])\n                if len(title)<3 or EXCLUDE_WORDS.search(title): continue\n                registered=date_norm(first_of(vals,["등록일","작성일"]))\n                if not registered:\n                    ds=all_dates(clean(tr.get_text(" ",strip=True))); today_s=NOW.strftime("%Y/%m/%d"); plausible=list(dict.fromkeys(d for d in ds if d and d <= today_s)); registered=plausible[0] if len(plausible)==1 else ""\n                if registered: page_dates.append(registered)\n'''
+def seoul_support_title(vals, fallback=""):
+    """Derive the SEN posting title from labelled subject cells before link text."""
+    placeholders = {"", "-", "--", "해당없음", "없음"}
+    parts = []
+    for key in ("분야1", "분야2"):
+        value = clean(first_of(vals, [key]))
+        if value not in placeholders and value not in parts:
+            parts.append(value)
+    if parts:
+        return " ".join(parts)
 
-NEW_VALUES = '''                vals=seoul_row_values(table,tr)\n                detail_anchor=seoul_detail_anchor_for_seq(tr,seq)\n                anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]\n                title=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")\n                if not title:\n                    title=first_of(vals,["제목","공고명"])\n                if not title:\n                    title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))\n                if len(title)<3 or EXCLUDE_WORDS.search(title): continue\n                registered=date_norm(first_of(vals,["등록일","작성일"]))\n                if registered: page_dates.append(registered)\n'''
+    explicit = clean(first_of(vals, ["제목", "공고명"]))
+    if explicit not in placeholders:
+        return explicit
 
-OLD_INIT = '''    out, seen = [], set(); raw_rows=0; explicit_empty=False; got_table=False; consecutive_old_pages=0\n'''
-NEW_INIT = '''    out, seen = [], set(); raw_rows=0; explicit_empty=False; got_table=False; consecutive_old_pages=0; parse_incomplete=0\n'''
+    fallback = clean(fallback)
+    return "" if fallback in placeholders else fallback
+'''
 
-OLD_SCHOOL = '''                school=first_of(vals,["학교명","기관명","작성자"]) or school_from_title(title)\n                raw_level=first_of(vals,["학교급별","학교급","대상"]); raw_type=first_of(vals,["직종","고용형태","구분"])\n'''
-NEW_SCHOOL = '''                school=first_of(vals,["학교명","기관명","작성자"]) or school_from_title(title)\n                title_school_collision = bool(school and norm(title) == norm(school)) or norm(title) == norm(office)\n                if not registered or not detail_anchor or title_school_collision:\n                    parse_incomplete += 1\n                    continue\n                raw_level=first_of(vals,["학교급별","학교급","대상"]); raw_type=first_of(vals,["직종","고용형태","구분"])\n'''
+SCRAPER_INSERT = "def scrape_seoul_office(src):\n"
+COVERAGE_INSERT = "def seoul_items(soup, board, detail_registration):\n"
 
-OLD_STATE = '''    if raw_rows>0:\n        state,ok,msg="ok",True,"구인 게시판 확인"\n'''
-NEW_STATE = '''    if parse_incomplete>0:\n        state,ok,msg="warning",False,f"서울 지원청 행 파싱 불완전 {parse_incomplete}건"\n    elif raw_rows>0:\n        state,ok,msg="ok",True,"구인 게시판 확인"\n'''
+SCRAPER_OLD_TITLE = '''                vals=seoul_row_values(table,tr)\n                detail_anchor=seoul_detail_anchor_for_seq(tr,seq)\n                anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]\n                title=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")\n                if not title:\n                    title=first_of(vals,["제목","공고명"])\n                if not title:\n                    title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))\n                if len(title)<3 or EXCLUDE_WORDS.search(title): continue\n'''
+SCRAPER_NEW_TITLE = '''                vals=seoul_row_values(table,tr)\n                detail_anchor=seoul_detail_anchor_for_seq(tr,seq)\n                anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]\n                title=seoul_support_title(vals,detail_anchor,anchors)\n                if not title or EXCLUDE_WORDS.search(title):\n                    parse_incomplete += 1\n                    continue\n'''
 
-OLD_RETURN = '''    return out,{"name":office,"url":board,"boards":[board],"count":len(out),"rawRows":raw_rows,"ok":ok,"state":state,"message":msg}\n'''
-NEW_RETURN = '''    return out,{"name":office,"url":board,"boards":[board],"count":len(out),"rawRows":raw_rows,"seoulOfficeParseIncomplete":parse_incomplete,"ok":ok,"state":state,"message":msg}\n'''
+SCRAPER_OLD_SUBJECT = '''                subject_parts=[first_of(vals,["분야1"]),first_of(vals,["분야2"])]\n                subject=" / ".join(x for x in subject_parts if x) or first_of(vals,["분야(과목)","분야","과목"])\n'''
+SCRAPER_NEW_SUBJECT = '''                subject_parts=[clean(first_of(vals,["분야1"])),clean(first_of(vals,["분야2"]))]\n                subject_parts=[x for x in subject_parts if x and x not in {"-","--","해당없음","없음"}]\n                subject=" / ".join(dict.fromkeys(subject_parts)) or first_of(vals,["분야(과목)","분야","과목"])\n'''
+
+COVERAGE_OLD_TITLE = '''            vals = seoul_values(table, tr)\n            title = seoul_detail_title(tr, seq) or first_of(vals, ["제목", "공고명"])\n            school = first_of(vals, ["학교명", "기관명", "작성자"])\n'''
+COVERAGE_NEW_TITLE = '''            vals = seoul_values(table, tr)\n            title = seoul_support_title(vals, seoul_detail_title(tr, seq))\n            school = first_of(vals, ["학교명", "기관명", "작성자"])\n'''
+
+
+def insert_before_once(text, marker, insert, label):
+    if marker in text:
+        return text
+    if insert not in text:
+        raise SystemExit(f"{label}: insertion point missing")
+    return text.replace(insert, marker + "\n" + insert, 1)
 
 
 def replace_once(text, old, new, label):
     count = text.count(old)
-    if label == "detail title/date parser" and count == 0 and all(marker in text for marker in (
-        'vals=seoul_row_values(table,tr)',
-        'detail_anchor=seoul_detail_anchor_for_seq(tr,seq)',
-        'registered=date_norm(first_of(vals,["등록일","작성일"]))',
-        'exact_registration_from_detail(',
-        'title_school_collision',
-    )):
-        return text
     if count == 0 and new in text:
         return text
     if count != 1:
@@ -85,20 +85,45 @@ def replace_once(text, old, new, label):
     return text.replace(old, new, 1)
 
 
+def patch_scraper():
+    text = SCRAPER.read_text(encoding="utf-8")
+    original = text
+    if SCRAPER_HELPER_MARKER not in text:
+        if SCRAPER_INSERT not in text:
+            raise SystemExit("scraper helper insertion point missing")
+        text = text.replace(SCRAPER_INSERT, SCRAPER_HELPER + "\n" + SCRAPER_INSERT, 1)
+    text = replace_once(text, SCRAPER_OLD_TITLE, SCRAPER_NEW_TITLE, "scraper title parser")
+    text = replace_once(text, SCRAPER_OLD_SUBJECT, SCRAPER_NEW_SUBJECT, "scraper subject parser")
+    compile(text, str(SCRAPER), "exec")
+    if text != original:
+        SCRAPER.write_text(text, encoding="utf-8")
+        return True
+    return False
+
+
+def patch_coverage():
+    text = COVERAGE.read_text(encoding="utf-8")
+    original = text
+    if COVERAGE_HELPER_MARKER not in text:
+        if COVERAGE_INSERT not in text:
+            raise SystemExit("coverage helper insertion point missing")
+        text = text.replace(COVERAGE_INSERT, COVERAGE_HELPER + "\n" + COVERAGE_INSERT, 1)
+    text = replace_once(text, COVERAGE_OLD_TITLE, COVERAGE_NEW_TITLE, "coverage title parser")
+    compile(text, str(COVERAGE), "exec")
+    if text != original:
+        COVERAGE.write_text(text, encoding="utf-8")
+        return True
+    return False
+
+
 def main():
-    text = TARGET.read_text(encoding="utf-8")
-    if HELPER_MARKER not in text:
-        if OLD_INSERT not in text:
-            raise SystemExit("Seoul office scraper insertion point missing")
-        text = text.replace(OLD_INSERT, HELPERS + "\n" + OLD_INSERT, 1)
-    text = replace_once(text, OLD_INIT, NEW_INIT, "parse-incomplete init")
-    text = replace_once(text, OLD_VALUES, NEW_VALUES, "detail title/date parser")
-    text = replace_once(text, OLD_SCHOOL, NEW_SCHOOL, "parse completeness gate")
-    text = replace_once(text, OLD_STATE, NEW_STATE, "source health gate")
-    text = replace_once(text, OLD_RETURN, NEW_RETURN, "status metric")
-    compile(text, str(TARGET), "exec")
-    TARGET.write_text(text, encoding="utf-8")
-    print("Seoul office row parser hardened")
+    scraper_changed = patch_scraper()
+    coverage_changed = patch_coverage()
+    print(
+        "Seoul support title parser hardened",
+        f"scraper_changed={scraper_changed}",
+        f"coverage_changed={coverage_changed}",
+    )
 
 
 if __name__ == "__main__":
