@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T23:58:59+09:00",
+  "generatedAt": "2026-10-06T00:53:37+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": false,
   "registryInstitutions": 55,
@@ -23,9 +23,9 @@
   "currentMappedBySource": {
     "official": 9,
     "cleaneye": 9,
-    "artmore": 12,
+    "artmore": 9,
     "ancf": 1,
-    "lessoninfo-discovery": 13
+    "lessoninfo-discovery": 14
   },
   "coverageGapCount": 1,
   "coverageGaps": [
@@ -56,7 +56,7 @@
         "cleaneye": 0,
         "artmore": 1,
         "ancf": 0,
-        "lessoninfo-discovery": 1
+        "lessoninfo-discovery": 2
       },
       "currentStrongSignals": 1,
       "officialBoardConfigured": true,
@@ -406,13 +406,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:yongsan",
@@ -822,11 +822,11 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 3,
+        "artmore": 1,
         "ancf": 0,
         "lessoninfo-discovery": 4
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 1,
       "officialBoardConfigured": false,
       "coverageOutcome": "current-seen"
     },
