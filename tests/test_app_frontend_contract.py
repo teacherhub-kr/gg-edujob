@@ -22,7 +22,7 @@ for needle in [
     "fetch('unified_jobs.json',{cache:'no-cache'})",
     "const PAGE_SIZE=80",
     "openMethod==='POST'",
-    "sourceSurfaceLabel",
+    "surface:j.feedKind==='private'?'민간공고':'공식공고'",
     "regionsOf",
     "마감일 미정",
     "store()?.recent",
@@ -159,6 +159,8 @@ for needle in [
     "기간제교원",
     "data-region-all",
     "selectedSummaryHtml",
+    "regionToken",
+    "regionSelectionMatches",
 ]:
     if needle not in js:
         raise SystemExit(f"full checkbox filter contract missing: {needle}")
@@ -389,7 +391,7 @@ for needle in [
     'id="searchTop"',
     'id="bottomNav"',
     'app.css?v=20260923pwa1',
-    'app.js?v=20260926pwa3',
+    'app.js?v=20261005filter1',
     'alert-client.js?v=20260920c',
     'manifest.webmanifest',
 ]:
@@ -424,11 +426,11 @@ for needle in [
 ]:
     if needle not in css:
         raise SystemExit(f"chrome handoff style missing: {needle}")
-for needle in ["app.css?v=20260923pwa1","app.js?v=20260926pwa3"]:
+for needle in ["app.css?v=20260923pwa1","app.js?v=20261005filter1"]:
     if needle not in html:
         raise SystemExit(f"chrome handoff cache-bust missing from app preview: {needle}")
 index_html=Path("index.html").read_text(encoding="utf-8")
-for needle in ["app.css?v=20260923pwa1","app.js?v=20260926pwa3"]:
+for needle in ["app.css?v=20260923pwa1","app.js?v=20261005filter1"]:
     if needle not in index_html:
         raise SystemExit(f"chrome handoff cache-bust missing from production shell: {needle}")
 
