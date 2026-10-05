@@ -4,7 +4,8 @@
 The core supervisor remains the single decision engine and
 ``fast-refresh-watchdog.yml`` remains the only scheduled automatic dispatcher.
 This wrapper:
-- starts the seven private-source collectors before their former freshness limits;
+- starts all seven user-facing private recruitment sources before freshness limits;
+- keeps cultural-foundation official coverage on its own lower-priority report;
 - registers LessonInfo culture-link cold verification as a guarded dispatch-only
   maintenance target when source data has advanced beyond its link proof.
 
@@ -18,7 +19,9 @@ if __package__:
 else:
     import production_supervisor as supervisor
 
-# Keep a two-hour operating margin ahead of the prior 6/12/24-hour limits.
+# Six existing direct private collectors plus the separate foundation coverage job.
+# CleanEye is registered independently below so its private feed no longer waits for
+# the much heavier cultural-foundation coverage workflow.
 PRIVATE_REFRESH_TARGET_HOURS = {
     "private-lessoninfo": 4,
     "private-jobteacher": 4,
@@ -29,6 +32,11 @@ PRIVATE_REFRESH_TARGET_HOURS = {
     "private-foundation": 22,
 }
 
+CLEANEYE_KEY = "private-cleaneye"
+CLEANEYE_WORKFLOW = "update-cleaneye-jobs.yml"
+CLEANEYE_REPORT = "cleaneye_foundation_report.json"
+FOUNDATION_REPORT = "official_foundation_report.json"
+
 LESSONINFO_LINK_KEY = "private-lessoninfo-links"
 LESSONINFO_LINK_WORKFLOW = "lessoninfo-culture-cold-verify.yml"
 LESSONINFO_LINK_REPORT = "lessoninfo_culture_link_report.json"
@@ -36,7 +44,7 @@ LESSONINFO_SOURCE_REPORT = "lessoninfo_reconciliation_report.json"
 
 
 def apply_private_refresh_policy() -> None:
-    """Tighten only the seven existing private-source collection budgets."""
+    """Add headroom to private sources without changing official collection policy."""
     current = set(supervisor.PRIVATE_REFRESH_TARGETS)
     expected = set(PRIVATE_REFRESH_TARGET_HOURS)
     missing = sorted(current - expected)
@@ -55,6 +63,22 @@ def apply_private_refresh_policy() -> None:
             )
         spec["hardFreshnessBudgetHours"] = previous_limit
         spec["maxAgeHours"] = refresh_hours
+
+    # The legacy foundation target used CleanEye's report as its freshness proxy.
+    # Once CleanEye has its own lightweight writer, foundation freshness must follow
+    # the actual official-foundation report or a CleanEye refresh would falsely mark
+    # the whole foundation collector fresh.
+    supervisor.PRIVATE_REFRESH_TARGETS["private-foundation"]["report"] = FOUNDATION_REPORT
+
+    supervisor.PRIVATE_REFRESH_TARGETS[CLEANEYE_KEY] = {
+        "workflow": CLEANEYE_WORKFLOW,
+        "report": CLEANEYE_REPORT,
+        "maxAgeHours": 4,
+        "hardFreshnessBudgetHours": 6,
+    }
+    supervisor.TARGETS[CLEANEYE_KEY] = CLEANEYE_WORKFLOW
+    supervisor.PRODUCTION_EVENTS[CLEANEYE_WORKFLOW] = {"workflow_dispatch"}
+    supervisor.CIRCUIT_BACKOFF_HOURS[CLEANEYE_KEY] = 6
 
 
 def register_lessoninfo_link_verification() -> None:

@@ -6,6 +6,10 @@ from unittest.mock import patch
 
 from scripts import production_supervisor as supervisor
 from scripts.private_refresh_policy import (
+    CLEANEYE_KEY,
+    CLEANEYE_REPORT,
+    CLEANEYE_WORKFLOW,
+    FOUNDATION_REPORT,
     LESSONINFO_LINK_KEY,
     LESSONINFO_LINK_REPORT,
     LESSONINFO_LINK_WORKFLOW,
@@ -18,7 +22,10 @@ from scripts.private_refresh_policy import (
 
 class PrivateRefreshPolicyTests(unittest.TestCase):
     def test_private_sources_refresh_before_previous_freshness_budget(self):
-        original = copy.deepcopy(supervisor.PRIVATE_REFRESH_TARGETS)
+        original_private = copy.deepcopy(supervisor.PRIVATE_REFRESH_TARGETS)
+        original_targets = copy.deepcopy(supervisor.TARGETS)
+        original_events = copy.deepcopy(supervisor.PRODUCTION_EVENTS)
+        original_backoff = copy.deepcopy(supervisor.CIRCUIT_BACKOFF_HOURS)
         try:
             apply_private_refresh_policy()
             expected = {
@@ -38,12 +45,32 @@ class PrivateRefreshPolicyTests(unittest.TestCase):
                 )
                 self.assertEqual(
                     supervisor.PRIVATE_REFRESH_TARGETS[key]["hardFreshnessBudgetHours"],
-                    original[key]["maxAgeHours"],
+                    original_private[key]["maxAgeHours"],
                 )
-                self.assertLess(refresh_hours, original[key]["maxAgeHours"])
+                self.assertLess(refresh_hours, original_private[key]["maxAgeHours"])
+
+            cleaneye = supervisor.PRIVATE_REFRESH_TARGETS[CLEANEYE_KEY]
+            self.assertEqual(cleaneye["workflow"], CLEANEYE_WORKFLOW)
+            self.assertEqual(cleaneye["report"], CLEANEYE_REPORT)
+            self.assertEqual(cleaneye["maxAgeHours"], 4)
+            self.assertEqual(cleaneye["hardFreshnessBudgetHours"], 6)
+            self.assertEqual(supervisor.TARGETS[CLEANEYE_KEY], CLEANEYE_WORKFLOW)
+            self.assertEqual(
+                supervisor.PRODUCTION_EVENTS[CLEANEYE_WORKFLOW], {"workflow_dispatch"}
+            )
+            self.assertEqual(
+                supervisor.PRIVATE_REFRESH_TARGETS["private-foundation"]["report"],
+                FOUNDATION_REPORT,
+            )
         finally:
             supervisor.PRIVATE_REFRESH_TARGETS.clear()
-            supervisor.PRIVATE_REFRESH_TARGETS.update(original)
+            supervisor.PRIVATE_REFRESH_TARGETS.update(original_private)
+            supervisor.TARGETS.clear()
+            supervisor.TARGETS.update(original_targets)
+            supervisor.PRODUCTION_EVENTS.clear()
+            supervisor.PRODUCTION_EVENTS.update(original_events)
+            supervisor.CIRCUIT_BACKOFF_HOURS.clear()
+            supervisor.CIRCUIT_BACKOFF_HOURS.update(original_backoff)
 
     def test_official_refresh_policy_is_unchanged(self):
         self.assertEqual(supervisor.FAST_REFRESH_AFTER, timedelta(hours=3, minutes=15))
@@ -57,7 +84,20 @@ class PrivateRefreshPolicyTests(unittest.TestCase):
             "private-lessoninfo-links) workflow='lessoninfo-culture-cold-verify.yml'",
             text,
         )
+        self.assertIn(
+            "private-cleaneye) workflow='update-cleaneye-jobs.yml'",
+            text,
+        )
         self.assertEqual(text.count("schedule:"), 1)
+
+    def test_cleaneye_writer_is_dispatch_only(self):
+        text = Path(".github/workflows/update-cleaneye-jobs.yml").read_text(encoding="utf-8")
+        trigger = text.split("permissions:", 1)[0]
+        self.assertIn("workflow_dispatch:", trigger)
+        self.assertNotIn("schedule:", trigger)
+        self.assertNotIn("workflow_run:", trigger)
+        self.assertIn("crawl_cleaneye_foundation_jobs.py", text)
+        self.assertIn("missingAfterCount", text)
 
     def test_lessoninfo_source_advance_prioritizes_cold_link_verification(self):
         original_private = copy.deepcopy(supervisor.PRIVATE_REFRESH_TARGETS)
