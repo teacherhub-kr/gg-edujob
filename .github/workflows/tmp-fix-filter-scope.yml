@@ -1,0 +1,85 @@
+name: Temporary filter-scope cleanup
+
+on:
+  push:
+    branches:
+      - fix/scoped-region-and-source-tabs-20261005
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/scoped-region-and-source-tabs-20261005
+          fetch-depth: 0
+      - name: Remove unrelated edits and validate intended filter fix
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('app.js')
+          s = p.read_text(encoding='utf-8')
+          old = "const pushCapable=()=>('serviceWorker'in window)&&('PushManager'in window)&&('Notification'in window);"
+          new = "const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);"
+          if old in s:
+              s = s.replace(old, new, 1)
+          elif new not in s:
+              raise SystemExit('pushCapable signature missing')
+
+          old = "const skeleton=()=>`<div class=\"skeleton\"><div class=\"skeleton-card\"></div><div class=\"skeleton-card\"></div><div class=\"loading-note\">최신 채용정보를 불러오고 있습니다.</div></div>`;"
+          new = "const skeleton=()=>`<div class=\"skeleton\"><div class=\"skeleton-card\"></div><div class=\"skeleton-card\"></div><div class=\"skeleton-card\"></div><div class=\"loading-note\">최신 채용정보를 불러오고 있습니다.</div></div>`;"
+          if old in s:
+              s = s.replace(old, new, 1)
+          elif new not in s:
+              raise SystemExit('skeleton signature missing')
+
+          required = [
+              "const regionToken=(provinceName,region)=>",
+              "surface:j.feedKind==='private'?'민간공고':'공식공고'",
+              "regionsMatch(state.regions,r.province,x)",
+              "regions.map(v=>regionToken(provinceName,v))",
+          ]
+          missing = [x for x in required if x not in s]
+          if missing:
+              raise SystemExit(f'missing intended app.js markers: {missing}')
+          p.write_text(s, encoding='utf-8')
+
+          h = Path('index.html').read_text(encoding='utf-8')
+          for marker in [
+              'data-surface="공식공고">공식공고',
+              'data-surface="민간공고">민간공고',
+              'app.js?v=20261005filter1',
+          ]:
+              if marker not in h:
+                  raise SystemExit(f'missing intended index marker: {marker}')
+          PY
+          node --check app.js
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('app.js').read_text(encoding='utf-8')
+          assert "regionToken('인천','중구')" not in s  # implementation must remain generic
+          assert "const regionToken=(provinceName,region)=>" in s
+          assert "regionOptions=(provinceName,values)" in s
+          assert "surface:j.feedKind==='private'?'민간공고':'공식공고'" in s
+          h=Path('index.html').read_text(encoding='utf-8')
+          assert 'data-surface="공식공고"' in h and 'data-surface="민간공고"' in h
+          print('frontend filter scope assertions passed')
+          PY
+      - name: Remove temporary workflow and commit cleanup
+        shell: bash
+        run: |
+          rm -f .github/workflows/tmp-fix-filter-scope.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html .github/workflows/tmp-fix-filter-scope.yml
+          if git diff --cached --quiet; then
+            echo "No cleanup changes needed"
+            exit 0
+          fi
+          git commit -m "Keep frontend filter fix scoped to intended behavior"
+          git push origin HEAD:fix/scoped-region-and-source-tabs-20261005
