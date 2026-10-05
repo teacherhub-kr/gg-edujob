@@ -9,7 +9,7 @@ const HOME_LIMIT=10;
 const SUBJECT_LIMIT=24;
 const ROUTES=new Set(['home','search','radar','saved','me']);
 const APP_URL='https://teacherhub-kr.github.io/gg-edujob/';
-const pushCapable=()=>('serviceWorker'in window)&&('PushManager'in window)&&('Notification'in window);
+const pushCapable=()=>('serviceWorker'in navigator)&&('PushManager'in window)&&('Notification'in window);
 const isIOSDevice=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroidDevice=()=>/android/i.test(navigator.userAgent||'');
 const isAndroidInAppBrowser=()=>isAndroidDevice()&&(/(?:\bwv\b|KAKAOTALK|NAVER|FBAN|FBAV|Instagram|Line\/)/i.test(navigator.userAgent||''));
@@ -496,7 +496,7 @@ const jobsListHtml=(rows,limit,{emptyText='조건에 맞는 모집 중 공고가
   return `<div class="job-list">${shown.map(r=>cardHtml(r,{forceFavorite})).join('')}${rows.length>shown.length?`<button type="button" class="more-btn" id="moreJobs">공고 더 보기 (${shown.length.toLocaleString()} / ${rows.length.toLocaleString()})</button>`:''}</div>`;
 };
 
-const skeleton=()=>`<div class="skeleton"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="loading-note">최신 채용정보를 불러오고 있습니다.</div></div>`;
+const skeleton=()=>`<div class="skeleton"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="loading-note">최신 채용정보를 불러오고 있습니다.</div></div>`;
 
 const optionCounts=(getter)=>{
   const m=new Map();
