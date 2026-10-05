@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T09:58:33.155686+00:00",
+  "generatedAt": "2026-10-05T14:57:11.285643+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5873,
-    "gyeonggiTotal": 5873,
-    "seoulExact": 351,
-    "seoulTotal": 351
+    "gyeonggiExact": 5874,
+    "gyeonggiTotal": 5874,
+    "seoulExact": 352,
+    "seoulTotal": 352
   },
   "provinces": {
     "gyeonggi": {
@@ -440,8 +440,8 @@
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
           ],
-          "count": 420,
-          "rawRows": 490,
+          "count": 421,
+          "rawRows": 500,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -449,9 +449,9 @@
           "boardHealth": [
             {
               "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
-              "pagesScanned": 41,
-              "rawRows": 410,
-              "recentRows": 390,
+              "pagesScanned": 42,
+              "rawRows": 420,
+              "recentRows": 391,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -484,7 +484,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 49,
+          "pagesScanned": 50,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1509,8 +1509,8 @@
           "boards": [
             "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 7,
-          "rawRows": 8,
+          "count": 8,
+          "rawRows": 9,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
@@ -1519,8 +1519,8 @@
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 8,
-              "recentRows": 7,
+              "rawRows": 9,
+              "recentRows": 8,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261005181954",
+                  "/js/include.js?v=20261005231804",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
