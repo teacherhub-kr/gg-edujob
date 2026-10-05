@@ -80,7 +80,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python scripts/production_supervisor.py \
+          python scripts/private_refresh_policy.py \
             --github-output "$GITHUB_OUTPUT" \
             --state-file /tmp/production-supervisor.json \
             --manage-issues
