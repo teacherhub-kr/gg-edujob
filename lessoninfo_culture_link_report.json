@@ -1,32 +1,53 @@
 {
-  "generatedAt": "2026-09-28T22:56:50+09:00",
-  "startedAt": "2026-09-28T22:47:22+09:00",
+  "generatedAt": "2026-10-05T14:26:33+09:00",
+  "startedAt": "2026-10-05T14:18:34+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 212,
-  "expiredCultureRemoved": 0,
-  "expiredCultureExamples": [],
-  "eligibleCultureRows": 174,
-  "verifiedCultureRows": 172,
-  "verifiedOfficialRows": 170,
-  "verifiedLessoninfoRows": 2,
-  "unverifiedCultureRows": 2,
+  "totalInputJobs": 188,
+  "expiredCultureRemoved": 4,
+  "expiredCultureExamples": [
+    {
+      "sourceIdentity": "culture:id:95117",
+      "title": "2026년 3차 극장 용 공연장 안내원 모집 공고(~10/3)",
+      "applyEnd": "2026-10-03"
+    },
+    {
+      "sourceIdentity": "culture:id:95116",
+      "title": "2026년 3차 극장 용 공연장 안내원 모집 공고(~10/3)",
+      "applyEnd": "2026-10-03"
+    },
+    {
+      "sourceIdentity": "culture:id:95108",
+      "title": "2026 서울문화재단 연극배우 워크숍 참여자 모집: '화술을 위한 시각적 이미지 활용 훈련' (~9.28)",
+      "applyEnd": "2026-09-28"
+    },
+    {
+      "sourceIdentity": "culture:id:95092",
+      "title": "(복사) (재)부천아트센터 2026년 제2차 공연장 안내원(아르바이트생) 모집 공고(~9/28)",
+      "applyEnd": "2026-09-28"
+    }
+  ],
+  "eligibleCultureRows": 156,
+  "verifiedCultureRows": 149,
+  "verifiedOfficialRows": 143,
+  "verifiedLessoninfoRows": 6,
+  "unverifiedCultureRows": 7,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
   "knownBadSentinels": [
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 50,
-    "cold-browser-id-title-match": 2,
-    "cold-browser-artmore-id-title-match": 120,
-    "cold-browser-route-mismatch": 2
+    "cold-browser-official-title-match": 46,
+    "cold-browser-id-title-match": 6,
+    "cold-browser-artmore-id-title-match": 97,
+    "cold-browser-route-mismatch": 7
   },
-  "artmoreFallbackAttemptedRows": 122,
-  "artmoreFallbackRecoveredRows": 120,
+  "artmoreFallbackAttemptedRows": 104,
+  "artmoreFallbackRecoveredRows": 97,
   "artmoreFallbackOutcomeCounts": {
-    "recovered": 120,
-    "artmore-title-mismatch": 2
+    "recovered": 97,
+    "artmore-title-mismatch": 7
   },
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
 }
