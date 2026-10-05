@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T04:30:53+09:00",
+  "generatedAt": "2026-10-06T05:32:08+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": false,
   "registryInstitutions": 55,
@@ -23,7 +23,7 @@
   "currentMappedBySource": {
     "official": 9,
     "cleaneye": 9,
-    "artmore": 9,
+    "artmore": 8,
     "ancf": 1,
     "lessoninfo-discovery": 13
   },
@@ -54,13 +54,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:gangnam",
