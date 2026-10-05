@@ -1,0 +1,75 @@
+name: Update CleanEye recruitment jobs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: metro-edujob-cleaneye
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Syntax check CleanEye collector
+        run: python -m py_compile scripts/crawl_cleaneye_foundation_jobs.py
+
+      - name: Validate cultural-foundation registry used for exact institution matching
+        run: python scripts/validate_cultural_foundation_registry.py
+
+      - name: Collect current CleanEye recruitment jobs
+        run: python scripts/crawl_cleaneye_foundation_jobs.py
+
+      - name: Enforce CleanEye publication contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('cleaneye_foundation_report.json').read_text(encoding='utf-8'))
+          if report.get('policy') != 'cleaneye-exact-institution-current-v1':
+              raise SystemExit('unexpected CleanEye policy')
+          if report.get('healthy') is not True or report.get('traversalComplete') is not True:
+              raise SystemExit('CleanEye traversal incomplete')
+          if int(report.get('missingAfterCount') or 0) != 0:
+              raise SystemExit('CleanEye missingAfterCount is non-zero')
+          print(json.dumps({
+              'generatedAt': report.get('generatedAt'),
+              'currentJobs': report.get('currentJobs'),
+              'institutionsQueried': report.get('institutionsQueried'),
+              'missingAfterCount': report.get('missingAfterCount'),
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Commit verified CleanEye state
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cleaneye_foundation_jobs.json cleaneye_foundation_report.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh CleanEye recruitment jobs'
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i*5))
+          done
+          exit 1
