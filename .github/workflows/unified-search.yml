@@ -122,7 +122,7 @@ jobs:
           python scripts/validate_required_metro_publication.py
           grep -Fq "fetch('unified_jobs.json',{cache:'no-cache'})" app.js
           grep -Fq "const provinceOptions=()=>['경기','서울','인천']" app.js
-          grep -Fq '<button type="button" data-surface="학원·민간">학원·민간</button>' index.html
+          grep -Fq '<button type="button" data-surface="민간공고">민간공고</button>' index.html
           grep -Fq 'app.js?v=' index.html
           python - <<'PY'
           import json,sys
