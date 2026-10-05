@@ -72,6 +72,7 @@ const state={
 const GYEONGGI_REGIONS=['수원시','성남시','용인시','고양시','화성시','안산시','평택시','파주시','김포시','남양주시','부천시','안양시','시흥시','광명시','광주시','군포시','이천시','오산시','안성시','의왕시','하남시','여주시','양평군','과천시','의정부시','양주시','구리시','포천시','동두천시','가평군','연천군'];
 const SEOUL_REGIONS=['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
 const INCHEON_REGIONS=['중구','동구','미추홀구','연수구','남동구','부평구','계양구','서구','강화군','옹진군'];
+const REGION_GROUPS={경기:GYEONGGI_REGIONS,서울:SEOUL_REGIONS,인천:INCHEON_REGIONS};
 const SCHOOL_VALUES=['유치원','초등학교','중학교','고등학교','특수학교','교육행정기관','기타'];
 const TYPE_VALUES=['기간제교원','시간강사/강사','교육공무직/기간제근로자','정규채용','자원봉사','기타'];
 const SOURCE_VALUES=['공식','민간'];
@@ -95,7 +96,26 @@ const SUBJECT_RULES={
   '유아':/(^|\s)(유아|유치원|유치)(\s|$)/,
 };
 const regionKey=(v)=>String(v||'').replace(/^(경기도|서울특별시|인천광역시|경기|서울|인천)\s*/,'').trim();
-const regionsMatch=(selected,actual)=>[...selected].some(s=>regionKey(s)===regionKey(actual));
+const regionToken=(provinceName,region)=>`${String(provinceName||'').trim()}|${regionKey(region)}`;
+const parseRegionToken=(v)=>{
+  const raw=String(v||'').trim();
+  const i=raw.indexOf('|');
+  if(i>0)return {province:raw.slice(0,i).trim(),region:regionKey(raw.slice(i+1))};
+  return {province:'',region:regionKey(raw)};
+};
+const regionSelectionLabel=(v)=>{const p=parseRegionToken(v);return p.province?`${p.province} ${p.region}`:p.region};
+const regionSelectionMatches=(selected,actualProvince,actualRegion)=>{
+  const s=parseRegionToken(selected);
+  return (!s.province||s.province===actualProvince)&&s.region===regionKey(actualRegion);
+};
+const regionsMatch=(selected,actualProvince,actual)=>[...selected].some(s=>regionSelectionMatches(s,actualProvince,actual));
+const normalizeSavedRegion=(v,provinces=[])=>{
+  const parsed=parseRegionToken(v);
+  if(parsed.province)return regionToken(parsed.province,parsed.region);
+  const candidates=Object.entries(REGION_GROUPS).filter(([,vals])=>vals.includes(parsed.region)).map(([p])=>p);
+  const scoped=candidates.filter(p=>!provinces.length||provinces.includes(p));
+  return scoped.length===1?regionToken(scoped[0],parsed.region):parsed.region;
+};
 const subjectHay=(j)=>` ${norm([j.subject,j.title,j.schoolLevel,j.type].filter(Boolean).join(' '))} `;
 const matchesSubject=(j,label)=>SUBJECT_RULES[label]?.test(subjectHay(j))===true;
 const sourceKinds=(j)=>new Set([j?.feedKind==='private'?'민간':'공식',...(arr(j?.alsoSeenOn).length?['민간']:[])]);
@@ -318,7 +338,7 @@ const recordRecent=(j)=>{
 const buildIndex=(jobs)=>jobs.map((j,i)=>({
   j,i,key:keyOf(j),
   search:norm(j.searchText||[j.school,j.title,j.subject,j.type,j.schoolLevel,j.source,province(j),...regionsOf(j),...arr(j.categories)].filter(Boolean).join(' ')),
-  surface:String(j.sourceSurfaceLabel||((j.feedKind==='private')?'학원·민간':'학교·교육청')),
+  surface:j.feedKind==='private'?'민간공고':'공식공고',
   province:province(j),
   regions:regionsOf(j),
   school:schoolLevel(j),
@@ -336,7 +356,7 @@ const matchesFilters=(r)=>{
   if(!r.active)return false;
   if(state.surface&&r.surface!==state.surface)return false;
   if(state.provinces.size&&!state.provinces.has(r.province))return false;
-  if(state.regions.size&&!r.regions.some(x=>regionsMatch(state.regions,x)))return false;
+  if(state.regions.size&&!r.regions.some(x=>regionsMatch(state.regions,r.province,x)))return false;
   if(state.schools.size&&!state.schools.has(r.school))return false;
   if(state.types.size&&!state.types.has(r.type))return false;
   if(state.sources.size&&![...state.sources].some(x=>r.sources.has(x)))return false;
@@ -376,7 +396,7 @@ const filteredRows=()=>{
 };
 
 const currentProfile=()=>({
-  version:1,
+  version:2,
   provinces:[...state.provinces],
   regions:[...state.regions],
   schools:[...state.schools],
@@ -402,7 +422,7 @@ const matchesProfile=(r,p)=>{
   const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
   if(!r.active)return false;
   if(ps.length&&!ps.includes(r.province))return false;
-  if(rs.length&&!r.regions.some(x=>rs.some(s=>regionKey(s)===regionKey(x))))return false;
+  if(rs.length&&!r.regions.some(x=>rs.some(s=>regionSelectionMatches(normalizeSavedRegion(s,ps),r.province,x))))return false;
   if(ss.length&&!ss.includes(r.school))return false;
   if(ts.length&&!ts.includes(r.type))return false;
   if(src.length&&!src.some(x=>r.sources.has(x)))return false;
@@ -490,21 +510,22 @@ const provinceOptions=()=>['경기','서울','인천'].map(v=>[v,optionCounts(r=
 const canonicalOptions=(values,getter)=>{const m=optionCounts(getter);return values.map(v=>[v,m.get(v)||0])};
 const regionCounts=()=>{
   const m=new Map();
-  state.indexed.filter(r=>r.active).forEach(r=>r.regions.forEach(v=>{const k=regionKey(v);if(k)m.set(k,(m.get(k)||0)+1)}));
+  state.indexed.filter(r=>r.active).forEach(r=>r.regions.forEach(v=>{const k=regionToken(r.province,v);if(k)m.set(k,(m.get(k)||0)+1)}));
   return m;
 };
-const regionOptions=(values)=>{const m=regionCounts();return values.map(v=>[v,m.get(v)||0])};
+const regionOptions=(provinceName,values)=>{const m=regionCounts();return values.map(v=>{const key=regionToken(provinceName,v);return [key,m.get(key)||0,v]})};
 const schoolOptions=()=>canonicalOptions(SCHOOL_VALUES,r=>[r.school]);
 const typeOptions=()=>canonicalOptions(TYPE_VALUES,r=>[r.type]);
 const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.sources.has(v)).length]);
 const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.categories.has(v)).length]);
 const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&matchesSubject(r.j,v)).length]);
-const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n])=>`<label class="check-chip ${set.has(v)?'checked':''}"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(v)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
+const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n,label=v])=>`<label class="check-chip ${set.has(v)?'checked':''}"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(label)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
 const regionGroupHtml=(title,key,values)=>{
-  const selected=values.filter(v=>state.regions.has(v)).length;
+  const scoped=values.map(v=>regionToken(title,v));
+  const selected=scoped.filter(v=>state.regions.has(v)).length;
   return `<details class="region-group" ${selected?'open':''}>
     <summary><b>${title}</b><span>${selected?`${selected}개 선택`:`${values.length}개 지역`}</span><i>⌄</i></summary>
-    <div class="region-group-body"><button type="button" class="region-all" data-region-all="${key}">${title} 전체 선택</button>${chipsHtml('regions',regionOptions(values),state.regions,'region-checks')}</div>
+    <div class="region-group-body"><button type="button" class="region-all" data-region-all="${key}">${title} 전체 선택</button>${chipsHtml('regions',regionOptions(title,values),state.regions,'region-checks')}</div>
   </details>`;
 };
 const selectedSummaryHtml=()=>{
@@ -520,7 +541,7 @@ const selectedSummaryHtml=()=>{
 };
 const sectionChoiceLabel=(set,empty='선택 안 함')=>{
   if(!(set instanceof Set)||!set.size)return empty;
-  const vals=[...set];
+  const vals=[...set].map(regionSelectionLabel);
   if(vals.length===1)return vals[0];
   return `${vals[0]} 외 ${vals.length-1}`;
 };
@@ -592,7 +613,7 @@ const searchHtml=()=>{
 const profileSummary=(p)=>{
   const items=[];
   if(arr(p?.provinces).length)items.push(arr(p.provinces).join('·'));
-  if(arr(p?.regions).length)items.push(arr(p.regions).slice(0,3).join('·')+(arr(p.regions).length>3?` +${arr(p.regions).length-3}`:''));
+  if(arr(p?.regions).length){const labels=arr(p.regions).map(regionSelectionLabel);items.push(labels.slice(0,3).join('·')+(labels.length>3?` +${labels.length-3}`:''))}
   if(arr(p?.schools).length)items.push(arr(p.schools).join('·'));
   if(arr(p?.types).length)items.push(arr(p.types).slice(0,2).join('·'));
   if(arr(p?.sources).length)items.push(arr(p.sources).join('·'));
@@ -686,8 +707,9 @@ function resetFilters({surface=true}={}){
 }
 function applyProfileToState(p){
   if(!p)return;
-  state.provinces=new Set(arr(p.provinces));
-  state.regions=new Set(arr(p.regions));
+  const ps=arr(p.provinces);
+  state.provinces=new Set(ps);
+  state.regions=new Set(arr(p.regions).map(v=>normalizeSavedRegion(v,ps)));
   state.schools=new Set(arr(p.schools));
   state.types=new Set(arr(p.types));
   state.sources=new Set(arr(p.sources));
@@ -746,8 +768,9 @@ function bindScreen(){
     const apply=$('#filterApply',screen);if(apply)apply.textContent=`${filteredRows().length.toLocaleString()}건 공고 보기`;
   }));
   $$('[data-region-all]',screen).forEach(btn=>btn.addEventListener('click',()=>{
-    const groups={gyeonggi:GYEONGGI_REGIONS,seoul:SEOUL_REGIONS,incheon:INCHEON_REGIONS};
-    const vals=groups[btn.dataset.regionAll]||[];
+    const groups={gyeonggi:['경기',GYEONGGI_REGIONS],seoul:['서울',SEOUL_REGIONS],incheon:['인천',INCHEON_REGIONS]};
+    const [provinceName,regions]=groups[btn.dataset.regionAll]||['',[]];
+    const vals=regions.map(v=>regionToken(provinceName,v));
     const all=vals.every(v=>state.regions.has(v));
     vals.forEach(v=>all?state.regions.delete(v):state.regions.add(v));
     state.visible=PAGE_SIZE;render();

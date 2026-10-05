@@ -47,7 +47,7 @@ class PwaInstallOnboardingTests(unittest.TestCase):
 
     def test_cache_busts_install_onboarding_assets(self):
         self.assertIn("app.css?v=20260923pwa1", self.index)
-        self.assertIn("app.js?v=20260926pwa3", self.index)
+        self.assertIn("app.js?v=20261005filter1", self.index)
 
     def test_install_card_styles_exist(self):
         self.assertIn(".install-card{", self.css)
