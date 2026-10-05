@@ -103,6 +103,7 @@ jobs:
             private-artmore-candidate) workflow='update-artmore-candidate.yml' ;;
             private-artmore-promote) workflow='promote-artmore.yml' ;;
             private-gonggonggangsa) workflow='update-gonggonggangsa-jobs.yml' ;;
+            private-cleaneye) workflow='update-cleaneye-jobs.yml' ;;
             private-seekle) workflow='update-seekle-instructor-jobs.yml' ;;
             private-boramyc) workflow='update-boramyc-instructor-jobs.yml' ;;
             private-foundation) workflow='cultural-foundation-coverage.yml' ;;
