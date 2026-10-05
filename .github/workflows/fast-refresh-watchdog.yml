@@ -98,6 +98,7 @@ jobs:
             completeness) workflow='official-completeness-audit.yml' ;;
             unified) workflow='unified-search.yml' ;;
             private-lessoninfo) workflow='update-lessoninfo-jobs.yml' ;;
+            private-lessoninfo-links) workflow='lessoninfo-culture-cold-verify.yml' ;;
             private-jobteacher) workflow='update-jobteacher-jobs.yml' ;;
             private-artmore-candidate) workflow='update-artmore-candidate.yml' ;;
             private-artmore-promote) workflow='promote-artmore.yml' ;;
