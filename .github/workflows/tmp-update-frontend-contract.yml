@@ -35,6 +35,7 @@ jobs:
               if anchor not in s:
                   raise SystemExit('filter contract insertion point missing')
               s=s.replace(anchor,anchor+extras,1)
+          s=s.replace('app.js?v=20260926pwa3','app.js?v=20261005filter1')
           p.write_text(s,encoding='utf-8')
           PY
           python tests/test_app_frontend_contract.py
