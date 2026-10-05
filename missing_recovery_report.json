@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 17468,
-    "previousCount": 19882,
-    "mergedCount": 19860,
-    "carriedForward": 2392,
-    "officialIdProtected": 18542,
-    "officialIdCarryForward": 1002,
-    "enrichedFromPrevious": 6025,
+    "freshCount": 17449,
+    "previousCount": 19885,
+    "mergedCount": 19863,
+    "carriedForward": 2414,
+    "officialIdProtected": 18530,
+    "officialIdCarryForward": 1009,
+    "enrichedFromPrevious": 6026,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-05 13:51 KST"
+    "generatedAt": "2026-10-05 18:23 KST"
   },
   "carried": [
     {
@@ -123,13 +123,46 @@
     },
     {
       "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "윤중중학교",
+      "title": "2026학년도 전환기 시간강사 채용",
+      "registered": "2026/10/02",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111358",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111358"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "녹천중학교",
+      "title": "2026학년도 녹천중학교 교육과정 내 학교스포츠클럽 강사(농구) 채용 공고",
+      "registered": "2026/10/02",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111375",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111375"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "송파중학교",
+      "title": "[송파중]역사 시간강사 채용 재공고",
+      "registered": "2026/10/02",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111374",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111374"
+    },
+    {
+      "province": "서울",
       "source": "서울교육일자리포털 + 남부교육지원청",
       "school": "서울특별시남부교육지원청 학교통합지원과",
       "title": "서울여의도초등학교 기간제교원(초등, 교과전담) 채용계획 공고",
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111433",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111433"
     },
     {
@@ -140,7 +173,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111432",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111432"
     },
     {
@@ -151,7 +184,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111371",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111371"
     },
     {
@@ -162,7 +195,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111370",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111370"
     },
     {
@@ -173,7 +206,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111383",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111383"
     },
     {
@@ -184,7 +217,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111353",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111353"
     },
     {
@@ -362,6 +395,105 @@
       "sourceIdentity": "seoul-central:111345",
       "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111345"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "당곡중학교",
+      "title": "당곡중학교 기간제교원 채용 공고(정보 컴퓨터)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111337",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111337"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울이수초등학교",
+      "title": "(이수초) 지방공무원 대체 기간제근로자 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111335",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111335"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울서강초등학교",
+      "title": "서울서강초 2026학년도 2학년 담임대체 기간제 교원 채용계획",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111293",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111293"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "신월중학교",
+      "title": "[신월중] 특수학급 운동회 보조 단기 근로자 채용(10/14~10/15)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111314",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111314"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울아현초등학교",
+      "title": "특수교육 개별화교육 프로그램 협력강사 구인",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111267",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111267"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "덕성여자고등학교",
+      "title": "2026학년도 덕성여자고등학교 기간제교사 초빙 공고(윤리)",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111283",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111283"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "관악중학교",
+      "title": "2026학년도 관악중학교 시간강사(국어, 영양) 채용 공고",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111264",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111264"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "신관중학교",
+      "title": "2026년 신관중학교 시간강사(도덕과) 채용",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111256",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111256"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울공업고등학교",
+      "title": "2025학년도 2학기 시간강사 채용 (건설)_서울공업고등학교",
+      "registered": "2026/10/01",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111244",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111244"
     },
     {
       "province": "경기",
@@ -751,12 +883,56 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "문일중학교",
+      "title": "[문일중학교] 기간제 교원 채용 공고 (체육)",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111243",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111243"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울용강초등학교",
+      "title": "6학년 코딩 협력강사 구인",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111219",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111219"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "신현고등학교",
+      "title": "시간강사 채용 공고(영어, 체육)",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111182",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111182"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "영신여자고등학교",
+      "title": "2026년 영신여자고등학교 시간강사 채용공고(수학)",
+      "registered": "2026/09/30",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111157",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111157"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "중화중학교",
       "title": "중화중학교 시간강사(보건, 1명) 채용 공고",
       "registered": "2026/09/30",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111240",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111240"
     },
     {
@@ -1224,12 +1400,34 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "서울발산초등학교",
+      "title": "(발산초)기간제교사( 5학년 담임)채용 공고",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111047",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111047"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서라벌중학교",
+      "title": "(서라벌중학교)2026학년도 배움터지킴이 자원봉사자 모집",
+      "registered": "2026/09/29",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111046",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111046"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "서울청담초등학교",
       "title": "(청담초)26학년도 특수교육대상학생 일일 지원인력 채용",
       "registered": "2026/09/29",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111140",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111140"
     },
     {
@@ -1917,12 +2115,45 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "서울청운초등학교",
+      "title": "(서울청운초)방과후학교 개인 위탁 강사 모집(두뇌계발주산암산-1개 부서)",
+      "registered": "2026/09/28",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111034",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111034"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "오금고등학교",
+      "title": "2026 오금고등학교 시간 강사(일반사회, 국어, 지리, 화학, 역사, 음악) 채용 공고",
+      "registered": "2026/09/28",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111025",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111025"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "역삼중학교",
+      "title": "미술과 대체 시간강사 채용 공고",
+      "registered": "2026/09/28",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:111023",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111023"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "서울언주초등학교",
       "title": "서울언주초등학교 조리실무사(교육공무직) 2차 채용공고",
       "registered": "2026/09/28",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111036",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111036"
     },
     {
@@ -1933,7 +2164,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:111006",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111006"
     },
     {
@@ -2604,7 +2835,7 @@
       "registered": "2026/09/23",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "ice-central:3385244",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385244"
     },
     {
@@ -6713,6 +6944,17 @@
     {
       "province": "서울",
       "source": "서울교육일자리포털",
+      "school": "송곡관광고등학교",
+      "title": "송곡관광고등학교 현장실습보조인력 채용 공고",
+      "registered": "2026/09/16",
+      "applyEnd": "2026/10/05",
+      "sourceIdentity": "seoul-central:110508",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110508"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
       "school": "중동중학교",
       "title": "2026년 중동중학교 영어 기간제교사 채용 공고(재공고)",
       "registered": "2026/09/16",
@@ -7521,7 +7763,7 @@
       "registered": "2026/09/15",
       "applyEnd": "2026/10/05",
       "sourceIdentity": "seoul-central:110468",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110468"
     },
     {

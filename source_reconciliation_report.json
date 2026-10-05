@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-05 14:25:36 KST",
+  "generatedAt": "2026-10-05 18:57:55 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-05 14:25:36 KST",
+    "generatedAt": "2026-10-05 18:57:55 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
-    "officialIdCount": 18530,
-    "datasetIdCountBefore": 19956,
-    "missingBefore": 2,
-    "recoveredNow": 2,
+    "officialIdCount": 18512,
+    "datasetIdCountBefore": 19959,
+    "missingBefore": 0,
+    "recoveredNow": 0,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261005T045447Z-37262628150-1"
+    "scanId": "20261005T092618Z-37285691083-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -27,7 +27,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9252,
+      "officialIdCount": 9253,
       "coverageComplete": true,
       "pagesScanned": 200,
       "accessErrors": 0,
@@ -37,7 +37,7 @@
           "name": "기간제/사립교원",
           "pagesScanned": 93,
           "rawRows": 4650,
-          "acceptedRecentRows": 4549,
+          "acceptedRecentRows": 4550,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -105,10 +105,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9252,
+      "inDatasetBefore": 9253,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9252,
+      "inDatasetAfter": 9253,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 401,
+      "officialIdCount": 382,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 401,
+      "inDatasetBefore": 382,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 401,
+      "inDatasetAfter": 382,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -273,9 +273,9 @@
           ]
         }
       ],
-      "inDatasetBefore": 2450,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 2451,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 2451,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -957,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261005142512",
+              "/js/include.js?v=20261005185733",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2281,9 +2281,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 409,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 410,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 410,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -2843,7 +2843,7 @@
       "boards": [
         "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502"
       ],
-      "officialIdCount": 9252,
+      "officialIdCount": 9253,
       "coverageComplete": true,
       "pagesScanned": 200,
       "accessErrors": 0,
@@ -2853,7 +2853,7 @@
           "name": "기간제/사립교원",
           "pagesScanned": 93,
           "rawRows": 4650,
-          "acceptedRecentRows": 4549,
+          "acceptedRecentRows": 4550,
           "crossedLookback": true,
           "naturalEnd": false,
           "accessError": false,
@@ -2921,10 +2921,10 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 9252,
+      "inDatasetBefore": 9253,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 9252,
+      "inDatasetAfter": 9253,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -2935,15 +2935,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 401,
+      "officialIdCount": 382,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 401,
+      "inDatasetBefore": 382,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 401,
+      "inDatasetAfter": 382,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3089,9 +3089,9 @@
           ]
         }
       ],
-      "inDatasetBefore": 2450,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 2451,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 2451,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -3773,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261005142512",
+              "/js/include.js?v=20261005185733",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5097,9 +5097,9 @@
           "coverageComplete": true
         }
       ],
-      "inDatasetBefore": 409,
-      "missingBeforeCount": 1,
-      "recoveredNowCount": 1,
+      "inDatasetBefore": 410,
+      "missingBeforeCount": 0,
+      "recoveredNowCount": 0,
       "inDatasetAfter": 410,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261005T045447Z-37262628150-1"
+  "scanId": "20261005T092618Z-37285691083-1"
 }
