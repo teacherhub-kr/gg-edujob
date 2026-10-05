@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 8938,
+  "totalRows": 8904,
   "nonDirectBeforeRepair": 1077,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1077,
-  "cultureFoundationRows": 176,
+  "cultureFoundationRows": 175,
   "cultureFoundationNonDirectRows": 138,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -1064,15 +1064,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "artmore:95133",
-      "source": "아트모아",
-      "title": "진행중 서울문화재단 문화예술 지원 업무 보조 구인(서울무용센터_명지대 인근)",
-      "school": "서울문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95133",
-      "reason": "artmore-rec-idx",
-      "direct": true
-    },
-    {
       "sourceIdentity": "culture:id:95110",
       "source": "레슨인포",
       "title": "(재)인천광역시부평구문화재단 대표이사 채용 공고",
@@ -1806,6 +1797,15 @@
       "source": "레슨인포",
       "title": "(재)GS문화재단 기획홍보팀 계약직 채용 공고 (프로그램 매니저)",
       "school": "GS문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94122",
+      "source": "레슨인포",
+      "title": "롯데문화재단 티켓매니저(계약직) 채용",
+      "school": "롯데문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
