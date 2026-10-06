@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-06 23:48:57 KST",
+  "generatedAt": "2026-10-07 04:23:13 KST",
   "lookbackDays": 90,
   "officeCount": 5,
   "completeOffices": 5,
   "merged": true,
-  "newlyAddedJobs": 228,
+  "newlyAddedJobs": 222,
   "crossSourceDuplicatesCollapsed": 79,
   "offices": [
     {
@@ -13,7 +13,7 @@
       "boards": [
         "https://nambu.ice.go.kr/common/Contents.do#5BgVJf/179/0gVhzY/BO/0/0"
       ],
-      "count": 40,
+      "count": 38,
       "rawRows": 120,
       "pagesScanned": 4,
       "ok": true,
@@ -26,7 +26,7 @@
           "collector": "nambu-first-party-json",
           "pagesScanned": 4,
           "rawRows": 120,
-          "recentRows": 40,
+          "recentRows": 38,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -90,9 +90,9 @@
       "boards": [
         "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
       ],
-      "count": 78,
-      "rawRows": 110,
-      "pagesScanned": 11,
+      "count": 77,
+      "rawRows": 100,
+      "pagesScanned": 10,
       "ok": true,
       "state": "complete",
       "message": "최근 90일 범위 공식 채용게시판 완전수집",
@@ -100,9 +100,9 @@
       "boardHealth": [
         {
           "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
-          "pagesScanned": 11,
-          "rawRows": 110,
-          "recentRows": 78,
+          "pagesScanned": 10,
+          "rawRows": 100,
+          "recentRows": 77,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -274,7 +274,7 @@
       "boards": [
         "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       ],
-      "count": 125,
+      "count": 122,
       "rawRows": 150,
       "pagesScanned": 15,
       "ok": true,
@@ -287,7 +287,7 @@
           "collector": "seobu-verified-headless-chrome",
           "pagesScanned": 15,
           "rawRows": 150,
-          "recentRows": 125,
+          "recentRows": 122,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -694,7 +694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261006234847",
+              "/js/include.js?v=20261007042302",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -842,7 +842,7 @@
       "source": "인천북부교육지원청",
       "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008182",
       "school": "인천청천초등학교",
-      "title": "2026학년도 학교폭력 책임교사 수업시수 경감을 위한 시간...",
+      "title": "2026학년도 학교폭력 책임교사 수업시수 경감을 위한 시간강사...",
       "registered": "2026/09/29",
       "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008182&menu_idx=86"
     },
@@ -850,7 +850,7 @@
       "source": "인천북부교육지원청",
       "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008181",
       "school": "명현중학교",
-      "title": "명현중학교 특수교육대상학생 보조인력(자원봉사자) 모집 공...",
+      "title": "명현중학교 특수교육대상학생 보조인력(자원봉사자) 모집 공고",
       "registered": "2026/09/29",
       "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008181&menu_idx=86"
     },
@@ -858,7 +858,7 @@
       "source": "인천북부교육지원청",
       "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008180",
       "school": "명현중학교",
-      "title": "2026학년도명현중학교 특수교육대상학생 보조인력(자원봉사자...",
+      "title": "2026학년도명현중학교 특수교육대상학생 보조인력(자원봉사자) ...",
       "registered": "2026/09/29",
       "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008180&menu_idx=86"
     },
