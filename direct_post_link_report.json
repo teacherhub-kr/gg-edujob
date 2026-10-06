@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9316,
+  "totalRows": 9317,
   "nonDirectBeforeRepair": 1077,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1077,
-  "cultureFoundationRows": 175,
+  "cultureFoundationRows": 176,
   "cultureFoundationNonDirectRows": 138,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -911,6 +911,15 @@
   ],
   "cultureFoundationExamples": [
     {
+      "sourceIdentity": "cleaneye:2026:B000649:000006",
+      "source": "클린아이 잡플러스",
+      "title": "(재)광진문화재단 2026년도 제5회 직원 공개채용 공고",
+      "school": "광진문화재단",
+      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000006&ypEntId=B000649",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
       "sourceIdentity": "cleaneye:2026:B000647:000039",
       "source": "클린아이 잡플러스",
       "title": "성동1호점 우리동네키움센터 스위첸아이꿈누리터 기간제 근로자(돌봄교사) 채용 공고",
@@ -1797,15 +1806,6 @@
       "source": "레슨인포",
       "title": "(재)GS문화재단 기획홍보팀 계약직 채용 공고 (프로그램 매니저)",
       "school": "GS문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94122",
-      "source": "레슨인포",
-      "title": "롯데문화재단 티켓매니저(계약직) 채용",
-      "school": "롯데문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
