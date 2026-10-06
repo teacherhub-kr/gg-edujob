@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-06T20:16:32+09:00",
+  "generatedAt": "2026-10-07T00:28:02+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19959,
+  "canonicalOfficialJobs": 19978,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6052,
-  "selectedCanonicalOfficialJobs": 3451,
-  "selectedFoundationOfficialJobs": 9,
-  "selectedOfficialJobs": 3460,
-  "selectedPrivateJobs": 6031,
-  "publishedJobs": 9318,
+  "canonicalPrivateJobs": 6118,
+  "selectedCanonicalOfficialJobs": 3033,
+  "selectedFoundationOfficialJobs": 5,
+  "selectedOfficialJobs": 3038,
+  "selectedPrivateJobs": 6089,
+  "publishedJobs": 8955,
   "perFeed": {
-    "official": 3289,
-    "private": 6029
+    "official": 2868,
+    "private": 6087
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,16 +20,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1791,
-      "count": 1791,
-      "rawCandidateCount": 1797,
+      "candidateCount": 1857,
+      "count": 1857,
+      "rawCandidateCount": 1863,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-06T07:29:09+09:00",
+      "lastVerifiedAt": "2026-10-06T21:27:49+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 1077,
-      "displayedAsPrivate": 1789
+      "unverifiedLinkCount": 1144,
+      "displayedAsPrivate": 1855
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -37,16 +37,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 9,
-      "count": 9,
+      "candidateCount": 8,
+      "count": 8,
       "rawCandidateCount": 12,
-      "excludedFromUnifiedCount": 3,
+      "excludedFromUnifiedCount": 4,
       "lastVerifiedAt": "2026-10-06T18:16:07+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 9
+      "displayedAsPrivate": 8
     },
     "jobteacher": {
       "name": "잡티처",
@@ -88,16 +88,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 28,
-      "count": 28,
+      "candidateCount": 21,
+      "count": 21,
       "rawCandidateCount": 28,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 7,
       "lastVerifiedAt": "2026-10-06T17:48:06+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 28
+      "displayedAsPrivate": 21
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-06T20:16:40+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-07T00:28:10+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }

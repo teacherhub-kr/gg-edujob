@@ -1,11 +1,11 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9318,
-  "nonDirectBeforeRepair": 1077,
+  "totalRows": 8955,
+  "nonDirectBeforeRepair": 1144,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 1077,
-  "cultureFoundationRows": 176,
-  "cultureFoundationNonDirectRows": 138,
+  "nonDirectAfterRepair": 1144,
+  "cultureFoundationRows": 178,
+  "cultureFoundationNonDirectRows": 145,
   "recoveredExamples": [],
   "nonDirectExamples": [
     {
@@ -264,6 +264,15 @@
       "sourceIdentity": "culture:id:94971",
       "source": "레슨인포",
       "title": "제작PD/공연/뮤지컬/콘서트및문화예술",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94964",
+      "source": "레슨인포",
+      "title": "쇼뮤지컬 <TOUCH FIVE> 하우스매니저 모집",
       "school": "레슨인포 구인",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
@@ -898,15 +907,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94789",
-      "source": "레슨인포",
-      "title": "(복사) 2026 홍익대 대학로 아트센터 무대감독 채용공고",
-      "school": "아트센터",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
     }
   ],
   "cultureFoundationExamples": [
@@ -1064,15 +1064,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000480:000006",
-      "source": "클린아이 잡플러스",
-      "title": "(재)하남문화재단 임원(비상임이사) 모집공고",
-      "school": "하남문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000006&ypEntId=B000480",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
       "sourceIdentity": "culture:id:95110",
       "source": "레슨인포",
       "title": "(재)인천광역시부평구문화재단 대표이사 채용 공고",
@@ -1152,42 +1143,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "official-foundation:incheon:metropolitan:bf21655469dc3d001f8d",
-      "source": "인천문화재단",
-      "title": "재단법인 인천문화재단 감사(비상임) 모집 공고(9.21.~10.6.)",
-      "school": "인천문화재단",
-      "url": "https://ifac.or.kr/bbs/view.do?bbsSn=236088&key=m2501152808232",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "official-foundation:incheon:metropolitan:602f9cf64cd858cb3320",
-      "source": "인천문화재단",
-      "title": "재단법인 인천문화재단 이사(비상임) 모집 공고(9.21.~10.6.)",
-      "school": "인천문화재단",
-      "url": "https://ifac.or.kr/bbs/view.do?bbsSn=236086&key=m2501152808232",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "official-foundation:incheon:metropolitan:57410a7245bd4abe92ce",
-      "source": "인천문화재단",
-      "title": "재단법인 인천문화재단 근로자 이사(비상임) 모집 공고(9.21.~10.6.)",
-      "school": "인천문화재단",
-      "url": "https://ifac.or.kr/bbs/view.do?bbsSn=236087&key=m2501152808232",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "official-foundation:gyeonggi:hanam:08400349e78ed13244af",
-      "source": "하남문화재단",
-      "title": "(재)하남문화재단 임원(비상임이사) 공개모집 공고",
-      "school": "하남문화재단",
-      "url": "https://www.hanam.go.kr/www/selectGosiData.do?key=174&not_ancmt_mgt_no=52682&not_ancmt_se_code=05",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
     },
     {
       "sourceIdentity": "culture:id:95040",
@@ -1784,6 +1739,15 @@
       "direct": false
     },
     {
+      "sourceIdentity": "culture:id:94251",
+      "source": "레슨인포",
+      "title": "롯데문화재단 티켓매니저(계약직) 채용",
+      "school": "롯데문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
       "sourceIdentity": "culture:id:94195",
       "source": "레슨인포",
       "title": "롯데문화재단 티켓매니저(계약직) 채용",
@@ -1806,6 +1770,42 @@
       "source": "레슨인포",
       "title": "(재)GS문화재단 기획홍보팀 계약직 채용 공고 (프로그램 매니저)",
       "school": "GS문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94122",
+      "source": "레슨인포",
+      "title": "롯데문화재단 티켓매니저(계약직) 채용",
+      "school": "롯데문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94110",
+      "source": "레슨인포",
+      "title": "운심석면문화재단 전문학예인력 모집",
+      "school": "운심석면문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94094",
+      "source": "레슨인포",
+      "title": "롯데문화재단 티켓매니저(계약직) 채용",
+      "school": "롯데문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94092",
+      "source": "레슨인포",
+      "title": "[중랑문화재단] 청년일경험 광고마케팅(축제공연기획) 직무능력 향상 프로그램 2기 참여자 모집",
+      "school": "중랑문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
