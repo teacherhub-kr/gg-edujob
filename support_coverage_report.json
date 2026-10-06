@@ -1,21 +1,20 @@
 {
-  "generatedAt": "2026-10-06T04:35:55.113188+00:00",
+  "generatedAt": "2026-10-06T09:01:56.172321+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
-    "newlyRecoveredJobs": 1,
-    "gyeonggiComplete": 25,
-    "seoulComplete": 11,
+    "incheonTotal": 5,
+    "incheonComplete": 5,
+    "warnings": [],
     "gyeonggiTotal": 25,
     "seoulTotal": 11,
-    "warnings": [],
-    "incheonTotal": 5,
-    "incheonComplete": 5
+    "gyeonggiComplete": 25,
+    "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5804,
-    "gyeonggiTotal": 5804,
-    "seoulExact": 347,
-    "seoulTotal": 347
+    "gyeonggiExact": 5851,
+    "gyeonggiTotal": 5851,
+    "seoulExact": 350,
+    "seoulTotal": 350
   },
   "provinces": {
     "gyeonggi": {
@@ -34,11 +33,10 @@
           ],
           "count": 72,
           "rawRows": 200,
-          "pagesScanned": 20,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegp.kr/goegp/na/ntt/selectNttList.do?bbsId=2721&mi=3284",
@@ -100,7 +98,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 20,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "고양교육지원청",
@@ -110,13 +111,12 @@
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=11674&mi=21050&srch_aditCol1=%EA%B5%90%EC%9C%A1%EC%A7%80%EC%9B%90%EC%B2%AD",
             "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674"
           ],
-          "count": 172,
+          "count": 166,
           "rawRows": 240,
-          "pagesScanned": 24,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?bbsId=8731&mi=15413",
@@ -146,7 +146,7 @@
               "url": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
               "pagesScanned": 18,
               "rawRows": 180,
-              "recentRows": 162,
+              "recentRows": 163,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -154,7 +154,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 24,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "광명교육지원청",
@@ -163,19 +166,18 @@
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
             "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4242&mi=5879"
           ],
-          "count": 237,
-          "rawRows": 270,
-          "pagesScanned": 27,
+          "count": 240,
+          "rawRows": 280,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
-              "pagesScanned": 24,
-              "rawRows": 240,
-              "recentRows": 225,
+              "pagesScanned": 25,
+              "rawRows": 250,
+              "recentRows": 228,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -195,7 +197,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 28,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "광주하남교육지원청",
@@ -206,19 +211,18 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 312,
+          "count": 316,
           "rawRows": 442,
-          "pagesScanned": 44,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
               "pagesScanned": 32,
               "rawRows": 322,
-              "recentRows": 294,
+              "recentRows": 298,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -262,7 +266,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 44,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "구리남양주교육지원청",
@@ -277,19 +284,18 @@
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13593&bbsId=8411",
             "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?mi=13579&bbsId=8401"
           ],
-          "count": 579,
-          "rawRows": 740,
-          "pagesScanned": 74,
+          "count": 588,
+          "rawRows": 750,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 중복/옛 메뉴 별칭 제외",
-          "coverageComplete": true,
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
-              "pagesScanned": 50,
-              "rawRows": 500,
-              "recentRows": 481,
+              "pagesScanned": 51,
+              "rawRows": 510,
+              "recentRows": 489,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -313,7 +319,7 @@
               "url": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
               "pagesScanned": 10,
               "rawRows": 100,
-              "recentRows": 80,
+              "recentRows": 81,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -335,7 +341,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 481,
+              "representativeStableIdCount": 489,
               "ignoredAsStaleAlias": true
             },
             {
@@ -352,7 +358,7 @@
               "ignoredAsDuplicateMenuAlias": true,
               "aliasOf": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
               "aliasStableIdCount": 0,
-              "representativeStableIdCount": 481,
+              "representativeStableIdCount": 489,
               "ignoredAsStaleAlias": true
             },
             {
@@ -392,6 +398,8 @@
               "coverageComplete": true
             }
           ],
+          "pagesScanned": 75,
+          "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
@@ -402,11 +410,10 @@
           ],
           "count": 4,
           "rawRows": 50,
-          "pagesScanned": 5,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110",
@@ -420,7 +427,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 5,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "김포교육지원청",
@@ -430,19 +440,18 @@
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9224&bbsId=5149",
             "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153"
           ],
-          "count": 417,
-          "rawRows": 490,
-          "pagesScanned": 49,
+          "count": 421,
+          "rawRows": 500,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
-              "pagesScanned": 41,
-              "rawRows": 410,
-              "recentRows": 387,
+              "pagesScanned": 42,
+              "rawRows": 420,
+              "recentRows": 390,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -466,7 +475,7 @@
               "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153",
               "pagesScanned": 5,
               "rawRows": 50,
-              "recentRows": 30,
+              "recentRows": 31,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -474,7 +483,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 50,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "동두천양주교육지원청",
@@ -484,13 +496,12 @@
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=11748&bbsId=11037",
             "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228"
           ],
-          "count": 396,
+          "count": 399,
           "rawRows": 463,
-          "pagesScanned": 48,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?bbsId=11025&mi=11726",
@@ -520,7 +531,7 @@
               "url": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
               "pagesScanned": 42,
               "rawRows": 421,
-              "recentRows": 394,
+              "recentRows": 397,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -528,7 +539,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 48,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "부천교육지원청",
@@ -538,19 +552,18 @@
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
           ],
-          "count": 1043,
+          "count": 564,
           "rawRows": 1110,
-          "pagesScanned": 111,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
               "pagesScanned": 51,
               "rawRows": 510,
-              "recentRows": 485,
+              "recentRows": 491,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -574,7 +587,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381",
               "pagesScanned": 51,
               "rawRows": 510,
-              "recentRows": 485,
+              "recentRows": 491,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -582,7 +595,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 111,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "성남교육지원청",
@@ -591,19 +607,18 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 833,
-          "rawRows": 870,
-          "pagesScanned": 87,
+          "count": 841,
+          "rawRows": 880,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-              "pagesScanned": 79,
-              "rawRows": 790,
-              "recentRows": 766,
+              "pagesScanned": 80,
+              "rawRows": 800,
+              "recentRows": 774,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -623,7 +638,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 88,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "수원교육지원청",
@@ -633,11 +651,10 @@
           ],
           "count": 13,
           "rawRows": 90,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesw.kr/goesw/na/ntt/selectNttList.do?bbsId=11021&mi=18851",
@@ -651,7 +668,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "시흥교육지원청",
@@ -660,13 +680,12 @@
             "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5518&mi=9018",
             "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5511&mi=9003"
           ],
-          "count": 42,
+          "count": 41,
           "rawRows": 103,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goesh.kr/goesh/na/ntt/selectNttList.do?bbsId=5518&mi=9018",
@@ -692,7 +711,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "안산교육지원청",
@@ -705,11 +727,10 @@
           ],
           "count": 53,
           "rawRows": 120,
-          "pagesScanned": 14,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeas.kr/goeas/na/ntt/selectNttList.do?bbsId=5918&mi=11390",
@@ -759,7 +780,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 14,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "안성교육지원청",
@@ -770,11 +794,10 @@
           ],
           "count": 170,
           "rawRows": 210,
-          "pagesScanned": 21,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goean.kr/goean/na/ntt/selectNttList.do?bbsId=2801&mi=4565",
@@ -800,7 +823,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 21,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "안양과천교육지원청",
@@ -813,11 +839,10 @@
           ],
           "count": 8,
           "rawRows": 54,
-          "pagesScanned": 9,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeay.kr/goeay/na/ntt/selectNttList.do?bbsId=5137&mi=10158",
@@ -867,7 +892,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "양평교육지원청",
@@ -878,11 +906,10 @@
           ],
           "count": 124,
           "rawRows": 145,
-          "pagesScanned": 16,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyp.kr/goeyp/na/ntt/selectNttList.do?bbsId=1906&mi=3608",
@@ -908,7 +935,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 16,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "여주교육지원청",
@@ -920,11 +950,10 @@
           ],
           "count": 5,
           "rawRows": 68,
-          "pagesScanned": 8,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyj.kr/goeyj/na/ntt/selectNttList.do?bbsId=10075&mi=10090",
@@ -962,7 +991,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 8,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "연천교육지원청",
@@ -972,19 +1004,18 @@
             "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2386&bbsId=2220",
             "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?mi=2452&bbsId=2243"
           ],
-          "count": 68,
-          "rawRows": 125,
-          "pagesScanned": 14,
+          "count": 69,
+          "rawRows": 135,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
-              "pagesScanned": 8,
-              "rawRows": 80,
-              "recentRows": 67,
+              "pagesScanned": 9,
+              "rawRows": 90,
+              "recentRows": 68,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1016,7 +1047,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 15,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "용인교육지원청",
@@ -1027,13 +1061,12 @@
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
           ],
-          "count": 110,
+          "count": 111,
           "rawRows": 182,
-          "pagesScanned": 22,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12229&mi=20180",
@@ -1051,7 +1084,7 @@
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12219&mi=20165",
               "pagesScanned": 10,
               "rawRows": 100,
-              "recentRows": 88,
+              "recentRows": 89,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1083,7 +1116,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 22,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "의정부교육지원청",
@@ -1093,13 +1129,12 @@
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
           ],
-          "count": 304,
+          "count": 308,
           "rawRows": 360,
-          "pagesScanned": 37,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?bbsId=4119&mi=7023",
@@ -1129,7 +1164,7 @@
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
               "pagesScanned": 27,
               "rawRows": 270,
-              "recentRows": 247,
+              "recentRows": 251,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1137,7 +1172,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 37,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "이천교육지원청",
@@ -1147,11 +1185,10 @@
           ],
           "count": 14,
           "rawRows": 50,
-          "pagesScanned": 5,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goeic.kr/goeic/na/ntt/selectNttList.do?bbsId=3723&mi=5593",
@@ -1165,7 +1202,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 5,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "파주교육지원청",
@@ -1176,19 +1216,18 @@
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10778&bbsId=7171",
             "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10788&bbsId=7179"
           ],
-          "count": 404,
-          "rawRows": 482,
-          "pagesScanned": 49,
+          "count": 407,
+          "rawRows": 492,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
-              "pagesScanned": 9,
-              "rawRows": 90,
-              "recentRows": 77,
+              "pagesScanned": 10,
+              "rawRows": 100,
+              "recentRows": 79,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1200,7 +1239,7 @@
               "url": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
               "pagesScanned": 34,
               "rawRows": 340,
-              "recentRows": 316,
+              "recentRows": 317,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1232,7 +1271,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 50,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "평택교육지원청",
@@ -1242,13 +1284,12 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 648,
+          "count": 650,
           "rawRows": 741,
-          "pagesScanned": 74,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10077&mi=10064",
@@ -1278,7 +1319,7 @@
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
               "pagesScanned": 56,
               "rawRows": 561,
-              "recentRows": 533,
+              "recentRows": 535,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1286,7 +1327,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 74,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "포천교육지원청",
@@ -1296,13 +1340,12 @@
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
             "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=7021&bbsId=2116"
           ],
-          "count": 158,
-          "rawRows": 212,
-          "pagesScanned": 21,
+          "count": 160,
+          "rawRows": 222,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198",
@@ -1318,9 +1361,9 @@
             },
             {
               "url": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
-              "pagesScanned": 11,
-              "rawRows": 111,
-              "recentRows": 99,
+              "pagesScanned": 12,
+              "rawRows": 121,
+              "recentRows": 101,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1340,7 +1383,10 @@
               "naturalEnd": false,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 22,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "화성오산교육지원청",
@@ -1351,11 +1397,10 @@
           ],
           "count": 45,
           "rawRows": 124,
-          "pagesScanned": 14,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
+          "parser": "gyeonggi-mircms-table-v2.1",
           "boardHealth": [
             {
               "url": "https://www.goehs.kr/goehs/na/ntt/selectNttList.do?bbsId=9826&mi=17846",
@@ -1381,7 +1426,10 @@
               "naturalEnd": true,
               "coverageComplete": true
             }
-          ]
+          ],
+          "pagesScanned": 14,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         }
       ]
     },
@@ -1397,11 +1445,10 @@
           ],
           "count": 0,
           "rawRows": 1,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://dbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1418,7 +1465,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "서부교육지원청",
@@ -1428,11 +1478,10 @@
           ],
           "count": 1,
           "rawRows": 2,
-          "pagesScanned": 2,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1449,7 +1498,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 2,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "남부교육지원청",
@@ -1459,11 +1511,10 @@
           ],
           "count": 7,
           "rawRows": 8,
-          "pagesScanned": 2,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1480,7 +1531,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 2,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "북부교육지원청",
@@ -1490,11 +1544,10 @@
           ],
           "count": 0,
           "rawRows": 1,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://bbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1511,7 +1564,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "중부교육지원청",
@@ -1521,11 +1577,10 @@
           ],
           "count": 33,
           "rawRows": 60,
-          "pagesScanned": 6,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://jbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1542,7 +1597,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 6,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "강동송파교육지원청",
@@ -1550,19 +1608,18 @@
           "boards": [
             "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 3,
-          "rawRows": 6,
-          "pagesScanned": 2,
+          "count": 5,
+          "rawRows": 8,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gdspedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 6,
-              "recentRows": 3,
+              "rawRows": 8,
+              "recentRows": 5,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1573,7 +1630,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 2,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "강서양천교육지원청",
@@ -1581,19 +1641,18 @@
           "boards": [
             "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 82,
+          "count": 83,
           "rawRows": 110,
-          "pagesScanned": 11,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gsycedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 11,
               "rawRows": 110,
-              "recentRows": 82,
+              "recentRows": 83,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1604,7 +1663,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 11,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "강남서초교육지원청",
@@ -1614,11 +1676,10 @@
           ],
           "count": 65,
           "rawRows": 90,
-          "pagesScanned": 9,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://gnscedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1635,7 +1696,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 9,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "동작관악교육지원청",
@@ -1645,11 +1709,10 @@
           ],
           "count": 105,
           "rawRows": 130,
-          "pagesScanned": 13,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://dgedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1666,7 +1729,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 13,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "성동광진교육지원청",
@@ -1676,11 +1742,10 @@
           ],
           "count": 0,
           "rawRows": 1,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sdgjedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1697,7 +1762,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
         {
           "name": "성북강북교육지원청",
@@ -1707,11 +1775,10 @@
           ],
           "count": 0,
           "rawRows": 1,
-          "pagesScanned": 1,
+          "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
-          "message": "최근 90일 범위 완전수집",
-          "coverageComplete": true,
+          "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
           "boardHealth": [
             {
               "url": "https://sbgbedu.sen.go.kr/FUS/JO/JOL11.do",
@@ -1728,7 +1795,10 @@
               "coverageComplete": true,
               "paginationMethod": "GET"
             }
-          ]
+          ],
+          "pagesScanned": 1,
+          "coverageComplete": true,
+          "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         }
       ]
     },
@@ -2003,7 +2073,7 @@
           "boards": [
             "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
           ],
-          "count": 124,
+          "count": 125,
           "rawRows": 150,
           "pagesScanned": 15,
           "ok": true,
@@ -2016,7 +2086,7 @@
               "collector": "seobu-verified-headless-chrome",
               "pagesScanned": 15,
               "rawRows": 150,
-              "recentRows": 124,
+              "recentRows": 125,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
@@ -2032,120 +2102,120 @@
                   "requestedPage": 1,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159320&page=1&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159319&page=1&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159323&page=1&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159320&page=1&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 2,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159250&page=2&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159249&page=2&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159256&page=2&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159250&page=2&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 3,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159205&page=3&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159204&page=3&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159215&page=3&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159205&page=3&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 4,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159168&page=4&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159152&page=4&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159171&page=4&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159168&page=4&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 5,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159093&page=5&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159085&page=5&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159112&page=5&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159093&page=5&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 6,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159064&page=6&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159061&page=6&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159065&page=6&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159064&page=6&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 7,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159023&page=7&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159022&page=7&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159036&page=7&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=159023&page=7&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 8,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158975&page=8&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158965&page=8&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158985&page=8&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158975&page=8&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 9,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158928&page=9&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158927&page=9&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158930&page=9&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158928&page=9&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 10,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158864&page=10&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158863&page=10&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158865&page=10&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158864&page=10&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 11,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158825&page=11&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158824&page=11&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158826&page=11&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158825&page=11&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 12,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158773&page=12&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158772&page=12&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158786&page=12&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158773&page=12&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 13,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158722&page=13&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158718&page=13&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158729&page=13&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158722&page=13&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 14,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158675&page=14&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158665&page=14&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158678&page=14&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158675&page=14&board_code=4674&g1="
                   ]
                 },
                 {
                   "requestedPage": 15,
                   "rawRows": 10,
                   "detailIdSample": [
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158638&page=15&board_code=4674&g1=",
-                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158633&page=15&board_code=4674&g1="
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158640&page=15&board_code=4674&g1=",
+                    "https://seobu.ice.go.kr/bseobu/read.aspx?board_idx=158638&page=15&board_code=4674&g1="
                   ]
                 }
               ]
@@ -2164,7 +2234,7 @@
           "boards": [
             "https://ganghwa.ice.go.kr/open/recruiting.asp"
           ],
-          "count": 61,
+          "count": 63,
           "rawRows": 90,
           "pagesScanned": 9,
           "ok": true,
@@ -2176,15 +2246,15 @@
               "url": "https://ganghwa.ice.go.kr/open/recruiting.asp",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 61,
+              "recentRows": 63,
               "coverageComplete": true,
               "accessError": "",
               "paginationRepeated": false,
               "crossedLookback": true,
               "naturalEnd": false,
               "explicitEmpty": false,
-              "totalRowsHint": 3144,
-              "latestRegistered": "2026/10/02",
+              "totalRowsHint": 3146,
+              "latestRegistered": "2026/10/06",
               "schemaDiagnostic": [
                 {
                   "page": "https://ganghwa.ice.go.kr/open/recruiting.asp",
@@ -2240,11 +2310,11 @@
                       "anchorCount": 1,
                       "anchorShapes": [
                         {
-                          "href": "javascript:act_view('/open/recruiting.asp','4226','view','N','4225');",
+                          "href": "javascript:act_view('/open/recruiting.asp','4228','view','N','4227');",
                           "onclick": "",
                           "dataId": "",
                           "attrs": {
-                            "href": "javascript:act_view('/open/recruiting.asp','4226','view','N','4225');"
+                            "href": "javascript:act_view('/open/recruiting.asp','4228','view','N','4227');"
                           },
                           "parentAttrs": {}
                         }
@@ -2272,11 +2342,11 @@
                       "anchorCount": 1,
                       "anchorShapes": [
                         {
-                          "href": "javascript:act_view('/open/recruiting.asp','4225','view','4226','4224');",
+                          "href": "javascript:act_view('/open/recruiting.asp','4227','view','4228','4226');",
                           "onclick": "",
                           "dataId": "",
                           "attrs": {
-                            "href": "javascript:act_view('/open/recruiting.asp','4225','view','4226','4224');"
+                            "href": "javascript:act_view('/open/recruiting.asp','4227','view','4228','4226');"
                           },
                           "parentAttrs": {}
                         }
@@ -2423,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261006130029",
+                  "/js/include.js?v=20261006171811",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2439,8 +2509,8 @@
                   "redirectStatuses": [],
                   "observedPage": "1",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4226&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4225",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4225&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4226&nNum=4224"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4228&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=N&nNum=4227",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4227&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4228&nNum=4226"
                   ]
                 },
                 {
@@ -2450,8 +2520,8 @@
                   "redirectStatuses": [],
                   "observedPage": "2",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4216&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4217&nNum=4215",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4215&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4216&nNum=4214"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4218&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4219&nNum=4217",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4217&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4218&nNum=4216"
                   ]
                 },
                 {
@@ -2461,8 +2531,8 @@
                   "redirectStatuses": [],
                   "observedPage": "3",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4204&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4206&nNum=4203",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4203&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4204&nNum=4202"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4208&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4209&nNum=4206",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4206&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4208&nNum=4204"
                   ]
                 },
                 {
@@ -2472,8 +2542,8 @@
                   "redirectStatuses": [],
                   "observedPage": "4",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4194&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4195&nNum=4193",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4193&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4194&nNum=4192"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4196&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4197&nNum=4195",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4195&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4196&nNum=4194"
                   ]
                 },
                 {
@@ -2483,8 +2553,8 @@
                   "redirectStatuses": [],
                   "observedPage": "5",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4183&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4184&nNum=4182",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4182&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4183&nNum=4181"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4185&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4186&nNum=4184",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4184&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4185&nNum=4183"
                   ]
                 },
                 {
@@ -2494,8 +2564,8 @@
                   "redirectStatuses": [],
                   "observedPage": "6",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4173&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4174&nNum=4172",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4172&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4173&nNum=4171"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4175&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4176&nNum=4174",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4174&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4175&nNum=4173"
                   ]
                 },
                 {
@@ -2505,8 +2575,8 @@
                   "redirectStatuses": [],
                   "observedPage": "7",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4163&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4164&nNum=4162",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4162&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4163&nNum=4161"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4165&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4166&nNum=4164",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4164&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4165&nNum=4163"
                   ]
                 },
                 {
@@ -2516,8 +2586,8 @@
                   "redirectStatuses": [],
                   "observedPage": "8",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4153&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4154&nNum=4152",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4152&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4153&nNum=4151"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4155&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4156&nNum=4154",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4154&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4155&nNum=4153"
                   ]
                 },
                 {
@@ -2527,8 +2597,8 @@
                   "redirectStatuses": [],
                   "observedPage": "9",
                   "detailIdSample": [
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4143&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4144&nNum=4142",
-                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4142&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4143&nNum=4141"
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4145&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4146&nNum=4144",
+                    "https://ganghwa.ice.go.kr/open/recruiting.asp?num=4144&ptype=view&cmode=mc&cstep=0302000000&path_url=%2Fopen%2Frecruiting.asp&pNum=4145&nNum=4143"
                   ]
                 }
               ]
@@ -2547,7 +2617,6 @@
   "laterReconciliationEvidenceUsed": true,
   "expectedOfficialSources": 44,
   "notes": [
-    "경기/구리남양주교육지원청: earlier transient coverage failure superseded by later same-candidate 44-source traversal proof",
     "gyeonggi/광주하남교육지원청: round rawRows=70, but traversal has explicit completion evidence",
     "gyeonggi/구리남양주교육지원청: ignored stable-ID-proven duplicate menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14162 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
     "gyeonggi/구리남양주교육지원청: ignored stable-ID-proven duplicate menu alias https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=14084 -> https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
@@ -2555,11 +2624,11 @@
     "gyeonggi/부천교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "gyeonggi/성남교육지원청: round rawRows=80, but traversal has explicit completion evidence",
     "gyeonggi/수원교육지원청: round rawRows=90, but traversal has explicit completion evidence",
-    "gyeonggi/연천교육지원청: round rawRows=80, but traversal has explicit completion evidence",
+    "gyeonggi/연천교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "gyeonggi/용인교육지원청: round rawRows=100, but traversal has explicit completion evidence",
     "gyeonggi/용인교육지원청: round rawRows=70, but traversal has explicit completion evidence",
     "gyeonggi/의정부교육지원청: round rawRows=80, but traversal has explicit completion evidence",
-    "gyeonggi/파주교육지원청: round rawRows=90, but traversal has explicit completion evidence",
+    "gyeonggi/파주교육지원청: round rawRows=100, but traversal has explicit completion evidence",
     "gyeonggi/평택교육지원청: round rawRows=70, but traversal has explicit completion evidence",
     "seoul/강남서초교육지원청: round rawRows=90, but traversal has explicit completion evidence",
     "incheon/인천강화교육지원청: round rawRows=90, but traversal has explicit completion evidence"
