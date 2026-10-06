@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T09:01:56.172321+00:00",
+  "generatedAt": "2026-10-06T15:26:18.141895+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,8 +11,8 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5851,
-    "gyeonggiTotal": 5851,
+    "gyeonggiExact": 5856,
+    "gyeonggiTotal": 5856,
     "seoulExact": 350,
     "seoulTotal": 350
   },
@@ -211,7 +211,7 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 316,
+          "count": 317,
           "rawRows": 442,
           "ok": true,
           "state": "complete",
@@ -222,7 +222,7 @@
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
               "pagesScanned": 32,
               "rawRows": 322,
-              "recentRows": 298,
+              "recentRows": 299,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -552,7 +552,7 @@
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
           ],
-          "count": 564,
+          "count": 565,
           "rawRows": 1110,
           "ok": true,
           "state": "complete",
@@ -575,7 +575,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 73,
+              "recentRows": 74,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1061,7 +1061,7 @@
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
           ],
-          "count": 111,
+          "count": 112,
           "rawRows": 182,
           "ok": true,
           "state": "complete",
@@ -1096,7 +1096,7 @@
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
               "pagesScanned": 7,
               "rawRows": 70,
-              "recentRows": 19,
+              "recentRows": 20,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1284,8 +1284,8 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 650,
-          "rawRows": 741,
+          "count": 651,
+          "rawRows": 751,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1317,9 +1317,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 56,
-              "rawRows": 561,
-              "recentRows": 535,
+              "pagesScanned": 57,
+              "rawRows": 571,
+              "recentRows": 536,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1328,7 +1328,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 74,
+          "pagesScanned": 75,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1477,7 +1477,7 @@
             "https://sbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
           "count": 1,
-          "rawRows": 2,
+          "rawRows": 1,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
@@ -1486,8 +1486,8 @@
             {
               "url": "https://sbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 2,
-              "recentRows": 1,
+              "rawRows": 1,
+              "recentRows": 0,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261006171811",
+                  "/js/include.js?v=20261006234847",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],

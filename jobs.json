@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-06 16:41 KST",
+  "updatedAt": "2026-10-06 23:18 KST",
   "officialSourceCount": 44,
   "sources": {
     "gyeonggi": {
@@ -194,7 +194,7 @@
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8710&bbsId=5059",
             "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?mi=8709&bbsId=5058"
           ],
-          "count": 316,
+          "count": 317,
           "rawRows": 442,
           "ok": true,
           "state": "complete",
@@ -205,7 +205,7 @@
               "url": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
               "pagesScanned": 32,
               "rawRows": 322,
-              "recentRows": 298,
+              "recentRows": 299,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -535,7 +535,7 @@
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
             "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11172&bbsId=6381"
           ],
-          "count": 564,
+          "count": 565,
           "rawRows": 1110,
           "ok": true,
           "state": "complete",
@@ -558,7 +558,7 @@
               "url": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
               "pagesScanned": 9,
               "rawRows": 90,
-              "recentRows": 73,
+              "recentRows": 74,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1044,7 +1044,7 @@
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
             "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?mi=20178&bbsId=12227"
           ],
-          "count": 111,
+          "count": 112,
           "rawRows": 182,
           "ok": true,
           "state": "complete",
@@ -1079,7 +1079,7 @@
               "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
               "pagesScanned": 7,
               "rawRows": 70,
-              "recentRows": 19,
+              "recentRows": 20,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1267,8 +1267,8 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 650,
-          "rawRows": 741,
+          "count": 651,
+          "rawRows": 751,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1300,9 +1300,9 @@
             },
             {
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-              "pagesScanned": 56,
-              "rawRows": 561,
-              "recentRows": 535,
+              "pagesScanned": 57,
+              "rawRows": 571,
+              "recentRows": 536,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1311,7 +1311,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 74,
+          "pagesScanned": 75,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1418,7 +1418,7 @@
       "central": {
         "name": "경기도교육청 통합 구인구직",
         "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502",
-        "count": 9232,
+        "count": 9247,
         "ok": true,
         "state": "ok"
       }
@@ -1465,7 +1465,7 @@
             "https://sbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
           "count": 1,
-          "rawRows": 2,
+          "rawRows": 1,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
@@ -1474,8 +1474,8 @@
             {
               "url": "https://sbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 2,
-              "rawRows": 2,
-              "recentRows": 1,
+              "rawRows": 1,
+              "recentRows": 0,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1792,7 +1792,7 @@
       "central": {
         "name": "서울교육일자리포털",
         "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term",
-        "count": 388,
+        "count": 390,
         "ok": true,
         "state": "ok"
       }
@@ -1806,7 +1806,7 @@
           "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
         ],
         "requiredBoardCount": 2,
-        "count": 2438,
+        "count": 2439,
         "ok": true,
         "state": "ok",
         "coverageComplete": true,
@@ -1819,7 +1819,7 @@
             "bbsId": "1981",
             "lookbackDays": 90,
             "pagesScanned": 241,
-            "count": 2395,
+            "count": 2396,
             "coverageComplete": true,
             "accessError": "",
             "paginationRepeated": false,
@@ -2546,7 +2546,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261006171811",
+                  "/js/include.js?v=20261006234847",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
@@ -2670,12 +2670,12 @@
   "errors": [],
   "verification": {
     "state": "warning",
-    "checkedAt": "2026-10-06 17:26 KST",
+    "checkedAt": "2026-10-06 23:55 KST",
     "message": "원문 링크 일시/본문증거 확인 필요 2/50개",
     "supportOfficeIssues": [],
     "supportExactLinks": {
-      "total": 6429,
-      "resolved": 6429,
+      "total": 6438,
+      "resolved": 6438,
       "unresolved": 0,
       "examples": []
     },
@@ -2708,8 +2708,8 @@
         }
       ]
     },
-    "previousTotal": 19737,
-    "currentTotal": 19945
+    "previousTotal": 19959,
+    "currentTotal": 19977
   },
   "jobs": [
     {
@@ -2869,6 +2869,32 @@
       "nttSn": "3385969",
       "bbsId": "1981",
       "sourceIdentity": "ice-central:3385969"
+    },
+    {
+      "id": "goe-62083",
+      "province": "경기",
+      "school": "연무중학교",
+      "title": "연무중 기간제 교원(국어) 채용 (3차)",
+      "subject": "국어",
+      "region": "수원시",
+      "regions": [
+        "수원시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/12/12",
+      "workStart": "2026/10/13",
+      "workEnd": "2026/12/13",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62083",
+      "sourceIdentity": "goe-central:62083"
     },
     {
       "id": "ice-central-3385897",
@@ -3087,10 +3113,10 @@
       "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1353565",
       "boardUrl": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
       "sourceIdentity": "mircms:www.goepj.kr:7202:1353565",
-      "detailLinkResolved": true,
       "nttSn": "1353565",
       "bbsId": "7202",
       "mi": "10838",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -3172,6 +3198,32 @@
       "nttSn": "3385920",
       "bbsId": "1981",
       "sourceIdentity": "ice-central:3385920"
+    },
+    {
+      "id": "sen-111592",
+      "province": "서울",
+      "school": "태평양학원",
+      "title": "성덕고등학교 행정실 9급 사무직원 신규 채용",
+      "subject": "교육행정업무(문서/급여/인사/세입세출 등)",
+      "region": "강동구",
+      "regions": [
+        "강동구"
+      ],
+      "type": "정규채용",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/19",
+      "applyEnd": "2026/10/28",
+      "workStart": "2026/12/01",
+      "workEnd": "2099/12/31",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111592",
+      "sourceIdentity": "seoul-central:111592"
     },
     {
       "id": "sen-111451",
@@ -3342,6 +3394,32 @@
       "sourceIdentity": "goe-central:62051"
     },
     {
+      "id": "goe-62084",
+      "province": "경기",
+      "school": "연무중학교",
+      "title": "연무중 시간강사(국어) 채용",
+      "subject": "국어",
+      "region": "수원시",
+      "regions": [
+        "수원시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/22",
+      "workStart": "2026/10/13",
+      "workEnd": "2026/10/23",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62084",
+      "sourceIdentity": "goe-central:62084"
+    },
+    {
       "id": "goe-62023",
       "province": "경기",
       "school": "상리초등학교",
@@ -3384,8 +3462,8 @@
       "schoolLevel": "기타",
       "applyStart": "",
       "applyEnd": "2026/10/22",
-      "workStart": "",
-      "workEnd": "",
+      "workStart": "2026/10/26",
+      "workEnd": "2026/10/30",
       "registered": "2026/10/06",
       "headcount": "",
       "source": "동두천양주교육지원청",
@@ -3400,7 +3478,37 @@
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686623",
       "nttSn": "1686623",
       "bbsId": "10228",
-      "mi": "10336"
+      "mi": "10336",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
+    },
+    {
+      "id": "goe-62078",
+      "province": "경기",
+      "school": "위례고등학교",
+      "title": "위례고등학교 시간강사(수학, 일반사회, 국어, 영어, 음악, 도덕윤리, 물리) 채용 공고",
+      "subject": "(수학, 일반사회, 국어, 영어, 음악, 도덕윤리, 물리)",
+      "region": "하남시",
+      "regions": [
+        "하남시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/21",
+      "workStart": "2026/10/21",
+      "workEnd": "2026/12/18",
+      "registered": "2026/10/06",
+      "headcount": "8",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62078",
+      "sourceIdentity": "goe-central:62078"
     },
     {
       "id": "sen-111524",
@@ -3704,11 +3812,10 @@
       "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1353647",
       "boardUrl": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
       "sourceIdentity": "mircms:www.goepj.kr:7202:1353647",
-      "detailLinkResolved": true,
       "nttSn": "1353647",
       "bbsId": "7202",
       "mi": "10838",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-0164954de75dc0736ce9",
@@ -3736,11 +3843,10 @@
       "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1353645",
       "boardUrl": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?mi=10838&bbsId=7202",
       "sourceIdentity": "mircms:www.goepj.kr:7202:1353645",
-      "detailLinkResolved": true,
       "nttSn": "1353645",
       "bbsId": "7202",
       "mi": "10838",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-62014",
@@ -4136,10 +4242,10 @@
       "url": "https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7162&mi=10759&nttSn=1353580",
       "boardUrl": "https://www.goepj.kr/goepj/na/ntt/selectNttList.do?bbsId=7162&mi=10759",
       "sourceIdentity": "mircms:www.goepj.kr:7162:1353580",
-      "detailLinkResolved": true,
       "nttSn": "1353580",
       "bbsId": "7162",
       "mi": "10759",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -4301,6 +4407,32 @@
       "sourceIdentity": "goe-central:61951"
     },
     {
+      "id": "sen-111569",
+      "province": "서울",
+      "school": "서울용암초등학교",
+      "title": "(용암초) 시간강사(6학년 담임 ) 채용",
+      "subject": "6학년 담임",
+      "region": "용산구",
+      "regions": [
+        "용산구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/15",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/10/19",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111569",
+      "sourceIdentity": "seoul-central:111569"
+    },
+    {
       "id": "sen-111521",
       "province": "서울",
       "school": "서울특별시남부교육지원청",
@@ -4445,9 +4577,9 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235101",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1235101",
-      "detailLinkResolved": true,
       "nttSn": "1235101",
       "bbsId": "6381",
+      "detailLinkResolved": true,
       "mi": "",
       "periodStatus": "parsed"
     },
@@ -4477,25 +4609,25 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111508",
       "sourceIdentity": "seoul-central:111508",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
-      "id": "sen-111569",
+      "id": "sen-111544",
       "province": "서울",
-      "school": "서울용암초등학교",
-      "title": "(용암초) 시간강사(6학년 담임 ) 채용",
-      "subject": "6학년 담임",
-      "region": "용산구",
+      "school": "상명고등학교",
+      "title": "2026학년도 상명고등학교 조리실무사(교육공무직) 채용공고",
+      "subject": "조리실무사(조리원)",
+      "region": "노원구",
       "regions": [
-        "용산구"
+        "노원구"
       ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/06",
+      "type": "교육공무직/기간제근로자",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/07",
       "applyEnd": "2026/10/15",
       "workStart": "2026/10/19",
-      "workEnd": "2026/10/19",
+      "workEnd": "2027/02/28",
       "registered": "2026/10/06",
       "headcount": "1",
       "source": "서울교육일자리포털",
@@ -4503,9 +4635,9 @@
         "서울교육일자리포털"
       ],
       "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111569",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111544",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul-central:111569"
+      "sourceIdentity": "seoul-central:111544"
     },
     {
       "id": "goe-62067",
@@ -4671,6 +4803,30 @@
       "sourceIdentity": "ice-central:3385938"
     },
     {
+      "id": "goe-62079",
+      "province": "경기",
+      "school": "시온고등학교",
+      "title": "2026학년도 시온고등학교 기간제교사(역사) 채용 공고",
+      "subject": "역사",
+      "region": "",
+      "regions": [],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/13",
+      "workStart": "2026/11/02",
+      "workEnd": "2027/01/07",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62079",
+      "sourceIdentity": "goe-central:62079"
+    },
+    {
       "id": "goe-62036",
       "province": "경기",
       "school": "동백초등학교병설유치원",
@@ -4825,6 +4981,32 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61912",
       "sourceIdentity": "goe-central:61912"
+    },
+    {
+      "id": "goe-62070",
+      "province": "경기",
+      "school": "신풍초등학교",
+      "title": "신풍초 오케스트라 강사(오보에 1차, 바순 2차) 채용 공고",
+      "subject": "오보에, 바순 오케스트라 강사",
+      "region": "수원시",
+      "regions": [
+        "수원시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/13",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/06",
+      "headcount": "2",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62070",
+      "sourceIdentity": "goe-central:62070"
     },
     {
       "id": "goe-62068",
@@ -5551,6 +5733,38 @@
       "detailLinkResolved": true
     },
     {
+      "id": "goe-office-501aef8e4d1a5ef8cd60",
+      "province": "경기",
+      "school": "시온고등학교",
+      "title": "2026학년도 시온고등학교 기간제교원 채용(역사) 공고",
+      "subject": "",
+      "region": "부천시",
+      "regions": [
+        "부천시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/13",
+      "workStart": "2026/11/02",
+      "workEnd": "2027/01/07",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "부천교육지원청",
+      "checkedSources": [
+        "부천교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6327&mi=11084&nttSn=1235129",
+      "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?mi=11084&bbsId=6327",
+      "sourceIdentity": "mircms:www.goebc.kr:6327:1235129",
+      "detailLinkResolved": true,
+      "nttSn": "1235129",
+      "bbsId": "6327",
+      "mi": "11084",
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-office-f4ba211383733f8f4986",
       "province": "경기",
       "school": "한길학교",
@@ -5644,8 +5858,7 @@
       "detailLinkResolved": true,
       "nttSn": "1142110",
       "bbsId": "5218",
-      "mi": "9406",
-      "periodStatus": "parsed"
+      "mi": "9406"
     },
     {
       "id": "sen-111462",
@@ -5712,31 +5925,82 @@
       "reconciliationCarryForward": true
     },
     {
-      "id": "goe-62070",
+      "id": "goe-62072",
       "province": "경기",
-      "school": "신풍초등학교",
-      "title": "신풍초 오케스트라 강사(오보에 1차, 바순 2차) 채용 공고",
-      "subject": "오보에, 바순 오케스트라 강사",
-      "region": "수원시",
+      "school": "병점고등학교",
+      "title": "[긴급] 2026학년도 2학기 기간제교사 채용 공고(영어)",
+      "subject": "영어",
+      "region": "화성시",
       "regions": [
-        "수원시"
+        "화성시"
       ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
       "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/13",
-      "workStart": "",
-      "workEnd": "",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/14",
+      "workEnd": "2026/12/14",
       "registered": "2026/10/06",
-      "headcount": "2",
+      "headcount": "1",
       "source": "경기도교육청 통합 구인구직",
       "checkedSources": [
         "경기도교육청 통합 구인구직"
       ],
       "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62070",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62070"
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62072",
+      "sourceIdentity": "goe-central:62072"
+    },
+    {
+      "id": "goe-62071",
+      "province": "경기",
+      "school": "능동고등학교",
+      "title": "2026학년도 기간제교원 채용 공고(음악)",
+      "subject": "음악",
+      "region": "화성시",
+      "regions": [
+        "화성시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/11/02",
+      "workEnd": "2027/02/11",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62071",
+      "sourceIdentity": "goe-central:62071"
+    },
+    {
+      "id": "goe-62069",
+      "province": "경기",
+      "school": "청림중학교",
+      "title": "[청림중] 기간제교사 채용 (지구과학2차)",
+      "subject": "지구과학",
+      "region": "화성시",
+      "regions": [
+        "화성시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/19",
+      "workEnd": "2027/02/28",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62069",
+      "sourceIdentity": "goe-central:62069"
     },
     {
       "id": "goe-62066",
@@ -5843,32 +6107,6 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62063",
       "sourceIdentity": "goe-central:62063"
-    },
-    {
-      "id": "goe-62062",
-      "province": "경기",
-      "school": "왕남초등학교",
-      "title": "2026학년도 왕남초등학교 기간제교원 채용 공고",
-      "subject": "2학년 담임",
-      "region": "성남시",
-      "regions": [
-        "성남시"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/12",
-      "workStart": "2026/10/15",
-      "workEnd": "2026/12/09",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "경기도교육청 통합 구인구직",
-      "checkedSources": [
-        "경기도교육청 통합 구인구직"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62062",
-      "sourceIdentity": "goe-central:62062"
     },
     {
       "id": "goe-62054",
@@ -7137,6 +7375,58 @@
       "sourceIdentity": "goe-central:61943"
     },
     {
+      "id": "sen-111570",
+      "province": "서울",
+      "school": "서울구암초등학교",
+      "title": "(급)(구암초)3학년 담임(시간강사) 구합니다.",
+      "subject": "3학년 담임",
+      "region": "관악구",
+      "regions": [
+        "관악구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/13",
+      "workEnd": "2026/10/13",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111570",
+      "sourceIdentity": "seoul-central:111570"
+    },
+    {
+      "id": "sen-111577",
+      "province": "서울",
+      "school": "서울공업고등학교",
+      "title": "2026학년도 서울공업고등학교 특수 시간강사 채용",
+      "subject": "특수",
+      "region": "동작구",
+      "regions": [
+        "동작구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/10/23",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111577",
+      "sourceIdentity": "seoul-central:111577"
+    },
+    {
       "id": "sen-111575",
       "province": "서울",
       "school": "공항고등학교",
@@ -7787,10 +8077,10 @@
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686688",
       "boardUrl": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686688",
-      "detailLinkResolved": true,
       "nttSn": "1686688",
       "bbsId": "10228",
       "mi": "10336",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -7820,10 +8110,10 @@
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&mi=10336&nttSn=1686687",
       "boardUrl": "https://www.goedy.kr/goedy/na/ntt/selectNttList.do?mi=10336&bbsId=10228",
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686687",
-      "detailLinkResolved": true,
       "nttSn": "1686687",
       "bbsId": "10228",
       "mi": "10336",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -7860,10 +8150,10 @@
       "periodStatus": "parsed"
     },
     {
-      "id": "goe-office-e86d94c9a27b16468a35",
+      "id": "goe-office-778d8bd474a0f9ecbd64",
       "province": "경기",
-      "school": "왕남초등학교",
-      "title": "2026학년도 왕남초 기간제 교사 채용 공고",
+      "school": "하탑초등학교",
+      "title": "[하탑초] 기간제 교사 채용 (4학년 담임)",
       "subject": "",
       "region": "성남시",
       "regions": [
@@ -7873,8 +8163,8 @@
       "schoolLevel": "초등학교",
       "applyStart": "",
       "applyEnd": "2026/10/12",
-      "workStart": "2026/10/15",
-      "workEnd": "2026/12/09",
+      "workStart": "2026/11/02",
+      "workEnd": "2027/02/28",
       "registered": "2026/10/06",
       "headcount": "",
       "source": "성남교육지원청",
@@ -7882,11 +8172,11 @@
         "성남교육지원청"
       ],
       "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960226",
+      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960265",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-      "sourceIdentity": "mircms:www.goesn.kr:17872:1960226",
+      "sourceIdentity": "mircms:www.goesn.kr:17872:1960265",
       "detailLinkResolved": true,
-      "nttSn": "1960226",
+      "nttSn": "1960265",
       "bbsId": "17872",
       "mi": "23603",
       "periodStatus": "parsed"
@@ -7917,10 +8207,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960180",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1960180",
-      "detailLinkResolved": true,
       "nttSn": "1960180",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -7986,6 +8276,34 @@
       "mi": "10838",
       "detailLinkResolved": true,
       "periodStatus": "parsed"
+    },
+    {
+      "id": "ice-central-3385998",
+      "province": "인천",
+      "school": "인천갈월초등학교",
+      "title": "인천갈월초등학교 계약제교원(기간제 전담교사_과학,창체) 채용 공고",
+      "subject": "",
+      "region": "",
+      "regions": [],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/11/20",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "인천광역시교육청 채용공고",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "checkedSources": [
+        "인천광역시교육청 채용공고"
+      ],
+      "sourceType": "통합게시판",
+      "recruitmentStatus": "모집중",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3385998",
+      "nttSn": "3385998",
+      "bbsId": "1981",
+      "sourceIdentity": "ice-central:3385998"
     },
     {
       "id": "ice-central-3385993",
@@ -8533,11 +8851,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228886",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228886",
-      "detailLinkResolved": true,
       "nttSn": "1228886",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-698dc5b2089ba57676fa",
@@ -8566,11 +8883,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228883",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228883",
-      "detailLinkResolved": true,
       "nttSn": "1228883",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-a7848c580e1c154c0c31",
@@ -8631,11 +8947,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1411060",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1411060",
-      "detailLinkResolved": true,
       "nttSn": "1411060",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-b0d4325169bd714232d0",
@@ -8728,11 +9043,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8655&mi=14083&nttSn=1411078",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8655&mi=14083",
       "sourceIdentity": "mircms:www.goegn.kr:8655:1411078",
-      "detailLinkResolved": true,
       "nttSn": "1411078",
       "bbsId": "8655",
       "mi": "14083",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-14967fee0391bc766aa8",
@@ -8760,11 +9074,73 @@
       "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1142092",
       "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?bbsId=5218&mi=9406",
       "sourceIdentity": "mircms:www.gpoe.kr:5218:1142092",
-      "detailLinkResolved": true,
       "nttSn": "1142092",
       "bbsId": "5218",
       "mi": "9406",
+      "detailLinkResolved": true
+    },
+    {
+      "id": "goe-office-62d176c502171afeaf35",
+      "province": "경기",
+      "school": "하늘빛중학교",
+      "title": "하늘빛중학교 교육공무직원 행정실무사(교무) 대체직 채용 공고",
+      "subject": "",
+      "region": "김포시",
+      "regions": [
+        "김포시"
+      ],
+      "type": "교육공무직/기간제근로자",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/07",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/15",
+      "workEnd": "2028/01/17",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "김포교육지원청",
+      "checkedSources": [
+        "김포교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5153&mi=9229&nttSn=1142136",
+      "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153",
+      "sourceIdentity": "mircms:www.gpoe.kr:5153:1142136",
+      "nttSn": "1142136",
+      "bbsId": "5153",
+      "mi": "9229",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
+    },
+    {
+      "id": "goe-office-05b9cc77bedbdc6c6e79",
+      "province": "경기",
+      "school": "부천부안초등학교",
+      "title": "[부천부안초]기간제교원 채용 공고",
+      "subject": "",
+      "region": "부천시",
+      "regions": [
+        "부천시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/19",
+      "workEnd": "2027/02/28",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "부천교육지원청",
+      "checkedSources": [
+        "부천교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235125",
+      "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
+      "sourceIdentity": "mircms:www.goebc.kr:6381:1235125",
+      "nttSn": "1235125",
+      "bbsId": "6381",
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-c3f326a91bec197b4037",
@@ -8792,11 +9168,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235074",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1235074",
-      "detailLinkResolved": true,
       "nttSn": "1235074",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-1465fc9168c88ee55736",
@@ -8824,11 +9199,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235073",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1235073",
-      "detailLinkResolved": true,
       "nttSn": "1235073",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-640ec50f1d0d8baec22c",
@@ -8856,11 +9230,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235067",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1235067",
-      "detailLinkResolved": true,
       "nttSn": "1235067",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-1e9de6e1968dcd2923fe",
@@ -8894,6 +9267,38 @@
       "detailLinkResolved": true
     },
     {
+      "id": "goe-office-aa2aa0ed1ef082dcf445",
+      "province": "경기",
+      "school": "용인교육지원청",
+      "title": "2026년 제15회 신규 교육공무직원 채용 공고",
+      "subject": "",
+      "region": "용인시",
+      "regions": [
+        "용인시"
+      ],
+      "type": "교육공무직/기간제근로자",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/12",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "용인교육지원청",
+      "checkedSources": [
+        "용인교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goeyi.kr/goeyi/na/ntt/selectNttInfo.do?bbsId=12212&mi=20156&nttSn=1575429",
+      "boardUrl": "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12212&mi=20156",
+      "sourceIdentity": "mircms:www.goeyi.kr:12212:1575429",
+      "detailLinkResolved": true,
+      "nttSn": "1575429",
+      "bbsId": "12212",
+      "mi": "20156",
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-office-5dd0167b6d71957a68c3",
       "province": "경기",
       "school": "의정부서초",
@@ -8919,11 +9324,10 @@
       "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&mi=7019&nttSn=1129708",
       "boardUrl": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
       "sourceIdentity": "mircms:www.goeujb.kr:4117:1129708",
-      "detailLinkResolved": true,
       "nttSn": "1129708",
       "bbsId": "4117",
       "mi": "7019",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-594b33c252fd2f05f33e",
@@ -9079,56 +9483,88 @@
       "detailLinkResolved": true,
       "nttSn": "1411137",
       "bbsId": "8653",
-      "mi": "16003",
-      "periodStatus": "parsed"
+      "mi": "16003"
     },
     {
-      "id": "goe-office2-5fe28057a431fe4bc3",
+      "id": "goe-62062",
       "province": "경기",
-      "school": "부천부안초등학교",
-      "title": "[부천부안초]기간제교원 채용 공고",
-      "subject": "",
-      "region": "부천시",
+      "school": "왕남초등학교",
+      "title": "2026학년도 왕남초등학교 기간제교원 채용 공고",
+      "subject": "2학년 담임",
+      "region": "성남시",
       "regions": [
-        "부천시"
+        "성남시"
       ],
       "type": "기간제교원",
       "schoolLevel": "초등학교",
       "applyStart": "2026/10/06",
       "applyEnd": "2026/10/12",
-      "workStart": "2026/10/19",
-      "workEnd": "2027/02/28",
+      "workStart": "2026/10/15",
+      "workEnd": "2026/12/09",
       "registered": "2026/10/06",
-      "headcount": "",
-      "source": "부천교육지원청",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
       "checkedSources": [
-        "부천교육지원청"
+        "경기도교육청 통합 구인구직"
       ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235125",
-      "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
-      "detailLinkResolved": true,
-      "nttSn": "1235125",
-      "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62062",
+      "sourceIdentity": "goe-central:62062",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
-      "id": "goe-62069",
+      "id": "goe-office-e86d94c9a27b16468a35",
       "province": "경기",
-      "school": "청림중학교",
-      "title": "[청림중] 기간제교사 채용 (지구과학2차)",
-      "subject": "지구과학",
-      "region": "화성시",
+      "school": "왕남초등학교",
+      "title": "2026학년도 왕남초 기간제 교사 채용 공고",
+      "subject": "",
+      "region": "성남시",
       "regions": [
-        "화성시"
+        "성남시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "",
+      "applyEnd": "2026/10/12",
+      "workStart": "2026/10/15",
+      "workEnd": "2026/12/09",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "성남교육지원청",
+      "checkedSources": [
+        "성남교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960226",
+      "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
+      "sourceIdentity": "mircms:www.goesn.kr:17872:1960226",
+      "detailLinkResolved": true,
+      "nttSn": "1960226",
+      "bbsId": "17872",
+      "mi": "23603",
+      "periodStatus": "parsed",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
+    },
+    {
+      "id": "goe-62080",
+      "province": "경기",
+      "school": "곤지암중학교",
+      "title": "[곤지암중학교]기간제 역사교사 채용공고(역사)",
+      "subject": "역사",
+      "region": "광주시",
+      "regions": [
+        "광주시"
       ],
       "type": "기간제교원",
       "schoolLevel": "중학교",
       "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/12",
-      "workStart": "2026/10/19",
-      "workEnd": "2027/02/28",
+      "applyEnd": "2026/10/11",
+      "workStart": "2026/11/09",
+      "workEnd": "2027/02/06",
       "registered": "2026/10/06",
       "headcount": "1",
       "source": "경기도교육청 통합 구인구직",
@@ -9136,53 +9572,25 @@
         "경기도교육청 통합 구인구직"
       ],
       "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62069",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62069"
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62080",
+      "sourceIdentity": "goe-central:62080"
     },
     {
-      "id": "goe-62071",
+      "id": "goe-62077",
       "province": "경기",
-      "school": "능동고등학교",
-      "title": "2026학년도 기간제교원 채용 공고(음악)",
-      "subject": "음악",
-      "region": "화성시",
+      "school": "홀트학교",
+      "title": "2026학년도 홀트학교 기간제교원 채용 공고 (보건)",
+      "subject": "보건",
+      "region": "고양시",
       "regions": [
-        "화성시"
+        "고양시"
       ],
       "type": "기간제교원",
       "schoolLevel": "고등학교",
       "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/12",
-      "workStart": "2026/11/02",
-      "workEnd": "2027/02/11",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "경기도교육청 통합 구인구직",
-      "checkedSources": [
-        "경기도교육청 통합 구인구직"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62071",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62071"
-    },
-    {
-      "id": "goe-62072",
-      "province": "경기",
-      "school": "병점고등학교",
-      "title": "[긴급] 2026학년도 2학기 기간제교사 채용 공고(영어)",
-      "subject": "영어",
-      "region": "화성시",
-      "regions": [
-        "화성시"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/12",
+      "applyEnd": "2026/10/11",
       "workStart": "2026/10/14",
-      "workEnd": "2026/12/14",
+      "workEnd": "2027/01/08",
       "registered": "2026/10/06",
       "headcount": "1",
       "source": "경기도교육청 통합 구인구직",
@@ -9190,36 +9598,8 @@
         "경기도교육청 통합 구인구직"
       ],
       "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62072",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62072"
-    },
-    {
-      "id": "sen-111577",
-      "province": "서울",
-      "school": "서울공업고등학교",
-      "title": "2026학년도 서울공업고등학교 특수 시간강사 채용",
-      "subject": "특수",
-      "region": "동작구",
-      "regions": [
-        "동작구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/12",
-      "workStart": "2026/10/19",
-      "workEnd": "2026/10/23",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111577",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "seoul-central:111577"
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62077",
+      "sourceIdentity": "goe-central:62077"
     },
     {
       "id": "goe-62049",
@@ -9402,6 +9782,30 @@
       "sourceIdentity": "goe-central:61928"
     },
     {
+      "id": "goe-62081",
+      "province": "경기",
+      "school": "곤지암중학교",
+      "title": "[곤지암중학교]시간강사 과학교사 채용공고(과학) 2차",
+      "subject": "과학",
+      "region": "",
+      "regions": [],
+      "type": "시간강사/강사",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/11",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/10/30",
+      "registered": "2026/10/06",
+      "headcount": "2",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62081",
+      "sourceIdentity": "goe-central:62081"
+    },
+    {
       "id": "goe-62057",
       "province": "경기",
       "school": "한백중학교",
@@ -9539,7 +9943,8 @@
       "subject": "초등, 한문",
       "region": "양천구",
       "regions": [
-        "양천구"
+        "양천구",
+        "강서구"
       ],
       "type": "시간강사/강사",
       "schoolLevel": "중학교",
@@ -9549,9 +9954,10 @@
       "workEnd": "2026/10/11",
       "registered": "2026/10/06",
       "headcount": "6",
-      "source": "서울교육일자리포털",
+      "source": "서울교육일자리포털 + 강서양천교육지원청",
       "checkedSources": [
-        "서울교육일자리포털"
+        "서울교육일자리포털",
+        "강서양천교육지원청"
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111568",
@@ -9973,10 +10379,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960153",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1960153",
-      "detailLinkResolved": true,
       "nttSn": "1960153",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -10092,6 +10498,39 @@
       "sourceIdentity": "ice-central:3385894"
     },
     {
+      "id": "goe-office-f16c6289d6194e6f1add",
+      "province": "경기",
+      "school": "곤지암중",
+      "title": "[곤지암중]기간제 교원(역사) 채용 공고",
+      "subject": "",
+      "region": "",
+      "regions": [
+        "광주시",
+        "하남시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "중학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/11",
+      "workStart": "2026/11/09",
+      "workEnd": "2027/02/06",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "광주하남교육지원청",
+      "checkedSources": [
+        "광주하남교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228917",
+      "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
+      "sourceIdentity": "mircms:www.goegh.kr:5088:1228917",
+      "detailLinkResolved": true,
+      "nttSn": "1228917",
+      "bbsId": "5088",
+      "mi": "8754",
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-office-8dd31b09bf840c19446c",
       "province": "경기",
       "school": "청아초",
@@ -10118,11 +10557,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228877",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228877",
-      "detailLinkResolved": true,
       "nttSn": "1228877",
       "bbsId": "5088",
       "mi": "8754",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-6518936660c76e3eff64",
@@ -10213,11 +10651,10 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2103&mi=2192&nttSn=1253815",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
       "sourceIdentity": "mircms:www.goepc.kr:2103:1253815",
-      "detailLinkResolved": true,
       "nttSn": "1253815",
       "bbsId": "2103",
       "mi": "2192",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "sen-111510",
@@ -10608,6 +11045,32 @@
       "sourceIdentity": "goe-central:61961"
     },
     {
+      "id": "goe-62074",
+      "province": "경기",
+      "school": "글빛초등학교",
+      "title": "2026 글빛초 시간강사 채용 공고(5,6 체육전담 - 1956년 계약일 이후 출생자)",
+      "subject": "",
+      "region": "수원시",
+      "regions": [
+        "수원시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/09",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62074",
+      "sourceIdentity": "goe-central:62074"
+    },
+    {
       "id": "goe-62060",
       "province": "경기",
       "school": "진접중학교",
@@ -10686,6 +11149,84 @@
       "sourceIdentity": "goe-central:61947"
     },
     {
+      "id": "sen-111593",
+      "province": "서울",
+      "school": "충암초등학교",
+      "title": "2026학년도 충암초등학교 기간제교사(학급담임) 채용 공고(2차)",
+      "subject": "학급담임",
+      "region": "은평구",
+      "regions": [
+        "은평구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/09",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/12/31",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111593",
+      "sourceIdentity": "seoul-central:111593"
+    },
+    {
+      "id": "sen-111571",
+      "province": "서울",
+      "school": "서울방산초등학교",
+      "title": "5학년 담임 10월 12~15일",
+      "subject": "5학년담임",
+      "region": "송파구",
+      "regions": [
+        "송파구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/09",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/10/15",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111571",
+      "sourceIdentity": "seoul-central:111571"
+    },
+    {
+      "id": "sen-111503",
+      "province": "서울",
+      "school": "서울개원초등학교",
+      "title": "(개원초)4,5학년 과학교과전담(10.12~10.14.)",
+      "subject": "4,5학년 과학교과 전담교사",
+      "region": "강남구",
+      "regions": [
+        "강남구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/09",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/10/14",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111503",
+      "sourceIdentity": "seoul-central:111503"
+    },
+    {
       "id": "sen-111551",
       "province": "서울",
       "school": "방배중학교",
@@ -10738,32 +11279,6 @@
       "sourceIdentity": "seoul-central:111558"
     },
     {
-      "id": "sen-111557",
-      "province": "서울",
-      "school": "지구촌학교",
-      "title": "지구촌학교 시간강사 채용공고(미술)",
-      "subject": "미술",
-      "region": "구로구",
-      "regions": [
-        "구로구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/09",
-      "workStart": "2026/10/06",
-      "workEnd": "2026/10/08",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111557",
-      "sourceIdentity": "seoul-central:111557"
-    },
-    {
       "id": "sen-111523",
       "province": "서울",
       "school": "서울특별시남부교육지원청 학교통합지원과",
@@ -10814,32 +11329,6 @@
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111478",
       "sourceIdentity": "seoul-central:111478"
-    },
-    {
-      "id": "sen-111503",
-      "province": "서울",
-      "school": "서울개원초등학교",
-      "title": "(개원초)4,5학년 과학교과전담(10.12~10.16.)",
-      "subject": "4,5학년 과학교과 전담교사",
-      "region": "강남구",
-      "regions": [
-        "강남구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/09",
-      "workStart": "2026/10/12",
-      "workEnd": "2026/10/15",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111503",
-      "sourceIdentity": "seoul-central:111503"
     },
     {
       "id": "sen-111473",
@@ -11032,11 +11521,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1411124",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1411124",
-      "detailLinkResolved": true,
       "nttSn": "1411124",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-44a812d119fb9ac02f40",
@@ -11070,6 +11558,35 @@
       "detailLinkResolved": true
     },
     {
+      "id": "sen-111557",
+      "province": "서울",
+      "school": "지구촌학교",
+      "title": "지구촌학교 시간강사 채용공고(미술)",
+      "subject": "미술",
+      "region": "구로구",
+      "regions": [
+        "구로구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/09",
+      "workStart": "2026/10/06",
+      "workEnd": "2026/10/08",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111557",
+      "sourceIdentity": "seoul-central:111557",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
+    },
+    {
       "id": "sen-111460",
       "province": "서울",
       "school": "서울이문초등학교",
@@ -11098,31 +11615,30 @@
       "recoveryReason": "previously published posting still within application period"
     },
     {
-      "id": "goe-62074",
+      "id": "goe-62075",
       "province": "경기",
-      "school": "글빛초등학교",
-      "title": "2026 글빛초 시간강사 채용 공고(5,6 체육전담 - 1956년 계약일 이후 출생자)",
-      "subject": "",
-      "region": "수원시",
+      "school": "창의고등학교",
+      "title": "2026학년도 창의고등학교 계약제교원(시간강사) 채용 공고(화학, 국어, 일반사회)",
+      "subject": "화학, 국어,일반사회",
+      "region": "화성시",
       "regions": [
-        "수원시"
+        "화성시"
       ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
+      "type": "기간제교원",
+      "schoolLevel": "고등학교",
       "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/09",
-      "workStart": "",
-      "workEnd": "",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/10/30",
       "registered": "2026/10/06",
-      "headcount": "1",
+      "headcount": "3",
       "source": "경기도교육청 통합 구인구직",
       "checkedSources": [
         "경기도교육청 통합 구인구직"
       ],
       "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62074",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62074"
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62075",
+      "sourceIdentity": "goe-central:62075"
     },
     {
       "id": "goe-62061",
@@ -11588,6 +12104,56 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61917",
       "sourceIdentity": "goe-central:61917"
+    },
+    {
+      "id": "goe-62082",
+      "province": "경기",
+      "school": "오포고등학교",
+      "title": "오포고등학교(경기 광주) 시간강사 채용(미술 1명)",
+      "subject": "미술 1명",
+      "region": "",
+      "regions": [],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/10/16",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62082",
+      "sourceIdentity": "goe-central:62082"
+    },
+    {
+      "id": "goe-62073",
+      "province": "경기",
+      "school": "양곡고등학교",
+      "title": "2026학년도 양곡고등학교 시간강사 채용 공고(국어)",
+      "subject": "국어",
+      "region": "김포시",
+      "regions": [
+        "김포시"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "고등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/26",
+      "workEnd": "2026/10/29",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "경기도교육청 통합 구인구직",
+      "checkedSources": [
+        "경기도교육청 통합 구인구직"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62073",
+      "sourceIdentity": "goe-central:62073"
     },
     {
       "id": "goe-62020",
@@ -12273,6 +12839,38 @@
       "periodStatus": "parsed"
     },
     {
+      "id": "goe-office-7ccb88d20234490a5b8d",
+      "province": "경기",
+      "school": "금상초등학교",
+      "title": "금상초 계약제교원(기간제교사) 채용 공고 3차공고",
+      "subject": "",
+      "region": "성남시",
+      "regions": [
+        "성남시"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "",
+      "applyEnd": "2026/10/08",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "성남교육지원청",
+      "checkedSources": [
+        "성남교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960241",
+      "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
+      "sourceIdentity": "mircms:www.goesn.kr:17872:1960241",
+      "nttSn": "1960241",
+      "bbsId": "17872",
+      "mi": "23603",
+      "detailLinkResolved": true,
+      "periodStatus": "parsed"
+    },
+    {
       "id": "goe-office-1899db4336f287e94846",
       "province": "경기",
       "school": "보평중학교",
@@ -12298,10 +12896,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960232",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1960232",
-      "detailLinkResolved": true,
       "nttSn": "1960232",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -12509,37 +13107,6 @@
       "sourceIdentity": "ice-central:3385907"
     },
     {
-      "id": "goe-office2-9ee6074e1fda97098a",
-      "province": "경기",
-      "school": "금상초등학교",
-      "title": "금상초 계약제교원(기간제교사) 채용 공고 3차공고",
-      "subject": "",
-      "region": "성남시",
-      "regions": [
-        "성남시"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "초등학교",
-      "applyStart": "",
-      "applyEnd": "2026/10/08",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/10/06",
-      "headcount": "",
-      "source": "성남교육지원청",
-      "checkedSources": [
-        "성남교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960241",
-      "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-      "detailLinkResolved": true,
-      "nttSn": "1960241",
-      "bbsId": "17872",
-      "mi": "23603",
-      "periodStatus": "parsed"
-    },
-    {
       "id": "goe-office-67a9688a10c9dda20758",
       "province": "경기",
       "school": "고산하늘초",
@@ -12599,11 +13166,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1411083",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1411083",
-      "detailLinkResolved": true,
       "nttSn": "1411083",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-f0fff6a03c3e2011b37a",
@@ -12756,11 +13322,10 @@
       "url": "https://www.goebc.kr/goebc/na/ntt/selectNttInfo.do?bbsId=6381&nttSn=1235114",
       "boardUrl": "https://www.goebc.kr/goebc/na/ntt/selectNttList.do?bbsId=6381&mi=",
       "sourceIdentity": "mircms:www.goebc.kr:6381:1235114",
-      "detailLinkResolved": true,
       "nttSn": "1235114",
       "bbsId": "6381",
-      "mi": "",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true,
+      "mi": ""
     },
     {
       "id": "goe-office-f5bdf23517f69a0d4660",
@@ -12943,60 +13508,8 @@
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul-central:111512",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
-    },
-    {
-      "id": "goe-62073",
-      "province": "경기",
-      "school": "양곡고등학교",
-      "title": "2026학년도 양곡고등학교 시간강사 채용 공고(국어)",
-      "subject": "국어",
-      "region": "김포시",
-      "regions": [
-        "김포시"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/08",
-      "workStart": "2026/10/26",
-      "workEnd": "2026/10/29",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "경기도교육청 통합 구인구직",
-      "checkedSources": [
-        "경기도교육청 통합 구인구직"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62073",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62073"
-    },
-    {
-      "id": "goe-62075",
-      "province": "경기",
-      "school": "창의고등학교",
-      "title": "2026학년도 창의고등학교 계약제교원(시간강사) 채용 공고(화학, 국어, 일반사회)",
-      "subject": "화학, 국어,일반사회",
-      "region": "",
-      "regions": [],
-      "type": "기간제교원",
-      "schoolLevel": "고등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/08",
-      "workStart": "2026/10/19",
-      "workEnd": "2026/10/30",
-      "registered": "2026/10/06",
-      "headcount": "3",
-      "source": "경기도교육청 통합 구인구직",
-      "checkedSources": [
-        "경기도교육청 통합 구인구직"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62075",
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62075"
     },
     {
       "id": "goe-62076",
@@ -13023,7 +13536,46 @@
       "sourceType": "통합게시판",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62076",
       "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "goe-central:62076"
+      "sourceIdentity": "goe-central:62076",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
+    },
+    {
+      "id": "goe-complete-5744ee5bd941ae14a8",
+      "province": "경기",
+      "school": "평택중학교",
+      "title": "2026학년도 평택중학교 기간제교원 채용 공고(영어)(2차)",
+      "subject": "",
+      "region": "",
+      "regions": [
+        "평택시"
+      ],
+      "type": "기타",
+      "schoolLevel": "기타",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/08",
+      "workStart": "2026/10/19",
+      "workEnd": "2027/01/08",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "평택교육지원청",
+      "checkedSources": [
+        "평택교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571276&mi=10118",
+      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
+      "detailLinkResolved": true,
+      "recoveredBy": "official-source-id-reconciliation",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2571276",
+      "nttSn": "2571276",
+      "bbsId": "10111",
+      "mi": "10118",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "parsed"
     },
     {
       "id": "goe-61972",
@@ -13182,6 +13734,32 @@
       "sourceIdentity": "goe-central:61923"
     },
     {
+      "id": "sen-111511",
+      "province": "서울",
+      "school": "서울명일초등학교",
+      "title": "(서울명일초) 초등 4학년 담임 기간제교사 채용 공고(10.12.~11.27.)",
+      "subject": "초등 4학년 학급 담임(학교 업무는 조정 가능)",
+      "region": "강동구",
+      "regions": [
+        "강동구"
+      ],
+      "type": "기간제교원",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/07",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/11/27",
+      "registered": "2026/10/06",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111511",
+      "sourceIdentity": "seoul-central:111511"
+    },
+    {
       "id": "sen-111531",
       "province": "서울",
       "school": "서울특별시남부교육지원청",
@@ -13312,32 +13890,6 @@
       "sourceIdentity": "seoul-central:111491"
     },
     {
-      "id": "sen-111511",
-      "province": "서울",
-      "school": "서울명일초등학교",
-      "title": "(서울명일초) 초등 4학년 담임 기간제교사 채용 공고(10.12.~11.27.)",
-      "subject": "초등 4학년 학급 담임(학교업무: 학생평가)",
-      "region": "강동구",
-      "regions": [
-        "강동구"
-      ],
-      "type": "기간제교원",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/07",
-      "workStart": "2026/10/12",
-      "workEnd": "2026/11/27",
-      "registered": "2026/10/06",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111511",
-      "sourceIdentity": "seoul-central:111511"
-    },
-    {
       "id": "sen-111501",
       "province": "서울",
       "school": "송곡여자고등학교",
@@ -13415,10 +13967,10 @@
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960166",
       "boardUrl": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
       "sourceIdentity": "mircms:www.goesn.kr:17872:1960166",
-      "detailLinkResolved": true,
       "nttSn": "1960166",
       "bbsId": "17872",
       "mi": "23603",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -13447,11 +13999,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260932",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260932",
-      "detailLinkResolved": true,
       "nttSn": "1260932",
       "bbsId": "4225",
       "mi": "5826",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "goe-office-004f75aebf0ddd2f59f8",
@@ -13480,11 +14031,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1410998",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1410998",
-      "detailLinkResolved": true,
       "nttSn": "1410998",
       "bbsId": "8653",
       "mi": "16003",
-      "periodStatus": "parsed"
+      "detailLinkResolved": true
     },
     {
       "id": "sen-111472",
@@ -13541,7 +14091,7 @@
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul-central:111516",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -13663,7 +14213,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111439",
       "sourceIdentity": "seoul-central:111439",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -13756,10 +14306,10 @@
       "url": "https://www.goegy.kr/goegy/na/ntt/selectNttInfo.do?bbsId=11674&mi=21048&nttSn=1232677",
       "boardUrl": "https://www.goegy.kr/goegy/na/ntt/selectNttList.do?mi=21048&bbsId=11674",
       "sourceIdentity": "mircms:www.goegy.kr:11674:1232677",
-      "detailLinkResolved": true,
       "nttSn": "1232677",
       "bbsId": "11674",
       "mi": "21048",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -13788,10 +14338,10 @@
       "url": "https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1260937",
       "boardUrl": "https://www.goegm.kr/goegm/na/ntt/selectNttList.do?bbsId=4225&mi=5826",
       "sourceIdentity": "mircms:www.goegm.kr:4225:1260937",
-      "detailLinkResolved": true,
       "nttSn": "1260937",
       "bbsId": "4225",
       "mi": "5826",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -13853,10 +14403,10 @@
       "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1228834",
       "boardUrl": "https://www.goegh.kr/goegh/na/ntt/selectNttList.do?bbsId=5088&mi=8754",
       "sourceIdentity": "mircms:www.goegh.kr:5088:1228834",
-      "detailLinkResolved": true,
       "nttSn": "1228834",
       "bbsId": "5088",
       "mi": "8754",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -13886,10 +14436,10 @@
       "url": "https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1411018",
       "boardUrl": "https://www.goegn.kr/goegn/na/ntt/selectNttList.do?bbsId=8653&mi=16003",
       "sourceIdentity": "mircms:www.goegn.kr:8653:1411018",
-      "detailLinkResolved": true,
       "nttSn": "1411018",
       "bbsId": "8653",
       "mi": "16003",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -14046,10 +14596,10 @@
       "url": "https://www.goeyc.kr/goeyc/na/ntt/selectNttInfo.do?bbsId=2215&mi=2379&nttSn=1224319",
       "boardUrl": "https://www.goeyc.kr/goeyc/na/ntt/selectNttList.do?bbsId=2215&mi=2379",
       "sourceIdentity": "mircms:www.goeyc.kr:2215:1224319",
-      "detailLinkResolved": true,
       "nttSn": "1224319",
       "bbsId": "2215",
       "mi": "2379",
+      "detailLinkResolved": true,
       "periodStatus": "parsed"
     },
     {
@@ -14078,10 +14628,10 @@
       "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&mi=7019&nttSn=1129741",
       "boardUrl": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
       "sourceIdentity": "mircms:www.goeujb.kr:4117:1129741",
-      "detailLinkResolved": true,
       "nttSn": "1129741",
       "bbsId": "4117",
       "mi": "7019",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -14110,10 +14660,10 @@
       "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&mi=7019&nttSn=1129729",
       "boardUrl": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
       "sourceIdentity": "mircms:www.goeujb.kr:4117:1129729",
-      "detailLinkResolved": true,
       "nttSn": "1129729",
       "bbsId": "4117",
       "mi": "7019",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -14146,6 +14696,38 @@
       "bbsId": "3723",
       "mi": "5593",
       "detailLinkResolved": true,
+      "periodStatus": "unavailable"
+    },
+    {
+      "id": "goe-office-6037995dee1244b327da",
+      "province": "경기",
+      "school": "함박유치원",
+      "title": "2026학년도 함박유치원 교육자원봉사자(아침돌봄) 추가 모집 공고",
+      "subject": "",
+      "region": "평택시",
+      "regions": [
+        "평택시"
+      ],
+      "type": "자원봉사",
+      "schoolLevel": "유치원",
+      "applyStart": "",
+      "applyEnd": "",
+      "workStart": "",
+      "workEnd": "",
+      "registered": "2026/10/06",
+      "headcount": "",
+      "source": "평택교육지원청",
+      "checkedSources": [
+        "평택교육지원청"
+      ],
+      "sourceType": "교육지원청 개별 게시판",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&mi=10118&nttSn=2571293",
+      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2571293",
+      "detailLinkResolved": true,
+      "nttSn": "2571293",
+      "bbsId": "10111",
+      "mi": "10118",
       "periodStatus": "unavailable"
     },
     {
@@ -14238,10 +14820,10 @@
       "url": "https://www.goepc.kr/goepc/na/ntt/selectNttInfo.do?bbsId=2103&mi=2192&nttSn=1253825",
       "boardUrl": "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?mi=2192&bbsId=2103",
       "sourceIdentity": "mircms:www.goepc.kr:2103:1253825",
-      "detailLinkResolved": true,
       "nttSn": "1253825",
       "bbsId": "2103",
       "mi": "2192",
+      "detailLinkResolved": true,
       "periodStatus": "unavailable"
     },
     {
@@ -14343,70 +14925,6 @@
       "reconciliationCarryForward": true
     },
     {
-      "id": "goe-complete-5744ee5bd941ae14a8",
-      "province": "경기",
-      "school": "평택중학교",
-      "title": "2026학년도 평택중학교 기간제교원 채용 공고(영어)(2차)",
-      "subject": "",
-      "region": "",
-      "regions": [
-        "평택시"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/10/06",
-      "headcount": "",
-      "source": "평택교육지원청",
-      "checkedSources": [
-        "평택교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571276&mi=10118",
-      "boardUrl": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
-      "detailLinkResolved": true,
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "mircms:www.goept.kr:10111:2571276",
-      "nttSn": "2571276",
-      "bbsId": "10111",
-      "mi": "10118"
-    },
-    {
-      "id": "goe-complete-cb92af18b26157fae5",
-      "province": "경기",
-      "school": "하늘빛중학교",
-      "title": "하늘빛중학교 교육공무직원 행정실무사(교무) 대체직 채용 공고",
-      "subject": "",
-      "region": "",
-      "regions": [
-        "김포시"
-      ],
-      "type": "기타",
-      "schoolLevel": "기타",
-      "applyStart": "",
-      "applyEnd": "",
-      "workStart": "",
-      "workEnd": "",
-      "registered": "2026/10/06",
-      "headcount": "",
-      "source": "김포교육지원청",
-      "checkedSources": [
-        "김포교육지원청"
-      ],
-      "sourceType": "교육지원청 개별 게시판",
-      "url": "https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5153&nttSn=1142136&mi=9229",
-      "boardUrl": "https://www.gpoe.kr/gpoe/na/ntt/selectNttList.do?mi=9229&bbsId=5153",
-      "detailLinkResolved": true,
-      "recoveredBy": "official-source-id-reconciliation",
-      "sourceIdentity": "mircms:www.gpoe.kr:5153:1142136",
-      "nttSn": "1142136",
-      "bbsId": "5153",
-      "mi": "9229"
-    },
-    {
       "id": "sen-complete-gsycedu.sen.go.kr-15141",
       "province": "서울",
       "school": "학교통합지원과",
@@ -14439,7 +14957,11 @@
       },
       "recoveredBy": "official-source-id-reconciliation",
       "sourceIdentity": "seoul:gsycedu.sen.go.kr:15141",
-      "detailLinkResolved": true
+      "detailLinkResolved": true,
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true,
+      "periodStatus": "unavailable"
     },
     {
       "id": "ice-central-3385902",
@@ -14816,7 +15338,10 @@
       ],
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111452",
-      "sourceIdentity": "seoul-central:111452"
+      "sourceIdentity": "seoul-central:111452",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
     },
     {
       "id": "sen-111453",
@@ -22469,32 +22994,6 @@
       "sourceIdentity": "goe-central:61793"
     },
     {
-      "id": "sen-111379",
-      "province": "서울",
-      "school": "서울금북초등학교",
-      "title": "10.19.(월)~10.23.(금) 5일 서울금북초 5학년 시간강사",
-      "subject": "초등 5학년 전교과(영어,과학 제외)",
-      "region": "성동구",
-      "regions": [
-        "성동구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/06",
-      "applyEnd": "2026/10/06",
-      "workStart": "2026/10/19",
-      "workEnd": "2026/10/23",
-      "registered": "2026/10/02",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111379",
-      "sourceIdentity": "seoul-central:111379"
-    },
-    {
       "id": "sen-111431",
       "province": "서울",
       "school": "한성여자고등학교",
@@ -22545,32 +23044,6 @@
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111430",
       "sourceIdentity": "seoul-central:111430"
-    },
-    {
-      "id": "sen-111365",
-      "province": "서울",
-      "school": "서울연신초등학교",
-      "title": "(연신초) 조리실무사 결원 대체 기간제 근로자 채용 공고",
-      "subject": "학교급식 조리실무사 업무",
-      "region": "은평구",
-      "regions": [
-        "은평구"
-      ],
-      "type": "교육공무직/기간제근로자",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/10/02",
-      "applyEnd": "2026/10/06",
-      "workStart": "2026/10/12",
-      "workEnd": "2027/02/28",
-      "registered": "2026/10/02",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111365",
-      "sourceIdentity": "seoul-central:111365"
     },
     {
       "id": "sen-111423",
@@ -23204,6 +23677,63 @@
       "detailLinkResolved": true
     },
     {
+      "id": "sen-111379",
+      "province": "서울",
+      "school": "서울금북초등학교",
+      "title": "10.19.(월)~10.23.(금) 5일 서울금북초 5학년 시간강사",
+      "subject": "초등 5학년 전교과(영어,과학 제외)",
+      "region": "성동구",
+      "regions": [
+        "성동구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/06",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/19",
+      "workEnd": "2026/10/23",
+      "registered": "2026/10/02",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111379",
+      "sourceIdentity": "seoul-central:111379",
+      "recoveryCarryForward": true,
+      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "reconciliationCarryForward": true
+    },
+    {
+      "id": "sen-111365",
+      "province": "서울",
+      "school": "서울연신초등학교",
+      "title": "(연신초) 조리실무사 결원 대체 기간제 근로자 채용 공고",
+      "subject": "학교급식 조리실무사 업무",
+      "region": "은평구",
+      "regions": [
+        "은평구"
+      ],
+      "type": "교육공무직/기간제근로자",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/10/02",
+      "applyEnd": "2026/10/06",
+      "workStart": "2026/10/12",
+      "workEnd": "2027/02/28",
+      "registered": "2026/10/02",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111365",
+      "sourceIdentity": "seoul-central:111365",
+      "recoveryCarryForward": true,
+      "recoveryReason": "previously published posting still within application period"
+    },
+    {
       "id": "sen-111428",
       "province": "서울",
       "school": "서울홍신고등학교",
@@ -23229,7 +23759,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111428",
       "sourceIdentity": "seoul-central:111428",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23258,7 +23788,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111356",
       "sourceIdentity": "seoul-central:111356",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23287,7 +23817,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111407",
       "sourceIdentity": "seoul-central:111407",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23316,7 +23846,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111396",
       "sourceIdentity": "seoul-central:111396",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23345,7 +23875,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111394",
       "sourceIdentity": "seoul-central:111394",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -23374,7 +23904,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111380",
       "sourceIdentity": "seoul-central:111380",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32864,7 +33394,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111338",
       "sourceIdentity": "seoul-central:111338",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32893,7 +33423,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111348",
       "sourceIdentity": "seoul-central:111348",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32922,7 +33452,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111346",
       "sourceIdentity": "seoul-central:111346",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32951,7 +33481,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111324",
       "sourceIdentity": "seoul-central:111324",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -32980,7 +33510,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111294",
       "sourceIdentity": "seoul-central:111294",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -33009,7 +33539,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111288",
       "sourceIdentity": "seoul-central:111288",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -36790,6 +37320,32 @@
       "reconciliationCarryForward": true
     },
     {
+      "id": "sen-111167",
+      "province": "서울",
+      "school": "서울청구초등학교",
+      "title": "(청구초_시간강사)특수교사 주당 22시간, 10. 12.(월)~11. 13.(금), 유초중등 무관",
+      "subject": "특수학급 담임 10. 12.(월)~11. 13.(금), 유초중등 무관",
+      "region": "중구",
+      "regions": [
+        "중구"
+      ],
+      "type": "시간강사/강사",
+      "schoolLevel": "초등학교",
+      "applyStart": "2026/09/30",
+      "applyEnd": "2026/10/13",
+      "workStart": "2026/10/12",
+      "workEnd": "2026/11/13",
+      "registered": "2026/09/30",
+      "headcount": "1",
+      "source": "서울교육일자리포털",
+      "checkedSources": [
+        "서울교육일자리포털"
+      ],
+      "sourceType": "통합게시판",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111167",
+      "sourceIdentity": "seoul-central:111167"
+    },
+    {
       "id": "sen-111201",
       "province": "서울",
       "school": "마곡하늬중학교",
@@ -37500,32 +38056,6 @@
       "sourceType": "통합게시판",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111190",
       "sourceIdentity": "seoul-central:111190"
-    },
-    {
-      "id": "sen-111167",
-      "province": "서울",
-      "school": "서울청구초등학교",
-      "title": "(청구초_시간강사)특수교사 10. 12.(월)~11. 13.(금), 유초중등 무관",
-      "subject": "특수학급 담임 10. 12.(월)~11. 13.(금), 유초중등 무관",
-      "region": "중구",
-      "regions": [
-        "중구"
-      ],
-      "type": "시간강사/강사",
-      "schoolLevel": "초등학교",
-      "applyStart": "2026/09/30",
-      "applyEnd": "2026/10/08",
-      "workStart": "2026/10/12",
-      "workEnd": "2026/11/13",
-      "registered": "2026/09/30",
-      "headcount": "1",
-      "source": "서울교육일자리포털",
-      "checkedSources": [
-        "서울교육일자리포털"
-      ],
-      "sourceType": "통합게시판",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111167",
-      "sourceIdentity": "seoul-central:111167"
     },
     {
       "id": "goe-office-0f204cddfb86bf6e9248",
@@ -41255,7 +41785,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111155",
       "sourceIdentity": "seoul-central:111155",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -41312,7 +41842,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111202",
       "sourceIdentity": "seoul-central:111202",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -48995,7 +49525,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111150",
       "sourceIdentity": "seoul-central:111150",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49052,7 +49582,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111092",
       "sourceIdentity": "seoul-central:111092",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49081,7 +49611,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111105",
       "sourceIdentity": "seoul-central:111105",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49110,7 +49640,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111066",
       "sourceIdentity": "seoul-central:111066",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49139,7 +49669,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111064",
       "sourceIdentity": "seoul-central:111064",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49168,7 +49698,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111084",
       "sourceIdentity": "seoul-central:111084",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -49197,7 +49727,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111045",
       "sourceIdentity": "seoul-central:111045",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -51057,7 +51587,7 @@
       "bbsId": "10228",
       "mi": "10336",
       "detailLinkResolved": true,
-      "periodStatus": "parsed",
+      "periodStatus": "unavailable",
       "recoveryCarryForward": true,
       "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
@@ -58153,7 +58683,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111020",
       "sourceIdentity": "seoul-central:111020",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -59378,7 +59908,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110990",
       "sourceIdentity": "seoul-central:110990",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -59407,7 +59937,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110982",
       "sourceIdentity": "seoul-central:110982",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -69399,7 +69929,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110900",
       "sourceIdentity": "seoul-central:110900",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -70320,7 +70850,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110925",
       "sourceIdentity": "seoul-central:110925",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -71077,7 +71607,7 @@
       "bbsId": "1981",
       "sourceIdentity": "ice-central:3385271",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
     },
     {
@@ -81030,7 +81560,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110818",
       "sourceIdentity": "seoul-central:110818",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -91120,7 +91650,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110729",
       "sourceIdentity": "seoul-central:110729",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -91506,7 +92036,7 @@
       "mi": "10838",
       "detailLinkResolved": true,
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -91540,7 +92070,7 @@
       "mi": "10838",
       "detailLinkResolved": true,
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -97459,7 +97989,7 @@
       "bbsId": "10228",
       "mi": "10336",
       "detailLinkResolved": true,
-      "periodStatus": "parsed",
+      "periodStatus": "unavailable",
       "recoveryCarryForward": true,
       "recoveryReason": "previously published recent posting not rediscovered in this crawl",
       "reconciliationCarryForward": true
@@ -99531,7 +100061,7 @@
       "bbsId": "6381",
       "detailLinkResolved": true,
       "mi": "",
-      "periodStatus": "parsed"
+      "periodStatus": "unavailable"
     },
     {
       "id": "goe-office-471872a882a06fc893e6",
@@ -110480,7 +111010,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=110591",
       "sourceIdentity": "seoul-central:110591",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -204625,7 +205155,7 @@
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=109683",
       "sourceIdentity": "seoul-central:109683",
       "recoveryCarryForward": true,
-      "recoveryReason": "present in latest independent official-ID reconciliation",
+      "recoveryReason": "previously published posting still within application period",
       "reconciliationCarryForward": true
     },
     {
@@ -305242,7 +305772,7 @@
       "bbsId": "6381",
       "detailLinkResolved": true,
       "mi": "",
-      "periodStatus": "parsed"
+      "periodStatus": "unavailable"
     },
     {
       "id": "goe-office-bd2b0e3a8c0456f646ad",
@@ -324768,7 +325298,7 @@
       "bbsId": "6381",
       "detailLinkResolved": true,
       "mi": "",
-      "periodStatus": "parsed"
+      "periodStatus": "unavailable"
     },
     {
       "id": "goe-office-16e830d1be9f46d934e4",
@@ -571395,55 +571925,55 @@
   },
   "repair": {
     "gyeonggiSupport": {
-      "checkedAt": "2026-10-06 17:18 KST",
+      "checkedAt": "2026-10-06 23:48 KST",
       "parser": "gyeonggi-mircms-table-v2.1",
       "offices": 25,
       "healthy": 25,
       "needsCheck": 0,
-      "recentJobsRead": 730,
+      "recentJobsRead": 732,
       "lookbackDays": 21,
       "maxPages": 0
     }
   },
   "dateSanitization": {
-    "checkedAt": "2026-10-06 17:24 KST",
+    "checkedAt": "2026-10-06 23:53 KST",
     "futureRegistrationDatesCorrected": 0
   },
   "metadataSanitization": {
-    "checkedAt": "2026-10-06 17:24 KST",
+    "checkedAt": "2026-10-06 23:53 KST",
     "schoolColumnLabelsRemoved": 0
   },
   "missingRecovery": {
-    "freshCount": 17391,
-    "previousCount": 19737,
-    "mergedCount": 19922,
-    "carriedForward": 2531,
-    "officialIdProtected": 18300,
-    "officialIdCarryForward": 1020,
-    "enrichedFromPrevious": 5959,
+    "freshCount": 17413,
+    "previousCount": 19959,
+    "mergedCount": 19954,
+    "carriedForward": 2541,
+    "officialIdProtected": 18462,
+    "officialIdCarryForward": 992,
+    "enrichedFromPrevious": 6003,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-06 17:22 KST"
+    "generatedAt": "2026-10-06 23:52 KST"
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5851,
-    "gyeonggiTotal": 5851,
+    "gyeonggiExact": 5856,
+    "gyeonggiTotal": 5856,
     "seoulExact": 350,
     "seoulTotal": 350
   },
   "periodEnrichment": {
-    "checkedAt": "2026-10-06 17:22 KST",
+    "checkedAt": "2026-10-06 23:52 KST",
     "parserVersion": 2,
-    "recentSupportJobs": 5232,
-    "detailPagesParsed": 2087,
-    "fieldsFilledThisRun": 106,
-    "missingApplicationPeriod": 913,
-    "missingWorkPeriod": 1771,
+    "recentSupportJobs": 5241,
+    "detailPagesParsed": 2068,
+    "fieldsFilledThisRun": 22,
+    "missingApplicationPeriod": 915,
+    "missingWorkPeriod": 1774,
     "pendingDetailPages": 0,
     "displayFallback": "원문 확인",
     "seoulGetFallback": {
-      "checkedAt": "2026-10-06 17:23 KST",
-      "candidates": 172,
-      "detailPagesConfirmed": 169,
+      "checkedAt": "2026-10-06 23:53 KST",
+      "candidates": 173,
+      "detailPagesConfirmed": 170,
       "cacheEntriesImproved": 0,
       "fieldsFilled": 0
     },
@@ -571453,18 +571983,18 @@
     }
   },
   "sourceReconciliation": {
-    "generatedAt": "2026-10-06 18:01:13 KST",
+    "generatedAt": "2026-10-07 00:25:42 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
     "officialIdCount": 18462,
-    "datasetIdCountBefore": 20020,
-    "missingBefore": 14,
-    "recoveredNow": 14,
+    "datasetIdCountBefore": 20052,
+    "missingBefore": 1,
+    "recoveredNow": 1,
     "missingAfter": 0,
     "reconciledSources": 44,
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261006T082606Z-37431113928-1"
+    "scanId": "20261006T145511Z-37477640794-1"
   }
 }
