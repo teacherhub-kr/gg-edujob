@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T21:27:49+09:00",
+  "generatedAt": "2026-10-07T06:32:01+09:00",
   "policy": "lessoninfo-active-browser-v1",
   "healthy": true,
   "traversalComplete": true,
@@ -17,31 +17,30 @@
       "listUrl": "https://www.lessoninfo.co.kr/culture-jobs/list.php",
       "complete": true,
       "pagesScanned": 19,
-      "ids": 1293,
+      "ids": 1295,
       "stopReason": "discovery_horizon_crossed"
     }
   ],
-  "candidateIdCount": 1863,
-  "activeIdCount": 183,
-  "publishedIdCount": 183,
-  "allCandidatePublishedCount": 1863,
+  "candidateIdCount": 1865,
+  "activeIdCount": 209,
+  "publishedIdCount": 209,
+  "allCandidatePublishedCount": 1865,
   "perSurfaceActive": {
     "afterschool-nulbom": 28,
-    "culture-arts": 155
+    "culture-arts": 181
   },
   "missingAfterCount": 0,
   "missingAfterExamples": [],
   "detailErrorCount": 0,
   "detailErrorExamples": [],
   "classificationCounts": {
-    "active": 183,
+    "active": 209,
     "stale-without-deadline": 525,
     "closed-marker": 6,
     "no-date-no-deadline": 11,
-    "detail-route-mismatch": 1128,
-    "outside-seoul-gyeonggi": 8,
-    "detail-content-mismatch": 1,
-    "non-recruitment": 1
+    "detail-route-mismatch": 1092,
+    "outside-seoul-gyeonggi": 17,
+    "non-recruitment": 5
   },
   "preservedPreviousDataset": false,
   "errors": []
