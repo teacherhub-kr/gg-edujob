@@ -1,27 +1,86 @@
 {
-  "generatedAt": "2026-10-06T20:46:00+09:00",
+  "generatedAt": "2026-10-07T03:23:14+09:00",
   "source": "아트모아",
-  "healthy": false,
-  "detailCoverageComplete": false,
-  "candidateCount": 181,
-  "verifiedCount": 180,
-  "detailErrorCount": 1,
+  "healthy": true,
+  "detailCoverageComplete": true,
+  "candidateCount": 191,
+  "verifiedCount": 191,
+  "detailErrorCount": 0,
   "abnormalDrop": false,
   "previousCanonicalCount": 181,
   "candidateDropRatio": 0.0,
-  "errors": [
-    {
-      "sourceIdentity": "artmore:94964",
-      "stableId": "94964",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94964",
-      "error": "RuntimeError: detail body unexpectedly short"
-    }
-  ],
+  "errors": [],
   "verifiedExamples": [
+    {
+      "sourceIdentity": "artmore:95245",
+      "stableId": "95245",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95245",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95243",
+      "stableId": "95243",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95243",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95239",
+      "stableId": "95239",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95239",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95236",
+      "stableId": "95236",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95236",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95235",
+      "stableId": "95235",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95235",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95234",
+      "stableId": "95234",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95234",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95233",
+      "stableId": "95233",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95233",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95232",
+      "stableId": "95232",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95232",
+      "httpStatus": 200
+    },
     {
       "sourceIdentity": "artmore:95231",
       "stableId": "95231",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95231",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95251",
+      "stableId": "95251",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95251",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95252",
+      "stableId": "95252",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95252",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95248",
+      "stableId": "95248",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95248",
       "httpStatus": 200
     },
     {
@@ -43,6 +102,18 @@
       "httpStatus": 200
     },
     {
+      "sourceIdentity": "artmore:95224",
+      "stableId": "95224",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95224",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95223",
+      "stableId": "95223",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95223",
+      "httpStatus": 200
+    },
+    {
       "sourceIdentity": "artmore:95222",
       "stableId": "95222",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95222",
@@ -58,84 +129,6 @@
       "sourceIdentity": "artmore:95213",
       "stableId": "95213",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95213",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95212",
-      "stableId": "95212",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95212",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95211",
-      "stableId": "95211",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95211",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95209",
-      "stableId": "95209",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95209",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95208",
-      "stableId": "95208",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95208",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95192",
-      "stableId": "95192",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95192",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95191",
-      "stableId": "95191",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95191",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95190",
-      "stableId": "95190",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95190",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95189",
-      "stableId": "95189",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95189",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95188",
-      "stableId": "95188",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95188",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95187",
-      "stableId": "95187",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95187",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95185",
-      "stableId": "95185",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95185",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95184",
-      "stableId": "95184",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95184",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95183",
-      "stableId": "95183",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
       "httpStatus": 200
     }
   ]
