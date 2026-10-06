@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T19:53:54+09:00",
+  "generatedAt": "2026-10-07T05:26:50+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
   "healthy": true,
@@ -35,19 +35,19 @@
   ],
   "detailDateFallbackErrors": [],
   "errors": [],
-  "previousPublishedCount": 4020,
+  "previousPublishedCount": 4021,
   "severeDrop": false,
   "preservedPreviousDataset": false,
   "publicationEnabled": true,
   "nextGate": "unified candidate + validator + regression",
   "currentPostingSemantics": {
     "policy": "source-visible-open-row-v1",
-    "verifiedAt": "2026-10-06T19:54:06+09:00",
+    "verifiedAt": "2026-10-07T05:27:05+09:00",
     "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
     "counts": {
       "indefinite": 4007,
-      "dday": 1,
-      "dated": 13
+      "dday": 2,
+      "dated": 12
     },
     "rejectedCount": 0
   }
