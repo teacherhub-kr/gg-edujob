@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T04:27:48+09:00",
+  "generatedAt": "2026-10-06T18:16:07+09:00",
   "source": "클린아이 잡플러스",
   "role": "public-foundation-safety-source",
   "policy": "cleaneye-exact-institution-current-v1",
@@ -9,15 +9,17 @@
   "missingAfterCount": 0,
   "registryInstitutions": 55,
   "institutionsQueried": 55,
-  "currentJobs": 10,
-  "institutionsWithCurrentJobs": 8,
+  "currentJobs": 12,
+  "institutionsWithCurrentJobs": 10,
   "institutionIdsWithCurrentJobs": [
     "gyeonggi:hanam",
     "gyeonggi:hwaseong",
     "gyeonggi:seongnam",
     "incheon:bupyeong",
+    "incheon:yeonsu",
     "seoul:geumcheon",
     "seoul:guro",
+    "seoul:gwangjin",
     "seoul:nowon",
     "seoul:seongdong"
   ],
@@ -74,13 +76,13 @@
     },
     {
       "query": "광진문화재단",
-      "apiRows": 36,
-      "exactRows": 36,
+      "apiRows": 37,
+      "exactRows": 37,
       "pages": 4,
-      "reportedCount": 36,
+      "reportedCount": 37,
       "foundationRegistryId": "seoul:gwangjin",
       "foundationName": "광진문화재단",
-      "currentRows": 0
+      "currentRows": 1
     },
     {
       "query": "구로문화재단",
@@ -544,13 +546,13 @@
     },
     {
       "query": "연수문화재단",
-      "apiRows": 41,
-      "exactRows": 41,
+      "apiRows": 42,
+      "exactRows": 42,
       "pages": 5,
-      "reportedCount": 41,
+      "reportedCount": 42,
       "foundationRegistryId": "incheon:yeonsu",
       "foundationName": "연수문화재단",
-      "currentRows": 0
+      "currentRows": 1
     },
     {
       "query": "부평구문화재단",
