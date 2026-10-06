@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-07T02:53:29+09:00",
+  "generatedAt": "2026-10-07T05:14:41+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19978,
+  "canonicalOfficialJobs": 19971,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6117,
-  "selectedCanonicalOfficialJobs": 3033,
+  "canonicalPrivateJobs": 6126,
+  "selectedCanonicalOfficialJobs": 3009,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3038,
-  "selectedPrivateJobs": 6095,
-  "publishedJobs": 8961,
+  "selectedOfficialJobs": 3014,
+  "selectedPrivateJobs": 6105,
+  "publishedJobs": 8952,
   "perFeed": {
-    "official": 2868,
-    "private": 6093
+    "official": 2849,
+    "private": 6103
   },
   "privateSources": {
     "lessoninfo": {
@@ -39,9 +39,9 @@
       "ok": true,
       "candidateCount": 8,
       "count": 8,
-      "rawCandidateCount": 12,
-      "excludedFromUnifiedCount": 4,
-      "lastVerifiedAt": "2026-10-06T18:16:07+09:00",
+      "rawCandidateCount": 11,
+      "excludedFromUnifiedCount": 3,
+      "lastVerifiedAt": "2026-10-07T04:18:36+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 181,
-      "count": 181,
-      "rawCandidateCount": 181,
+      "candidateCount": 191,
+      "count": 191,
+      "rawCandidateCount": 191,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-06T02:29:15+09:00",
+      "lastVerifiedAt": "2026-10-07T03:23:14+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 181
+      "displayedAsPrivate": 191
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18462,
+  "protectedOfficialIds": 18100,
   "explicitOfficialAliasGroupsMerged": 2,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-07T02:53:36+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-07T05:14:47+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
