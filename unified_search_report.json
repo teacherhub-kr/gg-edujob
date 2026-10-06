@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-07T02:02:55+09:00",
+  "generatedAt": "2026-10-07T02:53:29+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 19978,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6118,
+  "canonicalPrivateJobs": 6117,
   "selectedCanonicalOfficialJobs": 3033,
   "selectedFoundationOfficialJobs": 5,
   "selectedOfficialJobs": 3038,
-  "selectedPrivateJobs": 6089,
-  "publishedJobs": 8955,
+  "selectedPrivateJobs": 6095,
+  "publishedJobs": 8961,
   "perFeed": {
     "official": 2868,
-    "private": 6087
+    "private": 6093
   },
   "privateSources": {
     "lessoninfo": {
@@ -88,16 +88,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 21,
-      "count": 21,
-      "rawCandidateCount": 28,
-      "excludedFromUnifiedCount": 7,
-      "lastVerifiedAt": "2026-10-06T17:48:06+09:00",
+      "candidateCount": 27,
+      "count": 27,
+      "rawCandidateCount": 27,
+      "excludedFromUnifiedCount": 0,
+      "lastVerifiedAt": "2026-10-07T02:29:14+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 21
+      "displayedAsPrivate": 27
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-07T02:03:01+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-07T02:53:36+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
