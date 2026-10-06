@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-07T06:04:58+09:00",
+  "generatedAt": "2026-10-07T07:02:20+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4442,
+  "privateJobs": 4472,
   "officialJobs": 19971,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 179
+      "canonicalCount": 209
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 179,
+      "jobs": 209,
       "strongOfficialMatches": 21,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 9
+      "officialGapCandidates": 10
     },
     "cleaneye": {
       "jobs": 11,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 21,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 51,
+  "officialGapCandidates": 52,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -406,6 +406,18 @@
   ],
   "reviewCandidates": [],
   "gapCandidates": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "culture:id:95183",
+      "privateTitle": "국제학교 학생 대상 미술 파트타임 강사 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-01",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
