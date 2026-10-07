@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-07T16:48:03+09:00",
+  "generatedAt": "2026-10-07T21:58:36+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4475,
-  "officialJobs": 19881,
+  "privateJobs": 4491,
+  "officialJobs": 19991,
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 209
+      "canonicalCount": 210
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4021
+      "canonicalCount": 4020
     },
     "artmore": {
       "name": "아트모아",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 191
+      "canonicalCount": 207
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 209,
+      "jobs": 210,
       "strongOfficialMatches": 21,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 10
+      "officialGapCandidates": 11
     },
     "cleaneye": {
       "jobs": 13,
@@ -75,16 +75,16 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4021,
+      "jobs": 4020,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 191,
+      "jobs": 207,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 4
+      "officialGapCandidates": 5
     },
     "gonggonggangsa": {
       "jobs": 27,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 21,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 52,
+  "officialGapCandidates": 54,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -406,6 +406,18 @@
   ],
   "reviewCandidates": [],
   "gapCandidates": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7653",
+      "privateTitle": "[급구｜용인시 보정동 소재 독정초등학교 방과후 ‘우쿨렐레 기타’ 일일 대체강사 구… N",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-10-07",
+      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7653",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
@@ -945,6 +957,18 @@
       ],
       "registered": "2026-03-07",
       "url": "https://www.jobteacher.kr/employ/detail/20162",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95275",
+      "privateTitle": "진행중 [세계시민포럼] 세계시민문화예술학교 창의미술교육부 어시스턴트 공고",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-07",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95275",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

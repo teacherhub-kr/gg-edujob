@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-07T16:48:00+09:00",
+  "generatedAt": "2026-10-07T21:58:33+09:00",
   "healthy": true,
-  "total": 9213,
-  "official": 3117,
-  "privateDisplayed": 6096,
+  "total": 9338,
+  "official": 3228,
+  "privateDisplayed": 6110,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 6098,
-  "privateRepresentedDirectly": 6096,
+  "privateStableIds": 6112,
+  "privateRepresentedDirectly": 6110,
   "privateRepresentedByOfficial": 2,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,7 +44,7 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 170,
+  "verifiedLessoninfoCultureLinks": 169,
   "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -61,8 +61,8 @@
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95239",
-      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95239&ckattempt=1",
-      "resolvedUrlType": "lessoninfo"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95239",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
@@ -171,11 +171,6 @@
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95187",
-      "title": "공연 [점프] 국내 단체 세일즈 및 티켓관리 담당"
-    },
-    {
-      "source": "lessoninfo",
       "sourceIdentity": "culture:id:95129",
       "title": "2027년도 제15회 무주산골영화제 사무국 스태프 1차 채용공고"
     },
@@ -203,6 +198,11 @@
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95105",
       "title": "2026 신한SOL하모니 오케스트라 지휘자 및 음악강사 채용 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95104",
+      "title": "성남아트센터 티켓 운영 담당자 (계약직)"
     },
     {
       "source": "lessoninfo",
@@ -270,7 +270,7 @@
       "title": "아트컴퍼니 행복자와 함께할 반짝반짝 빛나는 사무행정 직원을 찾습니다."
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 170,
+  "projectedVerifiedLessoninfoCultureLinks": 169,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -287,8 +287,8 @@
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95239",
-      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95239&ckattempt=1",
-      "resolvedUrlType": "lessoninfo"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95239",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
@@ -426,19 +426,19 @@
   "sourceValidationPopulations": {
     "lessoninfo": {
       "rawCount": 1865,
-      "currentCount": 1847
+      "currentCount": 1846
     },
     "cleaneye": {
       "rawCount": 13,
       "currentCount": 10
     },
     "jobteacher": {
-      "rawCount": 4021,
-      "currentCount": 4021
+      "rawCount": 4020,
+      "currentCount": 4020
     },
     "artmore": {
-      "rawCount": 191,
-      "currentCount": 191
+      "rawCount": 207,
+      "currentCount": 207
     },
     "gonggonggangsa": {
       "rawCount": 27,

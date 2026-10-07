@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-07T16:47:59+09:00",
+  "generatedAt": "2026-10-07T21:58:32+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19881,
+  "canonicalOfficialJobs": 19991,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6131,
-  "selectedCanonicalOfficialJobs": 3283,
+  "canonicalPrivateJobs": 6146,
+  "selectedCanonicalOfficialJobs": 3394,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3288,
-  "selectedPrivateJobs": 6098,
-  "publishedJobs": 9213,
+  "selectedOfficialJobs": 3399,
+  "selectedPrivateJobs": 6112,
+  "publishedJobs": 9338,
   "perFeed": {
-    "official": 3117,
-    "private": 6096
+    "official": 3228,
+    "private": 6110
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,16 +20,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1847,
-      "count": 1847,
+      "candidateCount": 1846,
+      "count": 1846,
       "rawCandidateCount": 1865,
-      "excludedFromUnifiedCount": 18,
-      "lastVerifiedAt": "2026-10-07T11:59:50+09:00",
+      "excludedFromUnifiedCount": 19,
+      "lastVerifiedAt": "2026-10-07T19:00:38+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 1107,
-      "displayedAsPrivate": 1845
+      "unverifiedLinkCount": 1108,
+      "displayedAsPrivate": 1844
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -54,16 +54,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 4021,
-      "count": 4021,
-      "rawCandidateCount": 4021,
+      "candidateCount": 4020,
+      "count": 4020,
+      "rawCandidateCount": 4020,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-07T10:24:24+09:00",
+      "lastVerifiedAt": "2026-10-07T17:38:05+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 4021
+      "displayedAsPrivate": 4020
     },
     "artmore": {
       "name": "아트모아",
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 191,
-      "count": 191,
-      "rawCandidateCount": 191,
+      "candidateCount": 207,
+      "count": 207,
+      "rawCandidateCount": 207,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-07T03:23:14+09:00",
+      "lastVerifiedAt": "2026-10-07T21:47:20+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 191
+      "displayedAsPrivate": 207
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -126,7 +126,7 @@
       "count": 1,
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-07T01:42:58+09:00",
+      "lastVerifiedAt": "2026-10-07T18:22:11+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18328,
+  "protectedOfficialIds": 18414,
   "explicitOfficialAliasGroupsMerged": 2,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-07T16:48:08+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-07T21:58:41+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
