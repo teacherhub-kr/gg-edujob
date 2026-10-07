@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-07T23:17:52+09:00",
+  "generatedAt": "2026-10-08T00:40:47+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 19991,
   "canonicalFoundationOfficialJobs": 9,
   "canonicalPrivateJobs": 6147,
-  "selectedCanonicalOfficialJobs": 3394,
+  "selectedCanonicalOfficialJobs": 3146,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3399,
-  "selectedPrivateJobs": 6113,
-  "publishedJobs": 9339,
+  "selectedOfficialJobs": 3151,
+  "selectedPrivateJobs": 6111,
+  "publishedJobs": 9090,
   "perFeed": {
-    "official": 3228,
-    "private": 6111
+    "official": 2981,
+    "private": 6109
   },
   "privateSources": {
     "lessoninfo": {
@@ -41,7 +41,7 @@
       "count": 10,
       "rawCandidateCount": 13,
       "excludedFromUnifiedCount": 3,
-      "lastVerifiedAt": "2026-10-07T16:21:59+09:00",
+      "lastVerifiedAt": "2026-10-07T23:53:25+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
@@ -88,16 +88,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 28,
-      "count": 28,
+      "candidateCount": 26,
+      "count": 26,
       "rawCandidateCount": 28,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 2,
       "lastVerifiedAt": "2026-10-07T22:44:40+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 28
+      "displayedAsPrivate": 26
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-07T23:17:57+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-08T00:40:55+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
