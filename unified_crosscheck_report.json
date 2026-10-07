@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-08T00:40:50+09:00",
+  "generatedAt": "2026-10-08T02:34:43+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4492,
-  "officialJobs": 19991,
+  "privateJobs": 4482,
+  "officialJobs": 19879,
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 210
+      "canonicalCount": 200
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 210,
+      "jobs": 200,
       "strongOfficialMatches": 21,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 11
+      "officialGapCandidates": 9
     },
     "cleaneye": {
       "jobs": 13,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 21,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 54,
+  "officialGapCandidates": 52,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -117,7 +117,7 @@
       "matches": [
         {
           "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "소화초등학교 국악관현악단 지휘자 모집",
+          "officialTitle": "오늘마감 소화초등학교 국악관현악단 지휘자 모집",
           "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60868",
           "evidence": "explicit-exact-official-url"
         }
@@ -145,7 +145,7 @@
       "matches": [
         {
           "officialSource": "경기도교육청 통합 구인구직",
-          "officialTitle": "남양주시 어람중학교 시간강사(음악) 채용 공고(2026.9.28~10.8)",
+          "officialTitle": "오늘마감 남양주시 어람중학교 시간강사(음악) 채용 공고(2026.9.28~10.8)",
           "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=60982",
           "evidence": "explicit-exact-official-url"
         }
@@ -410,12 +410,24 @@
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
       "privateId": "board:20170316171033_6494:7653",
-      "privateTitle": "[급구｜용인시 보정동 소재 독정초등학교 방과후 ‘우쿨렐레 기타’ 일일 대체강사 구… N",
+      "privateTitle": "경기 용인시 보정동 소재 독정초등학교 방과후 우쿨렐레 기타 일일 대체강사 구인 N",
       "provinces": [
         "경기"
       ],
       "registered": "2026-10-07",
       "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7653",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7652",
+      "privateTitle": "양천구 학교 오케스트라 타악기 객원연주자 구인 N",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-07",
+      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7652",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -427,7 +439,7 @@
         "서울"
       ],
       "registered": "2026-10-01",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95183",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -500,42 +512,6 @@
       ],
       "registered": "2026-09-08",
       "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7624",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "culture:id:94892",
-      "privateTitle": "한국항공대학교 항공우주박물관 채용(기간제) 기념품샵 및 박물관 운영",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-07",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94892",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "culture:id:94889",
-      "privateTitle": "서울예술고등학교 계약직(공무직) 채용 공고",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-09-07",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94889",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7622",
-      "privateTitle": "남양주 진건초 방과후 국악 강사 구인",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-09-07",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7622",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
