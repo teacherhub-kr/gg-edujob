@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-07 21:19:52 KST",
+  "generatedAt": "2026-10-08 01:55:07 KST",
   "lookbackDays": 90,
   "officeCount": 5,
   "completeOffices": 5,
   "merged": true,
-  "newlyAddedJobs": 228,
-  "crossSourceDuplicatesCollapsed": 80,
+  "newlyAddedJobs": 227,
+  "crossSourceDuplicatesCollapsed": 79,
   "offices": [
     {
       "name": "인천남부교육지원청",
@@ -274,7 +274,7 @@
       "boards": [
         "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674"
       ],
-      "count": 125,
+      "count": 123,
       "rawRows": 150,
       "pagesScanned": 15,
       "ok": true,
@@ -287,7 +287,7 @@
           "collector": "seobu-verified-headless-chrome",
           "pagesScanned": 15,
           "rawRows": 150,
-          "recentRows": 125,
+          "recentRows": 123,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -694,7 +694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261007211940",
+              "/js/include.js?v=20261008015456",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
