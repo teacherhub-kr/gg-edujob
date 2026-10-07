@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-07T15:17:50+09:00",
+  "generatedAt": "2026-10-07T16:16:48+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 19881,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6128,
+  "canonicalPrivateJobs": 6129,
   "selectedCanonicalOfficialJobs": 3283,
   "selectedFoundationOfficialJobs": 5,
   "selectedOfficialJobs": 3288,
-  "selectedPrivateJobs": 6095,
-  "publishedJobs": 9210,
+  "selectedPrivateJobs": 6096,
+  "publishedJobs": 9211,
   "perFeed": {
     "official": 3117,
-    "private": 6093
+    "private": 6094
   },
   "privateSources": {
     "lessoninfo": {
@@ -105,16 +105,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 0,
-      "count": 0,
-      "rawCandidateCount": 6,
+      "candidateCount": 1,
+      "count": 1,
+      "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-07T00:47:44+09:00",
+      "lastVerifiedAt": "2026-10-07T15:46:46+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 0
+      "displayedAsPrivate": 1
     },
     "boramyc": {
       "name": "시립보라매청소년센터",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-07T15:17:55+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-07T16:16:55+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
