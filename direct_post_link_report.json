@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9221,
+  "totalRows": 9465,
   "nonDirectBeforeRepair": 1130,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1130,
-  "cultureFoundationRows": 181,
+  "cultureFoundationRows": 184,
   "cultureFoundationNonDirectRows": 147,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -911,6 +911,33 @@
   ],
   "cultureFoundationExamples": [
     {
+      "sourceIdentity": "cleaneye:2026:B000788:000018",
+      "source": "클린아이 잡플러스",
+      "title": "2026년 10차 노원문화재단 도서관기획실 채용 공고 [기간제]",
+      "school": "노원문화재단",
+      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000018&ypEntId=B000788",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "cleaneye:2026:B000267:000016",
+      "source": "클린아이 잡플러스",
+      "title": "구로문화재단 육아휴직 대체 기간제 공개경쟁채용 모집공고",
+      "school": "구로문화재단",
+      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000016&ypEntId=B000267",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "cleaneye:2026:B000788:000019",
+      "source": "클린아이 잡플러스",
+      "title": "노원문화재단 2026년 제8차 공개채용 공고",
+      "school": "노원문화재단",
+      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000019&ypEntId=B000788",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
       "sourceIdentity": "cleaneye:2026:B000460:000010",
       "source": "클린아이 잡플러스",
       "title": "2026년 (재)의정부문화관광재단 기간제근로자 공개채용 공고",
@@ -1779,33 +1806,6 @@
       "source": "레슨인포",
       "title": "[소전문화재단] 인문학 레지던시 두내원 리셉션 채용",
       "school": "소전문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94251",
-      "source": "레슨인포",
-      "title": "롯데문화재단 티켓매니저(계약직) 채용",
-      "school": "롯데문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94195",
-      "source": "레슨인포",
-      "title": "롯데문화재단 티켓매니저(계약직) 채용",
-      "school": "롯데문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94181",
-      "source": "레슨인포",
-      "title": "(재)GS문화재단 기획홍보팀 계약직 채용 공고 (전시 매니저)",
-      "school": "GS문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false

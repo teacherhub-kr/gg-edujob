@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T12:25:27+09:00",
+  "generatedAt": "2026-10-08T19:00:04+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": false,
   "registryInstitutions": 55,
@@ -22,7 +22,7 @@
   "failedAvailableComponents": [],
   "currentMappedBySource": {
     "official": 5,
-    "cleaneye": 12,
+    "cleaneye": 15,
     "artmore": 8,
     "ancf": 1,
     "lessoninfo-discovery": 12
@@ -149,12 +149,12 @@
       "municipality": "구로구",
       "sourceCounts": {
         "official": 1,
-        "cleaneye": 1,
+        "cleaneye": 2,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
@@ -181,12 +181,12 @@
       "municipality": "노원구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 3,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 3,
       "officialBoardConfigured": true,
       "coverageOutcome": "current-seen"
     },
