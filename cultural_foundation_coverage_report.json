@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:00:04+09:00",
+  "generatedAt": "2026-10-09T02:45:10+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
   "healthy": false,
   "registryInstitutions": 55,
@@ -23,9 +23,9 @@
   "currentMappedBySource": {
     "official": 5,
     "cleaneye": 15,
-    "artmore": 8,
+    "artmore": 6,
     "ancf": 1,
-    "lessoninfo-discovery": 12
+    "lessoninfo-discovery": 11
   },
   "coverageGapCount": 1,
   "coverageGaps": [
@@ -310,13 +310,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 2,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:yangcheon",
@@ -712,7 +712,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 1
+        "lessoninfo-discovery": 0
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": false,
