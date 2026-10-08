@@ -171,6 +171,10 @@ def validate_catalog(catalog: dict) -> list[str]:
             failures.append(f"invalid foundation recruitment URL: {row['key']}={url}")
     if foundation_breakdown != EXPECTED_FOUNDATION_BREAKDOWN:
         failures.append(f"foundation region breakdown changed: {foundation_breakdown}")
+    if catalog["counts"]["publicFoundationsDirect"] != 55:
+        failures.append(
+            f"public foundation direct coverage must remain 55: {catalog['counts']['publicFoundationsDirect']}"
+        )
 
     supplemental = catalog["supplemental"]
     keys = [str(row.get("key") or "") for row in supplemental]
