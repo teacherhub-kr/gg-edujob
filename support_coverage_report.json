@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T17:41:18.972495+00:00",
+  "generatedAt": "2026-10-08T23:07:26.049493+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,10 +11,10 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5789,
-    "gyeonggiTotal": 5789,
-    "seoulExact": 351,
-    "seoulTotal": 351
+    "gyeonggiExact": 5791,
+    "gyeonggiTotal": 5791,
+    "seoulExact": 350,
+    "seoulTotal": 350
   },
   "provinces": {
     "gyeonggi": {
@@ -1129,8 +1129,8 @@
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=6984&bbsId=4110",
             "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117"
           ],
-          "count": 316,
-          "rawRows": 360,
+          "count": 318,
+          "rawRows": 370,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -1162,9 +1162,9 @@
             },
             {
               "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttList.do?mi=7019&bbsId=4117",
-              "pagesScanned": 27,
-              "rawRows": 270,
-              "recentRows": 259,
+              "pagesScanned": 28,
+              "rawRows": 280,
+              "recentRows": 261,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -1173,7 +1173,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 37,
+          "pagesScanned": 38,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -1284,7 +1284,7 @@
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?bbsId=10069&mi=10054",
             "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111"
           ],
-          "count": 638,
+          "count": 639,
           "rawRows": 721,
           "ok": true,
           "state": "complete",
@@ -1319,7 +1319,7 @@
               "url": "https://www.goept.kr/goept/na/ntt/selectNttList.do?mi=10118&bbsId=10111",
               "pagesScanned": 54,
               "rawRows": 541,
-              "recentRows": 519,
+              "recentRows": 520,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261009015750",
+                  "/js/include.js?v=20261009073059",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],

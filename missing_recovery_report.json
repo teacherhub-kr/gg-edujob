@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 17252,
-    "previousCount": 19876,
-    "mergedCount": 19754,
-    "carriedForward": 2502,
-    "officialIdProtected": 18344,
-    "officialIdCarryForward": 1024,
-    "enrichedFromPrevious": 5938,
+    "freshCount": 17255,
+    "previousCount": 19776,
+    "mergedCount": 19751,
+    "carriedForward": 2496,
+    "officialIdProtected": 18336,
+    "officialIdCarryForward": 1010,
+    "enrichedFromPrevious": 5940,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-09 02:02 KST"
+    "generatedAt": "2026-10-09 07:34 KST"
   },
   "carried": [
     {
@@ -54,6 +54,28 @@
       "sourceIdentity": "seoul:dgedu.sen.go.kr:10269",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://dgedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=10269"
+    },
+    {
+      "province": "경기",
+      "source": "평택교육지원청",
+      "school": "태광중학교",
+      "title": "2026학년도 태광중학교 시간강사 채용 2차 공고(기술가정, 수학)",
+      "registered": "2026/10/08",
+      "applyEnd": "2026/10/14",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2571813",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571813&mi=10118"
+    },
+    {
+      "province": "경기",
+      "source": "의정부교육지원청",
+      "school": "효자중학교",
+      "title": "[효자중학교]기간제 교원 채용 공고(체육)",
+      "registered": "2026/10/08",
+      "applyEnd": "2026/10/14",
+      "sourceIdentity": "mircms:www.goeujb.kr:4117:1129970",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&nttSn=1129970&mi=7019"
     },
     {
       "province": "경기",
@@ -221,6 +243,17 @@
       "url": "https://nbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=11420"
     },
     {
+      "province": "경기",
+      "source": "평택교육지원청",
+      "school": "동삭중학교",
+      "title": "2026학년도 동삭중학교 시간강사(국어, 과학(생물)) 채용",
+      "registered": "2026/10/08",
+      "applyEnd": "2026/10/12",
+      "sourceIdentity": "mircms:www.goept.kr:10111:2571819",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571819&mi=10118"
+    },
+    {
       "province": "인천",
       "source": "인천광역시교육청 채용공고",
       "school": "인천해송중학교",
@@ -261,7 +294,7 @@
       "registered": "2026/10/08",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111755",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111755"
     },
     {
@@ -274,39 +307,6 @@
       "sourceIdentity": "mircms:www.goeujb.kr:4117:1129896",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&nttSn=1129896&mi=7019"
-    },
-    {
-      "province": "경기",
-      "source": "평택교육지원청",
-      "school": "태광중학교",
-      "title": "2026학년도 태광중학교 시간강사 채용 2차 공고(기술가정, 수학)",
-      "registered": "2026/10/08",
-      "applyEnd": "",
-      "sourceIdentity": "mircms:www.goept.kr:10111:2571813",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571813&mi=10118"
-    },
-    {
-      "province": "경기",
-      "source": "평택교육지원청",
-      "school": "동삭중학교",
-      "title": "2026학년도 동삭중학교 시간강사(국어, 과학(생물)) 채용",
-      "registered": "2026/10/08",
-      "applyEnd": "",
-      "sourceIdentity": "mircms:www.goept.kr:10111:2571819",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571819&mi=10118"
-    },
-    {
-      "province": "경기",
-      "source": "의정부교육지원청",
-      "school": "효자중학교",
-      "title": "[효자중학교]기간제 교원 채용 공고(체육)",
-      "registered": "2026/10/08",
-      "applyEnd": "",
-      "sourceIdentity": "mircms:www.goeujb.kr:4117:1129970",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&nttSn=1129970&mi=7019"
     },
     {
       "province": "서울",
@@ -888,7 +888,7 @@
       "registered": "2026/10/06",
       "applyEnd": "2026/10/09",
       "sourceIdentity": "seoul-central:111551",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111551"
     },
     {
@@ -943,7 +943,7 @@
       "registered": "2026/10/06",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111527",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111527"
     },
     {
@@ -1460,7 +1460,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111429",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111429"
     },
     {
@@ -2219,7 +2219,7 @@
       "registered": "2026/10/01",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111249",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111249"
     },
     {
@@ -3374,7 +3374,7 @@
       "registered": "2026/09/30",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111213",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111213"
     },
     {
@@ -4232,7 +4232,7 @@
       "registered": "2026/09/29",
       "applyEnd": "2026/10/08",
       "sourceIdentity": "seoul-central:111050",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published recent posting not rediscovered in this crawl",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111050"
     },
     {
@@ -5354,7 +5354,7 @@
       "registered": "2026/09/28",
       "applyEnd": "2026/10/09",
       "sourceIdentity": "seoul-central:111013",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111013"
     },
     {
@@ -17601,17 +17601,6 @@
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=59339"
     },
     {
-      "province": "서울",
-      "source": "남부교육지원청",
-      "school": "서울영중초등학교병설유치원",
-      "title": "(영중병유) 특수교육실무사 대체강사 채용 공고",
-      "registered": "2026/09/08",
-      "applyEnd": "2026/10/08",
-      "sourceIdentity": "seoul:nbedu.sen.go.kr:11374",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://nbedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=11374"
-    },
-    {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
       "school": "안양예술고등학교",
@@ -26546,50 +26535,6 @@
     {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
-      "school": "안양중학교",
-      "title": "마감 2026 안양중학교 기간제교원 2차 채용 공고(국어, 사회)",
-      "registered": "2026/07/11",
-      "applyEnd": "2026/07/14",
-      "sourceIdentity": "goe-central:52841",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=52841"
-    },
-    {
-      "province": "경기",
-      "source": "경기도교육청 통합 구인구직",
-      "school": "광주매곡초등학교",
-      "title": "마감 [광주매곡초] 기간제 채용 공고(1학년 담임 1명) 2차",
-      "registered": "2026/07/11",
-      "applyEnd": "2026/07/13",
-      "sourceIdentity": "goe-central:52840",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=52840"
-    },
-    {
-      "province": "인천",
-      "source": "인천광역시교육청 채용공고",
-      "school": "정석항공과학고등학교",
-      "title": "(국어,전자,기계)2026학년도 2학기 정석항공과학고등학교 기간제교원 채용 공고",
-      "registered": "2026/07/11",
-      "applyEnd": "2026/07/13",
-      "sourceIdentity": "ice-central:3377770",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3377770"
-    },
-    {
-      "province": "경기",
-      "source": "광주하남교육지원청",
-      "school": "광주매곡초",
-      "title": "[광주매곡초] 기간제 채용 공고(1학년 담임) 2차",
-      "registered": "2026/07/11",
-      "applyEnd": "2026/07/10",
-      "sourceIdentity": "mircms:www.goegh.kr:5088:1217026",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://www.goegh.kr/goegh/na/ntt/selectNttInfo.do?bbsId=5088&mi=8754&nttSn=1217026"
-    },
-    {
-      "province": "경기",
-      "source": "경기도교육청 통합 구인구직",
       "school": "신풍초등학교",
       "title": "돌봄교실 자원봉사자 공고",
       "registered": "2026/07/09",
@@ -27510,17 +27455,6 @@
       "sourceIdentity": "seoul-central:42624",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=42624"
-    },
-    {
-      "province": "서울",
-      "source": "서울교육일자리포털",
-      "school": "서울여자대학교부속유치원",
-      "title": "서울여자대학교부속유치원 조리보조 채용 공고",
-      "registered": "2024/04/23",
-      "applyEnd": "2026/10/08",
-      "sourceIdentity": "seoul-central:31263",
-      "reason": "present in latest independent official-ID reconciliation",
-      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=31263"
     },
     {
       "province": "서울",
