@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-08 18:19:36 KST",
+  "generatedAt": "2026-10-09 01:58:04 KST",
   "lookbackDays": 90,
   "officeCount": 5,
   "completeOffices": 5,
   "merged": true,
   "newlyAddedJobs": 231,
-  "crossSourceDuplicatesCollapsed": 79,
+  "crossSourceDuplicatesCollapsed": 80,
   "offices": [
     {
       "name": "인천남부교육지원청",
@@ -90,7 +90,7 @@
       "boards": [
         "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86"
       ],
-      "count": 80,
+      "count": 81,
       "rawRows": 110,
       "pagesScanned": 11,
       "ok": true,
@@ -102,7 +102,7 @@
           "url": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86",
           "pagesScanned": 11,
           "rawRows": 110,
-          "recentRows": 80,
+          "recentRows": 81,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
@@ -172,7 +172,7 @@
                       "attrs": {
                         "href": "#",
                         "data-mst": "BM0000000049",
-                        "data-idx": "BD0000008185",
+                        "data-idx": "BD0000008186",
                         "data-menu": ""
                       },
                       "parentAttrs": {}
@@ -207,7 +207,7 @@
                       "attrs": {
                         "href": "#",
                         "data-mst": "BM0000000049",
-                        "data-idx": "BD0000008184",
+                        "data-idx": "BD0000008185",
                         "data-menu": ""
                       },
                       "parentAttrs": {}
@@ -694,7 +694,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261008181923",
+              "/js/include.js?v=20261009015750",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -840,6 +840,14 @@
     },
     {
       "source": "인천북부교육지원청",
+      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008186",
+      "school": "명현중학교",
+      "title": "명현중학교 시간강사 채용 모집 안내(한문)",
+      "registered": "2026/10/08",
+      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008186&menu_idx=86"
+    },
+    {
+      "source": "인천북부교육지원청",
       "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008185",
       "school": "인천청천초등학교병설유치원",
       "title": "2026 유치원 방과후 과정 보조인력(자원봉사자)모집 -청...",
@@ -853,14 +861,6 @@
       "title": "인천양촌초등학교 방과후 프로그램 개인위탁 외부강사 채용 공...",
       "registered": "2026/10/07",
       "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008184&menu_idx=86"
-    },
-    {
-      "source": "인천북부교육지원청",
-      "sourceIdentity": "ice-support:bukbu.ice.go.kr:data_idx:BD0000008183",
-      "school": "인천효성중학교",
-      "title": "2026학년도 학교폭력 책임교사 수업시수 경감을 위한 시간...",
-      "registered": "2026/10/07",
-      "url": "https://bukbu.ice.go.kr/bbs/data/view.do?bbs_mst_idx=BM0000000049&data_idx=BD0000008183&menu_idx=86"
     },
     {
       "source": "인천동부교육지원청",
