@@ -85,7 +85,7 @@ jobs:
           PY
       - name: Upload independent completeness evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: official-completeness-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
