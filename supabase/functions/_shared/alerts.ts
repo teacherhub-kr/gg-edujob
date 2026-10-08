@@ -7,6 +7,7 @@ export type Profile={
   categories?:string[];
   subjects?:string[];
   q?:string;
+  savedAt?:string;
 };
 
 const arr=(v:unknown):string[]=>Array.isArray(v)?v.map(String).filter(Boolean):[];
