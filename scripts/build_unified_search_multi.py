@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json
+import json, re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
@@ -31,8 +31,6 @@ def canonical_url_multi(raw):
                 return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"bbsSn":article_id}),""))
         bpo=str((q.get("bpoId") or [""])[0])
         if bpo.isdigit() and (host=="nsart.or.kr" or host.endswith(".nsart.or.kr")) and p.path.endswith("/board/recruit.do"):
-            # bpoId is the official article identity. Dropping it collapses separate recruitment
-            # notices on the same board into one URL and can silently discard valid official jobs.
             return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"act":"read","bpoId":bpo}),""))
         idx=str((q.get("idx") or [""])[0])
         if idx.isdigit() and host in {"swcf.or.kr", "www.swcf.or.kr"} and str((q.get("p") or [""])[0]) == "116":
@@ -46,6 +44,69 @@ def canonical_url_multi(raw):
     return _BASE_CANONICAL_URL(raw)
 
 base.canonical_url=canonical_url_multi
+
+
+JOBTEACHER_TARGET_RE = re.compile(
+    r"(?:^|\s)(유/?초등부|초/?중/?고등부|중/?고등부|고등/?재수|대학/?일반|유아|유치부|초등부|중등부|고등부|재수|기타)\s*$"
+)
+JOBTEACHER_LOCATION_PREFIX_RE = re.compile(
+    r"^(?:(?:서울|경기|인천)\s+(?:전체|[가-힣]+(?:시|구|군))\s*)+(?:외\s*)?"
+)
+JOBTEACHER_SUBJECT_RULES = [
+    ("물리", r"물리"),
+    ("화학", r"화학"),
+    ("생명과학", r"생명(?:과학)?|생물"),
+    ("지구과학", r"지구과학"),
+    ("통합과학", r"통합과학"),
+    ("과학", r"(?<![가-힣])과학(?:계열)?|중등과학"),
+    ("국어", r"국어"),
+    ("영어", r"영어"),
+    ("수학", r"수학|수리"),
+    ("사회", r"(?<![가-힣])사회(?![가-힣])|통합사회"),
+    ("역사", r"역사|한국사"),
+    ("지리", r"지리"),
+    ("윤리·도덕", r"윤리|도덕"),
+    ("일본어", r"일본어|일어|JPT"),
+    ("중국어", r"중국어|중어|HSK"),
+    ("토익", r"토익"),
+    ("토플", r"토플"),
+    ("텝스", r"텝스|TEPS"),
+    ("영어회화", r"영어회화"),
+    ("독서·논술", r"독서|논술"),
+    ("음악", r"음악|피아노|바이올린|첼로|플루트|오케스트라|관현악|밴드"),
+    ("미술", r"미술|디자인"),
+    ("체육", r"체육|스포츠"),
+    ("정보·코딩", r"정보|컴퓨터|코딩|소프트웨어|인공지능|AI"),
+]
+
+
+def jobteacher_card_fields(job):
+    """Derive academy, recruitment copy, target and subject tags from JobTeacher list-row evidence."""
+    school=" ".join(str(job.get("title") or "").split()).strip()
+    raw=" ".join(str(job.get("rawRowText") or "").split()).strip()
+    content=raw
+    if school and content.startswith(school):
+        content=content[len(school):].strip()
+    content=JOBTEACHER_LOCATION_PREFIX_RE.sub("",content).strip()
+    subject_evidence=content
+    content=re.split(r"\s+(?:스크랩|새창보기)\b",content,maxsplit=1)[0].strip()
+    target=""
+    m=JOBTEACHER_TARGET_RE.search(content)
+    if m:
+        target=m.group(1)
+        content=content[:m.start()].strip()
+    recruitment_title=content or school or "학원 강사 모집"
+    subjects=[]
+    for label,pattern in JOBTEACHER_SUBJECT_RULES:
+        if re.search(pattern,subject_evidence,re.I):
+            subjects.append(label)
+    subjects=list(dict.fromkeys(subjects))
+    return {
+        "school": school,
+        "title": recruitment_title[:180],
+        "target": target,
+        "subjects": subjects[:8],
+    }
 
 
 def load(path,default=None):
@@ -79,6 +140,18 @@ def project_private_generic(job,source_name):
     if explicit_regions:
         row["regions"]=list(dict.fromkeys(explicit_regions)); row["region"]=str(job.get("region") or row["region"] or row["regions"][0])
 
+    if source_name=="잡티처":
+        fields=jobteacher_card_fields(job)
+        if fields["school"]: row["school"]=fields["school"]
+        if fields["title"]: row["title"]=fields["title"]
+        subject_parts=[]
+        if fields["target"]: subject_parts.append(fields["target"])
+        subject_parts.extend(fields["subjects"])
+        if subject_parts: row["subject"]=" · ".join(dict.fromkeys(subject_parts))
+        row["academyTarget"]=fields["target"]
+        row["academySubjects"]=fields["subjects"]
+        row["categories"]=list(dict.fromkeys((row.get("categories") or [])+["학원강사"]))
+
     if source_name=="클린아이 잡플러스":
         row["trustLevel"]="공공"
         row["sourceType"]="공공기관 통합채용"
@@ -91,10 +164,6 @@ def project_private_generic(job,source_name):
         row["foundationRegistryId"]=str(job.get("foundationRegistryId") or "")
         row["cleaneyeUrl"]=str(job.get("cleaneyeUrl") or row.get("url") or "")
 
-    # Lessoninfo culture is published as a clearly labelled private source. It is never
-    # treated as proof that foundation coverage is complete; CleanEye/ArtMore/official-board
-    # evidence still outranks it. Unverified detail routes remain visible as cards but stay
-    # non-clickable until a cold verifier proves an exact destination.
     if source_name=="레슨인포" and str(job.get("sourceSurface") or "")=="culture-arts":
         row["sourceRole"]="discovery-only"
         row["sourceDisclosure"]="민간출처"
@@ -146,7 +215,6 @@ def project_foundation_official(job):
 
 
 def foundation_official_current(job):
-    """Validate an official foundation post independently of private-source region rules."""
     if job.get("province") not in {"서울", "경기", "인천"}:
         return False
     if job.get("sourceRole") != "primary-official":
@@ -168,8 +236,6 @@ def foundation_official_current(job):
         return False
     if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=14)):
         return False
-    # Municipal boards carry jobs for other employers. Require the foundation's
-    # identity in each post, not merely on the surrounding official board.
     if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam", "seoul:guro"}:
         foundation_name = base.norm(str(job.get("foundationName") or ""))
         if not foundation_name or foundation_name.replace(" ", "") not in base.norm(title).replace(" ", ""):
