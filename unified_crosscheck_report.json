@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-09T08:08:43+09:00",
+  "generatedAt": "2026-10-09T09:17:35+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4487,
+  "privateJobs": 4492,
   "officialJobs": 19774,
   "privateSources": {
     "lessoninfo": {
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 207
+      "canonicalCount": 212
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -81,10 +81,10 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 207,
+      "jobs": 212,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 5
+      "officialGapCandidates": 6
     },
     "gonggonggangsa": {
       "jobs": 25,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 18,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 53,
+  "officialGapCandidates": 54,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -903,6 +903,18 @@
       ],
       "registered": "2026-03-07",
       "url": "https://www.jobteacher.kr/employ/detail/20162",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95291",
+      "privateTitle": "진행중 국제학교 학생 대상 미술 파트타임 강사 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-08",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95291",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

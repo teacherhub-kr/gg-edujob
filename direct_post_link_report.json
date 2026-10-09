@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9265,
+  "totalRows": 9272,
   "nonDirectBeforeRepair": 1178,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1178,
-  "cultureFoundationRows": 185,
+  "cultureFoundationRows": 187,
   "cultureFoundationNonDirectRows": 150,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -911,6 +911,15 @@
   ],
   "cultureFoundationExamples": [
     {
+      "sourceIdentity": "artmore:95297",
+      "source": "아트모아",
+      "title": "진행중 성동문화재단(소월아트홀, 성수아트홀) 공연장안내원 모집 공고",
+      "school": "성동문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95297",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
       "sourceIdentity": "cleaneye:2026:B000788:000018",
       "source": "클린아이 잡플러스",
       "title": "2026년 10차 노원문화재단 도서관기획실 채용 공고 [기간제]",
@@ -926,6 +935,15 @@
       "school": "구로문화재단",
       "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000016&ypEntId=B000267",
       "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95293",
+      "source": "아트모아",
+      "title": "진행중 서울문화재단 예술지원사업 업무 보조 단기인력 구인(서울무용센터)",
+      "school": "서울문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95293",
+      "reason": "artmore-rec-idx",
       "direct": true
     },
     {
@@ -1788,24 +1806,6 @@
       "source": "레슨인포",
       "title": "[대림문화재단] 교육문화파트 인턴 채용공고",
       "school": "대림문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94318",
-      "source": "레슨인포",
-      "title": "[소전문화재단] 인문학 레지던시 두내원 리셉션 채용",
-      "school": "소전문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94251",
-      "source": "레슨인포",
-      "title": "롯데문화재단 티켓매니저(계약직) 채용",
-      "school": "롯데문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false

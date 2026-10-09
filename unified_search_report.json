@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-09T08:08:41+09:00",
+  "generatedAt": "2026-10-09T09:17:31+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 19774,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6214,
+  "canonicalPrivateJobs": 6219,
   "selectedCanonicalOfficialJobs": 3258,
   "selectedFoundationOfficialJobs": 5,
   "selectedOfficialJobs": 3263,
-  "selectedPrivateJobs": 6176,
-  "publishedJobs": 9265,
+  "selectedPrivateJobs": 6183,
+  "publishedJobs": 9272,
   "perFeed": {
     "official": 3089,
-    "private": 6176
+    "private": 6183
   },
   "privateSources": {
     "lessoninfo": {
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 204,
-      "count": 204,
-      "rawCandidateCount": 207,
-      "excludedFromUnifiedCount": 3,
-      "lastVerifiedAt": "2026-10-07T21:47:20+09:00",
+      "candidateCount": 211,
+      "count": 211,
+      "rawCandidateCount": 212,
+      "excludedFromUnifiedCount": 1,
+      "lastVerifiedAt": "2026-10-09T08:15:33+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 204
+      "displayedAsPrivate": 211
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -109,7 +109,7 @@
       "count": 1,
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-07T15:46:46+09:00",
+      "lastVerifiedAt": "2026-10-09T08:46:21+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-09T08:08:46+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-09T09:17:40+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
