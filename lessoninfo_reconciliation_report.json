@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T02:10:50+09:00",
+  "generatedAt": "2026-10-09T12:29:52+09:00",
   "policy": "lessoninfo-active-browser-v1",
   "healthy": true,
   "traversalComplete": true,
@@ -22,11 +22,11 @@
     }
   ],
   "candidateIdCount": 1931,
-  "activeIdCount": 204,
-  "publishedIdCount": 204,
+  "activeIdCount": 205,
+  "publishedIdCount": 205,
   "allCandidatePublishedCount": 1931,
   "perSurfaceActive": {
-    "afterschool-nulbom": 27,
+    "afterschool-nulbom": 28,
     "culture-arts": 177
   },
   "missingAfterCount": 0,
@@ -34,13 +34,13 @@
   "detailErrorCount": 0,
   "detailErrorExamples": [],
   "classificationCounts": {
-    "active": 204,
+    "active": 205,
     "stale-without-deadline": 529,
     "closed-marker": 6,
-    "no-date-no-deadline": 8,
-    "non-recruitment": 4,
+    "no-date-no-deadline": 7,
+    "detail-route-mismatch": 1163,
     "outside-seoul-gyeonggi": 18,
-    "detail-route-mismatch": 1162
+    "non-recruitment": 3
   },
   "preservedPreviousDataset": false,
   "errors": []
