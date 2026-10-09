@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 17255,
-    "previousCount": 19776,
-    "mergedCount": 19751,
-    "carriedForward": 2496,
-    "officialIdProtected": 18336,
-    "officialIdCarryForward": 1010,
-    "enrichedFromPrevious": 5940,
+    "freshCount": 17256,
+    "previousCount": 19774,
+    "mergedCount": 19753,
+    "carriedForward": 2497,
+    "officialIdProtected": 18340,
+    "officialIdCarryForward": 1011,
+    "enrichedFromPrevious": 5943,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-09 07:34 KST"
+    "generatedAt": "2026-10-09 12:11 KST"
   },
   "carried": [
     {
@@ -76,6 +76,17 @@
       "sourceIdentity": "mircms:www.goeujb.kr:4117:1129970",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goeujb.kr/goeujb/na/ntt/selectNttInfo.do?bbsId=4117&nttSn=1129970&mi=7019"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울신정초등학교",
+      "title": "(신정초)영어교과 시간강사 모십니다.(10.14.수)-6학년 4시간",
+      "registered": "2026/10/08",
+      "applyEnd": "2026/10/13",
+      "sourceIdentity": "seoul-central:111762",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111762"
     },
     {
       "province": "경기",
