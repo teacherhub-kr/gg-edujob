@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-09T18:18:13+09:00",
+  "generatedAt": "2026-10-09T18:42:39+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4493,
+  "privateJobs": 4507,
   "officialJobs": 19778,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 205
+      "canonicalCount": 219
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 205,
+      "jobs": 219,
       "strongOfficialMatches": 19,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 10
@@ -381,6 +381,18 @@
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
+      "privateId": "culture:id:95291",
+      "privateTitle": "국제학교 학생 대상 미술 파트타임 강사 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-08",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95291",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
       "privateId": "board:20170316171033_6494:7655",
       "privateTitle": "서울 소재 중학교 오케스트라 드럼 연주자 겸 선생님 모집 N",
       "provinces": [
@@ -388,18 +400,6 @@
       ],
       "registered": "2026-10-08",
       "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7655",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7654",
-      "privateTitle": "강남구 개포동 방과후 바이올린 구인. 대타 15,22일 (22일 하루만도 가능) N",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-10-08",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7654",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -435,7 +435,7 @@
         "서울"
       ],
       "registered": "2026-10-01",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "url": "",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
