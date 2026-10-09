@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-10T04:10:58+09:00",
+  "generatedAt": "2026-10-10T05:15:01+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 19706,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6219,
+  "canonicalPrivateJobs": 6212,
   "selectedCanonicalOfficialJobs": 3204,
   "selectedFoundationOfficialJobs": 5,
   "selectedOfficialJobs": 3209,
-  "selectedPrivateJobs": 6187,
-  "publishedJobs": 9223,
+  "selectedPrivateJobs": 6180,
+  "publishedJobs": 9216,
   "perFeed": {
     "official": 3037,
-    "private": 6186
+    "private": 6179
   },
   "privateSources": {
     "lessoninfo": {
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 211,
-      "count": 211,
-      "rawCandidateCount": 212,
+      "candidateCount": 204,
+      "count": 204,
+      "rawCandidateCount": 205,
       "excludedFromUnifiedCount": 1,
-      "lastVerifiedAt": "2026-10-09T22:46:45+09:00",
+      "lastVerifiedAt": "2026-10-10T04:15:54+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 211
+      "displayedAsPrivate": 204
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -109,7 +109,7 @@
       "count": 1,
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
-      "lastVerifiedAt": "2026-10-09T08:46:21+09:00",
+      "lastVerifiedAt": "2026-10-10T04:44:46+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-10T04:11:06+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-10T05:15:08+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
