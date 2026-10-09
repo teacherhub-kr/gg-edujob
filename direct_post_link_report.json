@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9284,
+  "totalRows": 9227,
   "nonDirectBeforeRepair": 1168,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1168,
-  "cultureFoundationRows": 189,
+  "cultureFoundationRows": 188,
   "cultureFoundationNonDirectRows": 149,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -1118,15 +1118,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000267:000015",
-      "source": "클린아이 잡플러스",
-      "title": "구로문화재단 육아휴직 대체 기간제 공개경쟁채용 모집공고(2차 재공고)",
-      "school": "구로문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000015&ypEntId=B000267",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
       "sourceIdentity": "official-foundation:gyeonggi:gwacheon:7cea99e8e586773fb5d2",
       "source": "과천문화재단",
       "title": "2026년 제1차 계약직 및 제3차 육아휴직대체자 블라인드 공개경쟁 채용공고",
@@ -1805,6 +1796,15 @@
       "sourceIdentity": "culture:id:94351",
       "source": "레슨인포",
       "title": "(재)광진문화재단 2026 꿈의 오케스트라 ‘광진’ 음악감독 모집공고",
+      "school": "광진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94335",
+      "source": "레슨인포",
+      "title": "(재)광진문화재단 임원(본부장) 공개모집 공고",
       "school": "광진문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
