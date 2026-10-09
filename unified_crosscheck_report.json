@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-09T10:58:19+09:00",
+  "generatedAt": "2026-10-09T12:50:19+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4492,
-  "officialJobs": 19774,
+  "privateJobs": 4493,
+  "officialJobs": 19775,
   "privateSources": {
     "lessoninfo": {
       "name": "레슨인포",
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 204
+      "canonicalCount": 205
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,8 +63,8 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 204,
-      "strongOfficialMatches": 18,
+      "jobs": 205,
+      "strongOfficialMatches": 19,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 10
     },
@@ -105,10 +105,24 @@
       "officialGapCandidates": 0
     }
   },
-  "strongOfficialMatches": 18,
+  "strongOfficialMatches": 19,
   "semanticReviewCandidates": 0,
   "officialGapCandidates": 54,
   "strongMatches": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7656",
+      "privateTitle": "경기 수원시 초등학교 오케스트라 오보에 강사 공모 N",
+      "matches": [
+        {
+          "officialSource": "경기도교육청 통합 구인구직",
+          "officialTitle": "신풍초 오케스트라 강사(오보에 1차, 바순 2차) 채용 공고",
+          "officialUrl": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=62070",
+          "evidence": "explicit-exact-official-url"
+        }
+      ]
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
@@ -421,7 +435,7 @@
         "서울"
       ],
       "registered": "2026-10-01",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95183",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

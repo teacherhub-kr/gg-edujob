@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-09T10:58:15+09:00",
+  "generatedAt": "2026-10-09T12:50:15+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19774,
+  "canonicalOfficialJobs": 19775,
   "canonicalFoundationOfficialJobs": 9,
   "canonicalPrivateJobs": 6219,
-  "selectedCanonicalOfficialJobs": 3258,
+  "selectedCanonicalOfficialJobs": 3260,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3263,
-  "selectedPrivateJobs": 6183,
-  "publishedJobs": 9272,
+  "selectedOfficialJobs": 3265,
+  "selectedPrivateJobs": 6184,
+  "publishedJobs": 9274,
   "perFeed": {
-    "official": 3089,
+    "official": 3091,
     "private": 6183
   },
   "privateSources": {
@@ -20,15 +20,15 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1911,
-      "count": 1911,
+      "candidateCount": 1912,
+      "count": 1912,
       "rawCandidateCount": 1931,
-      "excludedFromUnifiedCount": 20,
-      "lastVerifiedAt": "2026-10-09T02:10:50+09:00",
+      "excludedFromUnifiedCount": 19,
+      "lastVerifiedAt": "2026-10-09T12:29:52+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 1178,
+      "unverifiedLinkCount": 1342,
       "displayedAsPrivate": 1911
     },
     "cleaneye": {
@@ -58,7 +58,7 @@
       "count": 4021,
       "rawCandidateCount": 4021,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-08T18:41:24+09:00",
+      "lastVerifiedAt": "2026-10-09T11:28:26+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -134,8 +134,8 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18340,
-  "explicitOfficialAliasGroupsMerged": 0,
+  "protectedOfficialIds": 18339,
+  "explicitOfficialAliasGroupsMerged": 1,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-09T10:58:23+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-09T12:50:23+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
