@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T03:48:32.281008+00:00",
+  "generatedAt": "2026-10-09T08:25:56.126489+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -13,8 +13,8 @@
   "supportLinkResolution": {
     "gyeonggiExact": 5791,
     "gyeonggiTotal": 5791,
-    "seoulExact": 350,
-    "seoulTotal": 350
+    "seoulExact": 352,
+    "seoulTotal": 352
   },
   "provinces": {
     "gyeonggi": {
@@ -1509,8 +1509,8 @@
           "boards": [
             "https://nbedu.sen.go.kr/FUS/JO/JOL11.do"
           ],
-          "count": 14,
-          "rawRows": 15,
+          "count": 16,
+          "rawRows": 17,
           "seoulOfficeParseIncomplete": 0,
           "ok": true,
           "state": "complete",
@@ -1519,8 +1519,8 @@
             {
               "url": "https://nbedu.sen.go.kr/FUS/JO/JOL11.do",
               "pagesScanned": 3,
-              "rawRows": 15,
-              "recentRows": 14,
+              "rawRows": 17,
+              "recentRows": 16,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261009120722",
+                  "/js/include.js?v=20261009164919",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
