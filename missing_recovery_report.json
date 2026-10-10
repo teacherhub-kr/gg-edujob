@@ -1,16 +1,38 @@
 {
   "summary": {
     "freshCount": 17242,
-    "previousCount": 19706,
-    "mergedCount": 19681,
-    "carriedForward": 2439,
-    "officialIdProtected": 18326,
-    "officialIdCarryForward": 1010,
+    "previousCount": 19703,
+    "mergedCount": 19684,
+    "carriedForward": 2442,
+    "officialIdProtected": 18325,
+    "officialIdCarryForward": 1012,
     "enrichedFromPrevious": 5943,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-10 09:49 KST"
+    "generatedAt": "2026-10-10 14:28 KST"
   },
   "carried": [
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울신림초등학교",
+      "title": "[서울신림초] 10.16(금) 교과전담 시간강사님 구해요",
+      "registered": "2026/10/09",
+      "applyEnd": "2026/10/16",
+      "sourceIdentity": "seoul-central:111802",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111802"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울번동초등학교",
+      "title": "(번동초) 10/14~15, 5학년 담임 시간강사 채용",
+      "registered": "2026/10/09",
+      "applyEnd": "2026/10/12",
+      "sourceIdentity": "seoul-central:111800",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111800"
+    },
     {
       "province": "경기",
       "source": "경기도교육청 통합 구인구직",
@@ -923,6 +945,17 @@
       "sourceIdentity": "goe-central:61968",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=61968"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "장승중학교",
+      "title": "장승중학교 특수교과 협력강사 채용 공고",
+      "registered": "2026/10/06",
+      "applyEnd": "2026/10/10",
+      "sourceIdentity": "seoul-central:111555",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111555"
     },
     {
       "province": "서울",

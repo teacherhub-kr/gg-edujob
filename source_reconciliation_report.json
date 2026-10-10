@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-10 10:24:23 KST",
+  "generatedAt": "2026-10-10 15:06:37 KST",
   "lookbackDays": 90,
   "populationPolicy": "stable-id-44-v4-metro-support-90d",
   "summary": {
-    "generatedAt": "2026-10-10 10:24:23 KST",
+    "generatedAt": "2026-10-10 15:06:37 KST",
     "lookbackDays": 90,
     "populationPolicy": "stable-id-44-v4-metro-support-90d",
     "officialIdCount": 18325,
-    "datasetIdCountBefore": 19777,
+    "datasetIdCountBefore": 19780,
     "missingBefore": 0,
     "recoveredNow": 0,
     "missingAfter": 0,
@@ -15,7 +15,7 @@
     "totalSources": 44,
     "reconciledOffices": 44,
     "totalOffices": 44,
-    "scanId": "20261010T005327Z-38008076703-1"
+    "scanId": "20261010T053156Z-38025306391-1"
   },
   "incompleteSources": [],
   "incompleteOffices": [],
@@ -119,15 +119,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 438,
+      "officialIdCount": 437,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 438,
+      "inDatasetBefore": 437,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 438,
+      "inDatasetAfter": 437,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -223,7 +223,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2410,
+      "officialIdCount": 2411,
       "coverageComplete": true,
       "pagesScanned": 244,
       "accessErrors": 0,
@@ -235,19 +235,19 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 238,
-          "count": 2367,
+          "count": 2368,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
           "stopReason": "lookback-exhausted",
           "emptyPageEvidence": {},
-          "latestRegistered": "2026/10/09",
+          "latestRegistered": "2026/10/10",
           "sampleIds": [
+            "ice-central:3386228",
             "ice-central:3386223",
             "ice-central:3386203",
             "ice-central:3386208",
-            "ice-central:3386145",
-            "ice-central:3386197"
+            "ice-central:3386145"
           ]
         },
         {
@@ -273,10 +273,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2410,
+      "inDatasetBefore": 2411,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2410,
+      "inDatasetAfter": 2411,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -957,7 +957,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261010102354",
+              "/js/include.js?v=20261010150606",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -2935,15 +2935,15 @@
       "boards": [
         "https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term"
       ],
-      "officialIdCount": 438,
+      "officialIdCount": 437,
       "coverageComplete": true,
       "pagesScanned": 0,
       "accessErrors": 0,
       "boardHealth": [],
-      "inDatasetBefore": 438,
+      "inDatasetBefore": 437,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 438,
+      "inDatasetAfter": 437,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3039,7 +3039,7 @@
         "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
         "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"
       ],
-      "officialIdCount": 2410,
+      "officialIdCount": 2411,
       "coverageComplete": true,
       "pagesScanned": 244,
       "accessErrors": 0,
@@ -3051,19 +3051,19 @@
           "bbsId": "1981",
           "lookbackDays": 90,
           "pagesScanned": 238,
-          "count": 2367,
+          "count": 2368,
           "coverageComplete": true,
           "accessError": "",
           "paginationRepeated": false,
           "stopReason": "lookback-exhausted",
           "emptyPageEvidence": {},
-          "latestRegistered": "2026/10/09",
+          "latestRegistered": "2026/10/10",
           "sampleIds": [
+            "ice-central:3386228",
             "ice-central:3386223",
             "ice-central:3386203",
             "ice-central:3386208",
-            "ice-central:3386145",
-            "ice-central:3386197"
+            "ice-central:3386145"
           ]
         },
         {
@@ -3089,10 +3089,10 @@
           ]
         }
       ],
-      "inDatasetBefore": 2410,
+      "inDatasetBefore": 2411,
       "missingBeforeCount": 0,
       "recoveredNowCount": 0,
-      "inDatasetAfter": 2410,
+      "inDatasetAfter": 2411,
       "missingAfterCount": 0,
       "missingAfterExamples": [],
       "reconciled": true
@@ -3773,7 +3773,7 @@
             "scriptSources": [
               "/js/jquery-latest.min.js",
               "/js/jquery.bxslider.min.js",
-              "/js/include.js?v=20261010102354",
+              "/js/include.js?v=20261010150606",
               "/js/board_action_control.js",
               "/js/homeFunction.js"
             ],
@@ -5652,5 +5652,5 @@
       "reconciled": true
     }
   ],
-  "scanId": "20261010T005327Z-38008076703-1"
+  "scanId": "20261010T053156Z-38025306391-1"
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10 09:43:57 KST",
+  "generatedAt": "2026-10-10 14:22:28 KST",
   "name": "인천광역시교육청 채용공고",
   "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
   "boards": [
@@ -9,7 +9,7 @@
   "requiredBoardCount": 2,
   "lookbackDays": 90,
   "pagesScanned": 244,
-  "count": 2410,
+  "count": 2411,
   "coverageComplete": true,
   "accessError": "",
   "paginationRepeated": false,
@@ -23,19 +23,19 @@
       "bbsId": "1981",
       "lookbackDays": 90,
       "pagesScanned": 238,
-      "count": 2367,
+      "count": 2368,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
       "stopReason": "lookback-exhausted",
       "emptyPageEvidence": {},
-      "latestRegistered": "2026/10/09",
+      "latestRegistered": "2026/10/10",
       "sampleIds": [
+        "ice-central:3386228",
         "ice-central:3386223",
         "ice-central:3386203",
         "ice-central:3386208",
-        "ice-central:3386145",
-        "ice-central:3386197"
+        "ice-central:3386145"
       ]
     },
     {
@@ -61,16 +61,24 @@
       ]
     }
   ],
-  "latestRegistered": "2026/10/09",
+  "latestRegistered": "2026/10/10",
   "sampleIds": [
+    "ice-central:3386228",
     "ice-central:3386223",
     "ice-central:3386203",
     "ice-afterschool:3386201",
-    "ice-central:3386208",
-    "ice-central:3386145"
+    "ice-central:3386208"
   ],
   "merged": true,
   "officialSample": [
+    {
+      "id": "ice-central:3386228",
+      "school": "인천석암초등학교",
+      "title": "인천석암초등학교 3학년 영어 전담 시간강사 채용 공고",
+      "registered": "2026/10/10",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386228"
+    },
     {
       "id": "ice-central:3386223",
       "school": "인천석암초등학교",
@@ -110,14 +118,6 @@
       "registered": "2026/10/08",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386145"
-    },
-    {
-      "id": "ice-central:3386197",
-      "school": "인천광역시교육청 학교교육국 초등교육과",
-      "title": "인천특수교육지원센터 기간제 교육공무직(치료사-작업치료) 채용 공고(3차)",
-      "registered": "2026/10/08",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386197"
     }
   ]
 }
