@@ -1,16 +1,22 @@
 {
-  "generatedAt": "2026-10-10T19:18:53+09:00",
+  "generatedAt": "2026-10-11T05:46:57+09:00",
   "source": "아트모아",
   "healthy": true,
   "detailCoverageComplete": true,
-  "candidateCount": 201,
-  "verifiedCount": 201,
+  "candidateCount": 191,
+  "verifiedCount": 191,
   "detailErrorCount": 0,
   "abnormalDrop": false,
-  "previousCanonicalCount": 205,
-  "candidateDropRatio": 0.0195,
+  "previousCanonicalCount": 201,
+  "candidateDropRatio": 0.0498,
   "errors": [],
   "verifiedExamples": [
+    {
+      "sourceIdentity": "artmore:95307",
+      "stableId": "95307",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95307",
+      "httpStatus": 200
+    },
     {
       "sourceIdentity": "artmore:95306",
       "stableId": "95306",
@@ -66,24 +72,6 @@
       "httpStatus": 200
     },
     {
-      "sourceIdentity": "artmore:95288",
-      "stableId": "95288",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95288",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95287",
-      "stableId": "95287",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95287",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95286",
-      "stableId": "95286",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95286",
-      "httpStatus": 200
-    },
-    {
       "sourceIdentity": "artmore:95285",
       "stableId": "95285",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95285",
@@ -129,6 +117,18 @@
       "sourceIdentity": "artmore:95263",
       "stableId": "95263",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95263",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95262",
+      "stableId": "95262",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95262",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95261",
+      "stableId": "95261",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95261",
       "httpStatus": 200
     }
   ]
