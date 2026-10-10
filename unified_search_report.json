@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-10T17:57:02+09:00",
+  "generatedAt": "2026-10-10T19:59:34+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19706,
+  "canonicalOfficialJobs": 19711,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6211,
-  "selectedCanonicalOfficialJobs": 3207,
+  "canonicalPrivateJobs": 6207,
+  "selectedCanonicalOfficialJobs": 3212,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3212,
-  "selectedPrivateJobs": 6180,
-  "publishedJobs": 9219,
+  "selectedOfficialJobs": 3217,
+  "selectedPrivateJobs": 6176,
+  "publishedJobs": 9220,
   "perFeed": {
-    "official": 3040,
-    "private": 6179
+    "official": 3045,
+    "private": 6175
   },
   "privateSources": {
     "lessoninfo": {
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 204,
-      "count": 204,
-      "rawCandidateCount": 205,
+      "candidateCount": 200,
+      "count": 200,
+      "rawCandidateCount": 201,
       "excludedFromUnifiedCount": 1,
-      "lastVerifiedAt": "2026-10-10T12:45:59+09:00",
+      "lastVerifiedAt": "2026-10-10T19:18:53+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 204
+      "displayedAsPrivate": 200
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18325,
+  "protectedOfficialIds": 18327,
   "explicitOfficialAliasGroupsMerged": 1,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-10T17:57:09+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-10T19:59:39+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
