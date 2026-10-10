@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-10T12:17:54+09:00",
+  "generatedAt": "2026-10-10T15:09:08+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19703,
+  "canonicalOfficialJobs": 19706,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 2190,
-  "selectedCanonicalOfficialJobs": 3204,
+  "canonicalPrivateJobs": 6211,
+  "selectedCanonicalOfficialJobs": 3207,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3209,
-  "selectedPrivateJobs": 2159,
-  "publishedJobs": 5195,
+  "selectedOfficialJobs": 3212,
+  "selectedPrivateJobs": 6180,
+  "publishedJobs": 9219,
   "perFeed": {
-    "official": 3037,
-    "private": 2158
+    "official": 3040,
+    "private": 6179
   },
   "privateSources": {
     "lessoninfo": {
@@ -50,20 +50,20 @@
     },
     "jobteacher": {
       "name": "잡티처",
-      "configuredPublicationEnabled": false,
-      "publicationEnabled": false,
+      "configuredPublicationEnabled": true,
+      "publicationEnabled": true,
       "degraded": false,
-      "ok": false,
+      "ok": true,
       "candidateCount": 4021,
-      "count": 0,
+      "count": 4021,
       "rawCandidateCount": 4021,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-10T01:13:58+09:00",
+      "lastVerifiedAt": "2026-10-10T14:55:21+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 0
+      "displayedAsPrivate": 4021
     },
     "artmore": {
       "name": "아트모아",
@@ -75,7 +75,7 @@
       "count": 204,
       "rawCandidateCount": 205,
       "excludedFromUnifiedCount": 1,
-      "lastVerifiedAt": "2026-10-10T04:15:54+09:00",
+      "lastVerifiedAt": "2026-10-10T12:45:59+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -92,7 +92,7 @@
       "count": 24,
       "rawCandidateCount": 24,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-10T06:22:25+09:00",
+      "lastVerifiedAt": "2026-10-10T14:16:32+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-10T12:17:57+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-10T15:09:17+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }

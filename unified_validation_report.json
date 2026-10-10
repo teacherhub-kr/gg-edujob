@@ -1,20 +1,21 @@
 {
-  "generatedAt": "2026-10-10T12:17:54+09:00",
+  "generatedAt": "2026-10-10T15:09:09+09:00",
   "healthy": true,
-  "total": 5195,
-  "official": 3037,
-  "privateDisplayed": 2158,
+  "total": 9219,
+  "official": 3040,
+  "privateDisplayed": 6179,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
+    "jobteacher",
     "artmore",
     "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 2159,
-  "privateRepresentedDirectly": 2158,
+  "privateStableIds": 6180,
+  "privateRepresentedDirectly": 6179,
   "privateRepresentedByOfficial": 1,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -423,7 +424,7 @@
     },
     "jobteacher": {
       "rawCount": 4021,
-      "currentCount": 0
+      "currentCount": 4021
     },
     "artmore": {
       "rawCount": 205,
