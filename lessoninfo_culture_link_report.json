@@ -1,14 +1,20 @@
 {
-  "generatedAt": "2026-10-10T16:55:05+09:00",
-  "startedAt": "2026-10-10T16:45:46+09:00",
+  "generatedAt": "2026-10-11T03:28:11+09:00",
+  "startedAt": "2026-10-11T03:16:35+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 212,
-  "expiredCultureRemoved": 0,
-  "expiredCultureExamples": [],
-  "eligibleCultureRows": 185,
-  "verifiedCultureRows": 165,
-  "verifiedOfficialRows": 161,
+  "totalInputJobs": 209,
+  "expiredCultureRemoved": 1,
+  "expiredCultureExamples": [
+    {
+      "sourceIdentity": "culture:id:95296",
+      "title": "뮤지컬 전용극장 샤롯데씨어터 공연장 안내원 모집 공고(~10/10)",
+      "applyEnd": "2026-10-10"
+    }
+  ],
+  "eligibleCultureRows": 181,
+  "verifiedCultureRows": 161,
+  "verifiedOfficialRows": 157,
   "verifiedLessoninfoRows": 4,
   "unverifiedCultureRows": 20,
   "verificationMissingCount": 0,
@@ -17,15 +23,15 @@
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 48,
+    "cold-browser-official-title-match": 47,
     "cold-browser-id-title-match": 4,
-    "cold-browser-artmore-id-title-match": 113,
+    "cold-browser-artmore-id-title-match": 110,
     "cold-browser-route-mismatch": 20
   },
-  "artmoreFallbackAttemptedRows": 133,
-  "artmoreFallbackRecoveredRows": 113,
+  "artmoreFallbackAttemptedRows": 130,
+  "artmoreFallbackRecoveredRows": 110,
   "artmoreFallbackOutcomeCounts": {
-    "recovered": 113,
+    "recovered": 110,
     "artmore-title-mismatch": 20
   },
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
