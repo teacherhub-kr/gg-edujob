@@ -1,16 +1,38 @@
 {
   "summary": {
-    "freshCount": 17242,
-    "previousCount": 19703,
-    "mergedCount": 19684,
-    "carriedForward": 2442,
+    "freshCount": 17243,
+    "previousCount": 19706,
+    "mergedCount": 19689,
+    "carriedForward": 2446,
     "officialIdProtected": 18325,
-    "officialIdCarryForward": 1012,
+    "officialIdCarryForward": 1013,
     "enrichedFromPrevious": 5943,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-10 14:28 KST"
+    "generatedAt": "2026-10-10 19:22 KST"
   },
   "carried": [
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울경인초등학교",
+      "title": "(경인초)10월 19일(월) 3학년 영어 교과전담 시간강사 구인",
+      "registered": "2026/10/10",
+      "applyEnd": "2026/10/18",
+      "sourceIdentity": "seoul-central:111803",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111803"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울경인초등학교",
+      "title": "(경인초)10월 16일(금) 3, 4학년 영어 교과전담 시간강사 구인",
+      "registered": "2026/10/10",
+      "applyEnd": "2026/10/15",
+      "sourceIdentity": "seoul-central:111766",
+      "reason": "previously published posting still within application period",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111766"
+    },
     {
       "province": "서울",
       "source": "서울교육일자리포털",
@@ -19,7 +41,7 @@
       "registered": "2026/10/09",
       "applyEnd": "2026/10/16",
       "sourceIdentity": "seoul-central:111802",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111802"
     },
     {
@@ -30,7 +52,7 @@
       "registered": "2026/10/09",
       "applyEnd": "2026/10/12",
       "sourceIdentity": "seoul-central:111800",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111800"
     },
     {
@@ -560,6 +582,28 @@
       "sourceIdentity": "mircms:www.goedy.kr:10228:1686721",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goedy.kr/goedy/na/ntt/selectNttInfo.do?bbsId=10228&nttSn=1686721&mi=10336"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울위례솔초등학교",
+      "title": "(위례솔초) 기간제교사 채용 공고",
+      "registered": "2026/10/07",
+      "applyEnd": "2026/10/10",
+      "sourceIdentity": "seoul-central:111586",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111586"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "용산중학교",
+      "title": "(용산중학교)학교 운동부 학생선수 부상 방지 트레이닝 수업 강사 채용",
+      "registered": "2026/10/07",
+      "applyEnd": "2026/10/10",
+      "sourceIdentity": "seoul-central:111611",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111611"
     },
     {
       "province": "서울",

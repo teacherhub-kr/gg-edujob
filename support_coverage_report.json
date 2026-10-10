@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T06:07:18.573273+00:00",
+  "generatedAt": "2026-10-10T10:58:19.580598+00:00",
   "supportCompleteness": {
     "lookbackDays": 90,
     "incheonTotal": 5,
@@ -11,8 +11,8 @@
     "seoulComplete": 11
   },
   "supportLinkResolution": {
-    "gyeonggiExact": 5787,
-    "gyeonggiTotal": 5787,
+    "gyeonggiExact": 5788,
+    "gyeonggiTotal": 5788,
     "seoulExact": 349,
     "seoulTotal": 349
   },
@@ -607,8 +607,8 @@
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
             "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?mi=23490&bbsId=17803"
           ],
-          "count": 825,
-          "rawRows": 850,
+          "count": 826,
+          "rawRows": 860,
           "ok": true,
           "state": "complete",
           "message": "최근 90일 범위 완전수집 · 후속 독립 ID 대조 재순회로 재확인",
@@ -616,9 +616,9 @@
           "boardHealth": [
             {
               "url": "https://www.goesn.kr/goesn/na/ntt/selectNttList.do?bbsId=17872&mi=23603",
-              "pagesScanned": 77,
-              "rawRows": 770,
-              "recentRows": 759,
+              "pagesScanned": 78,
+              "rawRows": 780,
+              "recentRows": 760,
               "paginationRepeated": false,
               "accessError": false,
               "explicitEmpty": false,
@@ -639,7 +639,7 @@
               "coverageComplete": true
             }
           ],
-          "pagesScanned": 85,
+          "pagesScanned": 86,
           "coverageComplete": true,
           "coverageEvidenceSource": "same-candidate-44-source-reconciliation"
         },
@@ -2493,7 +2493,7 @@
                 "scriptSources": [
                   "/js/jquery-latest.min.js",
                   "/js/jquery.bxslider.min.js",
-                  "/js/include.js?v=20261010142422",
+                  "/js/include.js?v=20261010191843",
                   "/js/board_action_control.js",
                   "/js/homeFunction.js"
                 ],
