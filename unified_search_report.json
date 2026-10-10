@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-11T05:13:33+09:00",
+  "generatedAt": "2026-10-11T07:40:04+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19599,
+  "canonicalOfficialJobs": 19210,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6139,
+  "canonicalPrivateJobs": 6128,
   "selectedCanonicalOfficialJobs": 3138,
   "selectedFoundationOfficialJobs": 5,
   "selectedOfficialJobs": 3143,
-  "selectedPrivateJobs": 6108,
-  "publishedJobs": 9081,
+  "selectedPrivateJobs": 6097,
+  "publishedJobs": 9070,
   "perFeed": {
     "official": 2974,
-    "private": 6107
+    "private": 6096
   },
   "privateSources": {
     "lessoninfo": {
@@ -54,16 +54,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 4021,
-      "count": 4021,
-      "rawCandidateCount": 4021,
+      "candidateCount": 4020,
+      "count": 4020,
+      "rawCandidateCount": 4020,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-10T22:23:29+09:00",
+      "lastVerifiedAt": "2026-10-11T07:33:48+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 4021
+      "displayedAsPrivate": 4020
     },
     "artmore": {
       "name": "아트모아",
@@ -71,16 +71,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 200,
-      "count": 200,
-      "rawCandidateCount": 201,
+      "candidateCount": 190,
+      "count": 190,
+      "rawCandidateCount": 191,
       "excludedFromUnifiedCount": 1,
-      "lastVerifiedAt": "2026-10-10T19:18:53+09:00",
+      "lastVerifiedAt": "2026-10-11T05:46:57+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 200
+      "displayedAsPrivate": 190
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -92,7 +92,7 @@
       "count": 24,
       "rawCandidateCount": 24,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-10T21:15:28+09:00",
+      "lastVerifiedAt": "2026-10-11T07:14:36+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 17926,
+  "protectedOfficialIds": 17925,
   "explicitOfficialAliasGroupsMerged": 1,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-11T05:13:42+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-11T07:40:11+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
