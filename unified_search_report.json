@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-10T22:32:13+09:00",
+  "generatedAt": "2026-10-11T02:59:50+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19711,
+  "canonicalOfficialJobs": 19599,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6207,
-  "selectedCanonicalOfficialJobs": 3212,
+  "canonicalPrivateJobs": 6139,
+  "selectedCanonicalOfficialJobs": 3138,
   "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3217,
-  "selectedPrivateJobs": 6176,
-  "publishedJobs": 9220,
+  "selectedOfficialJobs": 3143,
+  "selectedPrivateJobs": 6108,
+  "publishedJobs": 9081,
   "perFeed": {
-    "official": 3045,
-    "private": 6175
+    "official": 2974,
+    "private": 6107
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,16 +20,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 1917,
-      "count": 1917,
-      "rawCandidateCount": 1932,
+      "candidateCount": 1849,
+      "count": 1849,
+      "rawCandidateCount": 1864,
       "excludedFromUnifiedCount": 15,
-      "lastVerifiedAt": "2026-10-10T16:10:28+09:00",
+      "lastVerifiedAt": "2026-10-11T02:56:36+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 1182,
-      "displayedAsPrivate": 1916
+      "unverifiedLinkCount": 1279,
+      "displayedAsPrivate": 1848
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -41,7 +41,7 @@
       "count": 12,
       "rawCandidateCount": 15,
       "excludedFromUnifiedCount": 3,
-      "lastVerifiedAt": "2026-10-10T15:14:39+09:00",
+      "lastVerifiedAt": "2026-10-11T00:15:26+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 18327,
+  "protectedOfficialIds": 17926,
   "explicitOfficialAliasGroupsMerged": 1,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-10T22:32:22+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-11T02:59:59+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
