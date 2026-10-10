@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T07:01:48+09:00",
+  "generatedAt": "2026-10-10T14:55:08+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
-  "healthy": false,
-  "traversalComplete": false,
+  "healthy": true,
+  "traversalComplete": true,
   "sourceReports": [
     {
       "surface": "seoul",
@@ -11,10 +11,17 @@
       "pagesTraversed": 91,
       "ids": 1747,
       "complete": true
+    },
+    {
+      "surface": "gyeonggi",
+      "pagesExpected": 126,
+      "pagesTraversed": 126,
+      "ids": 2437,
+      "complete": true
     }
   ],
-  "candidateIdCount": 3403,
-  "publishedIdCount": 3403,
+  "candidateIdCount": 4021,
+  "publishedIdCount": 4021,
   "missingAfterCount": 0,
   "missingAfter": [],
   "missingRegisteredCount": 0,
@@ -27,15 +34,21 @@
     "jobteacher:559291"
   ],
   "detailDateFallbackErrors": [],
-  "errors": [
-    {
-      "surface": "gyeonggi",
-      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.jobteacher.kr/employ/lists/all/?is_search=yes&sel_area%5B%5D=2422&page=93\", waiting until \"domcontentloaded\"\n"
-    }
-  ],
+  "errors": [],
   "previousPublishedCount": 4021,
   "severeDrop": false,
-  "preservedPreviousDataset": true,
-  "publicationEnabled": false,
-  "nextGate": "verify current-posting freshness semantics, then unified validator"
+  "preservedPreviousDataset": false,
+  "publicationEnabled": true,
+  "nextGate": "unified candidate + validator + regression",
+  "currentPostingSemantics": {
+    "policy": "source-visible-open-row-v1",
+    "verifiedAt": "2026-10-10T14:55:21+09:00",
+    "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
+    "counts": {
+      "indefinite": 4007,
+      "dday": 4,
+      "dated": 10
+    },
+    "rejectedCount": 0
+  }
 }
