@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-11T23:45:08+09:00",
+  "generatedAt": "2026-10-12T01:36:48+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 19223,
+  "canonicalOfficialJobs": 19142,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 6194,
-  "selectedCanonicalOfficialJobs": 3152,
-  "selectedFoundationOfficialJobs": 5,
-  "selectedOfficialJobs": 3157,
-  "selectedPrivateJobs": 6162,
-  "publishedJobs": 9148,
+  "canonicalPrivateJobs": 6193,
+  "selectedCanonicalOfficialJobs": 2963,
+  "selectedFoundationOfficialJobs": 4,
+  "selectedOfficialJobs": 2967,
+  "selectedPrivateJobs": 6158,
+  "publishedJobs": 8959,
   "perFeed": {
-    "official": 2987,
-    "private": 6161
+    "official": 2802,
+    "private": 6157
   },
   "privateSources": {
     "lessoninfo": {
@@ -24,11 +24,11 @@
       "count": 1914,
       "rawCandidateCount": 1930,
       "excludedFromUnifiedCount": 16,
-      "lastVerifiedAt": "2026-10-11T17:52:30+09:00",
+      "lastVerifiedAt": "2026-10-12T01:12:07+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 1181,
+      "unverifiedLinkCount": 1344,
       "displayedAsPrivate": 1913
     },
     "cleaneye": {
@@ -37,16 +37,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 12,
-      "count": 12,
+      "candidateCount": 11,
+      "count": 11,
       "rawCandidateCount": 15,
-      "excludedFromUnifiedCount": 3,
+      "excludedFromUnifiedCount": 4,
       "lastVerifiedAt": "2026-10-11T22:08:48+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 12
+      "displayedAsPrivate": 11
     },
     "jobteacher": {
       "name": "잡티처",
@@ -54,16 +54,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 4020,
-      "count": 4020,
-      "rawCandidateCount": 4020,
+      "candidateCount": 4019,
+      "count": 4019,
+      "rawCandidateCount": 4019,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-10-11T14:27:37+09:00",
+      "lastVerifiedAt": "2026-10-12T00:42:45+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 4020
+      "displayedAsPrivate": 4019
     },
     "artmore": {
       "name": "아트모아",
@@ -88,16 +88,16 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 24,
-      "count": 24,
+      "candidateCount": 22,
+      "count": 22,
       "rawCandidateCount": 24,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 2,
       "lastVerifiedAt": "2026-10-11T23:16:45+09:00",
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 24
+      "displayedAsPrivate": 22
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -134,7 +134,7 @@
       "displayedAsPrivate": 1
     }
   },
-  "protectedOfficialIds": 17910,
+  "protectedOfficialIds": 17520,
   "explicitOfficialAliasGroupsMerged": 1,
   "exactUrlAliasGroupsMerged": 0,
   "ambiguousExplicitOfficialLinks": 0,
@@ -148,6 +148,6 @@
   "foundationCoverageGapCount": 1,
   "foundationFailedAvailableComponents": [],
   "foundationDegradationMode": "validated-current-rows-only",
-  "foundationCoverageReportGeneratedAt": "2026-10-11T23:45:17+09:00",
+  "foundationCoverageReportGeneratedAt": "2026-10-12T01:36:52+09:00",
   "publicationPolicy": "core-official-independent-foundation-degradation-v1"
 }
