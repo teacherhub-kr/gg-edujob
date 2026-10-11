@@ -1,17 +1,39 @@
 {
-  "generatedAt": "2026-10-11 07:02:24 KST",
-  "datasetUpdatedAt": "2026-10-11 06:17 KST",
+  "generatedAt": "2026-10-11 11:46:37 KST",
+  "datasetUpdatedAt": "2026-10-11 11:10 KST",
   "boards": {
     "서울교육일자리포털": {
       "source": "서울교육일자리포털",
       "province": "서울",
       "boardUrl": "",
       "latestNumericId": null,
-      "latestRegistered": "2026/10/10",
-      "observedJobs": 1490,
+      "latestRegistered": "2026/10/11",
+      "observedJobs": 1493,
       "presentInLatest": true,
       "lastObservedJobs": 2002,
       "maxObservedJobs": 2002
+    },
+    "인천광역시교육청 채용공고": {
+      "source": "인천광역시교육청 채용공고",
+      "province": "인천",
+      "boardUrl": "",
+      "latestNumericId": 3386239,
+      "latestRegistered": "2026/10/11",
+      "observedJobs": 2389,
+      "presentInLatest": true,
+      "lastObservedJobs": 2601,
+      "maxObservedJobs": 2601
+    },
+    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=1": {
+      "source": "인천서부교육지원청",
+      "province": "인천",
+      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=1",
+      "latestNumericId": null,
+      "latestRegistered": "2026/10/11",
+      "observedJobs": 7,
+      "presentInLatest": true,
+      "lastObservedJobs": 8,
+      "maxObservedJobs": 8
     },
     "경기도교육청 통합 구인구직": {
       "source": "경기도교육청 통합 구인구직",
@@ -35,17 +57,6 @@
       "lastObservedJobs": 1466,
       "maxObservedJobs": 1466,
       "configuredOfficialBoard": true
-    },
-    "인천광역시교육청 채용공고": {
-      "source": "인천광역시교육청 채용공고",
-      "province": "인천",
-      "boardUrl": "",
-      "latestNumericId": 3386228,
-      "latestRegistered": "2026/10/10",
-      "observedJobs": 2388,
-      "presentInLatest": true,
-      "lastObservedJobs": 2601,
-      "maxObservedJobs": 2601
     },
     "https://nbedu.sen.go.kr/FUS/JO/JOL11.do": {
       "source": "남부교육지원청",
@@ -393,17 +404,6 @@
       "maxObservedJobs": 106,
       "configuredOfficialBoard": true
     },
-    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=1": {
-      "source": "인천서부교육지원청",
-      "province": "인천",
-      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=1",
-      "latestNumericId": null,
-      "latestRegistered": "2026/10/08",
-      "observedJobs": 7,
-      "presentInLatest": true,
-      "lastObservedJobs": 8,
-      "maxObservedJobs": 8
-    },
     "https://www.goepc.kr/goepc/na/ntt/selectNttList.do?bbsId=2121&mi=2198": {
       "source": "포천교육지원청",
       "province": "경기",
@@ -656,6 +656,17 @@
       "maxObservedJobs": 18,
       "configuredOfficialBoard": true
     },
+    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=2": {
+      "source": "인천서부교육지원청",
+      "province": "인천",
+      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=2",
+      "latestNumericId": null,
+      "latestRegistered": "2026/10/01",
+      "observedJobs": 8,
+      "presentInLatest": true,
+      "lastObservedJobs": 8,
+      "maxObservedJobs": 8
+    },
     "https://www.goegu.kr/goegu/na/ntt/selectNttList.do?bbsId=4306&mi=7110": {
       "source": "군포의왕교육지원청",
       "province": "경기",
@@ -679,17 +690,6 @@
       "lastObservedJobs": 14,
       "maxObservedJobs": 14,
       "configuredOfficialBoard": true
-    },
-    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=2": {
-      "source": "인천서부교육지원청",
-      "province": "인천",
-      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=2",
-      "latestNumericId": null,
-      "latestRegistered": "2026/09/30",
-      "observedJobs": 7,
-      "presentInLatest": true,
-      "lastObservedJobs": 8,
-      "maxObservedJobs": 8
     },
     "https://www.goeyi.kr/goeyi/na/ntt/selectNttList.do?bbsId=12229&mi=20180": {
       "source": "용인교육지원청",
@@ -767,7 +767,7 @@
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=3",
       "latestNumericId": null,
       "latestRegistered": "2026/09/21",
-      "observedJobs": 8,
+      "observedJobs": 7,
       "presentInLatest": true,
       "lastObservedJobs": 9,
       "maxObservedJobs": 9
@@ -784,6 +784,17 @@
       "maxObservedJobs": 12,
       "configuredOfficialBoard": true
     },
+    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=4": {
+      "source": "인천서부교육지원청",
+      "province": "인천",
+      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=4",
+      "latestNumericId": null,
+      "latestRegistered": "2026/09/11",
+      "observedJobs": 6,
+      "presentInLatest": true,
+      "lastObservedJobs": 9,
+      "maxObservedJobs": 9
+    },
     "http://gdspedu.sen.go.kr/CMS/workspace/workspace09/workspace0907/1359175_10186.html": {
       "source": "강동송파교육지원청",
       "province": "서울",
@@ -794,17 +805,6 @@
       "presentInLatest": true,
       "lastObservedJobs": 1,
       "maxObservedJobs": 1
-    },
-    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=4": {
-      "source": "인천서부교육지원청",
-      "province": "인천",
-      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=4",
-      "latestNumericId": null,
-      "latestRegistered": "2026/09/10",
-      "observedJobs": 6,
-      "presentInLatest": true,
-      "lastObservedJobs": 9,
-      "maxObservedJobs": 9
     },
     "https://gnscedu.sen.go.kr/CMS/openedu/openedu02/openedu0201/1359136_3667.html": {
       "source": "강남서초교육지원청",
@@ -868,10 +868,10 @@
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=5",
       "latestNumericId": null,
       "latestRegistered": "2026/09/07",
-      "observedJobs": 8,
+      "observedJobs": 9,
       "presentInLatest": true,
       "lastObservedJobs": 8,
-      "maxObservedJobs": 8
+      "maxObservedJobs": 9
     },
     "https://bbedu.sen.go.kr/CMS/notice/notice07/index.html": {
       "source": "북부교육지원청",
@@ -913,7 +913,7 @@
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=6",
       "latestNumericId": null,
       "latestRegistered": "2026/08/31",
-      "observedJobs": 7,
+      "observedJobs": 6,
       "presentInLatest": true,
       "lastObservedJobs": 10,
       "maxObservedJobs": 10
@@ -973,6 +973,17 @@
       "lastObservedJobs": 8,
       "maxObservedJobs": 8
     },
+    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=8": {
+      "source": "인천서부교육지원청",
+      "province": "인천",
+      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=8",
+      "latestNumericId": null,
+      "latestRegistered": "2026/08/20",
+      "observedJobs": 6,
+      "presentInLatest": true,
+      "lastObservedJobs": 9,
+      "maxObservedJobs": 9
+    },
     "https://sdgjedu.sen.go.kr/CMS/admserv/admserv01/index.html": {
       "source": "성동광진교육지원청",
       "province": "서울",
@@ -983,17 +994,6 @@
       "presentInLatest": true,
       "lastObservedJobs": 4,
       "maxObservedJobs": 4
-    },
-    "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=8": {
-      "source": "인천서부교육지원청",
-      "province": "인천",
-      "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=8",
-      "latestNumericId": null,
-      "latestRegistered": "2026/08/19",
-      "observedJobs": 6,
-      "presentInLatest": true,
-      "lastObservedJobs": 9,
-      "maxObservedJobs": 9
     },
     "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86&pageIndex=6": {
       "source": "인천북부교육지원청",
@@ -1006,21 +1006,21 @@
       "lastObservedJobs": 8,
       "maxObservedJobs": 8
     },
-    "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86&pageIndex=7": {
-      "source": "인천북부교육지원청",
-      "province": "인천",
-      "boardUrl": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86&pageIndex=7",
-      "latestNumericId": null,
-      "latestRegistered": "2026/08/13",
-      "observedJobs": 8,
-      "presentInLatest": true,
-      "lastObservedJobs": 9,
-      "maxObservedJobs": 9
-    },
     "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=9": {
       "source": "인천서부교육지원청",
       "province": "인천",
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=9",
+      "latestNumericId": null,
+      "latestRegistered": "2026/08/14",
+      "observedJobs": 9,
+      "presentInLatest": true,
+      "lastObservedJobs": 9,
+      "maxObservedJobs": 9
+    },
+    "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86&pageIndex=7": {
+      "source": "인천북부교육지원청",
+      "province": "인천",
+      "boardUrl": "https://bukbu.ice.go.kr/bbs/data/list.do?bbs_mst_idx=BM0000000049&menu_idx=86&pageIndex=7",
       "latestNumericId": null,
       "latestRegistered": "2026/08/13",
       "observedJobs": 8,
@@ -1067,7 +1067,7 @@
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=10",
       "latestNumericId": null,
       "latestRegistered": "2026/08/07",
-      "observedJobs": 8,
+      "observedJobs": 7,
       "presentInLatest": true,
       "lastObservedJobs": 9,
       "maxObservedJobs": 9
@@ -1078,7 +1078,7 @@
       "boardUrl": "https://seobu.ice.go.kr/bseobu/list.aspx?board_code=4674&page=11",
       "latestNumericId": null,
       "latestRegistered": "2026/08/05",
-      "observedJobs": 4,
+      "observedJobs": 5,
       "presentInLatest": true,
       "lastObservedJobs": 6,
       "maxObservedJobs": 6

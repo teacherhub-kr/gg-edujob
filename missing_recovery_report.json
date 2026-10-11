@@ -1,14 +1,14 @@
 {
   "summary": {
-    "freshCount": 16870,
-    "previousCount": 19599,
-    "mergedCount": 19186,
-    "carriedForward": 2316,
-    "officialIdProtected": 17926,
-    "officialIdCarryForward": 984,
+    "freshCount": 16872,
+    "previousCount": 19210,
+    "mergedCount": 19191,
+    "carriedForward": 2319,
+    "officialIdProtected": 17925,
+    "officialIdCarryForward": 986,
     "enrichedFromPrevious": 5804,
     "policy": "fresh wins; latest official reconciliation IDs survive incremental crawl gaps; otherwise active/recent previous recruitment postings survive one-run disappearance",
-    "generatedAt": "2026-10-11 06:58 KST"
+    "generatedAt": "2026-10-11 11:44 KST"
   },
   "carried": [
     {
@@ -329,6 +329,17 @@
       "sourceIdentity": "mircms:www.goept.kr:10111:2571819",
       "reason": "present in latest independent official-ID reconciliation",
       "url": "https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&nttSn=2571819&mi=10118"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "동원중학교",
+      "title": "[긴급]2026학년도 동원중학교 시간강사 채용 공고 (기술가정)",
+      "registered": "2026/10/08",
+      "applyEnd": "2026/10/11",
+      "sourceIdentity": "seoul-central:111778",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111778"
     },
     {
       "province": "서울",
@@ -956,6 +967,28 @@
       "sourceIdentity": "mircms:www.goesn.kr:17872:1960226",
       "reason": "previously published posting still within application period",
       "url": "https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1960226"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "서울명일초등학교",
+      "title": "(서울명일초) 초등 4학년 담임 기간제교사 채용 (재)공고(10.14.~11.27.)",
+      "registered": "2026/10/06",
+      "applyEnd": "2026/10/11",
+      "sourceIdentity": "seoul-central:111511",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111511"
+    },
+    {
+      "province": "서울",
+      "source": "서울교육일자리포털",
+      "school": "덕산중학교",
+      "title": "덕산중학교 계약제 교원(기술 ·가정) 시간강사 2차 채용 공고",
+      "registered": "2026/10/06",
+      "applyEnd": "2026/10/11",
+      "sourceIdentity": "seoul-central:111449",
+      "reason": "present in latest independent official-ID reconciliation",
+      "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111449"
     },
     {
       "province": "서울",
@@ -1680,7 +1713,7 @@
       "registered": "2026/10/02",
       "applyEnd": "2026/10/11",
       "sourceIdentity": "seoul-central:111369",
-      "reason": "present in latest independent official-ID reconciliation",
+      "reason": "previously published posting still within application period",
       "url": "https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=111369"
     },
     {

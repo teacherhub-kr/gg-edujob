@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11 06:51:25 KST",
+  "generatedAt": "2026-10-11 11:39:07 KST",
   "name": "인천광역시교육청 채용공고",
   "url": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
   "boards": [
@@ -9,7 +9,7 @@
   "requiredBoardCount": 2,
   "lookbackDays": 90,
   "pagesScanned": 240,
-  "count": 2363,
+  "count": 2364,
   "coverageComplete": true,
   "accessError": "",
   "paginationRepeated": false,
@@ -23,19 +23,19 @@
       "bbsId": "1981",
       "lookbackDays": 90,
       "pagesScanned": 234,
-      "count": 2321,
+      "count": 2322,
       "coverageComplete": true,
       "accessError": "",
       "paginationRepeated": false,
       "stopReason": "lookback-exhausted",
       "emptyPageEvidence": {},
-      "latestRegistered": "2026/10/10",
+      "latestRegistered": "2026/10/11",
       "sampleIds": [
+        "ice-central:3386239",
         "ice-central:3386228",
         "ice-central:3386223",
         "ice-central:3386203",
-        "ice-central:3386208",
-        "ice-central:3386145"
+        "ice-central:3386208"
       ]
     },
     {
@@ -61,16 +61,24 @@
       ]
     }
   ],
-  "latestRegistered": "2026/10/10",
+  "latestRegistered": "2026/10/11",
   "sampleIds": [
+    "ice-central:3386239",
     "ice-central:3386228",
     "ice-central:3386223",
     "ice-central:3386203",
-    "ice-afterschool:3386201",
-    "ice-central:3386208"
+    "ice-afterschool:3386201"
   ],
   "merged": true,
   "officialSample": [
+    {
+      "id": "ice-central:3386239",
+      "school": "인천석암초등학교",
+      "title": "인천석암초등학교 영어전담교사 시간강사 채용 공고(중등자격으로 확대 공고)",
+      "registered": "2026/10/11",
+      "sourceBoard": "인천광역시교육청 채용공고",
+      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386239"
+    },
     {
       "id": "ice-central:3386228",
       "school": "인천석암초등학교",
@@ -110,14 +118,6 @@
       "registered": "2026/10/08",
       "sourceBoard": "인천광역시교육청 채용공고",
       "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386208"
-    },
-    {
-      "id": "ice-central:3386145",
-      "school": "인천부곡초등학교",
-      "title": "인천부곡초등학교 교육공무직원(사서 대체인력) 채용 공고",
-      "registered": "2026/10/08",
-      "sourceBoard": "인천광역시교육청 채용공고",
-      "url": "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?bbsId=1981&mi=10997&nttSn=3386145"
     }
   ]
 }
