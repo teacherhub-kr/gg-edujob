@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-11T14:44:35+09:00",
+  "generatedAt": "2026-10-11T21:00:12+09:00",
   "healthy": true,
-  "total": 9076,
-  "official": 2980,
-  "privateDisplayed": 6096,
+  "total": 9148,
+  "official": 2987,
+  "privateDisplayed": 6161,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 6097,
-  "privateRepresentedDirectly": 6096,
+  "privateStableIds": 6162,
+  "privateRepresentedDirectly": 6161,
   "privateRepresentedByOfficial": 1,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,8 +44,20 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 161,
+  "verifiedLessoninfoCultureLinks": 163,
   "verifiedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95307",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95307",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95306",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95306",
+      "resolvedUrlType": "official"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95300",
@@ -153,26 +165,14 @@
       "sourceIdentity": "culture:id:95269",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95269",
       "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95268",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95268",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95266",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95266",
-      "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 1096,
+  "failClosedLessoninfoCultureLinks": 1158,
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95296",
-      "title": "뮤지컬 전용극장 샤롯데씨어터 공연장 안내원 모집 공고(~10/10)"
+      "sourceIdentity": "culture:id:95209",
+      "title": "세종문화회관 '공연장 안내원 51기' 모집 공고"
     },
     {
       "source": "lessoninfo",
@@ -257,7 +257,7 @@
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95104",
-      "title": "성남아트센터 매표소 운영 담당자 (계약직)"
+      "title": "성남아트센터 티켓 운영 담당자 (계약직)"
     },
     {
       "source": "lessoninfo",
@@ -270,8 +270,20 @@
       "title": "(복사) (재)부천아트센터 2026년 제2차 공연장 안내원(아르바이트생) 모집 공고(~9/28)"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 161,
+  "projectedVerifiedLessoninfoCultureLinks": 163,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95307",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95307",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95306",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95306",
+      "resolvedUrlType": "official"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95300",
@@ -379,24 +391,17 @@
       "sourceIdentity": "culture:id:95269",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95269",
       "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95268",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95268",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95266",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95266",
-      "resolvedUrlType": "official"
     }
   ],
   "projectedNonDirectPrivateLinks": 0,
   "projectedNonDirectPrivateLinkExamples": [],
-  "projectedFailClosedLessoninfoCultureLinks": 2,
+  "projectedFailClosedLessoninfoCultureLinks": 3,
   "projectedFailClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95296",
+      "title": "뮤지컬 전용극장 샤롯데씨어터 공연장 안내원 모집 공고(~10/10)"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95241",
@@ -415,8 +420,8 @@
   "badCrossSourceAliasEvidence": 0,
   "sourceValidationPopulations": {
     "lessoninfo": {
-      "rawCount": 1864,
-      "currentCount": 1849
+      "rawCount": 1930,
+      "currentCount": 1914
     },
     "cleaneye": {
       "rawCount": 15,

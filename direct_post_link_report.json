@@ -1,11 +1,11 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9076,
-  "nonDirectBeforeRepair": 1118,
+  "totalRows": 9148,
+  "nonDirectBeforeRepair": 1181,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 1118,
-  "cultureFoundationRows": 184,
-  "cultureFoundationNonDirectRows": 146,
+  "nonDirectAfterRepair": 1181,
+  "cultureFoundationRows": 188,
+  "cultureFoundationNonDirectRows": 150,
   "recoveredExamples": [],
   "nonDirectExamples": [
     {
@@ -31,6 +31,15 @@
       "source": "레슨인포",
       "title": "인천광역시 서해구문화원 2026. 제4차 직원(일반직 9급-문화경영팀) 채용",
       "school": "서해구문화원",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95209",
+      "source": "레슨인포",
+      "title": "세종문화회관 '공연장 안내원 51기' 모집 공고",
+      "school": "레슨인포 구인",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
@@ -227,7 +236,7 @@
     {
       "sourceIdentity": "culture:id:95104",
       "source": "레슨인포",
-      "title": "성남아트센터 매표소 운영 담당자 (계약직)",
+      "title": "성남아트센터 티켓 운영 담당자 (계약직)",
       "school": "성남아트센터",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
@@ -452,7 +461,7 @@
     {
       "sourceIdentity": "culture:id:95013",
       "source": "레슨인포",
-      "title": "연수문화원 문화학교 강사 모집(플룻, 통기타)",
+      "title": "연수문화원 문화학교 강사 모집(플룻, 통기타,라인댄스",
       "school": "연수문화원",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
@@ -898,15 +907,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94884",
-      "source": "레슨인포",
-      "title": "9/13(일) 수원 선경도서관 클래식 공연 스텝 모집",
-      "school": "레슨인포 구인",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
     }
   ],
   "cultureFoundationExamples": [
@@ -1255,7 +1255,7 @@
     {
       "sourceIdentity": "culture:id:95039",
       "source": "레슨인포",
-      "title": "(재)GS문화재단 정규직 채용 공고 (디지털 플랫폼·CRM 서비스 기획·운영 매니저)",
+      "title": "(재)GS문화재단 기획홍보팀 정규직 채용 공고 (디지털 플랫폼·CRM 매니저)",
       "school": "GS문화재단",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95039",
       "reason": "cold-browser-verified-url",
