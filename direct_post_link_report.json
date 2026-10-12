@@ -1,13 +1,22 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9356,
-  "nonDirectBeforeRepair": 1191,
+  "totalRows": 9357,
+  "nonDirectBeforeRepair": 1192,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 1191,
+  "nonDirectAfterRepair": 1192,
   "cultureFoundationRows": 186,
   "cultureFoundationNonDirectRows": 151,
   "recoveredExamples": [],
   "nonDirectExamples": [
+    {
+      "sourceIdentity": "culture:id:95305",
+      "source": "레슨인포",
+      "title": "세종문화회관 꿈의숲아트센터 공연장 안내원 모집 공고",
+      "school": "꿈의숲아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
     {
       "sourceIdentity": "culture:id:95296",
       "source": "레슨인포",
@@ -895,15 +904,6 @@
       "source": "레슨인포",
       "title": "부암아트 문화예술 기획, 공연기술 채용",
       "school": "레슨인포 구인",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94895",
-      "source": "레슨인포",
-      "title": "[세화미술관] 현장 운영 매니저 채용",
-      "school": "세화미술관",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false

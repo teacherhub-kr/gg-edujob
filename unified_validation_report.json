@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-12T15:56:32+09:00",
+  "generatedAt": "2026-10-12T17:18:26+09:00",
   "healthy": true,
-  "total": 9356,
+  "total": 9357,
   "official": 3205,
-  "privateDisplayed": 6151,
+  "privateDisplayed": 6152,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 6152,
-  "privateRepresentedDirectly": 6151,
+  "privateStableIds": 6153,
+  "privateRepresentedDirectly": 6152,
   "privateRepresentedByOfficial": 1,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -61,8 +61,8 @@
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95300",
-      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95300&ckattempt=1",
-      "resolvedUrlType": "lessoninfo"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95300",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
@@ -167,8 +167,13 @@
       "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 1171,
+  "failClosedLessoninfoCultureLinks": 1172,
   "failClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95305",
+      "title": "세종문화회관 꿈의숲아트센터 공연장 안내원 모집 공고"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95209",
@@ -263,11 +268,6 @@
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95092",
       "title": "(복사) (재)부천아트센터 2026년 제2차 공연장 안내원(아르바이트생) 모집 공고(~9/28)"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95091",
-      "title": "2026 성남아트센터 공연장안내원 모집공고 (~10/11)"
     }
   ],
   "projectedVerifiedLessoninfoCultureLinks": 153,
@@ -287,8 +287,8 @@
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95300",
-      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95300&ckattempt=1",
-      "resolvedUrlType": "lessoninfo"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95300",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
@@ -421,7 +421,7 @@
   "sourceValidationPopulations": {
     "lessoninfo": {
       "rawCount": 1930,
-      "currentCount": 1914
+      "currentCount": 1915
     },
     "cleaneye": {
       "rawCount": 14,

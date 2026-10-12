@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-12T15:56:34+09:00",
+  "generatedAt": "2026-10-12T17:18:27+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4451,
+  "privateJobs": 4453,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 197
+      "canonicalCount": 199
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 197,
+      "jobs": 199,
       "strongOfficialMatches": 19,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 10
+      "officialGapCandidates": 12
     },
     "cleaneye": {
       "jobs": 14,
@@ -107,13 +107,13 @@
   },
   "strongOfficialMatches": 19,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 53,
+  "officialGapCandidates": 55,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
       "privateId": "board:20170316171033_6494:7656",
-      "privateTitle": "경기 수원시 초등학교 오케스트라 오보에 강사 모집공고 N",
+      "privateTitle": "경기 수원시 초등학교 오케스트라 오보에 강사 모집공고",
       "matches": [
         {
           "officialSource": "경기도교육청 통합 구인구직",
@@ -378,6 +378,30 @@
   ],
   "reviewCandidates": [],
   "gapCandidates": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7658",
+      "privateTitle": "양재동 방과후 피아노 대타 강사 구합니다 N",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-10-12",
+      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7658",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "board:20170316171033_6494:7657",
+      "privateTitle": "초등학교 드럼 피아노 강사 채용 N",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-10-12",
+      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7657",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
