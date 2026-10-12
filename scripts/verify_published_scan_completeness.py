@@ -112,6 +112,76 @@ def _require_registry_complete(
     return summary
 
 
+def verify_snapshot_only(
+    published_jobs: dict[str, Any],
+    published_ledger: dict[str, Any],
+    published_report: dict[str, Any],
+    *,
+    expected_sources: int,
+) -> dict[str, Any]:
+    """Fail closed if the final publication no longer represents its own official scan."""
+    published_summary = _require_registry_complete(
+        published_report, expected_sources, "published"
+    )
+
+    published_policy = str(
+        published_report.get("populationPolicy")
+        or published_summary.get("populationPolicy")
+        or ""
+    )
+    if not published_policy or published_policy != str(
+        published_ledger.get("populationPolicy") or ""
+    ):
+        raise VerificationError("published ledger/report population policy mismatch")
+
+    published_generated = str(published_report.get("generatedAt") or "")
+    published_ledger_generated = str(published_ledger.get("generatedAt") or "")
+    if not published_generated or published_generated != published_ledger_generated:
+        raise VerificationError(
+            "published report/ledger are not from the same scan window: "
+            f"report={published_generated!r}, ledger={published_ledger_generated!r}"
+        )
+
+    job_ids = published_job_ids(published_jobs)
+    published_scan_ids = ledger_current_ids(published_ledger)
+
+    if int(published_ledger.get("officialIdCount") or 0) != len(published_scan_ids):
+        raise VerificationError("published ledger officialIdCount does not match current-ID set")
+    if int(published_summary.get("officialIdCount") or 0) != len(published_scan_ids):
+        raise VerificationError("published report officialIdCount does not match published ledger")
+
+    scan_bound_missing = sorted(published_scan_ids - job_ids)
+    if scan_bound_missing:
+        raise VerificationError(
+            "published snapshot omitted IDs that were already present in its own official scan: "
+            f"count={len(scan_bound_missing)}, examples={scan_bound_missing[:10]}"
+        )
+
+    published_payload_summary = published_jobs.get("sourceReconciliation") or {}
+    if isinstance(published_payload_summary, dict) and published_payload_summary:
+        for key in ("officialIdCount", "missingAfter", "reconciledSources", "totalSources"):
+            if int(published_payload_summary.get(key) or 0) != int(published_summary.get(key) or 0):
+                raise VerificationError(
+                    f"published jobs/report reconciliation mismatch for {key}: "
+                    f"jobs={published_payload_summary.get(key)}, report={published_summary.get(key)}"
+                )
+
+    return {
+        "state": "complete",
+        "populationPolicy": published_policy,
+        "registeredOfficialSources": expected_sources,
+        "publishedScan": {
+            "generatedAt": published_generated,
+            "officialIdCount": len(published_scan_ids),
+            "missingFromPublishedJobs": 0,
+        },
+        "interpretation": (
+            "Current publication still contains every strong official ID proven by its own "
+            "reconciliation scan."
+        ),
+    }
+
+
 def verify(
     published_jobs: dict[str, Any],
     published_ledger: dict[str, Any],
@@ -222,16 +292,29 @@ def main() -> int:
     parser.add_argument("--live-ledger", default="source_id_ledger.json")
     parser.add_argument("--live-report", default="source_reconciliation_report.json")
     parser.add_argument("--report", default=str(REPORT_PATH))
+    parser.add_argument(
+        "--snapshot-only",
+        action="store_true",
+        help="Verify only that the current publication still contains every ID from its own official scan.",
+    )
     args = parser.parse_args()
 
-    result = verify(
-        load_json(args.published_jobs),
-        load_json(args.published_ledger),
-        load_json(args.published_report),
-        load_json(args.live_ledger),
-        load_json(args.live_report),
-        expected_sources=official_source_count(),
-    )
+    if args.snapshot_only:
+        result = verify_snapshot_only(
+            load_json(args.published_jobs),
+            load_json(args.published_ledger),
+            load_json(args.published_report),
+            expected_sources=official_source_count(),
+        )
+    else:
+        result = verify(
+            load_json(args.published_jobs),
+            load_json(args.published_ledger),
+            load_json(args.published_report),
+            load_json(args.live_ledger),
+            load_json(args.live_report),
+            expected_sources=official_source_count(),
+        )
     Path(args.report).write_text(
         json.dumps(result, ensure_ascii=False, indent=2),
         encoding="utf-8",
