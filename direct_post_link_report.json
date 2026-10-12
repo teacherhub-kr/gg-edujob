@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 8959,
+  "totalRows": 9073,
   "nonDirectBeforeRepair": 1191,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 1191,
-  "cultureFoundationRows": 187,
+  "cultureFoundationRows": 186,
   "cultureFoundationNonDirectRows": 151,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -1073,15 +1073,6 @@
       "direct": true
     },
     {
-      "sourceIdentity": "artmore:95192",
-      "source": "아트모아",
-      "title": "진행중 (재)금천문화재단 2026년 제4차 공개채용 공고",
-      "school": "금천문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95192",
-      "reason": "artmore-rec-idx",
-      "direct": true
-    },
-    {
       "sourceIdentity": "culture:id:95164",
       "source": "레슨인포",
       "title": "[대림문화재단] 대림미술관 크루 모집(전시/뮤지엄샵)",
@@ -1806,6 +1797,15 @@
       "source": "레슨인포",
       "title": "[대림문화재단] 교육문화파트 인턴 채용공고",
       "school": "대림문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94318",
+      "source": "레슨인포",
+      "title": "[소전문화재단] 인문학 레지던시 두내원 리셉션 채용",
+      "school": "소전문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
