@@ -44,7 +44,7 @@ export default {
 
     const jobs=await fetchCurrentJobs();
     const {data:rows,error}=await db.from('edujob_push_subscriptions')
-      .select('id,endpoint,p256dh,auth,profile,seen_ids').eq('enabled',true).limit(1000);
+      .select('id,endpoint,p256dh,auth,profile,seen_ids,last_notified_at').eq('enabled',true).limit(1000);
     if(error)return response({error:'db'},500);
 
     let sent=0,disabled=0,unchanged=0,failed=0;
@@ -53,6 +53,18 @@ export default {
       const matching=(jobs as Job[]).filter(j=>matchesProfile(j,profile));
       const currentIds=matching.map(jobKey).filter(Boolean).slice(0,3000);
       const seen=new Set(Array.isArray(row.seen_ids)?row.seen_ids:[]);
+      // If this subscription has already received an alert but its baseline is empty,
+      // fail safe by establishing the current matching set without sending a backlog.
+      // This covers repaired matching/publication logic without suppressing the first
+      // genuinely new job for a never-notified subscription.
+      if(!seen.size&&row.last_notified_at&&matching.length){
+        await db.from('edujob_push_subscriptions').update({
+          seen_ids:currentIds,
+          updated_at:new Date().toISOString()
+        }).eq('id',row.id);
+        unchanged++;
+        continue;
+      }
       const fresh=matching.filter(j=>!seen.has(jobKey(j)));
       if(!fresh.length){unchanged++;continue}
 
