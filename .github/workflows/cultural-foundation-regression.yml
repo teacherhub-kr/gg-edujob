@@ -38,7 +38,7 @@ jobs:
         run: python scripts/crawl_official_foundation_jobs_v2.py
       - name: Retain exact detail evidence on success or failure
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ifac-exact-detail-${{ github.run_id }}-${{ github.run_attempt }}
           path: |

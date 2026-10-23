@@ -42,7 +42,7 @@ jobs:
           python scripts/measure_visibility_latency.py             --repo "${GITHUB_REPOSITORY}"             --window-hours 48             --slo-hours 4             "${args[@]}"
       - name: Upload latency evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: official-visibility-latency-${{ github.run_id }}-${{ github.run_attempt }}
           path: visibility_latency_report.json
