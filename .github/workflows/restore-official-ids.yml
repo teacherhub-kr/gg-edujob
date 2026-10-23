@@ -25,7 +25,7 @@ jobs:
           git checkout -B main origin/main
           echo "RESTORE_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
           echo "RESTORE_PUSH_STATE=not-attempted" >> "$GITHUB_ENV"
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Install dependencies
