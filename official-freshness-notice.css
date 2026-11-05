@@ -1,0 +1,8 @@
+.official-freshness-notice{box-sizing:border-box;margin:12px auto 8px;max-width:1160px;
+ padding:12px 15px;border:1px solid #b96831;border-radius:12px;
+ background:#fff8f0;color:#603516;line-height:1.5;display:grid;gap:3px;
+ font-size:13px;overflow-wrap:anywhere}
+.official-freshness-notice strong{font-size:14px;font-weight:800}
+.official-freshness-notice span{display:block}
+@media(max-width:600px){.official-freshness-notice{margin:8px 12px;padding:11px 12px;font-size:12px}}
+@media(prefers-color-scheme:dark){.official-freshness-notice{background:#352719;color:#fce6d3;border-color:#b96831}}
