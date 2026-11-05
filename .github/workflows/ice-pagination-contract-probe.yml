@@ -33,6 +33,12 @@ jobs:
         run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install --with-deps chromium
+      - name: Probe production ICE collector contract
+        id: production_probe
+        continue-on-error: true
+        env:
+          PYTHONPATH: scripts
+        run: python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3 --transient-retries 1 --retry-delay-seconds 5
       - name: Check actual official goPaging(2) behavior in Chromium
         id: browser_probe
         continue-on-error: true
@@ -46,10 +52,15 @@ jobs:
       - name: Require at least one independently distinct page-2 proof
         if: always()
         env:
+          PRODUCTION_OUTCOME: ${{ steps.production_probe.outcome }}
           BROWSER_OUTCOME: ${{ steps.browser_probe.outcome }}
           REQUESTS_OUTCOME: ${{ steps.requests_probe.outcome }}
         run: |
-          echo "browser_probe=${BROWSER_OUTCOME} requests_probe=${REQUESTS_OUTCOME}"
+          echo "production_probe=${PRODUCTION_OUTCOME} browser_probe=${BROWSER_OUTCOME} requests_probe=${REQUESTS_OUTCOME}"
+          if [[ "${PRODUCTION_OUTCOME}" != "success" ]]; then
+            echo "The production ICE collector did not prove complete traversal."
+            exit 1
+          fi
           if [[ "${BROWSER_OUTCOME}" != "success" && "${REQUESTS_OUTCOME}" != "success" ]]; then
             echo "Neither a real browser nor the bounded official-request probe proved a distinct page 2."
             exit 1
