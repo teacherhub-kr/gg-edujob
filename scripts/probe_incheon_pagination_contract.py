@@ -40,7 +40,16 @@ def main():
     first = fetch_with_one_explicit_retry(with_page(BOARD["url"], 1))
     base_ids = set(parse_table_rows(first.text, first.url, 90, BOARD)[1]["pageIds"])
     if not base_ids:
-        raise SystemExit("FAIL: ICE central page 1 has no parseable official IDs")
+        # The official CMS sometimes responds with a tiny 200 body; bootstrap
+        # once using the same session. This is diagnostic only, not completeness proof.
+        try:
+            SESSION.get(BOARD["bootstrapUrl"], timeout=(8, 25), allow_redirects=True)
+            first = fetch_with_one_explicit_retry(with_page(BOARD["url"], 1))
+            base_ids = set(parse_table_rows(first.text, first.url, 90, BOARD)[1]["pageIds"])
+        except Exception as exc:
+            print("BOOTSTRAP_ERROR", type(exc).__name__, flush=True)
+    if not base_ids:
+        raise SystemExit("FAIL CLOSED: ICE central page 1 has no parseable official IDs")
     print("BASELINE", json.dumps({"rawIds": len(base_ids), "firstTwoIds": sorted(base_ids)[:2]}, ensure_ascii=False), flush=True)
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(first.text, "html.parser")
