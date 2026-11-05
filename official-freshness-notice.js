@@ -47,6 +47,21 @@
     }
     box.appendChild(heading);
     box.appendChild(detail);
+    var links=document.createElement('nav');
+    links.className='official-freshness-links';
+    links.setAttribute('aria-label','최신 공식 채용 공고 원문 바로가기');
+    [
+      ['서울교육일자리포털','https://work.sen.go.kr/work/search/recInfo/BD_selectSrchRecInfo.do?type=term'],
+      ['경기도교육청 구인구직','https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancList.do?mi=10502'],
+      ['인천교육청 채용공고','https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997'],
+      ['인천 늘봄강사 공고','https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571']
+    ].forEach(function(item){
+      var link=document.createElement('a');
+      link.href=item[1];link.textContent=item[0];
+      link.target='_blank';link.rel='noopener noreferrer';
+      links.appendChild(link);
+    });
+    box.appendChild(links);
     if(!existing)main.insertBefore(box,main.firstChild);
   }
   async function start(){
