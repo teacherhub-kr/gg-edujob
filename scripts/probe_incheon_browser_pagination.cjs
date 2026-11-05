@@ -15,7 +15,7 @@ const {chromium}=require('@playwright/test');
   const control=page.locator('a[onclick="goPaging(2)"]').first();
   if(await control.count()!==1)throw Error('Official goPaging(2) link missing');
   await Promise.all([
-   page.waitForLoadState('domcontentloaded').catch(()=>{}),
+   page.waitForNavigation({waitUntil:'domcontentloaded',timeout:20000}),
    control.click({timeout:20000})
   ]);
   await page.waitForTimeout(1200);
