@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'official-freshness-notice.js'
+      - 'official-freshness-notice.css'
+      - 'tests/test_official_freshness_notice.js'
       - 'app.html'
       - 'app.css'
       - 'app.js'
