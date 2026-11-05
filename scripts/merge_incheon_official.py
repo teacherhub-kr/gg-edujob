@@ -19,7 +19,7 @@ import re
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -208,6 +208,66 @@ def fetch_with_one_explicit_retry(url: str):
             if attempt == 0:
                 time.sleep(0.8)
     raise last_error
+
+
+def fetch_paging_form(previous_response, page: int, board: dict):
+    """Submit the official ICE pagingForm with the current session and CSRF state.
+
+    ICE pagination is a POST contract. The complete hidden form from the
+    immediately preceding official response is replayed, changing only
+    currPage. Host, path, board identity, and CSRF state are validated before
+    any request is sent. A malformed contract fails closed.
+    """
+    soup = BeautifulSoup(previous_response.text, "html.parser")
+    form = soup.find("form", attrs={"name": "pagingForm"})
+    if form is None:
+        raise ValueError("ICE official pagingForm missing")
+
+    fields = []
+    observed = {}
+    for element in form.find_all(["input", "select", "textarea"]):
+        name = clean(element.get("name"))
+        field_type = clean(element.get("type")).lower()
+        if not name or field_type in {"submit", "button", "image", "file"}:
+            continue
+        if element.name == "select":
+            selected = element.find("option", selected=True) or element.find("option")
+            value = clean(selected.get("value") if selected else "")
+        else:
+            value = str(element.get("value") or "")
+        if name == "currPage":
+            value = str(page)
+        fields.append((name, value))
+        observed[name] = value
+
+    if observed.get("currPage") != str(page):
+        raise ValueError("ICE official currPage field missing")
+    if observed.get("bbsId") != str(board["bbsId"]) or observed.get("mi") != str(board["mi"]):
+        raise ValueError("ICE official pagingForm board identity mismatch")
+    if not observed.get("CSRFToken"):
+        raise ValueError("ICE official pagingForm CSRF token missing")
+
+    target = urljoin(str(previous_response.url or board["url"]), str(form.get("action") or ""))
+    parsed_target = urlparse(target)
+    canonical = urlparse(board["url"])
+    allowed_hosts = {canonical.hostname, *OFFICIAL_FETCH_ALIASES}
+    if parsed_target.scheme != "https" or parsed_target.hostname not in allowed_hosts:
+        raise ValueError("ICE official pagingForm host is not allowlisted")
+    if parsed_target.path != canonical.path:
+        raise ValueError("ICE official pagingForm path mismatch")
+
+    origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
+    response = SESSION.post(
+        target,
+        data=fields,
+        headers={"Referer": str(previous_response.url or board["url"]), "Origin": origin},
+        timeout=(8, 25),
+        allow_redirects=True,
+    )
+    response.raise_for_status()
+    if not response.encoding or response.encoding.lower() == "iso-8859-1":
+        response.encoding = response.apparent_encoding or "utf-8"
+    return response
 
 
 def with_host(url: str, host: str) -> str:
@@ -406,10 +466,14 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     empty_page_evidence = {}
     alias_fallback_evidence = {}
 
+    previous_response = None
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
         try:
-            response = fetch_with_one_explicit_retry(page_url)
+            if page == 1 or previous_response is None:
+                response = fetch_with_one_explicit_retry(page_url)
+            else:
+                response = fetch_paging_form(previous_response, page, board)
         except Exception as exc:
             access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
             break
@@ -442,6 +506,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             if alias_response is not None and alias_meta.get("rawRows"):
                 response, rows, meta = alias_response, alias_rows, alias_meta
 
+        previous_response = response
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
             stop_reason = "repeated-page"
