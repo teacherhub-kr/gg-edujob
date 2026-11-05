@@ -36,7 +36,7 @@ jobs:
           else
             echo "workflow definition matches origin/main"
           fi
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Install collector dependencies
