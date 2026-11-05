@@ -22,4 +22,10 @@ const html=fs.readFileSync('index.html','utf8');
 assert(html.includes('official-freshness-notice.js?v=20261105p0'));
 assert(html.includes('official-freshness-notice.css?v=20261105p0'));
 assert(fs.readFileSync('official-freshness-notice.js','utf8').includes("credentials:'same-origin'"));
-console.log('Official recruitment freshness warning: 9 checks PASS');
+const linkSource=fs.readFileSync('official-freshness-notice.js','utf8');
+for(const host of ['work.sen.go.kr','www.goe.go.kr','www.ice.go.kr']) {
+  assert(linkSource.includes(host),'Missing official region source '+host);
+}
+assert(linkSource.includes("link.rel='noopener noreferrer'"),'External links must isolate opener');
+assert(linkSource.includes("link.textContent=item[0]"),'Source link labels must be safe text');
+console.log('Official recruitment freshness warning + official direct links: PASS');
