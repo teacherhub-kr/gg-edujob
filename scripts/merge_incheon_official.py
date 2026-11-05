@@ -240,12 +240,23 @@ def fetch_paging_form(previous_response, page: int, board: dict):
         fields.append((name, value))
         observed[name] = value
 
+    if not observed.get("CSRFToken"):
+        document_tokens = [
+            str(item.get("value") or "")
+            for item in soup.find_all("input", attrs={"name": "CSRFToken"})
+            if str(item.get("value") or "")
+        ]
+        unique_tokens = list(dict.fromkeys(document_tokens))
+        if len(unique_tokens) == 1:
+            fields.append(("CSRFToken", unique_tokens[0]))
+            observed["CSRFToken"] = unique_tokens[0]
+
     if observed.get("currPage") != str(page):
         raise ValueError("ICE official currPage field missing")
     if observed.get("bbsId") != str(board["bbsId"]) or observed.get("mi") != str(board["mi"]):
         raise ValueError("ICE official pagingForm board identity mismatch")
     if not observed.get("CSRFToken"):
-        raise ValueError("ICE official pagingForm CSRF token missing")
+        raise ValueError("ICE official pagingForm CSRF token missing or ambiguous")
 
     target = urljoin(str(previous_response.url or board["url"]), str(form.get("action") or ""))
     parsed_target = urlparse(target)
