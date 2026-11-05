@@ -38,6 +38,8 @@ def test_browser_probe_retries_only_bounded_navigation_races():
 def test_browser_probe_records_only_the_request_contract():
     text = BROWSER_PROBE.read_text(encoding="utf-8")
 
+    assert "page.waitForRequest(candidate=>candidate.isNavigationRequest()" in text
+    assert "candidate.frame()===page.mainFrame()" in text
     assert "BROWSER_PAGE2_REQUEST" in text
     assert "method:request.method()" in text
     assert "pathname:requestUrl.pathname" in text
