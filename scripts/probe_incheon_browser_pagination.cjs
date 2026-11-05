@@ -28,6 +28,14 @@ async function readOfficialIds(page){
   const first=await readOfficialIds(page);
   console.log('BROWSER_PAGE1',JSON.stringify({count:first.length,firstTwoIds:first.slice(0,2),urlHost:new URL(page.url()).hostname}));
   if(first.length<5)throw Error('Official first page not parseable (fail-closed)');
+  const csrfLocation=await page.evaluate(()=>({
+   namedInputs:document.querySelectorAll('input[name="CSRFToken"]').length,
+   pagingFormInputs:document.querySelectorAll('form[name="pagingForm"] input[name="CSRFToken"]').length,
+   csrfMetas:document.querySelectorAll('meta[name*="csrf" i]').length,
+   globalTokenPresent:typeof window.CSRFToken==='string'&&window.CSRFToken.length>0
+  }));
+  const cookieNames=(await page.context().cookies()).map(cookie=>cookie.name).sort();
+  console.log('BROWSER_CSRF_LOCATION',JSON.stringify({...csrfLocation,cookieNames}));
   const control=page.locator('a[onclick="goPaging(2)"]').first();
   if(await control.count()!==1)throw Error('Official goPaging(2) link missing');
   const [request]=await Promise.all([
