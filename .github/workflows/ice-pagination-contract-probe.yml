@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'scripts/probe_incheon_pagination_contract.py'
+      - 'scripts/probe_incheon_browser_pagination.cjs'
+      - 'tests/test_incheon_pagination_probe_workflow.py'
       - '.github/workflows/ice-pagination-contract-probe.yml'
 
 permissions:
@@ -24,8 +26,23 @@ jobs:
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install --with-deps chromium
       - name: Check actual official goPaging(2) behavior in Chromium
+        id: browser_probe
+        continue-on-error: true
         run: node scripts/probe_incheon_browser_pagination.cjs
       - name: Probe only official ICE page 2 request variants (read-only)
+        id: requests_probe
+        continue-on-error: true
         env:
           PYTHONPATH: scripts
         run: python scripts/probe_incheon_pagination_contract.py
+      - name: Require at least one independently distinct page-2 proof
+        if: always()
+        env:
+          BROWSER_OUTCOME: ${{ steps.browser_probe.outcome }}
+          REQUESTS_OUTCOME: ${{ steps.requests_probe.outcome }}
+        run: |
+          echo "browser_probe=${BROWSER_OUTCOME} requests_probe=${REQUESTS_OUTCOME}"
+          if [[ "${BROWSER_OUTCOME}" != "success" && "${REQUESTS_OUTCOME}" != "success" ]]; then
+            echo "Neither a real browser nor the bounded official-request probe proved a distinct page 2."
+            exit 1
+          fi
