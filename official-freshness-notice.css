@@ -6,3 +6,7 @@
 .official-freshness-notice span{display:block}
 @media(max-width:600px){.official-freshness-notice{margin:8px 12px;padding:11px 12px;font-size:12px}}
 @media(prefers-color-scheme:dark){.official-freshness-notice{background:#352719;color:#fce6d3;border-color:#b96831}}
+
+.official-freshness-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:7px}
+.official-freshness-links a{font-size:12px;color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:700;padding:3px 0}
+.official-freshness-links a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
