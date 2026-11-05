@@ -76,6 +76,10 @@ REQUIRED_BOARDS = (
 
 UA = "Mozilla/5.0 (compatible; metro-edujob/3.2; public recruitment aggregator)"
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
+CSRF_UUID_RE = re.compile(
+    r"(?<![0-9a-f])([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})(?![0-9a-f])",
+    re.IGNORECASE,
+)
 EXCLUDE_WORDS = re.compile(
     r"최종\s*합격|합격자|서류\s*심사|서류전형|면접\s*대상|선정\s*결과|"
     r"채용\s*결과|전형\s*결과|합격\s*공고|인사\s*발령"
@@ -210,6 +214,25 @@ def fetch_with_one_explicit_retry(url: str):
     raise last_error
 
 
+def extract_document_csrf(soup: BeautifulSoup) -> str:
+    """Return one unambiguous CSRF token from DOM markup or its injector script."""
+    candidates = [
+        str(item.get("value") or "")
+        for item in soup.find_all("input", attrs={"name": "CSRFToken"})
+        if str(item.get("value") or "")
+    ]
+    for script in soup.find_all("script"):
+        content = script.string or script.get_text() or ""
+        if "CSRFTOKEN" not in content.upper():
+            continue
+        for marker in re.finditer(r"CSRFToken", content, re.IGNORECASE):
+            start = max(0, marker.start() - 300)
+            end = min(len(content), marker.end() + 500)
+            candidates.extend(CSRF_UUID_RE.findall(content[start:end]))
+    unique = list(dict.fromkeys(candidates))
+    return unique[0] if len(unique) == 1 else ""
+
+
 def fetch_paging_form(previous_response, page: int, board: dict):
     """Submit the official ICE pagingForm with the current session and CSRF state.
 
@@ -241,15 +264,10 @@ def fetch_paging_form(previous_response, page: int, board: dict):
         observed[name] = value
 
     if not observed.get("CSRFToken"):
-        document_tokens = [
-            str(item.get("value") or "")
-            for item in soup.find_all("input", attrs={"name": "CSRFToken"})
-            if str(item.get("value") or "")
-        ]
-        unique_tokens = list(dict.fromkeys(document_tokens))
-        if len(unique_tokens) == 1:
-            fields.append(("CSRFToken", unique_tokens[0]))
-            observed["CSRFToken"] = unique_tokens[0]
+        document_token = extract_document_csrf(soup)
+        if document_token:
+            fields.append(("CSRFToken", document_token))
+            observed["CSRFToken"] = document_token
 
     if observed.get("currPage") != str(page):
         raise ValueError("ICE official currPage field missing")
