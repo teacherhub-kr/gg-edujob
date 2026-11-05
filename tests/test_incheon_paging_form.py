@@ -53,8 +53,9 @@ class IncheonPagingFormTests(unittest.TestCase):
         self.assertEqual(kwargs["headers"]["Referer"], ice.LIST_URL)
 
     def test_unique_document_csrf_is_bound_to_paging_form(self):
+        token = "123e4567-e89b-12d3-a456-426614174000"
         html = paging_form(csrf="").replace(
-            "</body>", '<input type="hidden" name="CSRFToken" value="document-token"></body>'
+            "</body>", f'<input type="hidden" name="CSRFToken" value="{token}"></body>'
         )
         first = Response(html)
         second = Response("<html>page two</html>")
@@ -63,7 +64,34 @@ class IncheonPagingFormTests(unittest.TestCase):
             ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
 
         fields = dict(post.call_args.kwargs["data"])
-        self.assertEqual(fields["CSRFToken"], "document-token")
+        self.assertEqual(fields["CSRFToken"], token)
+
+    def test_unique_injector_script_csrf_is_bound_to_paging_form(self):
+        token = "123e4567-e89b-12d3-a456-426614174000"
+        script = (
+            "<script>document.forms.pagingForm.insertAdjacentHTML("
+            "'beforeend','<input type=hidden name=CSRFToken value=\"" + token + "\">'"
+            ");</script>"
+        )
+        first = Response(paging_form(csrf="").replace("</body>", script + "</body>"))
+        second = Response("<html>page two</html>")
+
+        with patch.object(ice.SESSION, "post", return_value=second) as post:
+            ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
+
+        fields = dict(post.call_args.kwargs["data"])
+        self.assertEqual(fields["CSRFToken"], token)
+
+    def test_ambiguous_injector_tokens_fail_before_network(self):
+        first_token = "123e4567-e89b-12d3-a456-426614174000"
+        second_token = "123e4567-e89b-12d3-a456-426614174001"
+        script = f"<script>CSRFToken {first_token} CSRFToken {second_token}</script>"
+        first = Response(paging_form(csrf="").replace("</body>", script + "</body>"))
+
+        with patch.object(ice.SESSION, "post") as post:
+            with self.assertRaisesRegex(ValueError, "missing or ambiguous"):
+                ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
+        post.assert_not_called()
 
     def test_missing_csrf_fails_before_network(self):
         first = Response(paging_form(csrf=""))
