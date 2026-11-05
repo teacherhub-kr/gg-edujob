@@ -46,7 +46,9 @@ def test_browser_probe_records_only_the_request_contract():
     assert "search:requestUrl.search" in text
     assert "postData:postData?postData.slice(0,2000):null" in text
     assert "request.headers()" not in text
-    assert "page.context().cookies()" not in text
+    assert "BROWSER_CSRF_LOCATION" in text
+    assert "cookie=>cookie.name" in text
+    assert "cookie=>cookie.value" not in text
 
 
 if __name__ == "__main__":
