@@ -47,3 +47,11 @@ def test_browser_probe_records_only_the_request_contract():
     assert "postData:postData?postData.slice(0,2000):null" in text
     assert "request.headers()" not in text
     assert "page.context().cookies()" not in text
+
+
+if __name__ == "__main__":
+    test_probe_collects_both_results_before_final_gate()
+    test_browser_probe_waits_for_the_page_two_navigation()
+    test_browser_probe_retries_only_bounded_navigation_races()
+    test_browser_probe_records_only_the_request_contract()
+    print("ICE probe regression contracts passed")
