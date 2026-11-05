@@ -229,6 +229,12 @@ def extract_document_csrf(soup: BeautifulSoup) -> str:
             start = max(0, marker.start() - 300)
             end = min(len(content), marker.end() + 500)
             candidates.extend(CSRF_UUID_RE.findall(content[start:end]))
+
+    # ICE currently emits one session CSRF UUID in the raw document without a
+    # CSRFToken label, then client-side code injects that same value into every
+    # form. Accept it only when it is the sole UUID in the entire document.
+    # Multiple UUIDs remain ambiguous and fail closed before any POST.
+    candidates.extend(CSRF_UUID_RE.findall(str(soup)))
     unique = list(dict.fromkeys(candidates))
     return unique[0] if len(unique) == 1 else ""
 
