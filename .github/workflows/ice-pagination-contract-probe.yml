@@ -21,6 +21,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Verify probe regression contracts
+        run: pytest -q tests/test_incheon_pagination_probe_workflow.py
       - name: Install browser-only diagnostic dependencies
         run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
