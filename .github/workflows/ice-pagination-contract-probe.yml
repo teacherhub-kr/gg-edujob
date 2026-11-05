@@ -24,6 +24,8 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt
       - name: Verify production paging-form regression tests
+        env:
+          PYTHONPATH: .
         run: python tests/test_incheon_paging_form.py
       - name: Verify probe regression contracts
         run: python tests/test_incheon_pagination_probe_workflow.py
