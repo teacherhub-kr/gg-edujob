@@ -44,13 +44,20 @@ async function readOfficialIds(page){
    control.click({timeout:20000})
   ]);
   const requestUrl=new URL(request.url());
-  const postData=request.postData();
+  const postParams=new URLSearchParams(request.postData()||'');
+  const fieldNames=[...new Set([...postParams.keys()])].sort();
   console.log('BROWSER_PAGE2_REQUEST',JSON.stringify({
    method:request.method(),
    host:requestUrl.hostname,
    pathname:requestUrl.pathname,
    search:requestUrl.search,
-   postData:postData?postData.slice(0,2000):null
+   form:{
+    fieldNames,
+    currPage:postParams.get('currPage'),
+    bbsId:postParams.get('bbsId'),
+    mi:postParams.get('mi'),
+    csrfTokenPresent:postParams.has('CSRFToken')
+   }
   }));
   const second=await readOfficialIds(page);
   const repeated=first.length===second.length&&first.every((v,i)=>v===second[i]);
