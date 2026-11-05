@@ -19,6 +19,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Install browser-only diagnostic dependencies
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Check actual official goPaging(2) behavior in Chromium
+        run: node scripts/probe_incheon_browser_pagination.cjs
       - name: Probe only official ICE page 2 request variants (read-only)
         env:
           PYTHONPATH: scripts
