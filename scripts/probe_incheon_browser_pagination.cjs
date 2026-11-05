@@ -30,12 +30,11 @@ async function readOfficialIds(page){
   if(first.length<5)throw Error('Official first page not parseable (fail-closed)');
   const control=page.locator('a[onclick="goPaging(2)"]').first();
   if(await control.count()!==1)throw Error('Official goPaging(2) link missing');
-  const [navigation]=await Promise.all([
+  const [request]=await Promise.all([
+   page.waitForRequest(candidate=>candidate.isNavigationRequest()&&candidate.frame()===page.mainFrame(),{timeout:20000}),
    page.waitForNavigation({waitUntil:'domcontentloaded',timeout:20000}),
    control.click({timeout:20000})
   ]);
-  if(!navigation)throw Error('Official page-2 navigation response missing (fail-closed)');
-  const request=navigation.request();
   const requestUrl=new URL(request.url());
   const postData=request.postData();
   console.log('BROWSER_PAGE2_REQUEST',JSON.stringify({
