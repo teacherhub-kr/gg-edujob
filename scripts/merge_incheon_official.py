@@ -659,6 +659,36 @@ def is_transient_all_empty(meta: dict, rows: list) -> bool:
     )
 
 
+def is_transient_repeated_page(meta: dict, rows: list) -> bool:
+    """Return True only for a parsed ICE population whose next page repeated exactly.
+
+    ICE has intermittently returned page 1 again for a valid official pagingForm POST.
+    This is retryable only when rows were parsed, no board reports an access error, and
+    at least one required board stopped on the explicit repeated-page guard. A retry
+    never converts repeated evidence into completeness; it starts a fresh session and
+    the normal traversal guards must independently pass.
+    """
+    if not rows or meta.get("accessError") or not meta.get("paginationRepeated"):
+        return False
+    health = meta.get("boardHealth") or []
+    if len(health) != len(REQUIRED_BOARDS):
+        return False
+    if any(item.get("accessError") for item in health):
+        return False
+    return any(
+        int(item.get("count") or 0) > 0
+        and item.get("stopReason") == "repeated-page"
+        and item.get("paginationRepeated") is True
+        and item.get("coverageComplete") is False
+        for item in health
+    )
+
+
+def is_retryable_transient(meta: dict, rows: list) -> bool:
+    """Recognize only observed ICE transport/session failures that remain fail-closed."""
+    return is_transient_all_empty(meta, rows) or is_transient_repeated_page(meta, rows)
+
+
 def scrape_incheon_with_transient_retry(
     lookback_days: int,
     max_pages: int,
@@ -666,17 +696,17 @@ def scrape_incheon_with_transient_retry(
     transient_retries: int = 2,
     retry_delay_seconds: float = 15.0,
 ):
-    """Retry only the narrow all-empty official-board response; keep every other failure fail-closed.
+    """Retry bounded empty or repeated-page ICE transport failures with a fresh session.
 
     The same bounded contract is used by read-only completeness probes and production collection.
     A retry always starts from a fresh HTTP session so a stale cookie/connection state cannot make
-    every attempt repeat the same empty response. Exhausted retries still return the failed evidence
-    and the caller fails closed.
+    every attempt repeat the same empty response or page-1 replay. Exhausted retries still return
+    the failed evidence and the caller fails closed.
     """
     rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
     retries = max(0, int(transient_retries))
     for attempt in range(retries):
-        if not is_transient_all_empty(meta, rows):
+        if not is_retryable_transient(meta, rows):
             break
         delay = max(0.0, float(retry_delay_seconds)) * (attempt + 1)
         if delay:
