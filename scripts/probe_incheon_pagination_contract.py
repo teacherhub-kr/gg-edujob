@@ -42,6 +42,32 @@ def main():
     if not base_ids:
         raise SystemExit("FAIL: ICE central page 1 has no parseable official IDs")
     print("BASELINE", json.dumps({"rawIds": len(base_ids), "firstTwoIds": sorted(base_ids)[:2]}, ensure_ascii=False), flush=True)
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(first.text, "html.parser")
+    page_controls = []
+    for a in soup.find_all(["a", "button"]):
+        label = a.get_text(" ", strip=True)
+        if label in {"2", "3", "다음", "마지막", "맨마지막"} or "page" in str(a.get("class") or "").lower():
+            page_controls.append({
+                "label": label[:22], "href": str(a.get("href") or "")[:180],
+                "onclick": str(a.get("onclick") or "")[:180],
+                "data": {k:str(v)[:100] for k,v in a.attrs.items() if k.startswith("data-")}
+            })
+    forms = []
+    for form in soup.find_all("form"):
+        fields = [i.get("name") for i in form.find_all(["input","select"]) if i.get("name")]
+        forms.append({"id":form.get("id"),"name":form.get("name"),
+                      "method":form.get("method"),"action":form.get("action"),
+                      "fields":fields[:80]})
+    js_hints = []
+    for js in soup.find_all("script"):
+        content = js.string or js.get_text() or ""
+        for line in content.splitlines():
+            if re.search(r"currPage|pageIndex|fn.*[Pp]age|go.*[Pp]age|move.*[Pp]age|pageNum|pagination", line):
+                js_hints.append(line.strip()[:250])
+    print("PAGE_CONTROLS", json.dumps(page_controls[:26], ensure_ascii=False), flush=True)
+    print("FORM_FIELDS", json.dumps(forms[:15], ensure_ascii=False), flush=True)
+    print("PAGINATION_JS_HINTS", json.dumps(js_hints[:30], ensure_ascii=False), flush=True)
     for parameter in ("currPage", "pageIndex", "pageNo", "currentPage", "page"):
         try:
             response = fetch_with_one_explicit_retry(get_url(parameter, 2))
