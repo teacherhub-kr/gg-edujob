@@ -38,7 +38,7 @@ def test_browser_probe_retries_only_bounded_navigation_races():
     assert "BROWSER_NAVIGATION_RACE_RETRY" in text
 
 
-def test_browser_probe_records_only_the_request_contract():
+def test_browser_probe_redacts_request_secrets():
     text = BROWSER_PROBE.read_text(encoding="utf-8")
 
     assert "page.waitForRequest(candidate=>candidate.isNavigationRequest()" in text
@@ -47,8 +47,14 @@ def test_browser_probe_records_only_the_request_contract():
     assert "method:request.method()" in text
     assert "pathname:requestUrl.pathname" in text
     assert "search:requestUrl.search" in text
-    assert "postData:postData?postData.slice(0,2000):null" in text
+    assert "fieldNames" in text
+    assert "currPage:postParams.get('currPage')" in text
+    assert "bbsId:postParams.get('bbsId')" in text
+    assert "mi:postParams.get('mi')" in text
+    assert "csrfTokenPresent:postParams.has('CSRFToken')" in text
+    assert "postData:" not in text
     assert "request.headers()" not in text
+    assert "postParams.get('CSRFToken')" not in text
     assert "BROWSER_CSRF_LOCATION" in text
     assert "cookie=>cookie.name" in text
     assert "cookie=>cookie.value" not in text
@@ -58,5 +64,5 @@ if __name__ == "__main__":
     test_probe_collects_both_results_before_final_gate()
     test_browser_probe_waits_for_the_page_two_navigation()
     test_browser_probe_retries_only_bounded_navigation_races()
-    test_browser_probe_records_only_the_request_contract()
+    test_browser_probe_redacts_request_secrets()
     print("ICE probe regression contracts passed")
