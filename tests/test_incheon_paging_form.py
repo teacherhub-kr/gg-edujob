@@ -82,6 +82,35 @@ class IncheonPagingFormTests(unittest.TestCase):
         fields = dict(post.call_args.kwargs["data"])
         self.assertEqual(fields["CSRFToken"], token)
 
+    def test_unique_unlabelled_document_uuid_is_bound_to_paging_form(self):
+        token = "123e4567-e89b-12d3-a456-426614174000"
+        first = Response(
+            paging_form(csrf="").replace(
+                "</body>", f"<script>window.__runtime = '{token}'</script></body>"
+            )
+        )
+        second = Response("<html>page two</html>")
+
+        with patch.object(ice.SESSION, "post", return_value=second) as post:
+            ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
+
+        fields = dict(post.call_args.kwargs["data"])
+        self.assertEqual(fields["CSRFToken"], token)
+
+    def test_ambiguous_unlabelled_document_uuids_fail_before_network(self):
+        first_token = "123e4567-e89b-12d3-a456-426614174000"
+        second_token = "123e4567-e89b-12d3-a456-426614174001"
+        html = paging_form(csrf="").replace(
+            "</body>",
+            f"<script>window.__a = '{first_token}'; window.__b = '{second_token}'</script></body>",
+        )
+        first = Response(html)
+
+        with patch.object(ice.SESSION, "post") as post:
+            with self.assertRaisesRegex(ValueError, "missing or ambiguous"):
+                ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
+        post.assert_not_called()
+
     def test_ambiguous_injector_tokens_fail_before_network(self):
         first_token = "123e4567-e89b-12d3-a456-426614174000"
         second_token = "123e4567-e89b-12d3-a456-426614174001"
