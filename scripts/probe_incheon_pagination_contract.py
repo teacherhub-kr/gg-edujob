@@ -68,6 +68,30 @@ def main():
     print("PAGE_CONTROLS", json.dumps(page_controls[:26], ensure_ascii=False), flush=True)
     print("FORM_FIELDS", json.dumps(forms[:15], ensure_ascii=False), flush=True)
     print("PAGINATION_JS_HINTS", json.dumps(js_hints[:30], ensure_ascii=False), flush=True)
+    # Reproduce the actual first-party goPaging(2) JavaScript form submission.
+    from urllib.parse import urljoin
+    paging = soup.find("form", attrs={"name": "pagingForm"})
+    if paging is not None:
+        fields = []
+        for element in paging.find_all("input"):
+            name = element.get("name")
+            if not name or str(element.get("type") or "").lower() in {"submit", "button", "image"}:
+                continue
+            fields.append((name, "2" if name == "currPage" else str(element.get("value") or "")))
+        target = urljoin(first.url, str(paging.get("action") or ""))
+        if urlparse(target).hostname != "www.ice.go.kr":
+            raise SystemExit("FAIL: unexpected ICE pagination form host")
+        try:
+            response = SESSION.post(
+                target, data=fields, headers={"Referer": first.url},
+                timeout=(8, 25), allow_redirects=True,
+            )
+            response.raise_for_status()
+            report = classify("POST official-pagingForm", response, base_ids)
+        except Exception as exc:
+            report = {"candidate": "POST official-pagingForm", "errorType": type(exc).__name__}
+        results.append(report)
+        print("PROBE", json.dumps(report, ensure_ascii=False), flush=True)
     for parameter in ("currPage", "pageIndex", "pageNo", "currentPage", "page"):
         try:
             response = fetch_with_one_explicit_retry(get_url(parameter, 2))
