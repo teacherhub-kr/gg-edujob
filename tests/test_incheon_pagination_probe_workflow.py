@@ -33,3 +33,15 @@ def test_browser_probe_retries_only_bounded_navigation_races():
     assert "execution context was destroyed|navigation" in text
     assert "if(!navigationRace||attempt===3)throw error" in text
     assert "BROWSER_NAVIGATION_RACE_RETRY" in text
+
+
+def test_browser_probe_records_only_the_request_contract():
+    text = BROWSER_PROBE.read_text(encoding="utf-8")
+
+    assert "BROWSER_PAGE2_REQUEST" in text
+    assert "method:request.method()" in text
+    assert "pathname:requestUrl.pathname" in text
+    assert "search:requestUrl.search" in text
+    assert "postData:postData?postData.slice(0,2000):null" in text
+    assert "request.headers()" not in text
+    assert "page.context().cookies()" not in text
