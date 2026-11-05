@@ -53,6 +53,16 @@ def main():
     print("BASELINE", json.dumps({"rawIds": len(base_ids), "firstTwoIds": sorted(base_ids)[:2]}, ensure_ascii=False), flush=True)
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(first.text, "html.parser")
+    uuid_pattern = re.compile(
+        r"(?<![0-9a-f])([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})(?![0-9a-f])",
+        re.IGNORECASE,
+    )
+    raw_uuids = set(uuid_pattern.findall(first.text))
+    print("CSRF_RAW_SHAPE", json.dumps({
+        "csrfMentions": len(re.findall(r"CSRFToken", first.text, re.IGNORECASE)),
+        "uniqueUuidCount": len(raw_uuids),
+        "namedInputCount": len(soup.find_all("input", attrs={"name": "CSRFToken"})),
+    }, ensure_ascii=False), flush=True)
     page_controls = []
     for a in soup.find_all(["a", "button"]):
         label = a.get_text(" ", strip=True)
