@@ -3,8 +3,10 @@ name: ICE official central page contract probe
 on:
   pull_request:
     paths:
+      - 'scripts/merge_incheon_official.py'
       - 'scripts/probe_incheon_pagination_contract.py'
       - 'scripts/probe_incheon_browser_pagination.cjs'
+      - 'tests/test_incheon_paging_form.py'
       - 'tests/test_incheon_pagination_probe_workflow.py'
       - '.github/workflows/ice-pagination-contract-probe.yml'
 
@@ -21,6 +23,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Verify production paging-form regression tests
+        run: python tests/test_incheon_paging_form.py
       - name: Verify probe regression contracts
         run: python tests/test_incheon_pagination_probe_workflow.py
       - name: Install browser-only diagnostic dependencies
