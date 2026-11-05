@@ -52,6 +52,19 @@ class IncheonPagingFormTests(unittest.TestCase):
         self.assertEqual(kwargs["headers"]["Origin"], "https://www.ice.go.kr")
         self.assertEqual(kwargs["headers"]["Referer"], ice.LIST_URL)
 
+    def test_unique_document_csrf_is_bound_to_paging_form(self):
+        html = paging_form(csrf="").replace(
+            "</body>", '<input type="hidden" name="CSRFToken" value="document-token"></body>'
+        )
+        first = Response(html)
+        second = Response("<html>page two</html>")
+
+        with patch.object(ice.SESSION, "post", return_value=second) as post:
+            ice.fetch_paging_form(first, 2, ice.REQUIRED_BOARDS[0])
+
+        fields = dict(post.call_args.kwargs["data"])
+        self.assertEqual(fields["CSRFToken"], "document-token")
+
     def test_missing_csrf_fails_before_network(self):
         first = Response(paging_form(csrf=""))
         with patch.object(ice.SESSION, "post") as post:
