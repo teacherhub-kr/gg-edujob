@@ -24,3 +24,12 @@ def test_browser_probe_waits_for_the_page_two_navigation():
 
     assert "page.waitForNavigation({waitUntil:'domcontentloaded',timeout:20000})" in text
     assert "page.waitForLoadState('domcontentloaded').catch(()=>{})" not in text
+
+
+def test_browser_probe_retries_only_bounded_navigation_races():
+    text = BROWSER_PROBE.read_text(encoding="utf-8")
+
+    assert "attempt<=3" in text
+    assert "execution context was destroyed|navigation" in text
+    assert "if(!navigationRace||attempt===3)throw error" in text
+    assert "BROWSER_NAVIGATION_RACE_RETRY" in text
