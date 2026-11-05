@@ -101,6 +101,34 @@ def main():
             report = {"candidate": "POST official-pagingForm", "errorType": type(exc).__name__}
         results.append(report)
         print("PROBE", json.dumps(report, ensure_ascii=False), flush=True)
+    # The first-party host aliases are already documented by the production
+    # collector. Check whether their live CMS honors its own posted pagingForm.
+    from merge_incheon_official import OFFICIAL_FETCH_ALIASES, with_host
+    for alias in OFFICIAL_FETCH_ALIASES:
+        try:
+            alias_url = with_host(BOARD["url"], alias)
+            response_one = SESSION.get(alias_url, timeout=(8, 25), allow_redirects=True)
+            response_one.raise_for_status()
+            alias_base = set(parse_table_rows(response_one.text, response_one.url, 90, BOARD)[1]["pageIds"])
+            alias_soup = BeautifulSoup(response_one.text, "html.parser")
+            paging_form = alias_soup.find("form", attrs={"name": "pagingForm"})
+            if not alias_base or paging_form is None:
+                print("ALIAS", json.dumps({"host":alias,"pageOneIds":len(alias_base),
+                      "hasPagingForm":paging_form is not None}), flush=True)
+                continue
+            fields = [(item.get("name"), "2" if item.get("name") == "currPage" else str(item.get("value") or ""))
+                      for item in paging_form.find_all("input") if item.get("name")]
+            target = urljoin(response_one.url, str(paging_form.get("action") or ""))
+            if urlparse(target).hostname != alias:
+                raise ValueError("unexpected alias pagingForm target")
+            response_two = SESSION.post(target, data=fields, headers={"Referer": response_one.url},
+                                        timeout=(8, 25), allow_redirects=True)
+            response_two.raise_for_status()
+            report = classify("POST official-pagingForm alias "+alias, response_two, alias_base)
+            results.append(report)
+            print("ALIAS", json.dumps(report, ensure_ascii=False), flush=True)
+        except Exception as exc:
+            print("ALIAS", json.dumps({"host":alias,"errorType":type(exc).__name__}),flush=True)
     for parameter in ("currPage", "pageIndex", "pageNo", "currentPage", "page"):
         try:
             response = fetch_with_one_explicit_retry(get_url(parameter, 2))
