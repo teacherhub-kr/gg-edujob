@@ -700,8 +700,14 @@ def is_transient_repeated_page(meta: dict, rows: list) -> bool:
 
 
 def is_retryable_transient(meta: dict, rows: list) -> bool:
-    """Recognize only observed ICE transport/session failures that remain fail-closed."""
-    return is_transient_all_empty(meta, rows) or is_transient_repeated_page(meta, rows)
+    """Retry only bounded ICE transport/session failures; never declare them complete."""
+    health = meta.get("boardHealth") or []
+    tiny_placeholder = (
+        len(health) == len(REQUIRED_BOARDS)
+        and not meta.get("accessError")
+        and any(item.get("stopReason") == "tiny-empty-response" for item in health)
+    )
+    return tiny_placeholder or is_transient_all_empty(meta, rows) or is_transient_repeated_page(meta, rows)
 
 
 def scrape_incheon_with_transient_retry(
