@@ -593,13 +593,13 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         stop_reason = "emergency-page-ceiling"
 
     all_rows.sort(key=lambda job: (job.get("registered", ""), job.get("applyEnd", "")), reverse=True)
+    # A check-only page cap proves only the sampled prefix, never full coverage.
+    # Preserve the same fail-closed meaning for both diagnostic and publish runs.
     coverage_complete = bool(
         not access_error
-        and stop_reason in {"empty-page", "lookback-exhausted", "check-page-limit"}
+        and stop_reason in {"empty-page", "lookback-exhausted"}
         and all_rows
     )
-    if not check_only and stop_reason == "check-page-limit":
-        coverage_complete = False
 
     return all_rows, {
         "key": board["key"],
