@@ -56,6 +56,9 @@ def test_browser_probe_retries_only_bounded_navigation_races():
     assert "execution context was destroyed|navigation" in text
     assert "if(!navigationRace||attempt===3)throw error" in text
     assert "BROWSER_NAVIGATION_RACE_RETRY" in text
+    assert "async function readServerPageState(page)" in text
+    assert "BROWSER_SERVER_STATE_RACE_RETRY" in text
+    assert "const serverPageState=await readServerPageState(page)" in text
 
 
 def test_browser_probe_redacts_request_secrets():
