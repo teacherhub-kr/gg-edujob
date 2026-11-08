@@ -59,6 +59,13 @@ async function readOfficialIds(page){
     csrfTokenPresent:postParams.has('CSRFToken')
    }
   }));
+  const serverPageState=await page.evaluate(()=>{
+   const form=document.querySelector('form[name="pagingForm"]');
+   const current=form?.querySelector('[name="currPage"]')?.value||'';
+   const active=[...document.querySelectorAll('[aria-current="page"],.pagination .active,.paging .on')].map(el=>(el.textContent||'').trim()).filter(Boolean).slice(0,5);
+   return {formCurrPage:current,activePageLabels:active};
+  });
+  console.log('BROWSER_PAGE2_SERVER_STATE',JSON.stringify(serverPageState));
   const second=await readOfficialIds(page);
   const repeated=first.length===second.length&&first.every((v,i)=>v===second[i]);
   console.log('BROWSER_PAGE2',JSON.stringify({count:second.length,firstTwoIds:second.slice(0,2),
