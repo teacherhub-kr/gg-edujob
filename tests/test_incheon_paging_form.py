@@ -144,7 +144,7 @@ class IncheonPagingFormTests(unittest.TestCase):
         self, get_first, post_page, parse_rows, sleep
     ):
         first = Response(paging_form())
-        second = Response("<html>natural end</html>")
+        second = Response("<html><body>" + "normal board navigation " * 20 + "</body></html>")
         get_first.return_value = first
         post_page.return_value = second
         parse_rows.side_effect = [
