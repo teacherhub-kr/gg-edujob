@@ -502,6 +502,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     alias_fallback_evidence = {}
 
     previous_response = None
+    page_response_evidence = []
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
         try:
@@ -515,6 +516,17 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
 
         pages_scanned += 1
         rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
+        # Redacted diagnostics: never log cookies, tokens, request bodies, or headers.
+        page_response_evidence.append({
+            "requestedPage": page,
+            "httpStatus": int(response.status_code),
+            "responseBytes": len(response.content or b""),
+            "finalHost": urlparse(str(response.url or "")).hostname or "",
+            "rawRows": int(meta.get("rawRows") or 0),
+            "pageIdDigest": hashlib.sha256(
+                "|".join(meta.get("pageIds") or []).encode("utf-8")
+            ).hexdigest()[:16],
+        })
 
         # ICE intermittently returns a tiny HTTP-200 body (~77 bytes) on the
         # first list page. Only for that narrow signature, reset the session,
@@ -600,6 +612,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "coverageComplete": coverage_complete,
         "accessError": access_error,
         "paginationRepeated": stop_reason == "repeated-page",
+        "pageResponseEvidence": page_response_evidence[:20],
         "stopReason": stop_reason,
         "emptyPageEvidence": empty_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
