@@ -575,7 +575,9 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "bootstrap": bootstrap_evidence,
                 "aliasFallback": alias_fallback_evidence,
             }
-            stop_reason = "empty-page"
+            # A tiny HTTP-200 placeholder is an access failure, not proof that
+            # pagination reached the natural end of the official board.
+            stop_reason = "tiny-empty-response" if len(response.content or b"") <= 256 else "empty-page"
             break
 
         parsed_dates = [as_date(value) for value in meta["pageDates"] if as_date(value) is not None]
