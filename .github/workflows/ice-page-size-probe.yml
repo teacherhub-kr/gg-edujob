@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/ice-page-size-probe.yml'
       - 'scripts/probe_ice_page_size.py'
+      - 'tests/test_probe_ice_page_size.py'
 permissions:
   contents: read
 jobs:
@@ -17,5 +18,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests beautifulsoup4
+      - name: Verify source-native ID extraction
+        run: python -m unittest tests.test_probe_ice_page_size
       - name: Read-only ICE central pageUnit diagnostic
         run: python scripts/probe_ice_page_size.py --sizes 10,30,50,100
