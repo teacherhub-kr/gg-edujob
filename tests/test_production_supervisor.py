@@ -205,6 +205,36 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertNotIn("fast", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertNotIn("unified", PRIVATE_REFRESH_IDLE_ACTIONS)
 
+    def test_blocked_official_fast_does_not_starve_private_sources(self):
+        from scripts.production_supervisor import private_action_for_official_block
+
+        dispatch = lambda: ("private-lessoninfo", "overdue")
+        backoff = lambda: ("skip-private-backoff", "lessoninfo:backoff:1")
+        for blocked in ("skip-fast-circuit-open", "skip-fast-backoff"):
+            self.assertEqual(
+                private_action_for_official_block(blocked, dispatch),
+                ("private-lessoninfo", "overdue"),
+            )
+            self.assertEqual(
+                private_action_for_official_block(blocked, backoff),
+                (None, "lessoninfo:backoff:1"),
+            )
+        for runnable in ("fast", "recovery", "unified", "skip-active-run"):
+            self.assertEqual(private_action_for_official_block(runnable, dispatch), (None, None))
+
+    def test_private_refresh_reaches_unified_while_official_is_stale(self):
+        from pathlib import Path
+
+        source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
+        self.assertIn(
+            "if unified_publication_stale(latest_publication_input, unified_time) and not fast_status_running:",
+            source,
+        )
+        self.assertNotIn("unified_publication_stale(jobs_time, unified_time)", source)
+        self.assertIn("publication_input_times = [jobs_time, *private_refresh_times.values()]", source)
+        block = source.split("def latest_verified_production_success", 1)[1].split("def watchdog_schedule_lag", 1)[0]
+        self.assertIn('for key in ("fast", "recovery"):', block)
+
     def test_github_run_history_queries_fail_closed(self):
         from pathlib import Path
 
@@ -247,12 +277,12 @@ class ProductionSupervisorTests(unittest.TestCase):
 
         source = Path("scripts/production_supervisor.py").read_text(encoding="utf-8")
         unified_guard = source.index(
-            "if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:"
+            "if unified_publication_stale(latest_publication_input, unified_time) and not fast_status_running:"
         )
         fast_guard = source.index("elif fast_needed and not fast_status_running:")
         self.assertLess(unified_guard, fast_guard)
         self.assertIn(
-            "publish verified official jobs backlog before another Fast refresh",
+            "publish verified publication backlog before another Fast refresh",
             source,
         )
 
