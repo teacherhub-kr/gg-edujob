@@ -541,6 +541,32 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             if alias_response is not None and alias_meta.get("rawRows"):
                 response, rows, meta = alias_response, alias_rows, alias_meta
 
+        # ICE currently has two first-party paging contracts in the wild. Prefer
+        # the official pagingForm POST, but if it replays the entire preceding
+        # page, make one bounded GET using the same official currPage URL. Accept
+        # that fallback only when it contains parseable, non-replayed IDs.
+        get_fallback_evidence = {}
+        candidate_signature = tuple(meta.get("pageIds") or [])
+        if page > 1 and previous_signature and candidate_signature == previous_signature:
+            get_fallback_evidence = {"attempted": True, "success": False}
+            try:
+                get_response = fetch_with_one_explicit_retry(page_url)
+                get_rows, get_meta = parse_table_rows(
+                    get_response.text, get_response.url, lookback_days, board
+                )
+                get_signature = tuple(get_meta.get("pageIds") or [])
+                get_fallback_evidence.update({
+                    "httpStatus": int(get_response.status_code),
+                    "responseBytes": len(get_response.content or b""),
+                    "rawRows": int(get_meta.get("rawRows") or 0),
+                    "distinct": bool(get_signature and get_signature != previous_signature),
+                })
+                if get_signature and get_signature != previous_signature:
+                    response, rows, meta = get_response, get_rows, get_meta
+                    get_fallback_evidence["success"] = True
+            except Exception as exc:
+                get_fallback_evidence["errorType"] = type(exc).__name__
+
         # Redacted diagnostics: never log cookies, tokens, request bodies, or headers.
         page_response_evidence.append({
             "requestedPage": page,
@@ -551,6 +577,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             "pageIdDigest": hashlib.sha256(
                 "|".join(meta.get("pageIds") or []).encode("utf-8")
             ).hexdigest()[:16],
+            "getFallback": get_fallback_evidence,
         })
 
         previous_response = response
