@@ -19,6 +19,28 @@ async function readOfficialIds(page){
  throw Error('Official IDs unavailable after bounded navigation retries');
 }
 
+
+async function readServerPageState(page){
+ for(let attempt=1;attempt<=3;attempt+=1){
+  try{
+   await page.waitForLoadState('domcontentloaded',{timeout:10000});
+   await page.locator('form[name="pagingForm"]').waitFor({state:'attached',timeout:10000});
+   return await page.evaluate(()=>{
+    const form=document.querySelector('form[name="pagingForm"]');
+    const current=form?.querySelector('[name="currPage"]')?.value||'';
+    const active=[...document.querySelectorAll('[aria-current="page"],.pagination .active,.paging .on')].map(el=>(el.textContent||'').trim()).filter(Boolean).slice(0,5);
+    return {formCurrPage:current,activePageLabels:active};
+   });
+  }catch(error){
+   const navigationRace=/execution context was destroyed|navigation/i.test(error.message);
+   if(!navigationRace||attempt===3)throw error;
+   console.warn('BROWSER_SERVER_STATE_RACE_RETRY',JSON.stringify({attempt}));
+   await page.waitForTimeout(500);
+  }
+ }
+ throw Error('Official server page state unavailable after bounded navigation retries');
+}
+
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -59,12 +81,7 @@ async function readOfficialIds(page){
     csrfTokenPresent:postParams.has('CSRFToken')
    }
   }));
-  const serverPageState=await page.evaluate(()=>{
-   const form=document.querySelector('form[name="pagingForm"]');
-   const current=form?.querySelector('[name="currPage"]')?.value||'';
-   const active=[...document.querySelectorAll('[aria-current="page"],.pagination .active,.paging .on')].map(el=>(el.textContent||'').trim()).filter(Boolean).slice(0,5);
-   return {formCurrPage:current,activePageLabels:active};
-  });
+  const serverPageState=await readServerPageState(page);
   console.log('BROWSER_PAGE2_SERVER_STATE',JSON.stringify(serverPageState));
   const second=await readOfficialIds(page);
   const repeated=first.length===second.length&&first.every((v,i)=>v===second[i]);
