@@ -174,6 +174,48 @@ class IncheonPagingFormTests(unittest.TestCase):
         post_page.assert_called_once_with(first, 2, ice.REQUIRED_BOARDS[0])
 
     @patch.object(ice.time, "sleep")
+    @patch.object(ice, "reset_session")
+    @patch.object(ice, "parse_table_rows")
+    @patch.object(ice, "fetch_paging_form")
+    @patch.object(ice, "fetch_with_one_explicit_retry")
+    def test_nonadjacent_replay_uses_fresh_get_and_requires_globally_distinct_ids(
+        self, get_page, post_page, parse_rows, reset_session, sleep
+    ):
+        first = Response(paging_form())
+        second = Response(paging_form())
+        replay_first = Response(paging_form())
+        distinct_third = Response("<html>distinct page three</html>", url=ice.with_page(ice.LIST_URL, 3))
+        get_page.side_effect = [first, distinct_third]
+        post_page.side_effect = [second, replay_first]
+        parse_rows.side_effect = [
+            ([{"id": "ice-central-1", "registered": "2026/11/08", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/11/08"],
+              "pageIds": ["1"], "pageText": ""}),
+            ([{"id": "ice-central-2", "registered": "2026/11/07", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/11/07"],
+              "pageIds": ["2"], "pageText": ""}),
+            ([{"id": "ice-central-1", "registered": "2026/11/08", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/11/08"],
+              "pageIds": ["1"], "pageText": ""}),
+            ([{"id": "ice-central-3", "registered": "2026/01/01", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/01/01"],
+              "pageIds": ["3"], "pageText": ""}),
+        ]
+
+        rows, meta = ice.scrape_board(
+            ice.REQUIRED_BOARDS[0], lookback_days=90, max_pages=4, check_only=False
+        )
+
+        self.assertEqual([row["id"] for row in rows], [
+            "ice-central-1", "ice-central-2", "ice-central-3"
+        ])
+        self.assertTrue(meta["coverageComplete"])
+        self.assertEqual(meta["stopReason"], "lookback-exhausted")
+        reset_session.assert_called_once_with()
+        self.assertTrue(meta["pageResponseEvidence"][2]["getFallback"]["success"])
+        self.assertEqual(post_page.call_count, 2)
+
+    @patch.object(ice.time, "sleep")
     @patch.object(ice, "parse_table_rows")
     @patch.object(ice, "fetch_paging_form")
     @patch.object(ice, "fetch_with_one_explicit_retry")
