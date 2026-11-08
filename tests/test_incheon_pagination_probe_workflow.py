@@ -3,6 +3,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/ice-pagination-contract-probe.yml"
 BROWSER_PROBE = ROOT / "scripts/probe_incheon_browser_pagination.cjs"
+MANDATORY_GATE = ROOT / ".github/workflows/p0-incheon-regression.yml"
 
 
 def test_probe_collects_both_results_before_final_gate():
@@ -30,6 +31,15 @@ def test_production_probe_has_bounded_but_nontrivial_coverage():
     assert match, "production probe must specify a page cap for 14-day lookback"
     assert int(match.group(1)) >= 60, "three-page probes cannot prove 14-day coverage"
     assert "timeout-minutes: 25" in text
+
+
+def test_mandatory_p0_gate_does_not_truncate_14_day_crawl():
+    text = MANDATORY_GATE.read_text(encoding="utf-8")
+    import re
+    match = re.search(r"merge_incheon_official\.py --check-only --lookback-days 14 --max-pages (\d+)", text)
+    assert match, "mandatory P0 gate must specify bounded 14-day traversal"
+    assert int(match.group(1)) >= 60, "mandatory gate cannot claim full coverage after 3 pages"
+    assert "timeout-minutes: 35" in text
 
 
 def test_browser_probe_waits_for_the_page_two_navigation():
@@ -73,6 +83,7 @@ def test_browser_probe_redacts_request_secrets():
 if __name__ == "__main__":
     test_probe_collects_both_results_before_final_gate()
     test_production_probe_has_bounded_but_nontrivial_coverage()
+    test_mandatory_p0_gate_does_not_truncate_14_day_crawl()
     test_browser_probe_waits_for_the_page_two_navigation()
     test_browser_probe_retries_only_bounded_navigation_races()
     test_browser_probe_redacts_request_secrets()
