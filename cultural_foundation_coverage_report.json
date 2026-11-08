@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-12T18:18:25+09:00",
+  "generatedAt": "2026-11-08T18:14:28+09:00",
   "policy": "official-primary+multi-sensor-gap-detection-v3",
-  "healthy": false,
+  "healthy": true,
   "registryInstitutions": 55,
   "officialBoardsConfigured": 21,
   "officialCoverageComplete": false,
@@ -21,26 +21,14 @@
   },
   "failedAvailableComponents": [],
   "currentMappedBySource": {
-    "official": 4,
-    "cleaneye": 13,
-    "artmore": 5,
-    "ancf": 1,
-    "lessoninfo-discovery": 13
+    "official": 1,
+    "cleaneye": 0,
+    "artmore": 1,
+    "ancf": 0,
+    "lessoninfo-discovery": 17
   },
-  "coverageGapCount": 1,
-  "coverageGaps": [
-    {
-      "foundationRegistryId": "seoul:mapo",
-      "foundationName": "마포문화재단",
-      "source": "artmore",
-      "strength": "strong-cross-check",
-      "sourceIdentity": "artmore:95181",
-      "title": "진행중 마포아트센터 공연장 안내원 모집(2026년 3차)",
-      "registered": "2026-10-01",
-      "applyEnd": "2026-10-12",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95181"
-    }
-  ],
+  "coverageGapCount": 0,
+  "coverageGaps": [],
   "discoveryOnlyGapCount": 0,
   "discoveryOnlyGaps": [],
   "unmappedStrongSourceRows": {},
@@ -56,7 +44,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 3
+        "lessoninfo-discovery": 5
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": true,
@@ -104,7 +92,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 0
+        "lessoninfo-discovery": 1
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": false,
@@ -133,14 +121,14 @@
       "municipality": "광진구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:guro",
@@ -148,15 +136,15 @@
       "region": "서울",
       "municipality": "구로구",
       "sourceCounts": {
-        "official": 1,
-        "cleaneye": 1,
+        "official": 0,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:geumcheon",
@@ -165,14 +153,14 @@
       "municipality": "금천구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 2,
-        "artmore": 1,
+        "cleaneye": 0,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:nowon",
@@ -181,14 +169,14 @@
       "municipality": "노원구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 3,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:dobong",
@@ -246,13 +234,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:seongdong",
@@ -261,14 +249,14 @@
       "municipality": "성동구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 1
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "seoul:seocho",
@@ -328,7 +316,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 0
+        "lessoninfo-discovery": 1
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": true,
@@ -424,7 +412,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 0
+        "lessoninfo-discovery": 1
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": false,
@@ -468,15 +456,15 @@
       "region": "경기",
       "municipality": "과천시",
       "sourceCounts": {
-        "official": 1,
+        "official": 0,
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:gwangmyeong",
@@ -584,7 +572,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 0
+        "lessoninfo-discovery": 1
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": false,
@@ -597,14 +585,14 @@
       "municipality": "성남시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
-        "artmore": 1,
+        "cleaneye": 0,
+        "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:suwon",
@@ -664,7 +652,7 @@
         "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 1
+        "lessoninfo-discovery": 0
       },
       "currentStrongSignals": 0,
       "officialBoardConfigured": true,
@@ -725,14 +713,14 @@
       "municipality": "의정부시",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 2,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 2,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "gyeonggi:icheon",
@@ -822,13 +810,13 @@
       "sourceCounts": {
         "official": 0,
         "cleaneye": 0,
-        "artmore": 1,
+        "artmore": 0,
         "ancf": 0,
-        "lessoninfo-discovery": 3
+        "lessoninfo-discovery": 2
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": false,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "incheon:metropolitan",
@@ -885,14 +873,14 @@
       "municipality": "연수구",
       "sourceCounts": {
         "official": 0,
-        "cleaneye": 1,
+        "cleaneye": 0,
         "artmore": 0,
         "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 1,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "incheon:bupyeong",
@@ -900,15 +888,15 @@
       "region": "인천",
       "municipality": "부평구",
       "sourceCounts": {
-        "official": 1,
-        "cleaneye": 1,
+        "official": 0,
+        "cleaneye": 0,
         "artmore": 0,
-        "ancf": 1,
+        "ancf": 0,
         "lessoninfo-discovery": 0
       },
-      "currentStrongSignals": 3,
+      "currentStrongSignals": 0,
       "officialBoardConfigured": true,
-      "coverageOutcome": "current-seen"
+      "coverageOutcome": "no-current-crosscheck-signal"
     },
     {
       "foundationRegistryId": "incheon:namdong",
