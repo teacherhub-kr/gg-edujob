@@ -31,7 +31,24 @@ WATCHDOG_WORKFLOW = "fast-refresh-watchdog.yml"
 REQUIRED_REGISTRY_MINIMUMS = {"gyeonggi": 26, "seoul": 12, "incheon": 1}
 INCHEON_REQUIRED_BOARD_IDS = {"1981", "1534"}
 
-CORE_TARGETS = {
+CORE_# Isolated private collectors may use otherwise idle blocked-Fast slots.
+OFFICIAL_BLOCKED_PRIVATE_ACTIONS = {
+    "skip-fast-circuit-open",
+    "skip-fast-backoff",
+}
+
+
+def private_action_for_official_block(action, choose):
+    """Only dispatch private refreshes when official Fast is blocked."""
+    if action not in OFFICIAL_BLOCKED_PRIVATE_ACTIONS:
+        return None, None
+    private_action, private_reason = choose()
+    if private_action and str(private_action).startswith("private-"):
+        return private_action, private_reason
+    return None, private_reason
+
+
+TARGETS = {
     "fast": "update-jobs.yml",
     "recovery": "recover-missing-jobs.yml",
     "completeness": "official-completeness-audit.yml",
@@ -794,7 +811,7 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         # If verified official jobs have already advanced beyond the user-facing
         # unified dataset, drain that publication backlog before starting another
         # potentially long Fast refresh. Unified publication remains fail-closed.
-        if unified_publication_stale(jobs_time, unified_time) and not fast_status_running:
+        if unified_publication_stale(latest_publication_input, unified_time) and not fast_status_running:
             blocked, failures, _ = circuit_blocked(
                 "unified",
                 unified_runs,
@@ -818,8 +835,9 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
             else:
                 action = "unified"
                 reason = (
-                    "publish verified official jobs backlog before another Fast refresh: "
-                    f"jobs={jobs_time}, unified={unified_time}"
+                    "publish verified publication backlog before another Fast refresh: "
+                    f"latestInput={latest_publication_input}, jobs={jobs_time}, "
+                    f"unified={unified_time}"
                 )
 
             # A blocked Unified publication must not starve official collection.
@@ -1074,6 +1092,25 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
                 if private_action:
                     action = private_action
                     reason = private_reason or reason
+
+    private_action, private_reason = private_action_for_official_block(
+        action,
+        lambda: choose_private_refresh_action(
+            now=now,
+            all_runs=all_runs,
+            private_refresh_times=private_refresh_times,
+            private_freshness=private_freshness,
+            active_private=active_private,
+        ),
+    )
+    if private_action:
+        reason = (
+            f"official Fast blocked ({action}); using idle slot for isolated private refresh. "
+            + str(private_reason or "")
+        )
+        action = private_action
+    elif private_reason:
+        reason += "; " + private_reason
 
     if action == "fast" and watchdog_lag:
         reason += (
