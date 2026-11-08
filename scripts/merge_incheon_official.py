@@ -495,6 +495,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     all_rows = []
     seen_ids = set()
     previous_signature = None
+    seen_page_signatures = set()
     pages_scanned = 0
     stop_reason = ""
     access_error = ""
@@ -547,7 +548,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         # that fallback only when it contains parseable, non-replayed IDs.
         get_fallback_evidence = {}
         candidate_signature = tuple(meta.get("pageIds") or [])
-        if page > 1 and previous_signature and candidate_signature == previous_signature:
+        if page > 1 and candidate_signature and candidate_signature in seen_page_signatures:
             get_fallback_evidence = {"attempted": True, "success": False}
             try:
                 # A replaying POST can leave ICE session state pinned to page 1.
@@ -563,9 +564,9 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                     "httpStatus": int(get_response.status_code),
                     "responseBytes": len(get_response.content or b""),
                     "rawRows": int(get_meta.get("rawRows") or 0),
-                    "distinct": bool(get_signature and get_signature != previous_signature),
+                    "distinct": bool(get_signature and get_signature not in seen_page_signatures),
                 })
-                if get_signature and get_signature != previous_signature:
+                if get_signature and get_signature not in seen_page_signatures:
                     response, rows, meta = get_response, get_rows, get_meta
                     get_fallback_evidence["success"] = True
             except Exception as exc:
@@ -586,7 +587,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
 
         previous_response = response
         signature = tuple(meta.get("pageIds") or [])
-        if signature and signature == previous_signature:
+        if signature and signature in seen_page_signatures:
             # Diagnose the page-2 replay without recording session cookies,
             # CSRF tokens, form values, or raw request bodies.
             try:
@@ -610,6 +611,8 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 pass
             stop_reason = "repeated-page"
             break
+        if signature:
+            seen_page_signatures.add(signature)
         previous_signature = signature or previous_signature
 
         for row in rows:
