@@ -556,6 +556,27 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         previous_response = response
         signature = tuple(meta.get("pageIds") or [])
         if signature and signature == previous_signature:
+            # Diagnose the page-2 replay without recording session cookies,
+            # CSRF tokens, form values, or raw request bodies.
+            try:
+                form = BeautifulSoup(previous_response.text, "html.parser").find(
+                    "form", attrs={"name": "pagingForm"}
+                )
+                page_response_evidence[-1]["replayDiagnosis"] = {
+                    "requestedPage": page,
+                    "responseFinalPath": urlparse(str(response.url or "")).path,
+                    "formPresent": form is not None,
+                    "formMethod": clean(form.get("method") if form else "").upper(),
+                    "formActionPath": urlparse(
+                        urljoin(str(response.url or board["url"]), str(form.get("action") or ""))
+                    ).path if form else "",
+                    "formFieldNames": sorted({
+                        clean(item.get("name")) for item in form.find_all(["input", "select", "textarea"])
+                        if clean(item.get("name")) and clean(item.get("name")) != "CSRFToken"
+                    }) if form else [],
+                }
+            except Exception:
+                pass
             stop_reason = "repeated-page"
             break
         previous_signature = signature or previous_signature
