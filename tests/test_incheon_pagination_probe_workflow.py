@@ -13,11 +13,13 @@ def test_probe_collects_both_results_before_final_gate():
     assert "id: production_probe" in text
     assert "id: browser_probe" in text
     assert "id: requests_probe" in text
-    assert text.count("continue-on-error: true") == 3
+    assert "id: all_board_probe" in text
+    assert text.count("continue-on-error: true") == 4
     assert "if: always()" in text
     assert "steps.production_probe.outcome" in text
     assert "steps.browser_probe.outcome" in text
     assert "steps.requests_probe.outcome" in text
+    assert "steps.all_board_probe.outcome" in text
     assert 'PRODUCTION_OUTCOME}" != "success"' in text
     assert 'BROWSER_OUTCOME}" != "success"' in text
     assert 'REQUESTS_OUTCOME}" != "success"' in text
