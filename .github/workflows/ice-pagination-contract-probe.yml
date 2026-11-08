@@ -16,7 +16,7 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
         env:
           PYTHONPATH: scripts
-        run: python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3 --transient-retries 1 --retry-delay-seconds 5
+        run: python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 60 --transient-retries 1 --retry-delay-seconds 5
       - name: Check actual official goPaging(2) behavior in Chromium
         id: browser_probe
         continue-on-error: true
