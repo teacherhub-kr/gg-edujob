@@ -30,7 +30,7 @@ permissions:
 jobs:
   verify-incheon:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -128,7 +128,7 @@ jobs:
           },report
           print('five-office live probe ok',[(x.get('name'),x.get('count'),x.get('pagesScanned')) for x in report.get('offices',[])])
           PY
-          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
+          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 60
           python - <<'PY'
           import json
           from pathlib import Path
