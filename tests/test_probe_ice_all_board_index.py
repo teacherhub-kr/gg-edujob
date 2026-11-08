@@ -2,6 +2,7 @@ import unittest
 from datetime import date
 
 from scripts.probe_ice_all_board_index import exact_items, paging_submission
+from scripts.merge_incheon_official import OFFICIAL_FETCH_ALIASES
 
 
 HTML = """
@@ -20,6 +21,9 @@ HTML = """
 
 
 class AllBoardProbeTest(unittest.TestCase):
+    def test_official_iwee_mirror_is_allowlisted_for_read_only_proof(self):
+        self.assertIn("iwee.ice.go.kr", OFFICIAL_FETCH_ALIASES)
+
     def test_extracts_exact_official_identity_and_date(self):
         items = exact_items(HTML, "https://iwee.ice.go.kr/ontong/na/ntt/selectAllNttList.do")
         self.assertEqual({(x["bbsId"], x["nttSn"]) for x in items}, {("1981", "3384055"), ("1234", "77")})
