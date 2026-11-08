@@ -550,6 +550,10 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         if page > 1 and previous_signature and candidate_signature == previous_signature:
             get_fallback_evidence = {"attempted": True, "success": False}
             try:
+                # A replaying POST can leave ICE session state pinned to page 1.
+                # Start the single bounded GET fallback with a fresh session so
+                # currPage is evaluated independently by the official server.
+                reset_session()
                 get_response = fetch_with_one_explicit_retry(page_url)
                 get_rows, get_meta = parse_table_rows(
                     get_response.text, get_response.url, lookback_days, board
