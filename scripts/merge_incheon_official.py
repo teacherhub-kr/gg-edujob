@@ -612,7 +612,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "coverageComplete": coverage_complete,
         "accessError": access_error,
         "paginationRepeated": stop_reason == "repeated-page",
-        "pageResponseEvidence": page_response_evidence[:20],
+        "pageResponseEvidence": page_response_evidence[:3] + page_response_evidence[-17:] if len(page_response_evidence) > 20 else page_response_evidence,
         "stopReason": stop_reason,
         "emptyPageEvidence": empty_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
