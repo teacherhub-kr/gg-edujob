@@ -47,7 +47,7 @@ AFTERSCHOOL_BBS_ID = "1534"
 AFTERSCHOOL_MI = "10571"
 # Alternate official ICE hostnames serve the same first-party CMS. They are used only
 # when www.ice.go.kr returns the observed tiny HTTP-200 placeholder on page 1.
-OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr")
+OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr", "iwee.ice.go.kr")
 
 REQUIRED_BOARDS = (
     {
