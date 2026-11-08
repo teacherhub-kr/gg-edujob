@@ -14,7 +14,7 @@ HTML = """
 <tr><td>인천광역시교육청</td><td>채용공고</td>
 <td><a href="/ice/na/ntt/selectNttInfo.do?bbsAllView=Y&amp;bbsId=1981&amp;mi=&amp;nttSn=3384055">채용</a></td>
 <td>2026-11-08</td></tr>
-<tr><td><a href="/ice/na/ntt/selectNttInfo.do?bbsId=1234&amp;nttSn=77">자료</a></td><td>2026.11.07</td></tr>
+<tr><td><a href="/ice/na/ntt/selectNttInfo.do?bbsId=1234&amp;nttSn=77">2026-12-31 일정 자료</a></td><td>2026.11.07</td></tr>
 </table></body></html>
 """
 
@@ -26,6 +26,8 @@ class AllBoardProbeTest(unittest.TestCase):
         recruitment = next(x for x in items if x["bbsId"] == "1981")
         self.assertEqual(recruitment["posted"], date(2026, 11, 8))
         self.assertIn("nttSn=3384055", recruitment["url"])
+        other = next(x for x in items if x["bbsId"] == "1234")
+        self.assertEqual(other["posted"], date(2026, 11, 7))
 
     def test_rejects_non_official_host_and_non_numeric_identity(self):
         html = """<a href="https://example.com/ice/na/ntt/selectNttInfo.do?bbsId=1981&nttSn=1">x</a>
