@@ -1,6 +1,10 @@
 name: ICE page-size probe (read-only)
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/ice-page-size-probe.yml'
+      - 'scripts/probe_ice_page_size.py'
 permissions:
   contents: read
 jobs:
