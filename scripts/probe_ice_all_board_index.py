@@ -39,8 +39,9 @@ def exact_items(html: str, base_url: str) -> list[dict]:
         ):
             continue
         row = anchor.find_parent("tr")
-        row_text = row.get_text(" ", strip=True) if row else anchor.get_text(" ", strip=True)
-        match = DATE_RE.search(row_text)
+        cells = row.find_all("td") if row else []
+        posted_text = cells[-1].get_text(" ", strip=True) if cells else ""
+        match = DATE_RE.search(posted_text)
         posted = None
         if match:
             posted = date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
