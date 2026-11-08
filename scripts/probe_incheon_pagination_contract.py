@@ -7,8 +7,8 @@ import re
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from merge_incheon_official import (
-    REQUIRED_BOARDS, SESSION, build_session, fetch_with_one_explicit_retry,
-    parse_table_rows, with_page,
+    REQUIRED_BOARDS, SESSION, build_session, extract_document_csrf,
+    fetch_with_one_explicit_retry, parse_table_rows, with_page,
 )
 
 BOARD = next(board for board in REQUIRED_BOARDS if board["key"] == "central")
@@ -97,6 +97,10 @@ def main():
             if not name or str(element.get("type") or "").lower() in {"submit", "button", "image"}:
                 continue
             fields.append((name, "2" if name == "currPage" else str(element.get("value") or "")))
+        if not any(name == "CSRFToken" and value for name, value in fields):
+            token = extract_document_csrf(soup)
+            if token:
+                fields.append(("CSRFToken", token))
         target = urljoin(first.url, str(paging.get("action") or ""))
         if urlparse(target).hostname != "www.ice.go.kr":
             raise SystemExit("FAIL: unexpected ICE pagination form host")
@@ -111,6 +115,28 @@ def main():
             report = {"candidate": "POST official-pagingForm", "errorType": type(exc).__name__}
         results.append(report)
         print("PROBE", json.dumps(report, ensure_ascii=False), flush=True)
+
+        # Some ICE edge responses ignore a body-only currPage on the bare form
+        # action even though the browser submitted the official form. Probe the
+        # same allowlisted list endpoint with its canonical board query retained,
+        # then with currPage duplicated in the query. These are read-only list
+        # requests; a candidate is useful only if real official IDs are distinct.
+        query_targets = (
+            ("POST official-pagingForm action+board-query", BOARD["url"]),
+            ("POST official-pagingForm action+page-query", get_url("currPage", 2)),
+        )
+        for candidate, query_target in query_targets:
+            try:
+                response = SESSION.post(
+                    query_target, data=fields, headers={"Referer": first.url},
+                    timeout=(8, 25), allow_redirects=True,
+                )
+                response.raise_for_status()
+                query_report = classify(candidate, response, base_ids)
+            except Exception as exc:
+                query_report = {"candidate": candidate, "errorType": type(exc).__name__}
+            results.append(query_report)
+            print("PROBE", json.dumps(query_report, ensure_ascii=False), flush=True)
     # The first-party host aliases are already documented by the production
     # collector. Check whether their live CMS honors its own posted pagingForm.
     from merge_incheon_official import OFFICIAL_FETCH_ALIASES, with_host
