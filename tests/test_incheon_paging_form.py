@@ -140,6 +140,41 @@ class IncheonPagingFormTests(unittest.TestCase):
     @patch.object(ice, "parse_table_rows")
     @patch.object(ice, "fetch_paging_form")
     @patch.object(ice, "fetch_with_one_explicit_retry")
+    @patch.object(ice.time, "sleep")
+    @patch.object(ice, "parse_table_rows")
+    @patch.object(ice, "fetch_paging_form")
+    @patch.object(ice, "fetch_with_one_explicit_retry")
+    def test_post_replay_uses_one_bounded_get_and_requires_distinct_ids(
+        self, get_page, post_page, parse_rows, sleep
+    ):
+        first = Response(paging_form())
+        replay = Response(paging_form())
+        distinct = Response("<html>distinct page two</html>", url=ice.with_page(ice.LIST_URL, 2))
+        get_page.side_effect = [first, distinct]
+        post_page.return_value = replay
+        parse_rows.side_effect = [
+            ([{"id": "ice-central-1", "registered": "2026/11/08", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/11/08"],
+              "pageIds": ["1"], "pageText": ""}),
+            ([{"id": "ice-central-1", "registered": "2026/11/08", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/11/08"],
+              "pageIds": ["1"], "pageText": ""}),
+            ([{"id": "ice-central-2", "registered": "2026/01/01", "applyEnd": ""}],
+             {"rawRows": 1, "datedRows": 1, "pageDates": ["2026/01/01"],
+              "pageIds": ["2"], "pageText": ""}),
+        ]
+
+        rows, meta = ice.scrape_board(
+            ice.REQUIRED_BOARDS[0], lookback_days=90, max_pages=3, check_only=False
+        )
+
+        self.assertEqual([row["id"] for row in rows], ["ice-central-1", "ice-central-2"])
+        self.assertTrue(meta["coverageComplete"])
+        self.assertEqual(meta["stopReason"], "lookback-exhausted")
+        self.assertEqual(get_page.call_count, 2)
+        self.assertTrue(meta["pageResponseEvidence"][1]["getFallback"]["success"])
+        post_page.assert_called_once_with(first, 2, ice.REQUIRED_BOARDS[0])
+
     def test_traversal_uses_get_once_then_form_post(
         self, get_first, post_page, parse_rows, sleep
     ):
