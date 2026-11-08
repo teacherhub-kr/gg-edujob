@@ -6,6 +6,8 @@ on:
       - 'scripts/merge_incheon_official.py'
       - 'scripts/probe_incheon_pagination_contract.py'
       - 'scripts/probe_incheon_browser_pagination.cjs'
+      - 'scripts/probe_ice_all_board_index.py'
+      - 'tests/test_probe_ice_all_board_index.py'
       - 'tests/test_incheon_paging_form.py'
       - 'tests/test_incheon_pagination_probe_workflow.py'
       - '.github/workflows/ice-pagination-contract-probe.yml'
@@ -28,7 +30,9 @@ jobs:
           PYTHONPATH: .:scripts
         run: python tests/test_incheon_paging_form.py
       - name: Verify probe regression contracts
-        run: python tests/test_incheon_pagination_probe_workflow.py
+        run: |
+          python tests/test_incheon_pagination_probe_workflow.py
+          python -m unittest tests.test_probe_ice_all_board_index
       - name: Install browser-only diagnostic dependencies
         run: |
           npm install --no-save --package-lock=false @playwright/test@1.55.0
@@ -49,6 +53,10 @@ jobs:
         env:
           PYTHONPATH: scripts
         run: python scripts/probe_incheon_pagination_contract.py
+      - name: Probe official ICE all-board index fallback (read-only diagnostic)
+        id: all_board_probe
+        continue-on-error: true
+        run: python scripts/probe_ice_all_board_index.py
       - name: Require at least one independently distinct page-2 proof
         if: always()
         env:
@@ -56,7 +64,7 @@ jobs:
           BROWSER_OUTCOME: ${{ steps.browser_probe.outcome }}
           REQUESTS_OUTCOME: ${{ steps.requests_probe.outcome }}
         run: |
-          echo "production_probe=${PRODUCTION_OUTCOME} browser_probe=${BROWSER_OUTCOME} requests_probe=${REQUESTS_OUTCOME}"
+          echo "production_probe=${PRODUCTION_OUTCOME} browser_probe=${BROWSER_OUTCOME} requests_probe=${REQUESTS_OUTCOME} all_board_diagnostic=${ALL_BOARD_OUTCOME}"
           if [[ "${PRODUCTION_OUTCOME}" != "success" ]]; then
             echo "The production ICE collector did not prove complete traversal."
             exit 1
