@@ -140,10 +140,6 @@ class IncheonPagingFormTests(unittest.TestCase):
     @patch.object(ice, "parse_table_rows")
     @patch.object(ice, "fetch_paging_form")
     @patch.object(ice, "fetch_with_one_explicit_retry")
-    @patch.object(ice.time, "sleep")
-    @patch.object(ice, "parse_table_rows")
-    @patch.object(ice, "fetch_paging_form")
-    @patch.object(ice, "fetch_with_one_explicit_retry")
     def test_post_replay_uses_one_bounded_get_and_requires_distinct_ids(
         self, get_page, post_page, parse_rows, sleep
     ):
@@ -175,6 +171,10 @@ class IncheonPagingFormTests(unittest.TestCase):
         self.assertTrue(meta["pageResponseEvidence"][1]["getFallback"]["success"])
         post_page.assert_called_once_with(first, 2, ice.REQUIRED_BOARDS[0])
 
+    @patch.object(ice.time, "sleep")
+    @patch.object(ice, "parse_table_rows")
+    @patch.object(ice, "fetch_paging_form")
+    @patch.object(ice, "fetch_with_one_explicit_retry")
     def test_traversal_uses_get_once_then_form_post(
         self, get_first, post_page, parse_rows, sleep
     ):
