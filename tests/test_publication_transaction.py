@@ -84,17 +84,16 @@ class PublicationTransactionTest(unittest.TestCase):
         self.advance_other("data.txt", "newer-main\\n")
         baseline_file = Path(self.temp.name) / "baseline.sha"
         baseline_file.write_text(baseline, encoding="utf-8")
-        with mock.patch.object(tx, "Path", wraps=Path):
-            previous_cwd = Path.cwd()
-            try:
-                import os
-                os.chdir(self.worker)
-                code = tx.main([
-                    "publish", "--baseline-file", str(baseline_file),
-                    "--message", "candidate", "--status-file", str(self.status),
-                ])
-            finally:
-                os.chdir(previous_cwd)
+        previous_cwd = Path.cwd()
+        try:
+            import os
+            os.chdir(self.worker)
+            code = tx.main([
+                "publish", "--baseline-file", str(baseline_file),
+                "--message", "candidate", "--status-file", str(self.status),
+            ])
+        finally:
+            os.chdir(previous_cwd)
         self.assertEqual(code, 2)
         self.assertEqual(json.loads(self.status.read_text())["state"], "superseded")
 
