@@ -22,6 +22,16 @@ def test_probe_collects_both_results_before_final_gate():
     assert 'REQUESTS_OUTCOME}" != "success"' in text
 
 
+
+def test_production_probe_has_bounded_but_nontrivial_coverage():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    import re
+    match = re.search(r"--lookback-days\s+14\s+--max-pages\s+(\d+)", text)
+    assert match, "production probe must specify a page cap for 14-day lookback"
+    assert int(match.group(1)) >= 60, "three-page probes cannot prove 14-day coverage"
+    assert "timeout-minutes: 25" in text
+
+
 def test_browser_probe_waits_for_the_page_two_navigation():
     text = BROWSER_PROBE.read_text(encoding="utf-8")
 
@@ -62,6 +72,7 @@ def test_browser_probe_redacts_request_secrets():
 
 if __name__ == "__main__":
     test_probe_collects_both_results_before_final_gate()
+    test_production_probe_has_bounded_but_nontrivial_coverage()
     test_browser_probe_waits_for_the_page_two_navigation()
     test_browser_probe_retries_only_bounded_navigation_races()
     test_browser_probe_redacts_request_secrets()
