@@ -137,11 +137,12 @@ class IncheonPagingFormTests(unittest.TestCase):
         post.assert_not_called()
 
     @patch.object(ice.time, "sleep")
+    @patch.object(ice, "reset_session")
     @patch.object(ice, "parse_table_rows")
     @patch.object(ice, "fetch_paging_form")
     @patch.object(ice, "fetch_with_one_explicit_retry")
     def test_post_replay_uses_one_bounded_get_and_requires_distinct_ids(
-        self, get_page, post_page, parse_rows, sleep
+        self, get_page, post_page, parse_rows, reset_session, sleep
     ):
         first = Response(paging_form())
         replay = Response(paging_form())
@@ -168,6 +169,7 @@ class IncheonPagingFormTests(unittest.TestCase):
         self.assertTrue(meta["coverageComplete"])
         self.assertEqual(meta["stopReason"], "lookback-exhausted")
         self.assertEqual(get_page.call_count, 2)
+        reset_session.assert_called_once_with()
         self.assertTrue(meta["pageResponseEvidence"][1]["getFallback"]["success"])
         post_page.assert_called_once_with(first, 2, ice.REQUIRED_BOARDS[0])
 
