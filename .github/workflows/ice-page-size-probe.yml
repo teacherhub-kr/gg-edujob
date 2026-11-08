@@ -1,0 +1,17 @@
+name: ICE page-size probe (read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - name: Read-only ICE central pageUnit diagnostic
+        run: python scripts/probe_ice_page_size.py --sizes 10,30,50,100
