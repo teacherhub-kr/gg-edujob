@@ -516,18 +516,6 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
 
         pages_scanned += 1
         rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
-        # Redacted diagnostics: never log cookies, tokens, request bodies, or headers.
-        page_response_evidence.append({
-            "requestedPage": page,
-            "httpStatus": int(response.status_code),
-            "responseBytes": len(response.content or b""),
-            "finalHost": urlparse(str(response.url or "")).hostname or "",
-            "rawRows": int(meta.get("rawRows") or 0),
-            "pageIdDigest": hashlib.sha256(
-                "|".join(meta.get("pageIds") or []).encode("utf-8")
-            ).hexdigest()[:16],
-        })
-
         # ICE intermittently returns a tiny HTTP-200 body (~77 bytes) on the
         # first list page. Only for that narrow signature, reset the session,
         # visit the matching official landing page once, then retry the exact
@@ -552,6 +540,18 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             )
             if alias_response is not None and alias_meta.get("rawRows"):
                 response, rows, meta = alias_response, alias_rows, alias_meta
+
+        # Redacted diagnostics: never log cookies, tokens, request bodies, or headers.
+        page_response_evidence.append({
+            "requestedPage": page,
+            "httpStatus": int(response.status_code),
+            "responseBytes": len(response.content or b""),
+            "finalHost": urlparse(str(response.url or "")).hostname or "",
+            "rawRows": int(meta.get("rawRows") or 0),
+            "pageIdDigest": hashlib.sha256(
+                "|".join(meta.get("pageIds") or []).encode("utf-8")
+            ).hexdigest()[:16],
+        })
 
         previous_response = response
         signature = tuple(meta.get("pageIds") or [])
