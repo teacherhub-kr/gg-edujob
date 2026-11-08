@@ -79,6 +79,25 @@ class PublicationTransactionTest(unittest.TestCase):
         self.assertEqual((probe / "data.txt").read_text(encoding="utf-8"), "newer-main\n")
         self.assertEqual(json.loads(self.status.read_text())["state"], "superseded")
 
+    def test_cli_superseded_returns_nonzero_and_keeps_status(self):
+        baseline = self.prepare_candidate()
+        self.advance_other("data.txt", "newer-main\\n")
+        baseline_file = Path(self.temp.name) / "baseline.sha"
+        baseline_file.write_text(baseline, encoding="utf-8")
+        with mock.patch.object(tx, "Path", wraps=Path):
+            previous_cwd = Path.cwd()
+            try:
+                import os
+                os.chdir(self.worker)
+                code = tx.main([
+                    "publish", "--baseline-file", str(baseline_file),
+                    "--message", "candidate", "--status-file", str(self.status),
+                ])
+            finally:
+                os.chdir(previous_cwd)
+        self.assertEqual(code, 2)
+        self.assertEqual(json.loads(self.status.read_text())["state"], "superseded")
+
     def test_non_force_retry_revalidates_and_verifies_own_commit(self):
         baseline = self.prepare_candidate()
         original_push = tx._push_head
