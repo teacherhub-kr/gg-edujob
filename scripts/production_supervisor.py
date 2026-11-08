@@ -31,7 +31,7 @@ WATCHDOG_WORKFLOW = "fast-refresh-watchdog.yml"
 REQUIRED_REGISTRY_MINIMUMS = {"gyeonggi": 26, "seoul": 12, "incheon": 1}
 INCHEON_REQUIRED_BOARD_IDS = {"1981", "1534"}
 
-CORE_# Isolated private collectors may use otherwise idle blocked-Fast slots.
+# Isolated private collectors may use otherwise idle blocked-Fast slots.
 OFFICIAL_BLOCKED_PRIVATE_ACTIONS = {
     "skip-fast-circuit-open",
     "skip-fast-backoff",
@@ -48,7 +48,7 @@ def private_action_for_official_block(action, choose):
     return None, private_reason
 
 
-TARGETS = {
+CORE_TARGETS = {
     "fast": "update-jobs.yml",
     "recovery": "recover-missing-jobs.yml",
     "completeness": "official-completeness-audit.yml",
