@@ -30,6 +30,7 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from ice_transport_evidence import transport_summary
 from stable_source_identity import canonical_source_id
 from support_population_contract import is_support_population_job
 
@@ -164,9 +165,7 @@ def _normalize_response(response):
     response.raise_for_status()
     content_type = str(response.headers.get("Content-Type") or "").lower()
     if "text/html" in content_type and len(response.content or b"") < 256:
-        raise requests.RequestException(
-            f"tiny ICE HTML placeholder: status={response.status_code} bytes={len(response.content or b'')}"
-        )
+        raise requests.RequestException(f"tiny ICE HTML placeholder: {transport_summary(response)}")
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
     return response
@@ -698,14 +697,19 @@ def crawl_nambu_json(office: dict, lookback_days: int, max_pages: int):
             response.raise_for_status()
             if (urlparse(response.url).hostname or "").lower() != "nambu.ice.go.kr":
                 raise requests.RequestException(f"unexpected Nambu API redirect: {response.url}")
-            payload = response.json()
+            try:
+                payload = response.json()
+            except ValueError as exc:
+                raise requests.RequestException(
+                    f"Nambu API non-JSON: {transport_summary(response)}"
+                ) from exc
             if payload.get("resultState") != "success":
                 raise requests.RequestException(f"Nambu API state={payload.get('resultState')}")
             items = payload.get("resultData") or []
             if not isinstance(items, list):
                 raise requests.RequestException("Nambu API resultData is not a list")
         except Exception as exc:
-            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            access_error = f"{type(exc).__name__}: {str(exc)[:480]}"
             break
 
         pages_scanned += 1
@@ -823,7 +827,7 @@ def crawl_seobu_browser(office: dict, lookback_days: int, max_pages: int):
         try:
             rendered = fetch_seobu_rendered(current)
         except Exception as exc:
-            access_error = f"{type(exc).__name__}: {str(exc)[:180]}"
+            access_error = f"{type(exc).__name__}: {str(exc)[:480]}"
             break
 
         parsed_rows, meta = parse_support_page(rendered, current, office, lookback_days)
@@ -1072,7 +1076,7 @@ def crawl_board(board_url: str, office: dict, lookback_days: int, max_pages: int
         try:
             response = fetch_board_page(current, office, page)
         except Exception as exc:
-            access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
+            access_error = f"{type(exc).__name__}: {str(exc)[:480]}"
             break
         if not allowed_host(response.url, office):
             access_error = f"redirected to unapproved host: {response.url}"
