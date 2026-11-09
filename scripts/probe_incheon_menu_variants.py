@@ -68,10 +68,10 @@ def main() -> int:
         for label in ("canonical", "menu-omitted", *((("alternate-menu",) if alternate else ()))):
             first, second = (r for r in results if r["board"] == board and r["variant"] == label)
             if (
-            first.get("httpStatus") == second.get("httpStatus") == 200
-            and first.get("rowCount", 0) > 0
-            and second.get("rowCount", 0) > 0
-            and first["idDigest"] != second["idDigest"]
+                first.get("httpStatus") == second.get("httpStatus") == 200
+                and first.get("rowCount", 0) > 0
+                and second.get("rowCount", 0) > 0
+                and first["idDigest"] != second["idDigest"]
             ):
                 viable[board].append(label)
     print(json.dumps({"distinctPageCandidates": viable, "productionReady": False}))
