@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/merge_incheon_official.py'
       - 'scripts/collect_incheon_support.py'
+      - 'scripts/ice_transport_evidence.py'
+      - 'tests/test_ice_transport_evidence.py'
       - 'scripts/ensure_incheon_registry.py'
       - 'scripts/verify_required_regions.py'
       - 'scripts/stable_source_identity.py'
@@ -40,11 +42,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Static compile
         run: |
-          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py scripts/verify_jobs.py
+          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ice_transport_evidence.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py scripts/verify_jobs.py
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
+        run: python -m unittest tests.test_ice_transport_evidence tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
