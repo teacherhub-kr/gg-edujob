@@ -725,7 +725,16 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         key: git_commit_time(str(spec["report"]))
         for key, spec in PRIVATE_REFRESH_TARGETS.items()
     }
-    publication_input_times = [jobs_time, *private_refresh_times.values()]
+    # Unified reads canonical artmore_jobs.json, which only promote-artmore.yml
+    # updates. The ArtMore refresh freshness above deliberately follows the
+    # candidate report, so the promoted dataset must be its own publication input
+    # or a promotion alone never triggers a Unified rebuild.
+    canonical_artmore_publication_time = git_commit_time("artmore_reconciliation_report.json")
+    publication_input_times = [
+        jobs_time,
+        *private_refresh_times.values(),
+        canonical_artmore_publication_time,
+    ]
     latest_publication_input = max(
         (value for value in publication_input_times if value is not None),
         default=None,

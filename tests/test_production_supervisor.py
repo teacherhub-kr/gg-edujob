@@ -231,7 +231,9 @@ class ProductionSupervisorTests(unittest.TestCase):
             source,
         )
         self.assertNotIn("unified_publication_stale(jobs_time, unified_time)", source)
-        self.assertIn("publication_input_times = [jobs_time, *private_refresh_times.values()]", source)
+        self.assertIn("*private_refresh_times.values(),", source)
+        # Promoted ArtMore data is what Unified reads, so it is a publication input too.
+        self.assertIn("canonical_artmore_publication_time,", source)
         block = source.split("def latest_verified_production_success", 1)[1].split("def watchdog_schedule_lag", 1)[0]
         self.assertIn('for key in ("fast", "recovery"):', block)
 
