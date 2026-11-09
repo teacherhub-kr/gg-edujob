@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 7093,
+  "totalRows": 7172,
   "nonDirectBeforeRepair": 962,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 962,
-  "cultureFoundationRows": 158,
+  "cultureFoundationRows": 159,
   "cultureFoundationNonDirectRows": 130,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -911,11 +911,38 @@
   ],
   "cultureFoundationExamples": [
     {
-      "sourceIdentity": "artmore:95362",
+      "sourceIdentity": "artmore:95588",
       "source": "아트모아",
-      "title": "진행중 (복사) [대림문화재단] 대림미술관 크루 모집(전시/뮤지엄샵)",
-      "school": "대림문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95362",
+      "title": "진행중 송은문화재단에서 《제26회 송은미술대상전》 도슨트/지킴이를 모집합니다.",
+      "school": "송은문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95588",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95552",
+      "source": "아트모아",
+      "title": "진행중 [송파문화재단] 11월 24일 롯데콘서트홀 공연 티켓 운영 아르바이트 모집",
+      "school": "송파문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95552",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95545",
+      "source": "아트모아",
+      "title": "진행중 2026년 안산문화재단 기간제근로자 모집 공고(대표이사 비서)",
+      "school": "안산문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95545",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95453",
+      "source": "아트모아",
+      "title": "진행중 재단법인 관악문화재단 2026년 제4차 직원 채용공고",
+      "school": "관악문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95453",
       "reason": "artmore-rec-idx",
       "direct": true
     },
@@ -980,15 +1007,6 @@
       "school": "용산문화재단",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95330",
       "reason": "cold-browser-verified-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "artmore:95331",
-      "source": "아트모아",
-      "title": "진행중 서울문화재단 예술지원사업 및 입주공모 업무 보조 단기인력 구인(연희문학창작촌)",
-      "school": "서울문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95331",
-      "reason": "artmore-rec-idx",
       "direct": true
     },
     {
@@ -1332,15 +1350,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "artmore:94792",
-      "source": "아트모아",
-      "title": "진행중 파마리서치문화재단 출판·인쇄물 제작 담당 채용 공고",
-      "school": "파마리서치문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94792",
-      "reason": "artmore-rec-idx",
-      "direct": true
     },
     {
       "sourceIdentity": "culture:id:94772",
@@ -1797,15 +1806,6 @@
       "source": "레슨인포",
       "title": "[중랑문화재단] 청년일경험 광고마케팅(축제공연기획) 직무능력 향상 프로그램 2기 참여자 모집",
       "school": "중랑문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:94084",
-      "source": "레슨인포",
-      "title": "(재)연수문화재단 비상임이사 및 감사 공개모집 공고",
-      "school": "연수문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
