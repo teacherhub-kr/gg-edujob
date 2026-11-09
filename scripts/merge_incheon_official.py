@@ -26,6 +26,7 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from ice_transport_evidence import MAX_EXCERPT_SOURCE_BYTES, transport_fingerprint
 from source_registry import official_source_count
 from stable_source_identity import canonical_source_id
 
@@ -584,6 +585,9 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             ).hexdigest()[:16],
             "getFallback": get_fallback_evidence,
         })
+        if len(response.content or b"") <= MAX_EXCERPT_SOURCE_BYTES:
+            # Identify whether the small body is a redirect, block notice, or template.
+            page_response_evidence[-1]["transport"] = transport_fingerprint(response)
 
         previous_response = response
         signature = tuple(meta.get("pageIds") or [])
