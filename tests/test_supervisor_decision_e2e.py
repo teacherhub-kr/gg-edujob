@@ -24,12 +24,13 @@ FAST_CIRCUIT = [run(30), run(120), run(240)]
 RECOVERY_BACKOFF = [run(60)]
 
 class WatchdogDecisionE2ETests(unittest.TestCase):
-    def decide(self, runs, *, active=(), unified_time=None, private_time=PRIVATE):
+    def decide(self, runs, *, active=(), unified_time=None, private_time=PRIVATE, extra_commits=None):
         files = {filename: key for key, filename in ps.TARGETS.items()}
         commits = {"jobs.json": OFFICIAL,
                    "unified_jobs.json": unified_time or (NOW - timedelta(minutes=5))}
         for spec in ps.PRIVATE_REFRESH_TARGETS.values():
             commits[spec["report"]] = private_time
+        commits.update(extra_commits or {})
         real_load = ps.load_json
 
         def load(path, default):
@@ -74,6 +75,19 @@ class WatchdogDecisionE2ETests(unittest.TestCase):
     def test_recovery_not_preempted(self):
         self.assertEqual(self.decide({"fast": FAST_CIRCUIT,
                                       "recovery": [run(600, "success")]})["action"], "recovery")
+
+    def test_artmore_promotion_alone_rebuilds_unified(self):
+        # Observed 2026-11-09: promote-artmore committed at 12:03 KST while every
+        # refresh report predated the 06:04 Unified publication.
+        unified = NOW - timedelta(hours=8)
+        state = self.decide(
+            {"fast": FAST_CIRCUIT, "recovery": RECOVERY_BACKOFF},
+            unified_time=unified,
+            private_time=unified - timedelta(minutes=20),
+            extra_commits={"artmore_reconciliation_report.json": NOW - timedelta(hours=2)},
+        )
+        self.assertEqual(state["action"], "unified", state)
+        self.assertTrue(state["p0Incident"])
 
     def test_unified_circuit_open_no_retry_loop(self):
         state = self.decide({"fast": FAST_CIRCUIT, "recovery": RECOVERY_BACKOFF,
