@@ -170,3 +170,62 @@ def source_health(spec, report, detail_report) -> bool:
         ok = _lessoninfo_full_candidate_coverage(spec, report)
     if ok and spec.get("key") == "cleaneye": ok = _generic_exact_link_coverage(spec)
     return ok
+
+
+# Mirrors the production supervisor's verified private-collection intervals.
+# This threshold classifies the age of evidence; it does NOT revoke a past
+# successful collection, delete jobs, or assert that each individual job is open.
+PRIVATE_VERIFICATION_MAX_AGE_HOURS = {
+    "lessoninfo": 6,
+    "cleaneye": 24,
+    "jobteacher": 6,
+    "artmore": 6,
+    "gonggonggangsa": 6,
+    "seekle": 12,
+    "boramyc": 12,
+}
+
+
+def source_verification_freshness(spec, report, detail_report=None, *, now=None):
+    """Independently classify verified *source evidence* as fresh/stale/unknown.
+
+    Both the source traversal and required detail-link coverage must be current:
+    a freshly completed detail-link probe cannot turn an old source scrape into
+    fresh recruitment evidence. Missing/malformed/future timestamps are unknown.
+    No filtering or mutation of the published rows is performed.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    now = now or datetime.now(timezone.utc)
+    max_age = PRIVATE_VERIFICATION_MAX_AGE_HOURS.get(spec.get("key"))
+    result = {
+        "state": "unknown", "ageHours": None, "maxAgeHours": max_age,
+        "evidenceAt": None,
+    }
+    if max_age is None or now.tzinfo is None:
+        return result
+    required = [report]
+    if spec.get("detail_report"):
+        required.append(detail_report)
+    stamps = []
+    for evidence in required:
+        if not isinstance(evidence, dict):
+            return result
+        raw = evidence.get("generatedAt")
+        if not isinstance(raw, str) or not raw.strip():
+            return result
+        try:
+            dt = datetime.fromisoformat(raw.strip().replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            return result
+        if dt.tzinfo is None or dt > now + timedelta(minutes=5):
+            return result
+        stamps.append(dt)
+    oldest = min(stamps)
+    age = max(0.0, (now - oldest).total_seconds() / 3600.0)
+    return {
+        "state": "fresh" if age <= max_age else "stale",
+        "ageHours": round(age, 2),
+        "maxAgeHours": max_age,
+        "evidenceAt": oldest.isoformat(),
+    }
