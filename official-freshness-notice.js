@@ -22,9 +22,18 @@
   function classifyRegional(payload, nowMs){
     var meta=payload&&payload.regionalPublication;
     if(!meta || meta.policy!=='seoul-gyeonggi-isolated-verified-v1')return null;
+    // A status marker alone is not evidence that the user-facing search
+    // actually contains fresh official entries for BOTH supported provinces.
+    var rows=payload&&Array.isArray(payload.jobs)?payload.jobs:[];
+    var official=rows.filter(function(row){return row&&row.feedKind==='official'&&row.sourceSurface==='official';});
     var valid=meta.state==='verified' &&
       meta.refreshedOfficialSourceCount===38 &&
-      meta.heldRegions&&meta.heldRegions['인천']&&meta.heldRegions['인천'].state==='stale';
+      Array.isArray(meta.refreshedRegions) &&
+      meta.refreshedRegions.join('|')==='경기|서울' &&
+      meta.heldRegions&&meta.heldRegions['인천']&&meta.heldRegions['인천'].state==='stale' &&
+      official.some(function(row){return row.province==='경기';}) &&
+      official.some(function(row){return row.province==='서울';}) &&
+      !official.some(function(row){return row.province==='인천';});
     var then=Date.parse(String(meta.generatedAt||''));
     var now=Number.isFinite(nowMs)?nowMs:Date.now();
     return {status:valid && Number.isFinite(then) && then<=now+5*60*1000 &&
@@ -103,16 +112,19 @@
     if(!existing)main.insertBefore(box,main.firstChild);
   }
   async function start(){
+    // Regional truth comes from the published search itself, not the legacy
+    // 44-source collector_status.json that is intentionally frozen with Incheon.
+    try{
+      var unified=await fetch('./unified_jobs.json',{cache:'no-store',credentials:'same-origin'});
+      if(unified.ok){
+        var regional=classifyRegional(await unified.json(),Date.now());
+        if(regional){render(regional);return;}
+      }
+    }catch(error){/* no regional proof: retain strict legacy stale warning */}
     try{
       var response=await fetch('./collector_status.json',{cache:'no-store',credentials:'same-origin'});
-      if(!response.ok)throw Error('status not available');
-      var official=await response.json();
-      var regional=null;
-      try{
-        var unified=await fetch('./unified_jobs.json',{cache:'no-store',credentials:'same-origin'});
-        if(unified.ok)regional=classifyRegional(await unified.json(),Date.now());
-      }catch(error){/* missing regional metadata always falls back to strict legacy status */}
-      render(regional||classify(official,Date.now()));
+      if(!response.ok)throw Error('official collector status unavailable');
+      render(classify(await response.json(),Date.now()));
     }catch(error){render({status:'unknown',lastVerified:null});}
   }
   if(typeof module==='object'&&module.exports)module.exports={classify:classify,classifyRegional:classifyRegional,verifiedAt:verifiedAt};
