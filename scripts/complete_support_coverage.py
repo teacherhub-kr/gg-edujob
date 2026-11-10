@@ -241,7 +241,7 @@ def gyeonggi_board(board, src):
                             if not title:
                                 cells = [clean(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
                                 title = max((x for x in cells if len(x) >= 3 and not DATE_RE.fullmatch(x)), key=len, default="")
-                if not detail or detail in seen_details or len(clean(title)) < 3:
+                if not detail or len(clean(title)) < 3:
                     continue
                 registered = date_norm(first_of(vals, ["등록일", "작성일"]))
                 if not registered:
@@ -266,6 +266,8 @@ def gyeonggi_board(board, src):
         raw_rows += len(page_items)
         recent_on_page = 0
         for detail, title, registered, vals, row_text in page_items:
+            if detail in seen_details:
+                continue
             seen_details.add(detail)
             if registered and not recent(registered):
                 continue
