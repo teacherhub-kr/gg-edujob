@@ -1151,6 +1151,25 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         p0_reasons.append("official-publication-lag>3h")
     p0_incident = bool(p0_reasons)
 
+    # The isolated Seoul/Gyeonggi gate may hold the legacy 44-source Fast
+    # while the verified 38-source production data is fresh. Expose a separate,
+    # already circuit/backoff-checked private candidate for that one idle slot.
+    # This is advice only; the regional publication gate must independently
+    # verify the signed snapshot and an unchanged Unified publication.
+    private_fallback_action = None
+    private_fallback_reason = None
+    if action in {"fast", "recovery", "completeness"} and not active and not active_private:
+        fallback, fallback_reason = choose_private_refresh_action(
+            now=now,
+            all_runs=all_runs,
+            private_refresh_times=private_refresh_times,
+            private_freshness=private_freshness,
+            active_private=active_private,
+        )
+        if fallback and fallback.startswith("private-") and fallback in TARGETS:
+            private_fallback_action = fallback
+            private_fallback_reason = fallback_reason
+
     workflow_count = len(list(Path(".github/workflows").glob("*.yml"))) + len(
         list(Path(".github/workflows").glob("*.yaml"))
     )
@@ -1183,6 +1202,8 @@ def compute_state(now: datetime, repo: str) -> dict[str, Any]:
         "recoveryContractChangedAfterFailure": recovery_contract_changed_after_failure,
         "activeTargets": active,
         "activePrivateTargets": active_private,
+        "regionalPrivateFallbackAction": private_fallback_action,
+        "regionalPrivateFallbackReason": private_fallback_reason,
         "privateFreshness": private_freshness,
         "latestPublicationInputAt": latest_publication_input.isoformat() if latest_publication_input else None,
         "circuit": circuit,

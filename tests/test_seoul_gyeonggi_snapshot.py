@@ -357,5 +357,91 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
         self.assertEqual(action, "skip-incheon-hold")
 
 
+    def test_verified_regional_idle_slot_dispatches_vetted_private_refresh(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, reason = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "private-lessoninfo")
+        self.assertIn("circuit-checked", reason)
+
+    def test_regional_refresh_deadline_outweighs_private_overdue(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=4, minutes=10)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_unpublished_regional_snapshot_outweighs_private_overdue(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified={},
+            unified_runs=[], private_fallback="private-jobteacher",
+        )
+        self.assertEqual(action, "unified")
+
+    def test_private_fallback_is_not_accepted_without_verified_region(self):
+        action, _ = scheduler.decide(
+            "fast", {}, [], self.NOW, private_fallback="private-lessoninfo"
+        )
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_unrecognized_private_action_is_rejected(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-arbitrary-workflow",
+        )
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_supervisor_private_state_must_be_current_and_safe(self):
+        state = {
+            "generatedAt": (self.NOW - timedelta(minutes=2)).isoformat(),
+            "action": "fast", "activeTargets": [], "activePrivateTargets": [],
+            "regionalPrivateFallbackAction": "private-lessoninfo",
+            "privateFreshness": {"private-lessoninfo": {"overdue": True}},
+        }
+        self.assertEqual(scheduler.valid_private_fallback(state, "fast", self.NOW),
+                         "private-lessoninfo")
+        from copy import deepcopy
+        for mutate in (
+            lambda s: s.update(generatedAt=(self.NOW - timedelta(minutes=15)).isoformat()),
+            lambda s: s.update(generatedAt=(self.NOW + timedelta(minutes=6)).isoformat()),
+            lambda s: s.update(action="unified"),
+            lambda s: s.update(activeTargets=["fast"]),
+            lambda s: s.update(activePrivateTargets=["private-artmore-candidate"]),
+            lambda s: s["privateFreshness"]["private-lessoninfo"].update(overdue=False),
+            lambda s: s.update(regionalPrivateFallbackAction="private-arbitrary-workflow"),
+        ):
+            changed = deepcopy(state)
+            mutate(changed)
+            self.assertIsNone(scheduler.valid_private_fallback(changed, "fast", self.NOW))
+
+    def test_supervisor_artmore_promotion_uses_its_separate_verified_gate(self):
+        state = {
+            "generatedAt": self.NOW.isoformat(), "action": "fast",
+            "activeTargets": [], "activePrivateTargets": [],
+            "regionalPrivateFallbackAction": "private-artmore-promote",
+            "privateFreshness": {},
+        }
+        self.assertEqual(scheduler.valid_private_fallback(state, "fast", self.NOW),
+                         "private-artmore-promote")
+
+    def test_running_writer_cannot_be_overridden_by_private_idle_slot(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "skip-active-run", report, [], self.NOW,
+            snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "skip-active-run")
+
+
 if __name__ == "__main__":
     unittest.main()

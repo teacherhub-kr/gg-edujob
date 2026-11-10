@@ -100,6 +100,7 @@ jobs:
             > /tmp/verified-unified-runs.json
           python scripts/seoul_gyeonggi_watchdog.py \
             --selected-action "$PRIOR_ACTION" \
+            --supervisor-state /tmp/production-supervisor.json \
             --runs /tmp/seoul-gyeonggi-runs.json \
             --unified-runs /tmp/verified-unified-runs.json \
             --github-output "$GITHUB_OUTPUT"
