@@ -18,8 +18,18 @@ assert.equal(freshness.classify({fast:{state:'success',lastSuccessAt:'2026-11-05
 assert.equal(freshness.classify({},now).status,'unknown');
 assert.equal(freshness.classify(null,now).status,'unknown');
 assert.equal(freshness.classify({fast:item('2030-01-01T00:00:00Z')},now).status,'unknown');
+const regional={regionalPublication:{
+ policy:'seoul-gyeonggi-isolated-verified-v1',state:'verified',
+ refreshedOfficialSourceCount:38,heldRegions:{'인천':{state:'stale'}},
+ generatedAt:'2026-11-05T00:00:00Z'
+}};
+assert.equal(freshness.classifyRegional(regional,now).status,'regional-fresh');
+assert.equal(freshness.classifyRegional(regional,now+8*60*60*1000).status,'regional-stale');
+regional.regionalPublication.heldRegions['인천'].state='fresh';
+assert.equal(freshness.classifyRegional(regional,now).status,'regional-stale',
+ 'Incheon cannot be marked current by a regional snapshot');
 const html=fs.readFileSync('index.html','utf8');
-assert(html.includes('official-freshness-notice.js?v=20261105p0'));
+assert(html.includes('official-freshness-notice.js?v=20261110regional1'));
 assert(html.includes('official-freshness-notice.css?v=20261105p0'));
 assert(fs.readFileSync('official-freshness-notice.js','utf8').includes("credentials:'same-origin'"));
 const linkSource=fs.readFileSync('official-freshness-notice.js','utf8');
