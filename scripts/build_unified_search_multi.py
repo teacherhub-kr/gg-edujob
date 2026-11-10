@@ -265,8 +265,47 @@ def dedupe_multi_source(rows):
     return out,exact_url_groups
 
 
+def verified_regional_snapshot():
+    """Use the independently verified Seoul/Gyeonggi snapshot when present.
+
+    Malformed or mismatched proof fails closed. It must never silently fall back
+    to October's canonical 44-source dataset as if an official refresh succeeded.
+    """
+    path = Path("seoul_gyeonggi_jobs.json")
+    if not path.exists():
+        return None
+    snapshot = load(str(path))
+    report = load("seoul_gyeonggi_refresh_report.json")
+    if not isinstance(snapshot, dict) or not isinstance(report, dict):
+        raise SystemExit("Regional official snapshot or its proof is unreadable")
+    meta = snapshot.get("regionalPublication") or {}
+    if (meta.get("policy") != "seoul-gyeonggi-isolated-verified-v1"
+            or meta.get("state") != "verified"
+            or meta.get("refreshedRegions") != ["경기", "서울"]
+            or int(meta.get("refreshedOfficialSourceCount") or 0) != 38
+            or (meta.get("heldRegions") or {}).get("인천", {}).get("state") != "stale"
+            or meta.get("generatedAt") != report.get("generatedAt")
+            or report.get("state") != "verified"
+            or report.get("policy") != meta.get("policy")
+            or int(snapshot.get("officialSourceCount") or 0) != 38
+            or set(snapshot.get("sources") or {}) != {"gyeonggi", "seoul"}):
+        raise SystemExit("Regional snapshot and independent proof do not agree")
+    rows = rows_from(snapshot)
+    if (len(rows) < 100 or
+            any(j.get("province") not in {"서울", "경기"} for j in rows if isinstance(j, dict)) or
+            any(not isinstance(j, dict) for j in rows)):
+        raise SystemExit("Regional snapshot has invalid province/job population")
+    counts = meta.get("officialJobs") or {}
+    if (sum(j.get("province") == "경기" for j in rows) != counts.get("gyeonggi")
+            or sum(j.get("province") == "서울" for j in rows) != counts.get("seoul")):
+        raise SystemExit("Regional snapshot province counts differ from verification")
+    return snapshot
+
+
 def main():
-    official_data=load("jobs.json",{}); official_jobs=rows_from(official_data)
+    official_data=load("jobs.json",{})
+    regional_snapshot=verified_regional_snapshot()
+    official_jobs=rows_from(regional_snapshot) if regional_snapshot is not None else rows_from(official_data)
     foundation_official_data=load("official_foundation_jobs.json",{}); foundation_official_jobs=rows_from(foundation_official_data)
     ledger=load("source_id_ledger.json",{"entries":{}}); protected=base.latest_official_ids(ledger)
     projected_canonical_official=[base.project_official(j) for j in official_jobs if base.official_current(j,protected)]
@@ -306,6 +345,14 @@ def main():
         raise SystemExit(f"jobs.json officialSourceCount={embedded_official_sources} does not match sources.json={expected_official_sources}")
     foundation_source_ids={str(j.get("foundationRegistryId") or "") for j in foundation_official_jobs if str(j.get("foundationRegistryId") or "")}
     payload={"updatedAt":datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),"dataset":"unified-search-v3-multi-private","officialSourceCount":expected_official_sources,"foundationOfficialSourceCount":len(foundation_source_ids),"totalSourceCount":expected_official_sources+enabled_private_sources,"sources":official_data.get("sources",{}) if isinstance(official_data,dict) else {},"privateSources":private_meta,"counts":{"total":len(rows),**per_feed,"foundationOfficial":len(projected_foundation_official),"privateSourceOccurrences":{spec["key"]:private_meta[spec["key"]]["count"] for spec in PRIVATE_SOURCES}},"jobs":rows}
+    if regional_snapshot is not None:
+        payload["regionalPublication"] = regional_snapshot["regionalPublication"]
+        # Keep the registered Incheon source metadata for historical attribution,
+        # but replace the two fresh source status groups with verified evidence.
+        payload["sources"] = {
+            **(official_data.get("sources", {}) if isinstance(official_data, dict) else {}),
+            **regional_snapshot["sources"],
+        }
     Path("unified_jobs.next.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources}
     Path("unified_search_report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
