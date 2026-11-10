@@ -13,6 +13,10 @@ on:
       - 'scripts/reconcile_cultural_foundation_coverage.py'
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
+      - 'tests/test_private_source_freshness.py'
+      - 'tests/test_official_freshness_notice.js'
+      - 'official-freshness-notice.js'
+      - 'index.html'
       - 'scripts/direct_post_links.py'
       - 'scripts/audit_direct_post_links.py'
       - 'scripts/apply_unified_frontend.py'
@@ -78,6 +82,8 @@ jobs:
           node --check metro-ui.js
           node --check mobile-ui.js
           node --check direct-link-guard.js
+          node --check official-freshness-notice.js
+          node tests/test_official_freshness_notice.js
       - name: Verify source registries resolve independently
         run: |
           python - <<'PY'
@@ -93,6 +99,8 @@ jobs:
           PY
       - name: Historical private-source parser and direct-link regressions
         run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view
+      - name: Verify independent private verification recency and conservative timestamps
+        run: python -m unittest tests.test_private_source_freshness
       - name: Verify foundation projection and degraded-section isolation
         run: python -m unittest tests.test_foundation_unified_projection tests.test_foundation_degradation
       - name: Build disposable multi-source unified candidate
