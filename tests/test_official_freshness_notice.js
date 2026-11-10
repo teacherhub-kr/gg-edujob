@@ -41,7 +41,7 @@ regional.regionalPublication.heldRegions['인천'].state='fresh';
 assert.equal(freshness.classifyRegional(regional,now).status,'regional-stale',
  'Incheon cannot be marked current by a regional snapshot');
 const html=fs.readFileSync('index.html','utf8');
-assert(html.includes('official-freshness-notice.js?v=20261110regional2'));
+assert(html.includes('official-freshness-notice.js?v=20261111private1'));
 assert(html.includes('official-freshness-notice.css?v=20261105p0'));
 assert(fs.readFileSync('official-freshness-notice.js','utf8').includes("credentials:'same-origin'"));
 const linkSource=fs.readFileSync('official-freshness-notice.js','utf8');
@@ -50,4 +50,30 @@ for(const host of ['work.sen.go.kr','www.goe.go.kr','www.ice.go.kr']) {
 }
 assert(linkSource.includes("link.rel='noopener noreferrer'"),'External links must isolate opener');
 assert(linkSource.includes("link.textContent=item[0]"),'Source link labels must be safe text');
-console.log('Official recruitment freshness warning + official direct links: PASS');
+
+const priv={
+ privateSources:{
+   lessoninfo:{name:'레슨인포',publicationEnabled:true,count:1589,
+     verificationFreshness:{state:'stale',maxAgeHours:6,evidenceAt:'2026-10-16T02:36:32+09:00'}},
+   jobteacher:{name:'잡티처',publicationEnabled:true,count:4054,
+     verificationFreshness:{state:'fresh',maxAgeHours:6,evidenceAt:'2026-11-05T00:00:00Z'}},
+   cleaneye:{name:'클린아이',publicationEnabled:true,count:0,
+     verificationFreshness:{state:'stale',maxAgeHours:24,evidenceAt:'2026-10-12T00:00:00Z'}}
+ }
+};
+assert.deepEqual(freshness.classifyPrivate(priv,now).stale,['레슨인포']);
+assert.equal(freshness.classifyPrivate(priv,now).status,'attention');
+assert.equal(freshness.classifyPrivate({privateSources:{}},now).status,'fresh');
+assert.equal(freshness.classifyPrivate({},now).status,'unknown');
+priv.privateSources.lessoninfo.verificationFreshness={
+ state:'fresh',maxAgeHours:6,evidenceAt:'2026-11-05T00:00:00Z'
+};
+assert.equal(freshness.classifyPrivate(priv,now).status,'fresh');
+assert.equal(freshness.classifyPrivate(priv,now+8*60*60*1000).status,'attention',
+ 'Client must not trust stale server-side freshness classification after UI TTL expires');
+priv.privateSources.jobteacher.verificationFreshness={
+ state:'unknown',maxAgeHours:6,evidenceAt:null
+};
+assert.deepEqual(freshness.classifyPrivate(priv,now).unverified,['잡티처']);
+
+console.log('Official+private recruitment freshness warnings + official direct links: PASS');

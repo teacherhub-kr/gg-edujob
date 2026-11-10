@@ -61,7 +61,7 @@ jobs:
           grep -q 'id="appHeader"' index.html
           grep -q 'app.css?v=20260923pwa1' index.html
           grep -q 'app.js?v=20261005filter1' index.html
-          grep -q 'official-freshness-notice.js?v=20261110regional2' index.html
+          grep -q 'official-freshness-notice.js?v=20261111private1' index.html
           grep -q 'official-freshness-notice.css?v=20261105p0' index.html
           test -f official-freshness-notice.js
           test -f official-freshness-notice.css

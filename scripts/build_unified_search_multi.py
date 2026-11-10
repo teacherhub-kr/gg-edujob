@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import build_unified_search as base
-from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health, source_verification_freshness
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -324,11 +324,14 @@ def main():
             selected=[j for j in jobs if base.private_current(j)]
         projected=[project_private_generic(j,spec["name"]) for j in selected]
         configured_enabled=publication_enabled(preport); healthy=source_health(spec,preport,dreport); effective_enabled=configured_enabled and healthy
+        freshness=source_verification_freshness(spec,preport,dreport,now=datetime.now(KST))
         if effective_enabled:
             enabled_private_sources+=1; canonical_private_total+=len(jobs); all_private.extend(projected)
         elif configured_enabled and not healthy: degraded_private_sources.append(spec["key"])
         unverified_links=sum(1 for j in selected if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
-        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+    stale_private_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="stale"]
+    unknown_private_freshness_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="unknown"]
     remaining_private,explicit_aliases,ambiguous_aliases=base.merge_explicit_official_aliases(projected_official,all_private)
     rows,exact_url_groups=dedupe_multi_source(projected_official+remaining_private)
     rows.sort(key=lambda j:(j.get("registered") or "",j.get("applyEnd") or "9999-12-31",j.get("sourceIdentity") or ""),reverse=True)
@@ -354,7 +357,7 @@ def main():
             **regional_snapshot["sources"],
         }
     Path("unified_jobs.next.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources}
+    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources,"allPublicationEnabledSourcesFresh":not stale_private_sources and not unknown_private_freshness_sources,"stalePrivateSources":stale_private_sources,"unknownPrivateFreshnessSources":unknown_private_freshness_sources}
     Path("unified_search_report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(report,ensure_ascii=False,indent=2))
 
