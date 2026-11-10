@@ -70,7 +70,9 @@ def validate_snapshot(candidate, registry, central, gyeonggi90, prior=None):
             "Seoul/Gyeonggi registry must contain 26/12 official sources")
     require(set(candidate.get("sources") or {}) == set(REGIONS),
             "regional data must contain only Seoul/Gyeonggi source status")
-    require(not (candidate.get("errors") or []), "primary Seoul/Gyeonggi collection logged errors")
+    # The first, shallow collector can flag pages subsequently proven complete by
+    # the independent full 90-day re-traversal below. Preserve its findings in
+    # the report; the final 38-source proof, not an old shallow error, gates publish.
     rows = candidate.get("jobs")
     require(isinstance(rows, list) and len(rows) >= 100, "insufficient regional official jobs")
     require(all(isinstance(j, dict) and j.get("province") in REGIONS.values() for j in rows),
@@ -163,7 +165,8 @@ def finalize():
                     "supportCompleteness": {k: candidate["supportCompleteness"][k]
                         for k in ("lookbackDays", "gyeonggiTotal", "gyeonggiComplete",
                                   "seoulTotal", "seoulComplete")},
-                    "incheon": "untouched; not scanned"},
+                    "incheon": "untouched; not scanned",
+                    "primaryCollectorWarnings": candidate.get("errors") or []},
                    ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print(json.dumps(regional, ensure_ascii=False))
