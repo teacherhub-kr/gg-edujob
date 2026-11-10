@@ -8,6 +8,11 @@ on:
       - 'scripts/build_unified_search_multi.py'
       - 'scripts/validate_required_metro_publication.py'
       - 'tests/test_seoul_gyeonggi_snapshot.py'
+      - 'tests/test_guri_support_board_contract.py'
+      - 'scripts/complete_support_coverage.py'
+      - 'scripts/probe_guri_support.py'
+      - 'sources.json'
+      - 'board_cache.json'
 permissions:
   contents: write
   actions: write
@@ -15,6 +20,25 @@ concurrency:
   group: metro-edujob-data
   cancel-in-progress: false
 jobs:
+  guri_official_live_proof:
+    # Pull requests are read-only; only the approved official hiring boards
+    # are scanned. This is required evidence before production merge.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install parser dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Read-only live 90-day proof of five canonical Guri recruitment boards
+        timeout-minutes: 20
+        run: python scripts/probe_guri_support.py
+
   regional:
     runs-on: ubuntu-latest
     timeout-minutes: 180
@@ -36,7 +60,7 @@ jobs:
       - name: Static and regression contracts (no Incheon network calls)
         run: |
           python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py
-          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot
+          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |
