@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T07:57:39+09:00",
+  "generatedAt": "2026-11-11T08:27:35+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 15490,
   "canonicalFoundationOfficialJobs": 9,
@@ -25,6 +25,12 @@
       "rawCandidateCount": 1600,
       "excludedFromUnifiedCount": 11,
       "lastVerifiedAt": "2026-10-16T02:36:32+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 629.85,
+        "maxAgeHours": 6,
+        "evidenceAt": "2026-10-16T02:36:32+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
@@ -42,6 +48,12 @@
       "rawCandidateCount": 18,
       "excludedFromUnifiedCount": 18,
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 685.86,
+        "maxAgeHours": 24,
+        "evidenceAt": "2026-10-13T18:36:07+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": null,
       "publicationPolicy": "verified-source",
@@ -59,6 +71,12 @@
       "rawCandidateCount": 4054,
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-09T01:32:53+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 54.92,
+        "maxAgeHours": 6,
+        "evidenceAt": "2026-11-09T01:32:38+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -76,6 +94,12 @@
       "rawCandidateCount": 193,
       "excludedFromUnifiedCount": 1,
       "lastVerifiedAt": "2026-11-09T11:58:36+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 44.48,
+        "maxAgeHours": 6,
+        "evidenceAt": "2026-11-09T11:58:36+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -93,6 +117,12 @@
       "rawCandidateCount": 40,
       "excludedFromUnifiedCount": 4,
       "lastVerifiedAt": "2026-11-09T21:05:10+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 35.37,
+        "maxAgeHours": 6,
+        "evidenceAt": "2026-11-09T21:05:10+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -110,6 +140,12 @@
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 7,
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 709.65,
+        "maxAgeHours": 12,
+        "evidenceAt": "2026-10-12T18:48:38+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -127,6 +163,12 @@
       "rawCandidateCount": 7,
       "excludedFromUnifiedCount": 6,
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
+      "verificationFreshness": {
+        "state": "stale",
+        "ageHours": 725.71,
+        "maxAgeHours": 12,
+        "evidenceAt": "2026-10-12T02:45:15+09:00"
+      },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
@@ -140,5 +182,16 @@
   "ambiguousExplicitOfficialLinks": 0,
   "semanticDuplicatePolicy": "same-source/exact-official aliases only; preserve cross-private identities",
   "degradedPrivateSources": [],
-  "allPublicationEnabledSourcesHealthy": true
+  "allPublicationEnabledSourcesHealthy": true,
+  "allPublicationEnabledSourcesFresh": false,
+  "stalePrivateSources": [
+    "lessoninfo",
+    "cleaneye",
+    "jobteacher",
+    "artmore",
+    "gonggonggangsa",
+    "seekle",
+    "boramyc"
+  ],
+  "unknownPrivateFreshnessSources": []
 }
