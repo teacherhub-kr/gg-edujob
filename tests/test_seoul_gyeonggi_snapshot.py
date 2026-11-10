@@ -152,5 +152,58 @@ class UnifiedRegionalGateTests(unittest.TestCase):
             self.invoke(registry, unified)
 
 
+from datetime import datetime, timedelta, timezone
+import seoul_gyeonggi_watchdog as scheduler
+
+
+class ProtectedRegionalWatchdogTests(unittest.TestCase):
+    NOW = datetime(2026, 11, 10, 1, 0, tzinfo=timezone.utc)
+
+    def test_prioritizes_region_snapshot_instead_of_broken_incheon_fast(self):
+        action, _ = scheduler.decide("fast", {}, [], self.NOW)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_does_not_dispatch_full_incheon_after_fresh_regional_snapshot(self):
+        report = {"state": "verified", "generatedAt": (self.NOW - timedelta(hours=2)).isoformat()}
+        action, _ = scheduler.decide("recovery", report, [], self.NOW)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_active_regional_run_blocks_duplicate(self):
+        runs = [{"event": "workflow_dispatch", "head_branch": "main", "status": "in_progress"}]
+        action, _ = scheduler.decide("fast", {}, runs, self.NOW)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_failed_regional_run_uses_six_hour_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=20)).isoformat()
+        }]
+        action, _ = scheduler.decide("fast", {}, runs, self.NOW)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_private_writer_continues_during_regional_failure_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=20)).isoformat()
+        }]
+        action, _ = scheduler.decide("private-jobteacher", {}, runs, self.NOW)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_existing_active_run_still_wins(self):
+        action, _ = scheduler.decide("skip-active-run", {}, [], self.NOW)
+        self.assertEqual(action, "skip-active-run")
+
+    def test_failed_region_writer_can_retry_after_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(hours=7)).isoformat()
+        }]
+        action, _ = scheduler.decide("skip-fast-circuit-open", {}, runs, self.NOW)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+
 if __name__ == "__main__":
     unittest.main()
