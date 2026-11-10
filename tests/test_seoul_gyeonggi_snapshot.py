@@ -314,5 +314,48 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
         self.assertEqual(action, "seoul-gyeonggi")
 
 
+    def test_three_hour_snapshot_is_not_refreshed_early(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=3, minutes=55)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_four_hour_snapshot_triggers_early_collection_before_six_hour_stale_notice(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        action, reason = scheduler.decide("fast", report, [], self.NOW,
+                                          snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "seoul-gyeonggi")
+        self.assertIn("4-hour", reason)
+
+    def test_unified_publication_backlog_still_wins_during_preemptive_window(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=[])
+        self.assertEqual(action, "unified")
+
+    def test_active_regional_writer_still_blocks_early_duplicate(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        active = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "in_progress"}]
+        action, _ = scheduler.decide("fast", report, active, self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "skip-incheon-hold")
+
+
 if __name__ == "__main__":
     unittest.main()
