@@ -1,13 +1,6 @@
 name: Verified Seoul-Gyeonggi official refresh (Incheon isolated)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/seoul-gyeonggi-official.yml'
-      - 'scripts/publish_seoul_gyeonggi_snapshot.py'
-      - 'scripts/build_unified_search_multi.py'
-      - 'scripts/validate_required_metro_publication.py'
   pull_request:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
@@ -15,8 +8,6 @@ on:
       - 'scripts/build_unified_search_multi.py'
       - 'scripts/validate_required_metro_publication.py'
       - 'tests/test_seoul_gyeonggi_snapshot.py'
-  schedule:
-    - cron: '13 */6 * * *'
 permissions:
   contents: write
   actions: write
