@@ -40,6 +40,57 @@
       now-then<=STALE_AFTER_MS ? 'regional-fresh':'regional-stale',
       lastVerified:Number.isFinite(then)?new Date(then).toISOString():null};
   }
+  function classifyPrivate(payload, nowMs){
+    var sources=payload&&payload.privateSources;
+    if(!sources||typeof sources!=='object')return {status:'unknown',stale:[],unverified:[]};
+    var now=Number.isFinite(nowMs)?nowMs:Date.now();
+    var stale=[],unverified=[];
+    Object.keys(sources).forEach(function(key){
+      var source=sources[key];
+      if(!source||source.publicationEnabled!==true||Number(source.count||0)<=0)return;
+      var evidence=source.verificationFreshness||{};
+      var when=Date.parse(String(evidence.evidenceAt||''));
+      var limit=Number(evidence.maxAgeHours);
+      if(!Number.isFinite(when)||!Number.isFinite(limit)||limit<=0||when>now+5*60*1000){
+        unverified.push(source.name||key);
+      }else if(evidence.state==='stale'||now-when>limit*3600000){
+        stale.push(source.name||key);
+      }else if(evidence.state!=='fresh'){
+        unverified.push(source.name||key);
+      }
+    });
+    return {status:stale.length||unverified.length?'attention':'fresh',stale:stale,unverified:unverified};
+  }
+  function renderPrivate(status){
+    if(typeof document==='undefined')return;
+    var main=document.getElementById('appMain');
+    if(!main)return;
+    var existing=document.getElementById('privateFreshnessNotice');
+    if(!status||status.status==='fresh'){
+      if(existing)existing.remove();
+      return;
+    }
+    var box=existing||document.createElement('aside');
+    box.id='privateFreshnessNotice';
+    box.className='official-freshness-notice';
+    box.setAttribute('role','status');
+    box.setAttribute('aria-live','polite');
+    box.replaceChildren();
+    var heading=document.createElement('strong');
+    heading.textContent='민간공고 일부 출처 갱신 지연 안내';
+    var detail=document.createElement('span');
+    var parts=[];
+    if(status.stale.length)parts.push('마지막 수집 검증 지연: '+status.stale.join(', '));
+    if(status.unverified.length)parts.push('최신성 확인 불가: '+status.unverified.join(', '));
+    detail.textContent=parts.join('. ')+'. 이전 수집 공고를 계속 표시할 수 있으니 지원 전에 반드시 게시기관 원문과 마감일을 확인하세요.';
+    box.appendChild(heading);
+    box.appendChild(detail);
+    if(!existing){
+      var official=document.getElementById('officialFreshnessNotice');
+      if(official&&official.parentNode===main)main.insertBefore(box,official.nextSibling);
+      else main.insertBefore(box,main.firstChild);
+    }
+  }
   function render(status){
     if(typeof document==='undefined')return;
     var main=document.getElementById('appMain');
@@ -117,8 +168,10 @@
     try{
       var unified=await fetch('./unified_jobs.json',{cache:'no-store',credentials:'same-origin'});
       if(unified.ok){
-        var regional=classifyRegional(await unified.json(),Date.now());
-        if(regional){render(regional);return;}
+        var data=await unified.json();
+        var regional=classifyRegional(data,Date.now());
+        if(regional){render(regional);renderPrivate(classifyPrivate(data,Date.now()));return;}
+        renderPrivate(classifyPrivate(data,Date.now()));
       }
     }catch(error){/* no regional proof: retain strict legacy stale warning */}
     try{
@@ -127,7 +180,7 @@
       render(classify(await response.json(),Date.now()));
     }catch(error){render({status:'unknown',lastVerified:null});}
   }
-  if(typeof module==='object'&&module.exports)module.exports={classify:classify,classifyRegional:classifyRegional,verifiedAt:verifiedAt};
+  if(typeof module==='object'&&module.exports)module.exports={classify:classify,classifyRegional:classifyRegional,classifyPrivate:classifyPrivate,verifiedAt:verifiedAt};
   if(typeof document!=='undefined'){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
     else start();
