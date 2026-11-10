@@ -241,7 +241,7 @@ def gyeonggi_board(board, src):
                             if not title:
                                 cells = [clean(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
                                 title = max((x for x in cells if len(x) >= 3 and not DATE_RE.fullmatch(x)), key=len, default="")
-                if not detail or detail in seen_details or len(clean(title)) < 3:
+                if not detail or len(clean(title)) < 3:
                     continue
                 registered = date_norm(first_of(vals, ["등록일", "작성일"]))
                 if not registered:
@@ -266,6 +266,8 @@ def gyeonggi_board(board, src):
         raw_rows += len(page_items)
         recent_on_page = 0
         for detail, title, registered, vals, row_text in page_items:
+            if detail in seen_details:
+                continue
             seen_details.add(detail)
             if registered and not recent(registered):
                 continue
@@ -302,7 +304,7 @@ def gyeonggi_board(board, src):
             break
         time.sleep(0.03)
 
-    complete = (not access_error) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
+    complete = (not access_error) and (not repeat) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
     return out, {
         "url": board, "pagesScanned": pages, "rawRows": raw_rows,
         "recentRows": len(out), "paginationRepeated": repeat, "accessError": access_error,
@@ -606,16 +608,51 @@ def status_from_board(name, url, rows, metas):
 def production_filter(rows):
     return [r for r in rows if is_support_population_job(r, as_of=NOW)]
 
+def official_support_board_urls(src, cached):
+    """Use the authoritative board registry, not unrelated auto-discovered menus.
+
+    Guri-Namyangju's cache previously contained free/community and internal
+    office boards (bbsId=8411, 8401, 8403), and three legacy bbsId=8653
+    aliases mislabelled as afterschool/other. Those are NOT independent
+    employment-recruitment boards. The current official menu exposes five
+    recruitment categories; every one must still pass coverageComplete.
+    Other offices retain existing configured+cached discovery behavior.
+    """
+    configured = [u for u in src.get("boardUrls", []) if u]
+    if src.get("name") == "구리남양주교육지원청":
+        expected = (
+            ("8653", "16003"),  # 기간제교사
+            ("8654", "14082"),  # 행정실무사
+            ("8655", "14083"),  # 조리실무사
+            ("8714", "14162"),  # 방과후강사
+            ("8656", "14084"),  # 기타
+        )
+        actual = []
+        for u in configured:
+            q = parse_qs(urlparse(u).query)
+            actual.append(((q.get("bbsId") or [""])[0], (q.get("mi") or [""])[0]))
+        if tuple(actual) != expected:
+            raise ValueError(
+                f"Guri recruitment menu registry drift: expected={expected} got={tuple(actual)}"
+            )
+        # Every authoritative category is scanned; no completeness bypass.
+        # Cached URLs that are already explicitly in the board registry add
+        # no extra coverage, while non-recruitment cached URLs are out of scope.
+        return configured
+    boards = []
+    for u in configured + list(cached or []):
+        if u and u not in boards:
+            boards.append(u)
+    return boards
+
+
 def main():
     additions = []
     gg_status = []
     seoul_status = []
 
     for src in SOURCES["gyeonggi"]["supportOffices"]:
-        boards = []
-        for u in list(src.get("boardUrls", [])) + list(CACHE.get(src["name"], [])):
-            if u and u not in boards:
-                boards.append(u)
+        boards = official_support_board_urls(src, CACHE.get(src["name"], []))
         rows = []
         metas = []
         for board in boards:
@@ -623,7 +660,14 @@ def main():
             rows.extend(found)
             metas.append(meta)
         additions.extend(rows)
-        gg_status.append(status_from_board(src["name"], src.get("url", boards[0] if boards else ""), rows, metas))
+        status = status_from_board(src["name"], src.get("url", boards[0] if boards else ""), rows, metas)
+        if not status["coverageComplete"]:
+            # Public page URL and traversal metadata only, no candidate personal data.
+            print("SUPPORT_COVERAGE_INCOMPLETE", json.dumps({
+                "name": src["name"],
+                "boardHealth": [m for m in metas if not m.get("coverageComplete")],
+            }, ensure_ascii=False), flush=True)
+        gg_status.append(status)
 
     for src in SOURCES["seoul"]["supportOffices"]:
         rows, meta = seoul_board(src)
