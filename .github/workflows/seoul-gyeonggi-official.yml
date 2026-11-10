@@ -1,0 +1,113 @@
+name: Verified Seoul-Gyeonggi official refresh (Incheon isolated)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/seoul-gyeonggi-official.yml'
+      - 'scripts/publish_seoul_gyeonggi_snapshot.py'
+      - 'scripts/build_unified_search_multi.py'
+      - 'scripts/validate_required_metro_publication.py'
+      - 'tests/test_seoul_gyeonggi_snapshot.py'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: metro-edujob-data
+  cancel-in-progress: false
+jobs:
+  regional:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Synchronize production branch
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install verified collector dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Static and regression contracts (no Incheon network calls)
+        run: |
+          python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py
+          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot
+      - name: Capture immutable official baseline
+        if: github.event_name != 'pull_request'
+        run: |
+          python scripts/publication_transaction.py capture --output /tmp/sg-official-base-sha
+          cp jobs.json /tmp/sg-official-previous.json
+      - name: Scrape Seoul/Gyeonggi only
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 60
+        run: |
+          python scripts/scrape_jobs.py
+          python scripts/repair_gyeonggi_support.py --lookback-days 21
+      - name: Prove full support-office traversal (25 Gyeonggi, 11 Seoul)
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 65
+        run: python scripts/complete_support_coverage.py
+      - name: Recover 90-day Gyeonggi central official population
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 40
+        run: python scripts/publish_seoul_gyeonggi_snapshot.py --merge-central
+      - name: Enrich verified Seoul/Gyeonggi details
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 40
+        run: |
+          python scripts/resolve_support_links.py
+          python scripts/enrich_support_periods.py
+          python scripts/enrich_seoul_get_fallback.py
+          python scripts/recover_seoul_office_cms_jobs.py
+          python scripts/sanitize_job_dates.py
+      - name: Independent 90-day/central and links proof
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 45
+        run: |
+          python scripts/verify_central_pagination.py
+          python scripts/verify_gyeonggi_central_90d.py
+          python scripts/verify_jobs.py
+      - name: Construct verified regional snapshot without touching jobs.json
+        if: github.event_name != 'pull_request'
+        run: |
+          python scripts/publish_seoul_gyeonggi_snapshot.py --finalize
+          git restore -- jobs.json
+          git diff --exit-code -- jobs.json
+      - name: Publish only independently verified regional files
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add seoul_gyeonggi_jobs.json seoul_gyeonggi_refresh_report.json
+          python scripts/publication_transaction.py publish \
+            --baseline-file /tmp/sg-official-base-sha \
+            --status-file /tmp/sg-official-transaction.json \
+            --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)'
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('/tmp/sg-official-transaction.json').read_text())
+          state=result.get('state')
+          if state not in ('published', 'no-change'):
+              raise SystemExit(f'Regional snapshot publication did not finish: {state}')
+          print('Verified regional snapshot transaction:', state)
+          PY
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/dispatches" -f ref=main
+      - name: Record publication diagnostics
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-gyeonggi-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/sg-official-transaction.json
+            seoul_gyeonggi_refresh_report.json
+          if-no-files-found: warn
+          retention-days: 14
