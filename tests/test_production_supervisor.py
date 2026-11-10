@@ -292,7 +292,10 @@ class ProductionSupervisorTests(unittest.TestCase):
         from pathlib import Path
 
         watchdog = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
-        self.assertIn("startsWith(steps.gate.outputs.action, 'private-')", watchdog)
+        # The protected regional selector now mediates the single watchdog action.
+        self.assertIn("startsWith(steps.regional_gate.outputs.action, 'private-')", watchdog)
+        self.assertIn("PRIOR_ACTION: ${{ steps.gate.outputs.action }}", watchdog)
+        self.assertIn("seoul-gyeonggi) workflow='seoul-gyeonggi-official.yml'", watchdog)
         for key, spec in PRIVATE_REFRESH_TARGETS.items():
             self.assertIn(f"{key}) workflow='{spec['workflow']}'", watchdog)
         self.assertIn("private-artmore-promote) workflow='promote-artmore.yml'", watchdog)
