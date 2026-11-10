@@ -100,6 +100,15 @@ jobs:
             --baseline-file /tmp/sg-official-base-sha \
             --status-file /tmp/sg-official-transaction.json \
             --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)'
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('/tmp/sg-official-transaction.json').read_text())
+          state=result.get('state')
+          if state not in ('published', 'no-change'):
+              raise SystemExit(f'Regional snapshot publication did not finish: {state}')
+          print('Verified regional snapshot transaction:', state)
+          PY
           gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/dispatches" -f ref=main
       - name: Record publication diagnostics
         if: always() && github.event_name != 'pull_request'
