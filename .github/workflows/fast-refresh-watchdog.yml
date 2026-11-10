@@ -95,9 +95,13 @@ jobs:
           gh api -H 'Accept: application/vnd.github+json' \
             "/repos/${GITHUB_REPOSITORY}/actions/workflows/seoul-gyeonggi-official.yml/runs?per_page=50" \
             > /tmp/seoul-gyeonggi-runs.json
+          gh api -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/runs?per_page=50" \
+            > /tmp/verified-unified-runs.json
           python scripts/seoul_gyeonggi_watchdog.py \
             --selected-action "$PRIOR_ACTION" \
             --runs /tmp/seoul-gyeonggi-runs.json \
+            --unified-runs /tmp/verified-unified-runs.json \
             --github-output "$GITHUB_OUTPUT"
       - name: Dispatch the selected production action
         if: steps.regional_gate.outputs.action == 'seoul-gyeonggi' || steps.regional_gate.outputs.action == 'fast' || steps.regional_gate.outputs.action == 'recovery' || steps.regional_gate.outputs.action == 'completeness' || steps.regional_gate.outputs.action == 'unified' || startsWith(steps.regional_gate.outputs.action, 'private-')

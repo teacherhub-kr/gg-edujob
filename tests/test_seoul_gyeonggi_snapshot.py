@@ -213,8 +213,47 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
     def test_verified_regional_data_but_unified_not_published_drains_backlog(self):
         report, snapshot, _ = self.matching_regional_proof()
         action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
-                                     snapshot=snapshot, unified={})
+                                     snapshot=snapshot, unified={}, unified_runs=[])
         self.assertEqual(action, "unified")
+
+    def test_unified_run_history_is_required_to_dispatch(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={})
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_running_unified_is_not_dispatched_again(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        running = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "in_progress", "conclusion": None,
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=running)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_recent_unified_failure_preserves_backoff(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        failure = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=10)).isoformat(),
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=failure)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_successful_unified_attempt_after_snapshot_not_repeated(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        success = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "success",
+            "updated_at": (self.NOW - timedelta(minutes=5)).isoformat(),
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=success)
+        self.assertEqual(action, "private-jobteacher")
+
 
     def test_unified_fresh_marker_prevents_unnecessary_rebuild(self):
         report, snapshot, unified = self.matching_regional_proof()
