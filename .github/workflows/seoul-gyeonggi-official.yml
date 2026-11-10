@@ -9,6 +9,7 @@ on:
       - 'scripts/validate_required_metro_publication.py'
       - 'tests/test_seoul_gyeonggi_snapshot.py'
       - 'tests/test_guri_support_board_contract.py'
+      - 'tests/test_mircms_pagination_proof.py'
       - 'scripts/complete_support_coverage.py'
       - 'scripts/probe_guri_support.py'
       - 'sources.json'
@@ -39,6 +40,49 @@ jobs:
         timeout-minutes: 20
         run: python scripts/probe_guri_support.py
 
+  mircms_last_page_live_proof:
+    # Read-only proof of the two official boards that previously hit a
+    # repeated final page despite advertising a finite page count.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install parser dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Independently prove Suwon and Siheung notice-board 90-day coverage
+        timeout-minutes: 30
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import json
+          from urllib.parse import parse_qs, urlparse
+          from complete_support_coverage import SOURCES, gyeonggi_board
+          targets = {
+              "수원교육지원청": "11021",
+              "시흥교육지원청": "5511",
+          }
+          for name, bbs in targets.items():
+              src = next(x for x in SOURCES["gyeonggi"]["supportOffices"] if x["name"] == name)
+              boards = [
+                  url for url in src["boardUrls"]
+                  if (parse_qs(urlparse(url).query).get("bbsId") or [""])[0] == bbs
+              ]
+              assert len(boards) == 1, (name, "missing official board")
+              rows, meta = gyeonggi_board(boards[0], src)
+              print(json.dumps({
+                  "office": name, "rows": len(rows), "boardHealth": meta
+              }, ensure_ascii=False), flush=True)
+              assert meta["coverageComplete"] is True, (name, meta)
+              assert meta["accessError"] is False and meta["paginationRepeated"] is False
+              assert meta["paginationCounterMismatch"] is False
+              assert meta["crossedLookback"] or meta["naturalEnd"]
+          PY
+
   regional:
     runs-on: ubuntu-latest
     timeout-minutes: 180
@@ -60,7 +104,7 @@ jobs:
       - name: Static and regression contracts (no Incheon network calls)
         run: |
           python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py
-          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract
+          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |

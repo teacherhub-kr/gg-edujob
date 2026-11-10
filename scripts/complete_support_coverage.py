@@ -171,6 +171,21 @@ def row_vals(tr, hs):
     return vals
 
 
+def published_pagination_marker(page_text):
+    """Read the official MirCMS current/total-pages display when available.
+
+    The last numbered page proves structural end even if pinned notices prevent
+    a date-cutoff proof. Never treat a repeated page as a natural end.
+    """
+    m = re.search(r"(?:전체|총)\s*[\d,]+\s*건\s*(\d{1,4})\s*/\s*(\d{1,4})\s*페이지", page_text)
+    if not m:
+        return None
+    current, total = map(int, m.groups())
+    if current < 1 or total < current or total >= MAX_PAGES:
+        return None
+    return current, total
+
+
 def gyeonggi_board(board, src):
     out = []
     seen_details = set()
@@ -183,6 +198,8 @@ def gyeonggi_board(board, src):
     crossed_old = False
     consecutive_old_pages = 0
     ended_on_structural_empty = False
+    declared_total_pages = None
+    pagination_counter_mismatch = False
 
     for page in range(1, MAX_PAGES + 1):
         r = get(with_query(board, currPage=page))
@@ -191,6 +208,13 @@ def gyeonggi_board(board, src):
             break
         soup = BeautifulSoup(r.text, "html.parser")
         txt = clean(soup.get_text(" ", strip=True))
+        marker = published_pagination_marker(txt)
+        if marker:
+            current, total = marker
+            if current != page or (declared_total_pages is not None and total != declared_total_pages):
+                pagination_counter_mismatch = True
+                break
+            declared_total_pages = total
         if re.search(r"전체\s*0\s*건|총\s*0\s*건|등록된\s*게시물이\s*없", txt):
             explicit_empty = True
 
@@ -302,14 +326,20 @@ def gyeonggi_board(board, src):
         if recent_on_page == 0 and page >= 3 and page_dates and max(page_dates) < (NOW - timedelta(days=LOOKBACK_DAYS)).strftime("%Y/%m/%d"):
             crossed_old = True
             break
+        if marker and marker[0] == marker[1]:
+            # Trust a site's final page only after validating its displayed
+            # current page and stable total against the requested traversal.
+            ended_on_structural_empty = True
+            break
         time.sleep(0.03)
 
-    complete = (not access_error) and (not repeat) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
+    complete = (not access_error) and (not repeat) and (not pagination_counter_mismatch) and (pages < MAX_PAGES) and (crossed_old or ended_on_structural_empty)
     return out, {
         "url": board, "pagesScanned": pages, "rawRows": raw_rows,
         "recentRows": len(out), "paginationRepeated": repeat, "accessError": access_error,
         "explicitEmpty": explicit_empty, "crossedLookback": crossed_old,
         "naturalEnd": ended_on_structural_empty, "coverageComplete": complete,
+        "declaredTotalPages": declared_total_pages, "paginationCounterMismatch": pagination_counter_mismatch,
     }
 
 
