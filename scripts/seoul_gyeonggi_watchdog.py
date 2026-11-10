@@ -206,7 +206,7 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--selected-action", required=True)
-    p.add_argument("--supervisor-state", required=True)
+    p.add_argument("--supervisor-state", default="/tmp/production-supervisor.json")
     p.add_argument("--report", default="seoul_gyeonggi_refresh_report.json")
     p.add_argument("--snapshot", default="seoul_gyeonggi_jobs.json")
     p.add_argument("--unified", default="unified_jobs.json")
