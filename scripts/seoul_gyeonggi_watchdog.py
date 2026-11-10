@@ -130,14 +130,17 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
     if selected in {"skip-active-run", "skip-status-running"}:
         return selected, "another official writer is active"
     latest_verified = verified_snapshot(report, snapshot)
-    # Here "fresh" means there is sufficient buffer before the public 6-hour
-    # freshness deadline, NOT that the UI itself may claim freshness forever.
-    fresh = bool(latest_verified and timedelta(0) <= now - latest_verified < REGIONAL_REFRESH_AFTER)
+    snapshot_age = now - latest_verified if latest_verified else None
+    # Public display freshness and preemptive refresh timing are independent.
+    # Keep draining missing Unified publications until the original 6-hour
+    # deadline, but start the full regional re-scan at four hours.
+    public_fresh = bool(snapshot_age is not None and timedelta(0) <= snapshot_age < timedelta(hours=6))
+    refresh_not_due = bool(snapshot_age is not None and timedelta(0) <= snapshot_age < REGIONAL_REFRESH_AFTER)
     official_paused = selected in BLOCKED_ICE_ACTIONS
     # Regional collection may have succeeded while Unified still serves the
     # old 44-source version. Drain this publication backlog before private jobs.
     # Existing Unified circuit and recent-failure backoff remain binding.
-    if fresh and not unified_has_snapshot(unified, snapshot):
+    if public_fresh and not unified_has_snapshot(unified, snapshot):
         if selected in {"skip-unified-circuit-open", "skip-unified-backoff"}:
             return selected, "regional snapshot verified but Unified circuit/backoff is active"
         allowed, reason = unified_retry_gate(unified_runs, latest_verified, now)
@@ -148,7 +151,7 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
                 return "skip-unified-backoff", reason
             return selected, reason
         return "unified", "verified regional snapshot exists but is missing from Unified display"
-    if fresh:
+    if refresh_not_due:
         return ("skip-incheon-hold", "verified regional snapshot fresh; full ICE pipeline held") if official_paused else (selected, "verified regional snapshot fresh")
     active = [r for r in runs if r.get("event") == "workflow_dispatch" and
               r.get("head_branch") == "main" and r.get("status") in ACTIVE]
