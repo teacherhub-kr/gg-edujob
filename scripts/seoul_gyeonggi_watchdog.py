@@ -33,6 +33,38 @@ REGIONAL_POLICY = "seoul-gyeonggi-isolated-verified-v1"
 # A full 90-day regional traversal typically takes about an hour; keep a
 # two-hour margin for collection, independent checks, Unified and Pages.
 REGIONAL_REFRESH_AFTER = timedelta(hours=4)
+# Only an already vetted private-source dispatch key from the same supervisor
+# execution may fill the otherwise idle gap while verified regional data is fresh.
+ALLOWED_PRIVATE_FALLBACK = {
+    "private-lessoninfo", "private-lessoninfo-links", "private-jobteacher",
+    "private-artmore-candidate", "private-artmore-promote",
+    "private-gonggonggangsa", "private-cleaneye", "private-seekle",
+    "private-boramyc", "private-foundation",
+}
+
+
+def valid_private_fallback(supervisor_state, selected, now):
+    if not isinstance(supervisor_state, dict):
+        return None
+    when = parse_time(supervisor_state.get("generatedAt"))
+    if (when is None or when > now + timedelta(minutes=5) or
+            now - when > timedelta(minutes=10) or
+            supervisor_state.get("action") != selected or
+            supervisor_state.get("activeTargets") or
+            supervisor_state.get("activePrivateTargets")):
+        return None
+    chosen = supervisor_state.get("regionalPrivateFallbackAction")
+    if chosen not in ALLOWED_PRIVATE_FALLBACK:
+        return None
+    freshness = (supervisor_state.get("privateFreshness") or {}).get(chosen)
+    # ArtMore promotion is a special case: a recently verified candidate is
+    # newer than canonical, rather than a stale source.
+    if chosen != "private-artmore-promote" and not (
+        isinstance(freshness, dict) and freshness.get("overdue") is True
+    ):
+        return None
+    return chosen
+
 
 
 def verified_snapshot(report, snapshot):
@@ -125,7 +157,7 @@ def unified_retry_gate(runs, snapshot_at, now):
     return True, "Unified retry gate clear"
 
 
-def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_runs=None):
+def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_runs=None, private_fallback=None):
     """Return (action, reason), never edit data, never declare Incheon healthy."""
     if selected in {"skip-active-run", "skip-status-running"}:
         return selected, "another official writer is active"
@@ -152,6 +184,8 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
             return selected, reason
         return "unified", "verified regional snapshot exists but is missing from Unified display"
     if refresh_not_due:
+        if official_paused and private_fallback in ALLOWED_PRIVATE_FALLBACK:
+            return private_fallback, "verified Seoul/Gyeonggi current, Incheon held; use circuit-checked isolated private slot"
         return ("skip-incheon-hold", "verified regional snapshot fresh; full ICE pipeline held") if official_paused else (selected, "verified regional snapshot fresh")
     active = [r for r in runs if r.get("event") == "workflow_dispatch" and
               r.get("head_branch") == "main" and r.get("status") in ACTIVE]
@@ -172,6 +206,7 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--selected-action", required=True)
+    p.add_argument("--supervisor-state", required=True)
     p.add_argument("--report", default="seoul_gyeonggi_refresh_report.json")
     p.add_argument("--snapshot", default="seoul_gyeonggi_jobs.json")
     p.add_argument("--unified", default="unified_jobs.json")
@@ -197,9 +232,16 @@ def main():
     unified_run_data = json.loads(Path(a.unified_runs).read_text(encoding="utf-8"))
     if not isinstance(unified_run_data, dict) or not isinstance(unified_run_data.get("workflow_runs"), list):
         raise SystemExit("cannot verify Unified production writer run state")
+    now = datetime.now(timezone.utc)
+    try:
+        supervisor_state = json.loads(Path(a.supervisor_state).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        supervisor_state = None
+    fallback = valid_private_fallback(supervisor_state, a.selected_action, now)
     action, reason = decide(
-        a.selected_action, report, runs["workflow_runs"], datetime.now(timezone.utc),
+        a.selected_action, report, runs["workflow_runs"], now,
         snapshot=snapshot, unified=unified, unified_runs=unified_run_data["workflow_runs"],
+        private_fallback=fallback,
     )
     with open(a.github_output, "a", encoding="utf-8") as handle:
         handle.write(f"action={action}\n")
