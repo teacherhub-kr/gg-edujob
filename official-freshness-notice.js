@@ -19,11 +19,49 @@
     if(latest>now+5*60*1000)return {status:'unknown',lastVerified:null};
     return {status:now-latest>STALE_AFTER_MS?'stale':'fresh',lastVerified:new Date(latest).toISOString()};
   }
+  function classifyRegional(payload, nowMs){
+    var meta=payload&&payload.regionalPublication;
+    if(!meta || meta.policy!=='seoul-gyeonggi-isolated-verified-v1')return null;
+    var valid=meta.state==='verified' &&
+      meta.refreshedOfficialSourceCount===38 &&
+      meta.heldRegions&&meta.heldRegions['인천']&&meta.heldRegions['인천'].state==='stale';
+    var then=Date.parse(String(meta.generatedAt||''));
+    var now=Number.isFinite(nowMs)?nowMs:Date.now();
+    return {status:valid && Number.isFinite(then) && then<=now+5*60*1000 &&
+      now-then<=STALE_AFTER_MS ? 'regional-fresh':'regional-stale',
+      lastVerified:Number.isFinite(then)?new Date(then).toISOString():null};
+  }
   function render(status){
     if(typeof document==='undefined')return;
     var main=document.getElementById('appMain');
     if(!main)return;
     var existing=document.getElementById('officialFreshnessNotice');
+    if(status.status==='regional-fresh'||status.status==='regional-stale'){
+      var box=existing||document.createElement('aside');
+      box.id='officialFreshnessNotice';
+      box.className='official-freshness-notice';
+      box.setAttribute('role','status');
+      box.setAttribute('aria-live','polite');
+      box.replaceChildren();
+      var heading=document.createElement('strong');
+      heading.textContent=status.status==='regional-fresh'?
+        '서울·경기 공식공고 갱신 · 인천은 보류':
+        '서울·경기 공식공고 갱신 지연 · 인천은 보류';
+      var detail=document.createElement('span');
+      detail.textContent=(status.lastVerified?
+        '서울·경기 마지막 검증: '+new Intl.DateTimeFormat('ko-KR',{
+          timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',
+          hour:'2-digit',minute:'2-digit',hour12:false
+        }).format(new Date(status.lastVerified))+'. ':'')+
+        '인천교육청 공식공고는 갱신을 중단했으며 최신 공고가 이 검색에 포함되지 않습니다. 지원 전 채용기관 원문을 확인하세요.';
+      box.appendChild(heading);box.appendChild(detail);
+      var link=document.createElement('a');
+      link.href='https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997';
+      link.target='_blank';link.rel='noopener noreferrer';link.textContent='인천교육청 원문 보기';
+      box.appendChild(link);
+      if(!existing)main.insertBefore(box,main.firstChild);
+      return;
+    }
     if(status.status==='fresh'){if(existing)existing.remove();return;}
     var box=existing||document.createElement('aside');
     box.id='officialFreshnessNotice';
@@ -68,10 +106,16 @@
     try{
       var response=await fetch('./collector_status.json',{cache:'no-store',credentials:'same-origin'});
       if(!response.ok)throw Error('status not available');
-      render(classify(await response.json(),Date.now()));
+      var official=await response.json();
+      var regional=null;
+      try{
+        var unified=await fetch('./unified_jobs.json',{cache:'no-store',credentials:'same-origin'});
+        if(unified.ok)regional=classifyRegional(await unified.json(),Date.now());
+      }catch(error){/* missing regional metadata always falls back to strict legacy status */}
+      render(regional||classify(official,Date.now()));
     }catch(error){render({status:'unknown',lastVerified:null});}
   }
-  if(typeof module==='object'&&module.exports)module.exports={classify:classify,verifiedAt:verifiedAt};
+  if(typeof module==='object'&&module.exports)module.exports={classify:classify,classifyRegional:classifyRegional,verifiedAt:verifiedAt};
   if(typeof document!=='undefined'){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
     else start();
