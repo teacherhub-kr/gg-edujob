@@ -29,6 +29,10 @@ def parse_time(raw):
 
 
 REGIONAL_POLICY = "seoul-gyeonggi-isolated-verified-v1"
+# Start a verified refresh before the 6-hour user-facing staleness boundary.
+# A full 90-day regional traversal typically takes about an hour; keep a
+# two-hour margin for collection, independent checks, Unified and Pages.
+REGIONAL_REFRESH_AFTER = timedelta(hours=4)
 
 
 def verified_snapshot(report, snapshot):
@@ -126,7 +130,9 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
     if selected in {"skip-active-run", "skip-status-running"}:
         return selected, "another official writer is active"
     latest_verified = verified_snapshot(report, snapshot)
-    fresh = bool(latest_verified and timedelta(0) <= now - latest_verified < timedelta(hours=6))
+    # Here "fresh" means there is sufficient buffer before the public 6-hour
+    # freshness deadline, NOT that the UI itself may claim freshness forever.
+    fresh = bool(latest_verified and timedelta(0) <= now - latest_verified < REGIONAL_REFRESH_AFTER)
     official_paused = selected in BLOCKED_ICE_ACTIONS
     # Regional collection may have succeeded while Unified still serves the
     # old 44-source version. Drain this publication backlog before private jobs.
@@ -157,7 +163,7 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
         ended = parse_time(finished[0].get("updated_at") or finished[0].get("created_at"))
         if ended and timedelta(0) <= now - ended < timedelta(hours=6):
             return ("skip-incheon-hold", "regional writer in 6-hour failure backoff") if official_paused else (selected, "regional writer in failure backoff")
-    return REGIONAL_ACTION, "Seoul/Gyeonggi snapshot missing or older than 6 hours; Incheon held"
+    return REGIONAL_ACTION, "Seoul/Gyeonggi snapshot missing or older than the 4-hour preemptive refresh threshold; Incheon held"
 
 
 def main():
