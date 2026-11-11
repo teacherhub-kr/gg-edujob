@@ -29,6 +29,8 @@ on:
       - 'tests/test_seekle_historical_fixture.py'
       - 'tests/test_foundation_unified_projection.py'
       - 'tests/test_lessoninfo_full_view.py'
+      - 'tests/test_lessoninfo_drop_guard.py'
+      - 'scripts/lessoninfo_drop_guard.py'
       - 'tests/fixtures/seekle_21827.html'
       - 'verified_foundation_official_sources.json'
       - 'official_foundation_jobs.json'
@@ -98,7 +100,7 @@ jobs:
           print('registry check', official, private)
           PY
       - name: Historical private-source parser and direct-link regressions
-        run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view
+        run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view tests.test_lessoninfo_drop_guard
       - name: Verify independent private verification recency and conservative timestamps
         run: python -m unittest tests.test_private_source_freshness
       - name: Verify foundation projection and degraded-section isolation
