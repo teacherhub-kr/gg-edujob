@@ -94,6 +94,41 @@ class CentralTruncatedBodyTests(unittest.TestCase):
             self.assertEqual(post.call_count, 1)
 
 
+class IndependentCentralBodyRetryTests(unittest.TestCase):
+    def test_audit_retries_same_page_after_truncated_body(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        data = {"srchOcptCd": "B", "currPage": "5", "pageIndex": "50"}
+        response = mock.Mock()
+        with mock.patch.object(audit.S, "post", side_effect=[
+            requests.exceptions.ChunkedEncodingError("Response ended prematurely"),
+            response,
+        ]) as post, mock.patch.object(audit.time, "sleep"):
+            self.assertIs(audit.post("https://example.invalid/list", data), response)
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(post.call_args_list[0], post.call_args_list[1])
+
+    def test_audit_exhaustion_returns_no_response(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        with mock.patch.object(audit.S, "post", side_effect=
+                               requests.exceptions.ContentDecodingError("invalid body")) as post, mock.patch.object(audit.time, "sleep"):
+            self.assertIsNone(audit.post("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 3)
+
+    def test_audit_http_denial_remains_fail_closed(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        response = mock.Mock()
+        response.raise_for_status.side_effect = requests.HTTPError("403 Forbidden")
+        with mock.patch.object(audit.S, "post", return_value=response) as post:
+            self.assertIsNone(audit.post("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 1)
+
+
 class RegionalSnapshotTests(unittest.TestCase):
     def test_complete_two_region_proof_accepted(self):
         c, reg, central, gg = scenario()
