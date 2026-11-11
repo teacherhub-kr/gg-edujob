@@ -1,6 +1,10 @@
 name: Verified Seoul-Gyeonggi official refresh (Incheon isolated)
 on:
   workflow_dispatch:
+  # Direct 3-hour official refresh. The scheduled job only dispatches when
+  # the verified regional policy says collection is due and safe.
+  schedule:
+    - cron: '17 */3 * * *'
   pull_request:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
@@ -21,6 +25,55 @@ concurrency:
   group: metro-edujob-data
   cancel-in-progress: false
 jobs:
+  scheduled_official_dispatch:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Sync latest official scheduler policy
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Confirm verified snapshot, cooldown, and active writers
+        id: official_gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/seoul-gyeonggi-official.yml/runs?per_page=100" > /tmp/sg-scheduled-runs.json
+          gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/runs?per_page=100" > /tmp/sg-scheduled-unified.json
+          PYTHONPATH=scripts python scripts/seoul_gyeonggi_watchdog.py \
+            --selected-action fast \
+            --runs /tmp/sg-scheduled-runs.json \
+            --unified-runs /tmp/sg-scheduled-unified.json \
+            --github-output "$GITHUB_OUTPUT"
+      - name: Dispatch only independently due Seoul/Gyeonggi collection
+        if: github.event_name == 'schedule' && steps.official_gate.outputs.action == 'seoul-gyeonggi'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Re-check active production dispatches immediately before queuing.
+          active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/seoul-gyeonggi-official.yml/runs?per_page=100" \
+            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Existing official writer is active; skip duplicate dispatch."
+            exit 0
+          fi
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/seoul-gyeonggi-official.yml/dispatches" -f ref=main
+          echo "Dispatched verified Seoul/Gyeonggi official refresh; Incheon remains held."
+
   guri_official_live_proof:
     # Pull requests are read-only; only the approved official hiring boards
     # are scanned. This is required evidence before production merge.
@@ -84,6 +137,9 @@ jobs:
           PY
 
   regional:
+    # A schedule event is a read-only dispatcher; production collector still
+    # runs only on a fresh workflow_dispatch, preserving existing isolation.
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -104,7 +160,7 @@ jobs:
       - name: Static and regression contracts (no Incheon network calls)
         run: |
           python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py
-          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof
+          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |
