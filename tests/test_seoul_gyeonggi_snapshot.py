@@ -58,6 +58,42 @@ def scenario():
     return candidate, registry, central, gyeonggi
 
 
+class CentralTruncatedBodyTests(unittest.TestCase):
+    def test_retry_truncated_body_without_advancing_page(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        response = mock.Mock()
+        response.encoding = "utf-8"
+        data = {"srchOcptCd": "B", "currPage": "5", "pageIndex": "50", "srchEcptDl": ""}
+        with mock.patch.object(crawler.primary.S, "post", side_effect=[
+            requests.exceptions.ChunkedEncodingError("Response ended prematurely"),
+            response,
+        ]) as post, mock.patch.object(crawler.time, "sleep"):
+            self.assertIs(crawler.post_complete_central_page("https://example.invalid/list", data), response)
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(post.call_args_list[0], post.call_args_list[1])
+
+    def test_persistent_truncation_remains_fail_closed(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        with mock.patch.object(crawler.primary.S, "post", side_effect=
+                               requests.exceptions.ChunkedEncodingError("truncated")) as post, mock.patch.object(crawler.time, "sleep"):
+            self.assertIsNone(crawler.post_complete_central_page("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 3)
+
+    def test_http_access_denial_is_not_retried(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        response = mock.Mock()
+        response.raise_for_status.side_effect = requests.HTTPError("403 Forbidden")
+        with mock.patch.object(crawler.primary.S, "post", return_value=response) as post:
+            self.assertIsNone(crawler.post_complete_central_page("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 1)
+
+
 class RegionalSnapshotTests(unittest.TestCase):
     def test_complete_two_region_proof_accepted(self):
         c, reg, central, gg = scenario()
