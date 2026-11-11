@@ -197,6 +197,55 @@ class ProductionSupervisorTests(unittest.TestCase):
         self.assertNotIn("if len(rows) < 10:", source)
         self.assertIn("if not rows or not new_ids:", source)
 
+    def test_repeated_private_failures_back_off_and_yield_to_another_source(self):
+        from unittest.mock import patch
+        from scripts.production_supervisor import ARTMORE_PROMOTE_KEY, choose_private_refresh_action
+
+        now = datetime(2026, 9, 16, 12, 0, tzinfo=timezone.utc)
+        all_runs = {k: [] for k in (*PRIVATE_REFRESH_TARGETS, ARTMORE_PROMOTE_KEY)}
+        all_runs["private-boramyc"] = [run("failure", 0), run("failure", 2)]
+        refreshed = {k: now for k in PRIVATE_REFRESH_TARGETS}
+        refreshed["private-boramyc"] = now - timedelta(hours=1000)
+        refreshed["private-jobteacher"] = now - timedelta(hours=8)
+        freshness = {k: {"ageHours": 8, "maxAgeHours": 6} for k in PRIVATE_REFRESH_TARGETS}
+        with patch("scripts.production_supervisor.git_commit_time", return_value=None):
+            action, reason = choose_private_refresh_action(
+                now=now, all_runs=all_runs, private_refresh_times=refreshed,
+                private_freshness=freshness, active_private=[],
+            )
+        self.assertEqual(action, "private-jobteacher")
+        self.assertIn("private-jobteacher", reason)
+
+    def test_two_failure_backoff_is_bounded_and_single_failure_is_not_circuited(self):
+        from unittest.mock import patch
+        from scripts.production_supervisor import ARTMORE_PROMOTE_KEY, choose_private_refresh_action
+
+        now = datetime(2026, 9, 16, 12, 0, tzinfo=timezone.utc)
+        refreshed = {k: now for k in PRIVATE_REFRESH_TARGETS}
+        refreshed["private-boramyc"] = now - timedelta(hours=1000)
+        freshness = {k: {"ageHours": 1000, "maxAgeHours": 12} for k in PRIVATE_REFRESH_TARGETS}
+        all_runs = {k: [] for k in (*PRIVATE_REFRESH_TARGETS, ARTMORE_PROMOTE_KEY)}
+        with patch("scripts.production_supervisor.git_commit_time", return_value=None):
+            all_runs["private-boramyc"] = [run("failure", 2)]
+            action, _ = choose_private_refresh_action(
+                now=now, all_runs=all_runs, private_refresh_times=refreshed,
+                private_freshness=freshness, active_private=[],
+            )
+            self.assertEqual(action, "private-boramyc")
+            all_runs["private-boramyc"] = [run("failure", 0), run("failure", 2)]
+            action, reason = choose_private_refresh_action(
+                now=now, all_runs=all_runs, private_refresh_times=refreshed,
+                private_freshness=freshness, active_private=[],
+            )
+            self.assertEqual(action, "skip-private-backoff")
+            self.assertIn("private-boramyc:repeat-backoff:2", reason)
+            all_runs["private-boramyc"] = [run("failure", 7), run("failure", 8)]
+            action, _ = choose_private_refresh_action(
+                now=now, all_runs=all_runs, private_refresh_times=refreshed,
+                private_freshness=freshness, active_private=[],
+            )
+            self.assertEqual(action, "private-boramyc")
+
     def test_private_overdue_can_use_safe_idle_and_backoff_slots(self):
         self.assertIn("recovery", PRIVATE_REFRESH_IDLE_ACTIONS)
         self.assertIn("completeness", PRIVATE_REFRESH_IDLE_ACTIONS)
