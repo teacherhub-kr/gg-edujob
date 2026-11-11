@@ -33,15 +33,18 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Syntax check
-        run: python -m py_compile scripts/crawl_lessoninfo_jobs.py scripts/crawl_lessoninfo_browser.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_integrated.py scripts/run_lessoninfo_browser_resilient.py
+        run: python -m py_compile scripts/crawl_lessoninfo_jobs.py scripts/crawl_lessoninfo_browser.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_integrated.py scripts/run_lessoninfo_browser_resilient.py scripts/lessoninfo_drop_guard.py
 
       - name: Lessoninfo full-view regressions
-        run: python -m unittest tests.test_lessoninfo_full_view
+        run: python -m unittest tests.test_lessoninfo_full_view tests.test_lessoninfo_drop_guard
 
       - name: Snapshot previous Lessoninfo health baseline
         run: |
           if [ -f lessoninfo_reconciliation_report.json ]; then
             cp lessoninfo_reconciliation_report.json /tmp/lessoninfo_reconciliation_report.prev.json
+          fi
+          if [ -f lessoninfo_jobs.json ]; then
+            cp lessoninfo_jobs.json /tmp/lessoninfo_jobs.prev.json
           fi
 
       - name: Collect current Lessoninfo jobs in Chromium
@@ -93,31 +96,21 @@ jobs:
           if r.get('detailErrorCount') != 0:
               raise SystemExit('one or more Lessoninfo detail postings could not be verified')
 
-          # Fail closed on a sudden active-population collapse. Parser/location hardening can
-          # legitimately remove bad rows, but a >40% one-run drop needs review before replacing
-          # the last-known-good dataset. This is count-regression evidence, never a completeness
-          # proof by itself.
+          # Explain sudden drops by exact stable IDs and deterministic inactive reasons.
+          # Any missing ID, route mismatch, incomplete crawl or suspect date fails closed.
           prevp = pathlib.Path('/tmp/lessoninfo_reconciliation_report.prev.json')
           if prevp.exists():
+              from scripts.lessoninfo_drop_guard import validate_population_drop
               prev = json.loads(prevp.read_text(encoding='utf-8'))
-              if prev.get('healthy'):
-                  prev_total = int(prev.get('activeIdCount') or prev.get('publishedIdCount') or 0)
-                  cur_total = int(r.get('activeIdCount') or 0)
-                  if prev_total >= 50 and cur_total * 100 < prev_total * 60:
-                      raise SystemExit(
-                          f'Lessoninfo abnormal active drop: {cur_total}/{prev_total} '
-                          f'({cur_total / prev_total:.1%}); last-known-good preserved'
-                      )
-                  prev_surface = prev.get('perSurfaceActive') or {}
-                  cur_surface = r.get('perSurfaceActive') or {}
-                  for key, old_raw in prev_surface.items():
-                      old = int(old_raw or 0)
-                      new = int(cur_surface.get(key) or 0)
-                      if old >= 20 and new * 100 < old * 60:
-                          raise SystemExit(
-                              f'Lessoninfo abnormal surface drop for {key}: {new}/{old} '
-                              f'({new / old:.1%}); last-known-good preserved'
-                          )
+              oldp = pathlib.Path('/tmp/lessoninfo_jobs.prev.json')
+              allp = pathlib.Path('lessoninfo_all_candidates.json')
+              old_data = json.loads(oldp.read_text(encoding='utf-8')) if oldp.exists() else {}
+              all_data = json.loads(allp.read_text(encoding='utf-8')) if allp.exists() else {}
+              try:
+                  for line in validate_population_drop(prev, r, old_data, all_data):
+                      print(line)
+              except ValueError as exc:
+                  raise SystemExit(str(exc)) from exc
 
           counts = r.get('classificationCounts') or {}
           print('Lessoninfo region-unconfirmed candidates:', int(counts.get('region-unconfirmed') or 0))
