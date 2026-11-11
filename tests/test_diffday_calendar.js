@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * diffDay() calendar-day regression test.
+ * dayDiff() calendar-day regression test.
  *
- * Before this fix diffDay() compared a 23:59:59 deadline against today 00:00 and applied
+ * Before this fix dayDiff() compared a 23:59:59 deadline against today 00:00 and applied
  * Math.ceil(), so a posting closing TODAY reported D-1 and a posting that closed YESTERDAY
  * reported 0 (i.e. it was still treated as open and shown to users).
  *
@@ -16,21 +16,29 @@
 const fs = require('fs');
 const path = require('path');
 
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const app = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
 
-// Pull the three real functions out of index.html so the test exercises shipped code.
-function extract(name) {
-  const i = html.indexOf('function ' + name + '(');
-  if (i < 0) throw new Error('missing function ' + name);
-  let depth = 0, started = false;
-  for (let k = i; k < html.length; k++) {
-    if (html[k] === '{') { depth++; started = true; }
-    else if (html[k] === '}') { depth--; if (started && depth === 0) return html.slice(i, k + 1); }
+// Pull the real arrow-function helpers out of app.js so the test exercises shipped code.
+function extractConst(name) {
+  const start = app.indexOf('const ' + name + '=');
+  if (start < 0) throw new Error('missing const ' + name);
+  const brace = app.indexOf('{', start);
+  if (brace < 0) throw new Error('missing body for ' + name);
+  let depth = 0;
+  for (let k = brace; k < app.length; k++) {
+    if (app[k] === '{') depth++;
+    else if (app[k] === '}') {
+      depth--;
+      if (depth === 0) {
+        const semi = app.indexOf(';', k);
+        return app.slice(start, semi + 1);
+      }
+    }
   }
   throw new Error('unterminated ' + name);
 }
-const src = [extract('parseDate'), extract('today0'), extract('diffDay')].join('\n');
-const diffDay = new Function(src + '\nreturn diffDay;')();
+const src = [extractConst('parseDate'), extractConst('today0'), extractConst('dayDiff')].join('\n');
+const diffDay = new Function(src + '\nreturn dayDiff;')();
 
 const pad = n => String(n).padStart(2, '0');
 const offsetDate = n => {
@@ -71,15 +79,18 @@ check('마감 제외 경계: 어제는 제외됨',       diffDay(offsetDate(-1))
 
 // ── 5-bucket comparator 경계 (main 구현을 그대로 추출해 검증) ─────────────────
 // bucket 0: 0~3일 / bucket 1: 4~7일 / bucket 3: 8일 이상 / bucket 2: 마감없음+공식+최근7일
-// bucket 4: 그 외 마감없음. diffDay 수정이 버킷 경계를 밀지 않는지 확인한다.
-const bucketSrc = [extract('parseDate'), extract('today0'), extract('diffDay'),
-                   extract('deadlineSortKey')].join('\n');
+// bucket 4: 그 외 마감없음. dayDiff 수정이 버킷 경계를 밀지 않는지 확인한다.
+const bucketSrc = [extractConst('parseDate'), extractConst('today0'), extractConst('dayDiff'),
+                   extractConst('deadlineSortKey')].join('\n');
 const deadlineSortKey = new Function(bucketSrc + '\nreturn deadlineSortKey;')();
 const bucketOf = (endOffset, regOffset, feedKind) => deadlineSortKey({
-  applyEnd: endOffset === null ? '' : offsetDate(endOffset),
-  registered: regOffset === null ? '' : offsetDate(-regOffset),
-  feedKind: feedKind || 'official',
-  sourceIdentity: 'x'
+  key:'x',
+  j:{
+    applyEnd: endOffset === null ? '' : offsetDate(endOffset),
+    registered: regOffset === null ? '' : offsetDate(-regOffset),
+    feedKind: feedKind || 'official',
+    sourceIdentity: 'x'
+  }
 })[0];
 
 check('bucket 경계 D0  -> 0', bucketOf(0, 0), 0);

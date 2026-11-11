@@ -188,12 +188,23 @@ def nsart_detail_candidates(session: requests.Session, foundation: dict, board_u
     return candidates, surface_urls
 
 
+def nsart_candidate_in_window(meta: dict, today: date) -> bool:
+    registered = meta.get("registered")
+    if registered is None:
+        return True
+    return today - timedelta(days=90) <= registered <= today
+
+
 def nsart_rows(session: requests.Session, foundation: dict, board_url: str) -> tuple[list[dict], dict]:
     today = datetime.now(KST).date()
     rows = []
     candidates, surfaces = nsart_detail_candidates(session, foundation, board_url)
     inspected = 0
+    stale_skipped = 0
     for bpo, meta in sorted(candidates.items(), key=lambda item: int(item[0]), reverse=True):
+        if not nsart_candidate_in_window(meta, today):
+            stale_skipped += 1
+            continue
         inspected += 1
         detail = request(session, str(meta["url"]))
         detail_soup = BeautifulSoup(detail.text, "html.parser")
@@ -208,7 +219,7 @@ def nsart_rows(session: requests.Session, foundation: dict, board_url: str) -> t
             continue
         fid = str(foundation.get("id") or "")
         rows.append({"sourceIdentity": f"official-foundation:nsart:{bpo}", "foundationRegistryId": fid, "foundationName": foundation.get("name") or "광주시문화재단", "organization": foundation.get("name") or "광주시문화재단", "source": foundation.get("name") or "광주시문화재단", "sourceType": "문화재단 공식채용", "sourceSurface": "cultural-foundation", "sourceSurfaceLabel": f"{foundation.get('name') or '문화재단'} 공식 채용공고", "sourceRole": "primary-official", "trustLevel": "공식", "province": foundation.get("region") or "경기", "region": foundation.get("municipality") or "", "regions": [foundation.get("municipality")] if foundation.get("municipality") else [], "location": " ".join(x for x in [foundation.get("region"), foundation.get("municipality")] if x), "title": title, "registered": format_date(reg), "applyEnd": format_date(end), "url": detail.url, "originalUrl": detail.url, "detailUrl": detail.url, "boardUrl": board_url, "detailLinkVerified": True, "detailLinkReason": "official-foundation-detail-id", "transportVerified": True})
-    return rows, {"adapter": "nsart", "surfacesChecked": surfaces, "discoveredDetailLinks": len(candidates), "inspectedDetailLinks": inspected, "publishedCurrentJobs": len(rows)}
+    return rows, {"adapter": "nsart", "surfacesChecked": surfaces, "discoveredDetailLinks": len(candidates), "inspectedDetailLinks": inspected, "staleListCandidatesSkipped": stale_skipped, "publishedCurrentJobs": len(rows)}
 
 
 def main() -> int:

@@ -33,12 +33,18 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Syntax check
-        run: python -m py_compile scripts/crawl_lessoninfo_jobs.py scripts/crawl_lessoninfo_browser.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_integrated.py scripts/run_lessoninfo_browser_resilient.py
+        run: python -m py_compile scripts/crawl_lessoninfo_jobs.py scripts/crawl_lessoninfo_browser.py scripts/run_lessoninfo_browser_fast.py scripts/run_lessoninfo_browser_integrated.py scripts/run_lessoninfo_browser_resilient.py scripts/lessoninfo_drop_guard.py
+
+      - name: Lessoninfo full-view regressions
+        run: python -m unittest tests.test_lessoninfo_full_view tests.test_lessoninfo_drop_guard
 
       - name: Snapshot previous Lessoninfo health baseline
         run: |
           if [ -f lessoninfo_reconciliation_report.json ]; then
             cp lessoninfo_reconciliation_report.json /tmp/lessoninfo_reconciliation_report.prev.json
+          fi
+          if [ -f lessoninfo_jobs.json ]; then
+            cp lessoninfo_jobs.json /tmp/lessoninfo_jobs.prev.json
           fi
 
       - name: Collect current Lessoninfo jobs in Chromium
@@ -90,31 +96,21 @@ jobs:
           if r.get('detailErrorCount') != 0:
               raise SystemExit('one or more Lessoninfo detail postings could not be verified')
 
-          # Fail closed on a sudden active-population collapse. Parser/location hardening can
-          # legitimately remove bad rows, but a >40% one-run drop needs review before replacing
-          # the last-known-good dataset. This is count-regression evidence, never a completeness
-          # proof by itself.
+          # Explain sudden drops by exact stable IDs and deterministic inactive reasons.
+          # Any missing ID, route mismatch, incomplete crawl or suspect date fails closed.
           prevp = pathlib.Path('/tmp/lessoninfo_reconciliation_report.prev.json')
           if prevp.exists():
+              from scripts.lessoninfo_drop_guard import validate_population_drop
               prev = json.loads(prevp.read_text(encoding='utf-8'))
-              if prev.get('healthy'):
-                  prev_total = int(prev.get('activeIdCount') or prev.get('publishedIdCount') or 0)
-                  cur_total = int(r.get('activeIdCount') or 0)
-                  if prev_total >= 50 and cur_total * 100 < prev_total * 60:
-                      raise SystemExit(
-                          f'Lessoninfo abnormal active drop: {cur_total}/{prev_total} '
-                          f'({cur_total / prev_total:.1%}); last-known-good preserved'
-                      )
-                  prev_surface = prev.get('perSurfaceActive') or {}
-                  cur_surface = r.get('perSurfaceActive') or {}
-                  for key, old_raw in prev_surface.items():
-                      old = int(old_raw or 0)
-                      new = int(cur_surface.get(key) or 0)
-                      if old >= 20 and new * 100 < old * 60:
-                          raise SystemExit(
-                              f'Lessoninfo abnormal surface drop for {key}: {new}/{old} '
-                              f'({new / old:.1%}); last-known-good preserved'
-                          )
+              oldp = pathlib.Path('/tmp/lessoninfo_jobs.prev.json')
+              allp = pathlib.Path('lessoninfo_all_candidates.json')
+              old_data = json.loads(oldp.read_text(encoding='utf-8')) if oldp.exists() else {}
+              all_data = json.loads(allp.read_text(encoding='utf-8')) if allp.exists() else {}
+              try:
+                  for line in validate_population_drop(prev, r, old_data, all_data):
+                      print(line)
+              except ValueError as exc:
+                  raise SystemExit(str(exc)) from exc
 
           counts = r.get('classificationCounts') or {}
           print('Lessoninfo region-unconfirmed candidates:', int(counts.get('region-unconfirmed') or 0))
@@ -124,6 +120,36 @@ jobs:
               raise SystemExit('missing Lessoninfo published dataset')
           d = json.loads(jp.read_text(encoding='utf-8'))
           jobs = d if isinstance(d, list) else (d.get('jobs') or [])
+
+          ap = pathlib.Path('lessoninfo_all_candidates.json')
+          if not ap.exists():
+              raise SystemExit('missing Lessoninfo full candidate dataset')
+          ad = json.loads(ap.read_text(encoding='utf-8'))
+          all_jobs = ad.get('jobs') or []
+          if ad.get('policy') != 'lessoninfo-120d-all-candidates-v1':
+              raise SystemExit('wrong Lessoninfo full-view policy')
+          if int(ad.get('candidateCount') or 0) != int(r.get('candidateIdCount') or 0):
+              raise SystemExit(
+                  f"Lessoninfo full-view candidate mismatch: {ad.get('candidateCount')}/{r.get('candidateIdCount')}"
+              )
+          if len(all_jobs) != int(r.get('candidateIdCount') or 0):
+              raise SystemExit('Lessoninfo full-view row count mismatch')
+          all_ids = [str(j.get('sourceIdentity') or '') for j in all_jobs]
+          if not all(all_ids) or len(all_ids) != len(set(all_ids)):
+              raise SystemExit('Lessoninfo full-view stable IDs are missing or duplicated')
+          current_ids = {str(j.get('sourceIdentity') or '') for j in all_jobs if j.get('isCurrent') is True}
+          published_ids = {str(j.get('sourceIdentity') or '') for j in jobs if j.get('sourceIdentity')}
+          if current_ids != published_ids:
+              raise SystemExit(
+                  f'Lessoninfo full-view current set mismatch: {len(current_ids)}/{len(published_ids)}'
+              )
+          for row in all_jobs:
+              reason = str(row.get('classificationReason') or '')
+              if reason in {'detail-route-mismatch','detail-content-mismatch','detail-error','unclassified'}:
+                  if row.get('url') or row.get('originalUrl') or row.get('clickable') is True:
+                      raise SystemExit(
+                          f"unsafe Lessoninfo full-view row exposes clickable URL: {row.get('sourceIdentity')}"
+                      )
           bad = [
               {'id': j.get('sourceIdentity'),'title': j.get('title'),'metroRegion': j.get('metroRegion'),'location': j.get('location')}
               for j in jobs if j.get('metroRegion') not in {'서울', '경기'}
@@ -162,6 +188,7 @@ jobs:
           cp lessoninfo_reconciliation_report.json /tmp/lessoninfo-diagnostics/ 2>/dev/null || true
           cp lessoninfo_collection_state.json /tmp/lessoninfo-diagnostics/ 2>/dev/null || true
           cp lessoninfo_jobs.json /tmp/lessoninfo-diagnostics/ 2>/dev/null || true
+          cp lessoninfo_all_candidates.json /tmp/lessoninfo-diagnostics/ 2>/dev/null || true
 
       - name: Upload failed Lessoninfo diagnostics
         if: steps.collect.outcome != 'success' || steps.validate.outcome != 'success'
@@ -177,7 +204,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add lessoninfo_jobs.json lessoninfo_source_id_ledger.json lessoninfo_reconciliation_report.json lessoninfo_collection_state.json 2>/dev/null || true
+          git add lessoninfo_jobs.json lessoninfo_all_candidates.json lessoninfo_source_id_ledger.json lessoninfo_reconciliation_report.json lessoninfo_collection_state.json 2>/dev/null || true
           if ! git diff --cached --quiet; then
             git commit -m 'Update current Lessoninfo recruitment collection'
             for i in 1 2 3; do

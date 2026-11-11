@@ -1,0 +1,31 @@
+name: JobTeacher card enrichment regression
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/build_unified_search_multi.py'
+      - 'tests/test_jobteacher_card_enrichment.py'
+      - '.github/workflows/jobteacher-card-regression.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_unified_search_multi.py'
+      - 'tests/test_jobteacher_card_enrichment.py'
+      - '.github/workflows/jobteacher-card-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Verify JobTeacher first-screen enrichment
+        run: python -m unittest tests.test_jobteacher_card_enrichment

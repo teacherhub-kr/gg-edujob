@@ -506,19 +506,24 @@ def seoul_seq_from_row(tr):
 
 
 def seoul_detail_anchor_for_seq(tr, seq):
-    """Return the anchor that actually opens this SEN job_seq detail row."""
+    """Return the exact SEN detail-title anchor for this job_seq."""
     seq = str(seq or "")
     if not seq:
         return None
+    matched = []
     for a in tr.find_all("a"):
         raw = " ".join((a.get("href", "") or "", a.get("onclick", "") or ""))
         if re.search(rf"fncDetailView\s*\(\s*['\"]?{re.escape(seq)}(?:['\"]|\s|,|\))", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"job_seq\s*[=,'\"() ]+{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
+            matched.append(a)
+            continue
         if re.search(rf"JOV11\.do[^\n]*?(?:job_seq\D*)?{re.escape(seq)}(?:\D|$)", raw, re.I):
-            return a
-    return None
+            matched.append(a)
+    # SEN rows may link both institution and subject cells to the same detail.
+    # The subject/detail-title link is the final matching anchor in the row.
+    return matched[-1] if matched else None
 
 
 def seoul_row_values(table, tr):
@@ -545,10 +550,41 @@ def seoul_row_values(table, tr):
             vals[headers[i]] = clean(td.get_text(" ", strip=True))
     return vals
 
+
+SEOUL_EMPTY_FIELD_VALUES = {"", "-", "–", "—", "·"}
+
+
+def meaningful_seoul_value(value):
+    value = clean(value)
+    return "" if value in SEOUL_EMPTY_FIELD_VALUES else value
+
+
+def seoul_subject_from_values(vals):
+    field1 = meaningful_seoul_value(first_of(vals, ["분야1", "분야 1"]))
+    field2 = meaningful_seoul_value(first_of(vals, ["분야2", "분야 2"]))
+    parts = [value for value in (field1, field2) if value]
+    if parts:
+        return " / ".join(parts)
+    return meaningful_seoul_value(first_of(vals, ["분야(과목)", "과목", "분야"]))
+
+
+def seoul_title_from_values(vals, fallback=""):
+    explicit = meaningful_seoul_value(first_of(vals, ["제목", "공고명"]))
+    if explicit:
+        return explicit
+    subject = seoul_subject_from_values(vals)
+    if subject:
+        return subject
+    return meaningful_seoul_value(fallback)
+
+
 def scrape_seoul_office(src):
+    from seoul_support_detail_metadata import exact_registration_from_detail
+
     office, board, regions = src["name"], src["boardUrl"], src.get("regions",[])
     print("SEOUL OFFICE", office)
     out, seen = [], set(); raw_rows=0; explicit_empty=False; got_table=False; consecutive_old_pages=0; parse_incomplete=0
+    detail_registration = {}
     page = 1
     while True:
         r = get(board, params={"pageIndex":page})
@@ -571,24 +607,32 @@ def scrape_seoul_office(src):
                 vals=seoul_row_values(table,tr)
                 detail_anchor=seoul_detail_anchor_for_seq(tr,seq)
                 anchors=[a for a in tr.find_all("a") if clean(a.get_text(" ",strip=True))]
-                title=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")
+                anchor_fallback=clean(detail_anchor.get_text(" ",strip=True) if detail_anchor else "")
+                if not meaningful_seoul_value(anchor_fallback):
+                    anchor_fallback=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
+                title=seoul_title_from_values(vals,anchor_fallback)
+                subject=seoul_subject_from_values(vals)
                 if not title:
-                    title=first_of(vals,["제목","공고명"])
-                if not title:
-                    title=clean(max((a.get_text(" ",strip=True) for a in anchors),key=len,default=""))
-                if len(title)<3 or EXCLUDE_WORDS.search(title): continue
+                    parse_incomplete += 1
+                    continue
+                if EXCLUDE_WORDS.search(title): continue
                 registered=date_norm(first_of(vals,["등록일","작성일"]))
+                if not registered and len(detail_registration) < 40:
+                    school_for_detail=first_of(vals,["학교명","기관명","작성자"])
+                    if school_for_detail:
+                        detail_registration[seq]=exact_registration_from_detail(
+                            S, board, seq, school_for_detail, first_of(vals,["마감일","접수마감일"])
+                        )
+                        registered=detail_registration[seq]
                 if registered: page_dates.append(registered)
                 if registered and not recent_enough(registered,90): continue
                 page_recent+=1
                 school=first_of(vals,["학교명","기관명","작성자"]) or school_from_title(title)
                 title_school_collision = bool(school and norm(title) == norm(school)) or norm(title) == norm(office)
-                if not registered or not detail_anchor or title_school_collision:
+                if not registered or title_school_collision:
                     parse_incomplete += 1
                     continue
                 raw_level=first_of(vals,["학교급별","학교급","대상"]); raw_type=first_of(vals,["직종","고용형태","구분"])
-                subject_parts=[first_of(vals,["분야1"]),first_of(vals,["분야2"])]
-                subject=" / ".join(x for x in subject_parts if x) or first_of(vals,["분야(과목)","분야","과목"])
                 apply_end=date_norm(first_of(vals,["마감일","접수마감일"])); region=first_of(vals,["지역"])
                 if region not in SEOUL_REGIONS: region=find_region(f"{region} {title} {school}",regions)
                 if not region and len(regions)==1: region=regions[0]

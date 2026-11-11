@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json
+import json, re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import build_unified_search as base
-from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health, source_verification_freshness
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -25,12 +25,16 @@ def canonical_url_multi(raw):
             empyear=str((q.get("empyear") or [""])[0]); entseq=str((q.get("entSeq") or [""])[0]); entid=str((q.get("ypEntId") or [""])[0])
             if empyear.isdigit() and entseq.isdigit() and entid:
                 return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"empyear":empyear,"entSeq":entseq,"ypEntId":entid}),""))
+        if host in {"ifac.or.kr", "www.ifac.or.kr"} and p.path.endswith("/bbs/view.do"):
+            article_id=str((q.get("bbsSn") or [""])[0])
+            if article_id.isdigit():
+                return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"bbsSn":article_id}),""))
         bpo=str((q.get("bpoId") or [""])[0])
         if bpo.isdigit() and (host=="nsart.or.kr" or host.endswith(".nsart.or.kr")) and p.path.endswith("/board/recruit.do"):
-            # bpoId is the official article identity. Dropping it collapses separate recruitment
-            # notices on the same board into one URL and can silently discard valid official jobs.
             return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"act":"read","bpoId":bpo}),""))
         idx=str((q.get("idx") or [""])[0])
+        if idx.isdigit() and host in {"swcf.or.kr", "www.swcf.or.kr"} and str((q.get("p") or [""])[0]) == "116":
+            return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"p":"116","viewMode":"view","idx":idx}),""))
         if idx.isdigit() and host.endswith("seekle.or.kr") and p.path.endswith("/sub07/sub01.php"):
             return urlunparse((p.scheme.lower(),p.netloc.lower(),p.path,"",urlencode({"idx":idx,"ptype":"view"}),""))
         if idx.isdigit() and host.endswith("boramyc.or.kr") and p.path.endswith("/sub06/sub01.php"):
@@ -40,6 +44,69 @@ def canonical_url_multi(raw):
     return _BASE_CANONICAL_URL(raw)
 
 base.canonical_url=canonical_url_multi
+
+
+JOBTEACHER_TARGET_RE = re.compile(
+    r"(?:^|\s)(유/?초등부|초/?중/?고등부|중/?고등부|고등/?재수|대학/?일반|유아|유치부|초등부|중등부|고등부|재수|기타)\s*$"
+)
+JOBTEACHER_LOCATION_PREFIX_RE = re.compile(
+    r"^(?:(?:서울|경기|인천)\s+(?:전체|[가-힣]+(?:시|구|군))\s*)+(?:외\s*)?"
+)
+JOBTEACHER_SUBJECT_RULES = [
+    ("물리", r"물리"),
+    ("화학", r"화학"),
+    ("생명과학", r"생명(?:과학)?|생물"),
+    ("지구과학", r"지구과학"),
+    ("통합과학", r"통합과학"),
+    ("과학", r"(?<![가-힣])과학(?:계열)?|중등과학"),
+    ("국어", r"국어"),
+    ("영어", r"영어"),
+    ("수학", r"수학|수리"),
+    ("사회", r"(?<![가-힣])사회(?![가-힣])|통합사회"),
+    ("역사", r"역사|한국사"),
+    ("지리", r"지리"),
+    ("윤리·도덕", r"윤리|도덕"),
+    ("일본어", r"일본어|일어|JPT"),
+    ("중국어", r"중국어|중어|HSK"),
+    ("토익", r"토익"),
+    ("토플", r"토플"),
+    ("텝스", r"텝스|TEPS"),
+    ("영어회화", r"영어회화"),
+    ("독서·논술", r"독서|논술"),
+    ("음악", r"음악|피아노|바이올린|첼로|플루트|오케스트라|관현악|밴드"),
+    ("미술", r"미술|디자인"),
+    ("체육", r"체육|스포츠"),
+    ("정보·코딩", r"정보|컴퓨터|코딩|소프트웨어|인공지능|AI"),
+]
+
+
+def jobteacher_card_fields(job):
+    """Derive academy, recruitment copy, target and subject tags from JobTeacher list-row evidence."""
+    school=" ".join(str(job.get("title") or "").split()).strip()
+    raw=" ".join(str(job.get("rawRowText") or "").split()).strip()
+    content=raw
+    if school and content.startswith(school):
+        content=content[len(school):].strip()
+    content=JOBTEACHER_LOCATION_PREFIX_RE.sub("",content).strip()
+    subject_evidence=content
+    content=re.split(r"\s+(?:스크랩|새창보기)\b",content,maxsplit=1)[0].strip()
+    target=""
+    m=JOBTEACHER_TARGET_RE.search(content)
+    if m:
+        target=m.group(1)
+        content=content[:m.start()].strip()
+    recruitment_title=content or school or "학원 강사 모집"
+    subjects=[]
+    for label,pattern in JOBTEACHER_SUBJECT_RULES:
+        if re.search(pattern,subject_evidence,re.I):
+            subjects.append(label)
+    subjects=list(dict.fromkeys(subjects))
+    return {
+        "school": school,
+        "title": recruitment_title[:180],
+        "target": target,
+        "subjects": subjects[:8],
+    }
 
 
 def load(path,default=None):
@@ -55,6 +122,14 @@ def project_private_generic(job,source_name):
     row["source"]=str(job.get("source") or source_name)
     row["sourceSurfaceLabel"]=str(job.get("sourceSurfaceLabel") or source_name)
     row["sourceRole"]=str(job.get("sourceRole") or "supplemental")
+    if source_name=="레슨인포" and "statusGroup" in job:
+        row["fullCandidate"]=True
+        row["statusGroup"]=str(job.get("statusGroup") or "review")
+        row["statusLabel"]=str(job.get("statusLabel") or "검증 필요")
+        row["classificationReason"]=str(job.get("classificationReason") or "")
+        row["isCurrent"]=job.get("isCurrent") is True
+        row["clickable"]=job.get("clickable") is True
+        row["sourceDisclosure"]="민간출처"
     if row.get("school")=="레슨인포 구인" and source_name!="레슨인포": row["school"]=source_name+" 구인"
     explicit_provinces=[str(x) for x in (job.get("provinces") or []) if str(x)]
     if explicit_provinces:
@@ -64,6 +139,18 @@ def project_private_generic(job,source_name):
     explicit_regions=[str(x) for x in (job.get("regions") or []) if str(x)]
     if explicit_regions:
         row["regions"]=list(dict.fromkeys(explicit_regions)); row["region"]=str(job.get("region") or row["region"] or row["regions"][0])
+
+    if source_name=="잡티처":
+        fields=jobteacher_card_fields(job)
+        if fields["school"]: row["school"]=fields["school"]
+        if fields["title"]: row["title"]=fields["title"]
+        subject_parts=[]
+        if fields["target"]: subject_parts.append(fields["target"])
+        subject_parts.extend(fields["subjects"])
+        if subject_parts: row["subject"]=" · ".join(dict.fromkeys(subject_parts))
+        row["academyTarget"]=fields["target"]
+        row["academySubjects"]=fields["subjects"]
+        row["categories"]=list(dict.fromkeys((row.get("categories") or [])+["학원강사"]))
 
     if source_name=="클린아이 잡플러스":
         row["trustLevel"]="공공"
@@ -77,11 +164,10 @@ def project_private_generic(job,source_name):
         row["foundationRegistryId"]=str(job.get("foundationRegistryId") or "")
         row["cleaneyeUrl"]=str(job.get("cleaneyeUrl") or row.get("url") or "")
 
-    # Lessoninfo culture is discovery-only for authority/deadlines. It may still expose an
-    # individually verified destination, but it is never treated as proof that foundation
-    # coverage is complete; CleanEye/ArtMore/official-board evidence outranks it.
     if source_name=="레슨인포" and str(job.get("sourceSurface") or "")=="culture-arts":
         row["sourceRole"]="discovery-only"
+        row["sourceDisclosure"]="민간출처"
+        row["linkDisclosure"]="상세링크 검증완료" if job.get("detailLinkVerified") is True else "상세링크 미검증"
         row["detailLinkVerified"]=job.get("detailLinkVerified")
         row["detailLinkReason"]=str(job.get("detailLinkReason") or job.get("detailLinkVerificationReason") or "")
         row["verifiedAt"]=str(job.get("verifiedAt") or "")
@@ -92,6 +178,12 @@ def project_private_generic(job,source_name):
             row["url"]=""; row["originalUrl"]=""; row["detailLinkVerified"]=False
         else:
             verified_url=str(job.get("verifiedUrl") or ""); row["url"]=verified_url; row["originalUrl"]=verified_url; row["detailLinkVerified"]=True
+
+    if source_name=="레슨인포" and row.get("fullCandidate") is True:
+        status=str(row.get("statusLabel") or "검증 필요")
+        subject=str(row.get("subject") or "").strip()
+        prefix=f"민간출처 · {status}"
+        row["subject"]=prefix + (f" · {subject}" if subject else "")
 
     row["searchText"]=base.norm(" ".join(map(str,[row.get("school"),row.get("title"),row.get("subject"),row.get("region")," ".join(row.get("regions") or []),row.get("province")," ".join(row.get("provinces") or []),row.get("location"),row.get("source"),row.get("sourceSurfaceLabel"),row.get("type")," ".join(row.get("categories") or [])])))
     return row
@@ -112,6 +204,7 @@ def project_foundation_official(job):
     row["categories"]=["문화예술","공공 문화재단"]
     row["subject"]="문화예술 · 공공 문화재단"
     row["foundationRegistryId"]=str(job.get("foundationRegistryId") or "")
+    row["deadlineVerification"]=str(job.get("deadlineVerification") or ("verified" if job.get("applyEnd") else "unverified-recent-official-post"))
     row["boardUrl"]=str(job.get("boardUrl") or "")
     row["detailLinkVerified"]=job.get("detailLinkVerified") is True
     row["detailLinkReason"]=str(job.get("detailLinkReason") or "official-foundation-detail")
@@ -119,6 +212,35 @@ def project_foundation_official(job):
     row["originalUrl"]=str(job.get("originalUrl") or job.get("url") or row.get("url") or "")
     row["searchText"]=base.norm(" ".join(map(str,[row.get("school"),row.get("title"),row.get("subject"),row.get("region")," ".join(row.get("regions") or []),row.get("province")," ".join(row.get("provinces") or []),row.get("location"),row.get("source"),row.get("sourceSurfaceLabel"),row.get("type")," ".join(row.get("categories") or [])])))
     return row
+
+
+def foundation_official_current(job):
+    if job.get("province") not in {"서울", "경기", "인천"}:
+        return False
+    if job.get("sourceRole") != "primary-official":
+        return False
+    if job.get("detailLinkVerified") is not True or job.get("transportVerified") is not True:
+        return False
+    if not job.get("foundationRegistryId") or not job.get("sourceIdentity"):
+        return False
+    if not str(job.get("url") or "").startswith("https://"):
+        return False
+    title = str(job.get("title") or "")
+    if base.PRIVATE_BANNED_RE.search(title) or base.PROMO_ONLY_RE.search(title) or base.RESULT_RE.search(title):
+        return False
+    registered = base.parse_date(job.get("registered"))
+    deadline = base.parse_date(job.get("applyEnd"))
+    if not registered or registered > base.TODAY or registered < base.TODAY - timedelta(days=120):
+        return False
+    if deadline and (deadline < base.TODAY or registered > deadline):
+        return False
+    if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=14)):
+        return False
+    if job.get("foundationRegistryId") in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam", "seoul:guro"}:
+        foundation_name = base.norm(str(job.get("foundationName") or ""))
+        if not foundation_name or foundation_name.replace(" ", "") not in base.norm(title).replace(" ", ""):
+            return False
+    return True
 
 
 def dedupe_multi_source(rows):
@@ -143,22 +265,73 @@ def dedupe_multi_source(rows):
     return out,exact_url_groups
 
 
+def verified_regional_snapshot():
+    """Use the independently verified Seoul/Gyeonggi snapshot when present.
+
+    Malformed or mismatched proof fails closed. It must never silently fall back
+    to October's canonical 44-source dataset as if an official refresh succeeded.
+    """
+    path = Path("seoul_gyeonggi_jobs.json")
+    if not path.exists():
+        return None
+    snapshot = load(str(path))
+    report = load("seoul_gyeonggi_refresh_report.json")
+    if not isinstance(snapshot, dict) or not isinstance(report, dict):
+        raise SystemExit("Regional official snapshot or its proof is unreadable")
+    meta = snapshot.get("regionalPublication") or {}
+    if (meta.get("policy") != "seoul-gyeonggi-isolated-verified-v1"
+            or meta.get("state") != "verified"
+            or meta.get("refreshedRegions") != ["경기", "서울"]
+            or int(meta.get("refreshedOfficialSourceCount") or 0) != 38
+            or (meta.get("heldRegions") or {}).get("인천", {}).get("state") != "stale"
+            or meta.get("generatedAt") != report.get("generatedAt")
+            or report.get("state") != "verified"
+            or report.get("policy") != meta.get("policy")
+            or int(snapshot.get("officialSourceCount") or 0) != 38
+            or set(snapshot.get("sources") or {}) != {"gyeonggi", "seoul"}):
+        raise SystemExit("Regional snapshot and independent proof do not agree")
+    rows = rows_from(snapshot)
+    if (len(rows) < 100 or
+            any(j.get("province") not in {"서울", "경기"} for j in rows if isinstance(j, dict)) or
+            any(not isinstance(j, dict) for j in rows)):
+        raise SystemExit("Regional snapshot has invalid province/job population")
+    counts = meta.get("officialJobs") or {}
+    if (sum(j.get("province") == "경기" for j in rows) != counts.get("gyeonggi")
+            or sum(j.get("province") == "서울" for j in rows) != counts.get("seoul")):
+        raise SystemExit("Regional snapshot province counts differ from verification")
+    return snapshot
+
+
 def main():
-    official_data=load("jobs.json",{}); official_jobs=rows_from(official_data)
+    official_data=load("jobs.json",{})
+    regional_snapshot=verified_regional_snapshot()
+    official_jobs=rows_from(regional_snapshot) if regional_snapshot is not None else rows_from(official_data)
     foundation_official_data=load("official_foundation_jobs.json",{}); foundation_official_jobs=rows_from(foundation_official_data)
     ledger=load("source_id_ledger.json",{"entries":{}}); protected=base.latest_official_ids(ledger)
     projected_canonical_official=[base.project_official(j) for j in official_jobs if base.official_current(j,protected)]
-    projected_foundation_official=[project_foundation_official(j) for j in foundation_official_jobs if base.private_current(j)]
+    projected_foundation_official=[project_foundation_official(j) for j in foundation_official_jobs if foundation_official_current(j)]
     projected_official=projected_canonical_official+projected_foundation_official
     all_private=[]; private_meta={}; canonical_private_total=0; enabled_private_sources=0; degraded_private_sources=[]
     for spec in PRIVATE_SOURCES:
-        pdata=load(spec["jobs"],[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
-        jobs=rows_from(pdata); projected=[project_private_generic(j,spec["name"]) for j in jobs if base.private_current(j)]
+        source_path=spec.get("full_jobs") if spec["key"]=="lessoninfo" and spec.get("full_jobs") else spec["jobs"]
+        pdata=load(source_path,[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
+        jobs=rows_from(pdata)
+        if spec["key"]=="lessoninfo" and spec.get("full_jobs"):
+            active_rows=rows_from(load(spec["jobs"],[]))
+            jobs=merge_lessoninfo_full_candidates(jobs,active_rows)
+            selected=[j for j in jobs if lessoninfo_full_candidate_publishable(j)]
+        else:
+            selected=[j for j in jobs if base.private_current(j)]
+        projected=[project_private_generic(j,spec["name"]) for j in selected]
         configured_enabled=publication_enabled(preport); healthy=source_health(spec,preport,dreport); effective_enabled=configured_enabled and healthy
+        freshness=source_verification_freshness(spec,preport,dreport,now=datetime.now(KST))
         if effective_enabled:
             enabled_private_sources+=1; canonical_private_total+=len(jobs); all_private.extend(projected)
         elif configured_enabled and not healthy: degraded_private_sources.append(spec["key"])
-        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None}
+        unverified_links=sum(1 for j in selected if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
+        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+    stale_private_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="stale"]
+    unknown_private_freshness_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="unknown"]
     remaining_private,explicit_aliases,ambiguous_aliases=base.merge_explicit_official_aliases(projected_official,all_private)
     rows,exact_url_groups=dedupe_multi_source(projected_official+remaining_private)
     rows.sort(key=lambda j:(j.get("registered") or "",j.get("applyEnd") or "9999-12-31",j.get("sourceIdentity") or ""),reverse=True)
@@ -175,8 +348,16 @@ def main():
         raise SystemExit(f"jobs.json officialSourceCount={embedded_official_sources} does not match sources.json={expected_official_sources}")
     foundation_source_ids={str(j.get("foundationRegistryId") or "") for j in foundation_official_jobs if str(j.get("foundationRegistryId") or "")}
     payload={"updatedAt":datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),"dataset":"unified-search-v3-multi-private","officialSourceCount":expected_official_sources,"foundationOfficialSourceCount":len(foundation_source_ids),"totalSourceCount":expected_official_sources+enabled_private_sources,"sources":official_data.get("sources",{}) if isinstance(official_data,dict) else {},"privateSources":private_meta,"counts":{"total":len(rows),**per_feed,"foundationOfficial":len(projected_foundation_official),"privateSourceOccurrences":{spec["key"]:private_meta[spec["key"]]["count"] for spec in PRIVATE_SOURCES}},"jobs":rows}
+    if regional_snapshot is not None:
+        payload["regionalPublication"] = regional_snapshot["regionalPublication"]
+        # Keep the registered Incheon source metadata for historical attribution,
+        # but replace the two fresh source status groups with verified evidence.
+        payload["sources"] = {
+            **(official_data.get("sources", {}) if isinstance(official_data, dict) else {}),
+            **regional_snapshot["sources"],
+        }
     Path("unified_jobs.next.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-multi-private-strong-evidence-only","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources}
+    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources,"allPublicationEnabledSourcesFresh":not stale_private_sources and not unknown_private_freshness_sources,"stalePrivateSources":stale_private_sources,"unknownPrivateFreshnessSources":unknown_private_freshness_sources}
     Path("unified_search_report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(report,ensure_ascii=False,indent=2))
 

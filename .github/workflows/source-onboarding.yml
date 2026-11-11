@@ -1,0 +1,163 @@
+name: Source onboarding diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Source or diagnostic target
+        required: true
+        type: choice
+        options:
+          - support-links
+          - artmore-filter-payload
+          - artmore-public-js-handlers
+          - artmore-region-commit-v2
+          - artmore-region-commit-v3
+          - artmore-region-hierarchy
+          - artmore-region-popup-commit
+          - artmore-region-semantics
+          - artmore-region-ui-v2
+          - artmore-region-ui-v3
+          - artmore-visible-region-controls
+          - artmore-browser
+          - gonggonggangsa
+          - hunjang
+          - jobteacher
+          - public-instructor-api
+          - public-instructor
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-onboarding-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install diagnostics dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt playwright
+          python -m playwright install --with-deps chromium
+      - name: Run selected source diagnostic
+        env:
+          TARGET: ${{ inputs.target }}
+        run: |
+          set -euo pipefail
+          case "$TARGET" in
+            support-links)
+              python scripts/diagnose_support_links.py
+              ;;
+            artmore-filter-payload)
+              python scripts/probe_artmore_filter_payload.py
+              ;;
+            artmore-public-js-handlers)
+              python scripts/probe_artmore_public_js_handlers.py
+              ;;
+            artmore-region-commit-v2)
+              python scripts/probe_artmore_region_commit_v2.py
+              ;;
+            artmore-region-commit-v3)
+              python scripts/probe_artmore_region_commit_v3.py
+              ;;
+            artmore-region-hierarchy)
+              python scripts/probe_artmore_region_hierarchy.py
+              ;;
+            artmore-region-popup-commit)
+              python scripts/probe_artmore_region_popup_commit.py
+              ;;
+            artmore-region-semantics)
+              python scripts/probe_artmore_region_semantics.py
+              ;;
+            artmore-region-ui-v2)
+              python scripts/probe_artmore_region_ui_v2.py
+              ;;
+            artmore-region-ui-v3)
+              python scripts/probe_artmore_region_ui_v3.py
+              ;;
+            artmore-visible-region-controls)
+              python scripts/probe_artmore_visible_region_controls.py
+              ;;
+            artmore-browser)
+              python scripts/probe_artmore_browser.py
+              ;;
+            gonggonggangsa)
+              python scripts/probe_gonggonggangsa_browser.py
+              ;;
+            hunjang)
+              python scripts/probe_hunjang_browser.py
+              python scripts/probe_hunjang_public_bundles.py
+              python scripts/harden_hunjang_probe_gate.py
+              python scripts/summarize_hunjang_probe.py
+              ;;
+            jobteacher)
+              python scripts/probe_jobteacher.py
+              ;;
+            public-instructor-api)
+              python scripts/probe_public_instructor_api_contract.py
+              ;;
+            public-instructor)
+              python scripts/probe_public_instructor.py
+              ;;
+            *)
+              echo "Unsupported source onboarding target: $TARGET" >&2
+              exit 2
+              ;;
+          esac
+      - name: Upload support-link diagnostics
+        if: inputs.target == 'support-links'
+        uses: actions/upload-artifact@v4
+        with:
+          name: support-link-diagnostics-${{ github.run_id }}
+          path: support_link_diagnostics.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Preserve selected diagnostic evidence
+        if: inputs.target != 'support-links'
+        env:
+          TARGET: ${{ inputs.target }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          case "$TARGET" in
+            artmore-filter-payload) git add artmore_filter_probe_report.json ;;
+            artmore-public-js-handlers) git add artmore_public_js_handlers.json ;;
+            artmore-region-commit-v2) git add artmore_region_commit_v2.json ;;
+            artmore-region-commit-v3) git add artmore_region_commit_v3.json ;;
+            artmore-region-hierarchy) git add artmore_region_hierarchy_report.json ;;
+            artmore-region-popup-commit) git add artmore_region_popup_commit.json ;;
+            artmore-region-semantics) git add artmore_region_semantics_report.json ;;
+            artmore-region-ui-v2) git add artmore_region_ui_report.json ;;
+            artmore-region-ui-v3) git add artmore_region_ui_v3_report.json ;;
+            artmore-visible-region-controls) git add artmore_visible_region_controls.json ;;
+            artmore-browser) git add artmore_probe_report.json ;;
+            gonggonggangsa) git add gonggonggangsa_probe_report.json ;;
+            hunjang) git add hunjang_probe_report.json hunjang_probe_summary.json hunjang_bundle_probe.json ;;
+            jobteacher) git add jobteacher_probe_report.json ;;
+            public-instructor-api) git add public_instructor_api_contract_report.json 2>/dev/null || true ;;
+            public-instructor) git add public_instructor_probe_report.json 2>/dev/null || true ;;
+          esac
+          git diff --cached --quiet && exit 0
+          git commit -m "Record source onboarding diagnostic: $TARGET"
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((i*5))
+          done
+          exit 1

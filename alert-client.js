@@ -42,7 +42,7 @@
   async function subscribe(){
     if(!supported())throw new Error('unsupported');
     const profile=store.profile.get();
-    const hasConditions=profile&&(['provinces','regions','schools','types','categories','subjects'].some(k=>Array.isArray(profile[k])&&profile[k].length)||String(profile.q||'').trim());
+    const hasConditions=profile&&(['provinces','regions','schools','types','sources','categories','subjects'].some(k=>Array.isArray(profile[k])&&profile[k].length)||String(profile.q||'').trim());
     if(!hasConditions)throw new Error('profile-required');
     if(isIOS()&&!isStandalone())throw new Error('ios-home-screen-required');
     const permission=await Notification.requestPermission();
@@ -79,9 +79,29 @@
     save({enabled:false,clientToken:prev.clientToken||'',endpoint:'',updatedAt:new Date().toISOString()});
   }
 
-  async function sync(){
+  async function reconcile(){
     const prev=state();
-    if(!prev.enabled||!prev.clientToken||!supported())return;
+    if(!prev.enabled)return false;
+    if(!supported()||Notification.permission!=='granted'){
+      save({...prev,enabled:false,endpoint:'',updatedAt:new Date().toISOString()});
+      return false;
+    }
+    const sub=await currentSubscription().catch(()=>null);
+    const live=Boolean(sub&&(!prev.endpoint||sub.endpoint===prev.endpoint));
+    if(!live){
+      save({...prev,enabled:false,endpoint:'',updatedAt:new Date().toISOString()});
+      return false;
+    }
+    if(prev.endpoint!==sub.endpoint){
+      save({...prev,enabled:true,endpoint:sub.endpoint,updatedAt:new Date().toISOString()});
+    }
+    return true;
+  }
+
+  async function sync(){
+    if(!(await reconcile()))return;
+    const prev=state();
+    if(!prev.clientToken)return;
     const sub=await currentSubscription().catch(()=>null);
     if(!sub)return;
     await post({
@@ -92,14 +112,26 @@
     });
   }
 
+  window.EduJobAlerts=Object.freeze({
+    supported,
+    state,
+    reconcile,
+    subscribe,
+    unsubscribe,
+    sync
+  });
+
   function setStatus(message){
     const copy=document.getElementById('jobRadarCopy');
     if(copy&&message)copy.textContent=message;
   }
 
-  function installButton(){
+  function installButton(attempt=0){
     const actions=document.querySelector('.job-radar-actions');
-    if(!actions){setTimeout(installButton,120);return}
+    if(!actions){
+      if(attempt<20)setTimeout(()=>installButton(attempt+1),120);
+      return;
+    }
     if(document.getElementById('jobRadarAlerts'))return;
 
     const btn=document.createElement('button');
@@ -140,7 +172,7 @@
   window.addEventListener('edujob:user-state-changed',event=>{
     if(event.detail?.kind==='profile')sync().catch(()=>{});
   });
-  window.addEventListener('pageshow',()=>sync().catch(()=>{}));
-  registration().catch(()=>{});
+  window.addEventListener('pageshow',()=>registration().then(()=>sync()).catch(()=>{}));
+  registration().then(()=>reconcile()).catch(()=>{});
   installButton();
 })();

@@ -5,9 +5,27 @@ on:
   pull_request:
     paths:
       - '.github/workflows/**'
+      - 'sources.json'
+      - 'cultural_foundation_registry.json'
       - 'scripts/audit_m0_maintenance_freeze.py'
       - 'scripts/production_supervisor.py'
+      - 'scripts/private_refresh_policy.py'
+      - 'scripts/source_catalog.py'
+      - 'scripts/source_registry.py'
+      - 'scripts/private_source_registry.py'
       - 'tests/test_production_supervisor.py'
+      - 'tests/test_supervisor_blocked_official_simulation.py'
+      - 'tests/test_supervisor_decision_e2e.py'
+      - 'tests/test_private_refresh_policy.py'
+      - 'tests/test_lessoninfo_publication_dependency.py'
+      - 'tests/test_source_catalog.py'
+      - 'tests/test_source_onboarding_workflow.py'
+      - 'tests/test_maintenance_ops_workflow.py'
+      - 'app.js'
+      - 'app.css'
+      - 'index.html'
+      - 'manifest.webmanifest'
+      - 'tests/test_pwa_install_onboarding.py'
 
 permissions:
   contents: read
@@ -23,5 +41,24 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify canonical metropolitan source catalog
+        run: |
+          python scripts/source_catalog.py --validate
+          python -m unittest tests.test_source_catalog
+      - name: Verify source-onboarding consolidation contract
+        run: python -m unittest tests.test_source_onboarding_workflow
+      - name: Verify maintenance-operations consolidation contract
+        run: python -m unittest tests.test_maintenance_ops_workflow
       - name: Verify unattended supervisor safety logic
-        run: python -m unittest tests.test_production_supervisor
+        run: |
+          python -m unittest tests.test_production_supervisor
+          python -m unittest tests.test_supervisor_blocked_official_simulation
+          python -m unittest tests.test_supervisor_decision_e2e
+          python -m unittest tests.test_private_refresh_policy
+          python -m unittest tests.test_lessoninfo_publication_dependency
+      - name: Verify snapshot-bound completeness logic
+        run: python -m unittest tests.test_verify_published_scan_completeness
+      - name: Verify PWA install onboarding contract
+        run: |
+          node --check app.js
+          python -m unittest tests.test_pwa_install_onboarding

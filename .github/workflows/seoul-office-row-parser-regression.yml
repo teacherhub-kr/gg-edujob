@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/harden_seoul_office_row_parser.py'
       - 'scripts/scrape_jobs.py'
+      - 'scripts/complete_support_coverage.py'
+      - 'scripts/seoul_support_detail_metadata.py'
+      - 'tests/test_seoul_support_exact_detail_metadata.py'
       - '.github/workflows/seoul-office-row-parser-regression.yml'
   workflow_dispatch:
 
@@ -24,8 +27,10 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Apply idempotent Seoul parser hardening
         run: python scripts/harden_seoul_office_row_parser.py
-      - name: Compile scraper
-        run: python -m py_compile scripts/scrape_jobs.py scripts/harden_seoul_office_row_parser.py
+      - name: Compile scraper and independent coverage parser
+        run: python -m py_compile scripts/scrape_jobs.py scripts/complete_support_coverage.py scripts/seoul_support_detail_metadata.py scripts/harden_seoul_office_row_parser.py
+      - name: Exact official-detail metadata regression
+        run: python -m unittest discover -s tests -p test_seoul_support_exact_detail_metadata.py
       - name: Regression fixture - detail anchor beats longer school anchor and dates map by header
         run: |
           python - <<'PY'

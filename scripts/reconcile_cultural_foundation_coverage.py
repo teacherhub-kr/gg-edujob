@@ -56,17 +56,26 @@ def title_match(a: str, b: str) -> bool:
 
 def current(row: dict, today: date) -> bool:
     end = str(row.get("applyEnd") or row.get("pubEndDate") or "")[:10]
+    end_date = None
     if end:
         try:
-            if date.fromisoformat(end) < today: return False
+            end_date = date.fromisoformat(end)
+            if end_date < today: return False
         except Exception:
-            pass
+            end_date = None
     registered = str(row.get("registered") or row.get("pubDate") or "")[:10]
+    registered_date = None
     if registered:
         try:
-            if date.fromisoformat(registered) > today: return False
+            registered_date = date.fromisoformat(registered)
+            if registered_date > today: return False
         except Exception:
-            pass
+            registered_date = None
+    if not end_date and row.get("sourceRole") == "primary-official":
+        if row.get("deadlineVerification") != "unverified-recent-official-post":
+            return False
+        if not registered_date or registered_date < today - timedelta(days=14):
+            return False
     return True
 
 
@@ -103,6 +112,15 @@ def identify_foundation(row: dict, matchers) -> str:
     for alias, fid in matchers:
         if alias in hay: return fid
     return ""
+
+
+def municipal_official_post_belongs_to_foundation(row: dict, foundation: dict) -> bool:
+    """A municipality's job board is official, but its other employers are not the foundation."""
+    if foundation["id"] not in {"incheon:seohae", "incheon:namdong", "gyeonggi:hanam", "seoul:guro"}:
+        return True
+    title = norm(row.get("title") or "")
+    aliases = [foundation.get("name"), *(foundation.get("aliases") or [])]
+    return bool(title and any(norm(alias) in title for alias in aliases if norm(alias)))
 
 
 def same_date(a: dict, b: dict, key: str) -> bool:
@@ -171,12 +189,21 @@ def main() -> int:
 
     mapped = defaultdict(lambda: defaultdict(list))
     unmapped = defaultdict(list)
+    excluded_municipal_official = []
     for source, dataset in datasets.items():
         for job in dataset:
             if not current(job, today):
                 continue
             fid = identify_foundation(job, matchers)
             if fid and fid in by_fid:
+                if source == "official" and not municipal_official_post_belongs_to_foundation(job, by_fid[fid]):
+                    excluded_municipal_official.append({
+                        "foundationRegistryId": fid,
+                        "sourceIdentity": job.get("sourceIdentity"),
+                        "title": job.get("title"),
+                        "reason": "shared-municipal-board-post-does-not-name-foundation",
+                    })
+                    continue
                 mapped[fid][source].append(job)
             elif source != "lessoninfo-discovery":
                 unmapped[source].append(job)
@@ -251,6 +278,7 @@ def main() -> int:
         "discoveryOnlyGapCount":len(discovery_gaps),
         "discoveryOnlyGaps":discovery_gaps[:200],
         "unmappedStrongSourceRows":{s:len(v) for s,v in unmapped.items()},
+        "excludedMisattributedMunicipalOfficialRows": excluded_municipal_official,
         "institutions":institutions,
     }
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

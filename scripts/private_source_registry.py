@@ -11,6 +11,7 @@ PRIVATE_SOURCES = (
         "key": "lessoninfo",
         "name": "레슨인포",
         "jobs": "lessoninfo_jobs.json",
+        "full_jobs": "lessoninfo_all_candidates.json",
         "report": "lessoninfo_reconciliation_report.json",
         "detail_report": None,
         "detail_url_patterns": (
@@ -74,6 +75,36 @@ def lessoninfo_culture_failclosed(row) -> bool:
     row = row or {}
     return str(row.get("sourceSurface") or "") == "culture-arts" and row.get("detailLinkVerified") is not True
 
+def lessoninfo_full_candidate_publishable(row) -> bool:
+    row = row or {}
+    # Keep the Edujob main feed scoped to plausible metro recruitment candidates.
+    # Lessoninfo's legacy collector labels every non-Seoul/Gyeonggi row as out-of-scope,
+    # but Edujob's actual metro scope also includes Incheon.
+    status = str(row.get("statusGroup") or "")
+    if status == "excluded":
+        return False
+    if status == "out-of-scope":
+        return str(row.get("metroRegion") or row.get("province") or "") == "인천"
+    return True
+
+def merge_lessoninfo_full_candidates(full_rows, active_rows):
+    active_by_id = {
+        str((row or {}).get("sourceIdentity") or ""): row
+        for row in (active_rows or [])
+        if str((row or {}).get("sourceIdentity") or "")
+    }
+    out = []
+    status_keys = ("statusGroup", "statusLabel", "classificationReason", "isCurrent", "clickable", "unverifiedDetailUrl")
+    for raw in full_rows or []:
+        row = dict(raw or {})
+        status = {key: row.get(key) for key in status_keys if key in row}
+        active = active_by_id.get(str(row.get("sourceIdentity") or ""))
+        if active:
+            row.update(active)
+            row.update(status)
+        out.append(row)
+    return out
+
 def _lessoninfo_exact_link_coverage(spec) -> bool:
     try:
         data = json.loads(Path(spec["jobs"]).read_text(encoding="utf-8"))
@@ -97,6 +128,26 @@ def _lessoninfo_exact_link_coverage(spec) -> bool:
     except Exception:
         return False
 
+def _lessoninfo_full_candidate_coverage(spec, report) -> bool:
+    path = str(spec.get("full_jobs") or "")
+    if not path:
+        return False
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        rows = data if isinstance(data, list) else data.get("jobs", [])
+        expected = int((report or {}).get("allCandidatePublishedCount") or (report or {}).get("candidateIdCount") or 0)
+        ids = [str((row or {}).get("sourceIdentity") or "") for row in rows]
+        return bool(
+            expected > 0
+            and len(rows) == expected
+            and len(ids) == len(set(ids))
+            and all(ids)
+            and all(str((row or {}).get("statusGroup") or "") for row in rows)
+        )
+    except Exception:
+        return False
+
+
 def _generic_exact_link_coverage(spec) -> bool:
     try:
         data=json.loads(Path(spec["jobs"]).read_text(encoding="utf-8")); rows=data if isinstance(data,list) else data.get("jobs",[])
@@ -110,6 +161,71 @@ def source_health(spec, report, detail_report) -> bool:
         ok = ok and int(report.get("detailErrorCount") or 0) == 0
     if spec.get("detail_report"):
         ok = ok and bool(detail_report and detail_report.get("healthy") and detail_report.get("detailCoverageComplete") and int(detail_report.get("detailErrorCount") or 0) == 0)
-    if ok and spec.get("key") == "lessoninfo": ok = _lessoninfo_exact_link_coverage(spec)
+    # Private-source publication is collection-gated, not link-verification-gated.
+    # Lessoninfo rows with uncertain culture detail links remain publishable as clearly
+    # labelled private-source cards; the unified projection keeps those rows non-clickable
+    # until a cold verifier proves an exact destination. This prevents one weak link from
+    # suppressing the entire private source.
+    if ok and spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
+        ok = _lessoninfo_full_candidate_coverage(spec, report)
     if ok and spec.get("key") == "cleaneye": ok = _generic_exact_link_coverage(spec)
     return ok
+
+
+# Mirrors the production supervisor's verified private-collection intervals.
+# This threshold classifies the age of evidence; it does NOT revoke a past
+# successful collection, delete jobs, or assert that each individual job is open.
+PRIVATE_VERIFICATION_MAX_AGE_HOURS = {
+    "lessoninfo": 6,
+    "cleaneye": 24,
+    "jobteacher": 6,
+    "artmore": 6,
+    "gonggonggangsa": 6,
+    "seekle": 12,
+    "boramyc": 12,
+}
+
+
+def source_verification_freshness(spec, report, detail_report=None, *, now=None):
+    """Independently classify verified *source evidence* as fresh/stale/unknown.
+
+    Both the source traversal and required detail-link coverage must be current:
+    a freshly completed detail-link probe cannot turn an old source scrape into
+    fresh recruitment evidence. Missing/malformed/future timestamps are unknown.
+    No filtering or mutation of the published rows is performed.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    now = now or datetime.now(timezone.utc)
+    max_age = PRIVATE_VERIFICATION_MAX_AGE_HOURS.get(spec.get("key"))
+    result = {
+        "state": "unknown", "ageHours": None, "maxAgeHours": max_age,
+        "evidenceAt": None,
+    }
+    if max_age is None or now.tzinfo is None:
+        return result
+    required = [report]
+    if spec.get("detail_report"):
+        required.append(detail_report)
+    stamps = []
+    for evidence in required:
+        if not isinstance(evidence, dict):
+            return result
+        raw = evidence.get("generatedAt")
+        if not isinstance(raw, str) or not raw.strip():
+            return result
+        try:
+            dt = datetime.fromisoformat(raw.strip().replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            return result
+        if dt.tzinfo is None or dt > now + timedelta(minutes=5):
+            return result
+        stamps.append(dt)
+    oldest = min(stamps)
+    age = max(0.0, (now - oldest).total_seconds() / 3600.0)
+    return {
+        "state": "fresh" if age <= max_age else "stale",
+        "ageHours": round(age, 2),
+        "maxAgeHours": max_age,
+        "evidenceAt": oldest.isoformat(),
+    }

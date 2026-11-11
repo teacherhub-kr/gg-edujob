@@ -22,6 +22,7 @@ import complete_support_coverage as cov
 import scrape_jobs as primary
 import crawl_gyeonggi_central_recent as central_recent
 import merge_incheon_official as incheon
+import collect_incheon_support as incheon_support
 from stable_source_identity import canonical_source_id
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +32,7 @@ REPORT_PATH = ROOT / "source_reconciliation_report.json"
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 NOW_S = NOW.strftime("%Y-%m-%d %H:%M:%S KST")
-RECONCILIATION_POLICY = "stable-id-39-v3-metro-central-90d"
+RECONCILIATION_POLICY = "stable-id-44-v4-metro-support-90d"
 
 
 def load(path, default):
@@ -49,6 +50,18 @@ def is_recruitment_row(job):
 
 def source_id(job):
     return canonical_source_id(job)
+
+
+def dataset_source_ids(job):
+    ids = []
+    primary = source_id(job)
+    if primary:
+        ids.append(primary)
+    for sid in (job or {}).get("sourceIdentities") or []:
+        sid = str(sid or "").strip()
+        if sid and sid not in ids:
+            ids.append(sid)
+    return ids
 
 
 def physical_board_identity(url):
@@ -174,27 +187,47 @@ def crawl_official_ids():
         ))
         all_rows.extend(rows)
 
-    # Read the live Seoul central board immediately before the workflow's independent
-    # central proof, rather than letting a full support-office traversal separate them.
-    # Keep both the independent scan and its existing bounded-drift gate unchanged.
-    se_central = primary.scrape_seoul_central()
-    sources.insert(1, source_status(
-        "서울", primary.SEOUL["central"]["name"], se_central,
-        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
-    ))
-    all_rows.extend(se_central)
-
-    # Incheon publishes a single citywide official recruitment board. Traverse the same 90-day
-    # window independently during reconciliation so registry presence alone can never satisfy P0.
+    # Incheon central + all five support offices are independently traversed. Registry presence
+    # alone never satisfies completeness; every logical source must provide current traversal proof.
     incheon_rows, incheon_meta = incheon.scrape_incheon_central(lookback_days=cov.LOOKBACK_DAYS)
     sources.insert(2, source_status(
         "인천", incheon.SOURCE_NAME, incheon_rows,
         coverage_complete=bool(incheon_meta.get("coverageComplete")),
         pages_scanned=int(incheon_meta.get("pagesScanned") or 0),
         access_errors=1 if incheon_meta.get("accessError") else 0,
-        boards=[incheon.LIST_URL], board_health=[incheon_meta],
+        boards=incheon_meta.get("boards") or [incheon.LIST_URL],
+        board_health=incheon_meta.get("boardHealth") or [incheon_meta],
     ))
     all_rows.extend(incheon_rows)
+
+    support_results, _support_rows = incheon_support.crawl_all_support_offices(
+        lookback_days=cov.LOOKBACK_DAYS,
+        max_pages=500,
+    )
+    insert_at = 3
+    for result in support_results:
+        status = result["status"]
+        rows = result["rows"]
+        sources.insert(insert_at, source_status(
+            "인천", status["name"], rows,
+            coverage_complete=bool(status.get("coverageComplete")),
+            pages_scanned=int(status.get("pagesScanned") or 0),
+            access_errors=sum(1 for b in (status.get("boardHealth") or []) if b.get("accessError")),
+            boards=status.get("boards") or [],
+            board_health=status.get("boardHealth") or [],
+        ))
+        insert_at += 1
+        all_rows.extend(rows)
+
+    # Seoul central is intentionally the final live network read in this full reconciliation.
+    # The workflow runs the independent central proof immediately after this script returns,
+    # so this ordering minimizes live-board drift without weakening any count threshold.
+    se_central = primary.scrape_seoul_central()
+    sources.insert(1, source_status(
+        "서울", primary.SEOUL["central"]["name"], se_central,
+        coverage_complete=bool(se_central), boards=[primary.SEOUL["central"]["url"]],
+    ))
+    all_rows.extend(se_central)
 
     by_id = {}
     for row in all_rows:
@@ -216,7 +249,9 @@ def main():
     entries = old_ledger.get("entries", {}) if isinstance(old_ledger, dict) else {}
 
     sources, official = crawl_official_ids()
-    dataset_ids_before = {source_id(j) for j in jobs if source_id(j) and is_recruitment_row(j)}
+    # generatedAt must describe completed evidence, not module-import/script-start time.
+    generated_at = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S KST")
+    dataset_ids_before = {sid for j in jobs if is_recruitment_row(j) for sid in dataset_source_ids(j)}
     official_ids = set(official)
     missing_before = sorted(official_ids - dataset_ids_before)
 
@@ -241,7 +276,7 @@ def main():
         kept.append(job)
     jobs = kept
 
-    dataset_ids_after = {source_id(j) for j in jobs if source_id(j)}
+    dataset_ids_after = {sid for j in jobs for sid in dataset_source_ids(j)}
     missing_after = sorted(official_ids - dataset_ids_after)
 
     current_official = set()
@@ -257,7 +292,7 @@ def main():
             "sourceIdentity": sid, "province": province, "source": source,
             "title": row.get("title", ""), "school": row.get("school", ""),
             "registered": row.get("registered", ""), "url": row.get("url", ""),
-            "firstSeen": old.get("firstSeen") or NOW_S, "lastSeen": NOW_S,
+            "firstSeen": old.get("firstSeen") or generated_at, "lastSeen": generated_at,
             "seenCount": int(old.get("seenCount") or 0) + 1,
             "presentInLatestOfficialScan": True,
         }
@@ -284,7 +319,7 @@ def main():
 
     payload["jobs"] = jobs
     payload["sourceReconciliation"] = {
-        "generatedAt": NOW_S, "lookbackDays": cov.LOOKBACK_DAYS,
+        "generatedAt": generated_at, "lookbackDays": cov.LOOKBACK_DAYS,
         "populationPolicy": RECONCILIATION_POLICY,
         "officialIdCount": len(official_ids),
         "datasetIdCountBefore": len(dataset_ids_before),
@@ -299,7 +334,7 @@ def main():
     JOBS_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     LEDGER_PATH.write_text(json.dumps({
-        "generatedAt": NOW_S,
+        "generatedAt": generated_at,
         "populationPolicy": RECONCILIATION_POLICY,
         "policy": "append-only stable official recruitment posting IDs across every registered official source; result/selection notices are excluded by title policy; title similarity never deletes source evidence",
         "officialIdCount": len(current_official),
@@ -307,7 +342,7 @@ def main():
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
     report = {
-        "generatedAt": NOW_S, "lookbackDays": cov.LOOKBACK_DAYS,
+        "generatedAt": generated_at, "lookbackDays": cov.LOOKBACK_DAYS,
         "populationPolicy": RECONCILIATION_POLICY,
         "summary": payload["sourceReconciliation"],
         "incompleteSources": incomplete_sources,

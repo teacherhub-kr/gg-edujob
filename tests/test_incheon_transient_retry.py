@@ -31,12 +31,62 @@ def meta_for(count=0, stop_reason="empty-page", access_error=""):
 
 
 class IncheonTransientRetryTests(unittest.TestCase):
+    def test_bootstrap_uses_board_landing_page_and_records_evidence(self):
+        class Response:
+            status_code = 200
+            content = b"<html>ok</html>"
+            url = "https://www.ice.go.kr/ice/main.do"
+
+            def raise_for_status(self):
+                return None
+
+        board = {"bootstrapUrl": "https://www.ice.go.kr/ice/main.do"}
+        with patch.object(ice.SESSION, "get", return_value=Response()) as get:
+            evidence = ice.bootstrap_board_session(board)
+        self.assertTrue(evidence["attempted"])
+        self.assertTrue(evidence["ok"])
+        self.assertEqual(evidence["status"], 200)
+        get.assert_called_once()
+
+    def test_tiny_empty_bootstrap_contract_is_bounded(self):
+        from pathlib import Path
+
+        source = Path("scripts/merge_incheon_official.py").read_text(encoding="utf-8")
+        self.assertIn('page == 1 and meta["rawRows"] == 0 and len(response.content or b"") <= 256', source)
+        self.assertIn("bootstrap_board_session(board)", source)
+        self.assertIn('"bootstrap": bootstrap_evidence', source)
+
     def test_all_empty_signature_is_retryable(self):
         self.assertTrue(ice.is_transient_all_empty(meta_for(), []))
 
     def test_access_error_and_nonempty_are_not_retryable(self):
         self.assertFalse(ice.is_transient_all_empty(meta_for(access_error="timeout"), []))
         self.assertFalse(ice.is_transient_all_empty(meta_for(count=1), [{"id": "x"}]))
+
+
+    @patch.object(ice, "reset_session")
+    @patch.object(ice, "parse_table_rows")
+    @patch.object(ice, "fetch_with_one_explicit_retry")
+    def test_official_alias_fallback_accepts_only_parseable_first_party_rows(self, fetch, parse, reset):
+        class Response:
+            text = "<html>board</html>"
+            content = b"<html>board</html>"
+            url = "https://iss.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"
+
+        fetch.return_value = Response()
+        parse.return_value = ([{"id": "ice-central:1"}], {"rawRows": 1})
+
+        response, rows, meta, evidence = ice.try_official_fetch_aliases(
+            ice.LIST_URL, ice.REQUIRED_BOARDS[0], 90
+        )
+
+        self.assertIsNotNone(response)
+        self.assertEqual(rows, [{"id": "ice-central:1"}])
+        self.assertEqual(meta["rawRows"], 1)
+        self.assertTrue(evidence["success"])
+        self.assertTrue(all(host.endswith(".ice.go.kr") for host in ice.OFFICIAL_FETCH_ALIASES))
+        self.assertIn("iss.ice.go.kr", fetch.call_args.args[0])
+        reset.assert_called_once_with()
 
     @patch.object(ice, "reset_session")
     @patch.object(ice.time, "sleep")

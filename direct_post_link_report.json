@@ -1,148 +1,1661 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 7179,
-  "nonDirectBeforeRepair": 0,
+  "totalRows": 9764,
+  "nonDirectBeforeRepair": 389,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 0,
-  "cultureFoundationRows": 15,
-  "cultureFoundationNonDirectRows": 0,
+  "nonDirectAfterRepair": 389,
+  "cultureFoundationRows": 83,
+  "cultureFoundationNonDirectRows": 50,
   "recoveredExamples": [],
-  "nonDirectExamples": [],
+  "nonDirectExamples": [
+    {
+      "sourceIdentity": "culture:id:95649",
+      "source": "레슨인포",
+      "title": "[CNCITY에너지] 헤레디움 큐레이터 채용",
+      "school": "CNCITY에너지",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95530",
+      "source": "레슨인포",
+      "title": "부산광역시 임기제공무원 임용시험 공고(클래식부산 부산오페라하우스 공연기획팀장/무대기술팀장)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95523",
+      "source": "레슨인포",
+      "title": "[국립아시아문화전당] 2026 ACC 크리에이터스 레지던시 전시 운영요원 모집",
+      "school": "국립아시아문화전당",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95511",
+      "source": "레슨인포",
+      "title": "제주 에코랜드 테마파크 인력난 극복 프로젝트 마감임박",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95509",
+      "source": "레슨인포",
+      "title": "제주 에코랜드 음향 관리 및 오퍼레이터 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95504",
+      "source": "레슨인포",
+      "title": "2026년 제3차 (재)생거진천 문화재단 직원채용",
+      "school": "문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95488",
+      "source": "레슨인포",
+      "title": "[히어위아] 전 세계 공연예술을 연결하는 글로벌 마케터(운영매니저)를 찾습니다.",
+      "school": "히어위아",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95480",
+      "source": "레슨인포",
+      "title": "2026년 제8회 인천서해구문화재단 직원 채용 공고(무대음향)",
+      "school": "인천서해구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95475",
+      "source": "레슨인포",
+      "title": "뮤지엄호두 학예책임자 채용공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95470",
+      "source": "레슨인포",
+      "title": "충무아트센터 하우스어셔 채용공고(~10/26)",
+      "school": "충무아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95466",
+      "source": "레슨인포",
+      "title": "아티스트 IP·프로젝트 매니저_‘최정화의 워홀’",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95455",
+      "source": "레슨인포",
+      "title": "2026년 (재)울산문화관광재단 안전관리자(경력직) 채용 공고",
+      "school": "울산문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95447",
+      "source": "레슨인포",
+      "title": "[놀유니버스] 예술의전당 CS 운영 담당자",
+      "school": "놀유니버스",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95446",
+      "source": "레슨인포",
+      "title": "[놀유니버스] 예술의전당 CS 및 매표소 운영 담당자",
+      "school": "놀유니버스",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95445",
+      "source": "레슨인포",
+      "title": "아트센터인천 매표요원 모집",
+      "school": "아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95443",
+      "source": "레슨인포",
+      "title": "2026년 제2회 (재)여주세종문화관광재단 직원 채용 공고",
+      "school": "여주세종문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95442",
+      "source": "레슨인포",
+      "title": "2027년 천안어린이꿈누리터 문화예술교육 제안사 모집 공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95440",
+      "source": "레슨인포",
+      "title": "2026 수성문화재단 미술관 전문 학예인력 채용 재공고",
+      "school": "수성문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95420",
+      "source": "레슨인포",
+      "title": "[쇼온컴퍼니] 공연 언론 홍보 담당 직원 채용 공고 ㅣ 채용 시 마감",
+      "school": "쇼온컴퍼니",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95410",
+      "source": "레슨인포",
+      "title": "2026년 서울문화재단 대학로 극장 쿼드 QUAD 하우스 안내원 모집 (~2026.10.21)",
+      "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95406",
+      "source": "레슨인포",
+      "title": "파마리서치문화재단 강릉 사무국 전시·행사 운영 담당자 채용",
+      "school": "파마리서치문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95404",
+      "source": "레슨인포",
+      "title": "봉산문화회관 공연전시 안내근무자 모집 재공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95397",
+      "source": "레슨인포",
+      "title": "2026년 (재)제물포문화재단 임원(대표이사, 비상임이사, 비상임감사) 공개모집 공고",
+      "school": "제물포문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95393",
+      "source": "레슨인포",
+      "title": "KBS홀/아트홀 하우스 어텐던트(안내원) 신규 채용 (~10/27)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95390",
+      "source": "레슨인포",
+      "title": "아트센터인천 공연장 안내원 모집",
+      "school": "아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95387",
+      "source": "레슨인포",
+      "title": "[해븐프로덕션] 연극 <스타크로스드> 평일 티켓 매니저 인력 공고",
+      "school": "해븐프로덕션",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95384",
+      "source": "레슨인포",
+      "title": "세종문화회관 꿈의숲아트센터 공연장 안내원 모집 공고",
+      "school": "꿈의숲아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95381",
+      "source": "레슨인포",
+      "title": "[프란츠클래식] 음악스튜디오 리셉셔니스트 신입/경력 모집",
+      "school": "프란츠클래식",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95361",
+      "source": "레슨인포",
+      "title": "노원문화재단 2026년 제9차 공개채용 공고",
+      "school": "노원문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95360",
+      "source": "레슨인포",
+      "title": "노원문화재단 2026년 제8차 공개채용 공고",
+      "school": "노원문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95344",
+      "source": "레슨인포",
+      "title": "2026 수성문화재단 미술관 전문 학예인력 채용 공고",
+      "school": "수성문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95332",
+      "source": "레슨인포",
+      "title": "<2026 영등포 어린이 미술대전> 내 인형탈 알바 구인",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95318",
+      "source": "레슨인포",
+      "title": "[국제갤러리 리셉션 채용공고]",
+      "school": "국제갤러리 리셉션 채용공고",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95308",
+      "source": "레슨인포",
+      "title": "[한국문화원연합회] 직원(계약직) 채용 공고",
+      "school": "한국문화원연합회",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95307",
+      "source": "레슨인포",
+      "title": "슬립노모어 서울 운영 스탭 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95306",
+      "source": "레슨인포",
+      "title": "마포아트센터 공연장 안내원 모집(2026년 3차)",
+      "school": "마포아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95304",
+      "source": "레슨인포",
+      "title": "세종문화회관 '공연장 안내원 51기' 모집 공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95300",
+      "source": "레슨인포",
+      "title": "예술의전당 오페라하우스 하우스 어텐던트 2026년 하반기 10월 모집 (10/2 ~ 10/9)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95298",
+      "source": "레슨인포",
+      "title": "2026 예술기반 청년일자리(연수단원) 채용 (장애인문화예술판)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95297",
+      "source": "레슨인포",
+      "title": "성동문화재단(소월아트홀, 성수아트홀) 공연장안내원 모집 공고",
+      "school": "성동문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95296",
+      "source": "레슨인포",
+      "title": "뮤지컬 전용극장 샤롯데씨어터 공연장 안내원 모집 공고(~10/10)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95294",
+      "source": "레슨인포",
+      "title": "[HQC KIDS] 뮤지컬 'AI세계에서 살아남기' 무대크루 채용 공고",
+      "school": "HQC KIDS",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95293",
+      "source": "레슨인포",
+      "title": "서울문화재단 예술지원사업 업무 보조 단기인력 구인(서울무용센터)",
+      "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95292",
+      "source": "레슨인포",
+      "title": "[히어위아(HereWeAre)] 서비스 기획자 채용",
+      "school": "히어위아(HereWeAre)",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95291",
+      "source": "레슨인포",
+      "title": "국제학교 학생 대상 미술 파트타임 강사 모집",
+      "school": "국제학교",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95290",
+      "source": "레슨인포",
+      "title": "한국문화예술위원회 문화예술연수단원 지원사업 파트타이머 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95288",
+      "source": "레슨인포",
+      "title": "[피크닉 piknic] 전시 운영 부매니저 모집 공고",
+      "school": "피크닉 piknic",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95287",
+      "source": "레슨인포",
+      "title": "[피크닉 piknic] 전시 주말 운영 스태프 모집 공고",
+      "school": "피크닉 piknic",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95286",
+      "source": "레슨인포",
+      "title": "[피크닉 piknic] 전시 주중 운영 스태프 모집 공고",
+      "school": "피크닉 piknic",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95285",
+      "source": "레슨인포",
+      "title": "국립어린이청소년극단 2026년 제3차 채용",
+      "school": "국립어린이청소년극단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95275",
+      "source": "레슨인포",
+      "title": "[세계시민포럼] 세계시민문화예술학교 창의미술교육부 어시스턴트 공고",
+      "school": "세계시민포럼",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95272",
+      "source": "레슨인포",
+      "title": "세종문화회관 꿈의숲아트센터 공연장 안내원 모집 공고",
+      "school": "꿈의숲아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95270",
+      "source": "레슨인포",
+      "title": "[화이트스톤 갤러리] 갤러리 어시스턴트 채용",
+      "school": "화이트스톤 갤러리",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95269",
+      "source": "레슨인포",
+      "title": "2026년 (재)의정부문화관광재단 기간제근로자 공개 채용 공고",
+      "school": "의정부문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95268",
+      "source": "레슨인포",
+      "title": "2026년 (재)의정부문화관광재단 일반 계약직 2급 본부장 공개채용 공고",
+      "school": "의정부문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95266",
+      "source": "레슨인포",
+      "title": "2026년도 1차 아르코·대학로예술극장 티켓안내원 모집 공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95265",
+      "source": "레슨인포",
+      "title": "2026년 부산시립극단 예술감독 채용 재공고",
+      "school": "부산시립극단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95264",
+      "source": "레슨인포",
+      "title": "연극 <늘근도둑이야기> 컴퍼니매니저 구인 공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95263",
+      "source": "레슨인포",
+      "title": "2026년 10월 샤롯데씨어터 무대음향감독 경력사원 채용",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95262",
+      "source": "레슨인포",
+      "title": "[마크923] 공연 홍보.마케팅 담당자 채용 공고",
+      "school": "마크923",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95261",
+      "source": "레슨인포",
+      "title": "한국문화예술위원회 예술가의집 공간 운영 파트타이머 채용 공고(2026년 11월 ~ 2026년 12월)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95260",
+      "source": "레슨인포",
+      "title": "JCC아트센터 콘서트홀 하우스 어텐던트 모집 공고",
+      "school": "JCC아트센터",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95259",
+      "source": "레슨인포",
+      "title": "2026년 제4차 (재)당진문화재단 직원 경력(제한)경쟁 채용 공고",
+      "school": "당진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95255",
+      "source": "레슨인포",
+      "title": "영업지원팀 신입·경력 채용/고객응대·CS·영업우대",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95245",
+      "source": "레슨인포",
+      "title": "[오픈하우스서울] 오픈하우스서울 2026 진행요원 모집",
+      "school": "오픈하우스서울",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95244",
+      "source": "레슨인포",
+      "title": "[부산시립미술관] 메타버스 전시 안내원 아르바이트 모집 (26/10/31~27/3/14)",
+      "school": "부산시립미술관",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95243",
+      "source": "레슨인포",
+      "title": "(재)광진문화재단 2026년도 제5회 직원 공개채용 공고",
+      "school": "광진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95242",
+      "source": "레슨인포",
+      "title": "(재)울산문화관광재단 제7차 기간제 근로자 채용",
+      "school": "울산문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95241",
+      "source": "레슨인포",
+      "title": "(재)연수문화재단 2026년 제6차 직원(기간제근로자) 공개채용 공고",
+      "school": "연수문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95239",
+      "source": "레슨인포",
+      "title": "[서울국제도서전] 기획ㆍ운영 경력 사원 모집",
+      "school": "서울국제도서전",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95238",
+      "source": "레슨인포",
+      "title": "충남문화관광재단 임원(대표이사) 공개모집 공고",
+      "school": "충남문화관광재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95237",
+      "source": "레슨인포",
+      "title": "인천광역시 서해구문화원 2026. 제4차 직원(일반직 9급-문화경영팀) 채용",
+      "school": "서해구문화원",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95234",
+      "source": "레슨인포",
+      "title": "라이브러리플래닝앤컨설팅-그래픽 디자인 분야",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95233",
+      "source": "레슨인포",
+      "title": "라이브러리플래닝앤컨설팅-공연/이벤트 기획 및 현장 운영 팀원 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95231",
+      "source": "레슨인포",
+      "title": "가나아트갤러리 전시기획팀 직원 채용",
+      "school": "가나아트갤러리",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95230",
+      "source": "레슨인포",
+      "title": "[온느뮤지엄] 퐁피두센터 한화 도슨트 데스크 매니저 / 스태프 모집",
+      "school": "온느뮤지엄",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95229",
+      "source": "레슨인포",
+      "title": "뮤지컬 전용극장 샤롯데씨어터 공연장 안내원 모집 공고(10/10)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95228",
+      "source": "레슨인포",
+      "title": "[스테이지엠] 대구 및 지방 투어 공연 현장(하우스) 매니저 모집",
+      "school": "스테이지엠",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95227",
+      "source": "레슨인포",
+      "title": "[스테이지엠] 서울·수도권 투어 공연 현장(하우스) 스태프 모집",
+      "school": "스테이지엠",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95226",
+      "source": "레슨인포",
+      "title": "공연기획사 스테이지엠 공연사업팀 경력직 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95225",
+      "source": "레슨인포",
+      "title": "공연기획사 스테이지엠 공연사업팀 신입 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95221",
+      "source": "레슨인포",
+      "title": "예술의전당 음악당 하우스 어텐던트 2026년 하반기 10월 모집 (9/29 ~ 10/6)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95215",
+      "source": "레슨인포",
+      "title": "[갤러리티] DIAF 2026 현장 운영 및 세일즈 스태프 모집",
+      "school": "갤러리티",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95214",
+      "source": "레슨인포",
+      "title": "[오픈갤러리] 고객관리팀 신입 채용 (미술 작품 추천 및 운영)",
+      "school": "오픈갤러리",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95213",
+      "source": "레슨인포",
+      "title": "[오픈갤러리] 학예팀 신입 채용",
+      "school": "오픈갤러리",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95212",
+      "source": "레슨인포",
+      "title": "[오픈갤러리] 마케팅팀 채용",
+      "school": "오픈갤러리",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95208",
+      "source": "레슨인포",
+      "title": "<피노키오展: Play and Create〉 보조강사 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95207",
+      "source": "레슨인포",
+      "title": "어린이 과학뮤지컬 <꼬마박사 장영실> 배우 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95193",
+      "source": "레슨인포",
+      "title": "[한국문화예술위원회] 예술인재양성팀 예술요원사업 채용",
+      "school": "한국문화예술위원회",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95192",
+      "source": "레슨인포",
+      "title": "(재)금천문화재단 2026년 제4차 공개채용 공고",
+      "school": "금천문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95191",
+      "source": "레슨인포",
+      "title": "이화여대 ECC 영산극장 하우스 어셔 모집",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95190",
+      "source": "레슨인포",
+      "title": "2026년 4차 서울돈화문국악당 공연장 안내원 모집(~10.8(목) 24:00까지)",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95188",
+      "source": "레슨인포",
+      "title": "공연 [점프] 해외 인바운드 세일즈 담당",
+      "school": "점프",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95187",
+      "source": "레슨인포",
+      "title": "공연 [점프] 국내 단체 세일즈 및 티켓관리 담당",
+      "school": "점프",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95185",
+      "source": "레슨인포",
+      "title": "(사)한국화랑협회 Kiaf SEOUL 전시업무 (갤러리 릴레이션) 채용공고",
+      "school": "한국화랑협회",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95182",
+      "source": "레슨인포",
+      "title": "2026년도 충북도립교향악단 비상임단원 모집 공고",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95180",
+      "source": "레슨인포",
+      "title": "[CNCITY에너지] 전시운영 매니저(계약직) 채용",
+      "school": "CNCITY에너지",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95179",
+      "source": "레슨인포",
+      "title": "부천국제판타스틱영화제 프로그램팀장 채용",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95170",
+      "source": "레슨인포",
+      "title": "[장앤파트너스그룹] Research Assistant(연구보조 인턴) 채용",
+      "school": "장앤파트너스그룹",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95169",
+      "source": "레슨인포",
+      "title": "조선앤틱과 함께 일하실 분을 찾습니다",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    }
+  ],
   "cultureFoundationExamples": [
     {
-      "sourceIdentity": "artmore:94996",
+      "sourceIdentity": "culture:id:95647",
+      "source": "레슨인포",
+      "title": "2026 고양문화재단 어울림문화학교 단시간 근로자 채용 공고",
+      "school": "고양문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95647",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95644",
+      "source": "레슨인포",
+      "title": "(재)서초문화재단 임원(비상임 이사) 공개모집 공고",
+      "school": "서초문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95644",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95588",
+      "source": "레슨인포",
+      "title": "송은문화재단에서 《제26회 송은미술대상전》 도슨트/지킴이를 모집합니다.",
+      "school": "송은문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95588",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95588",
       "source": "아트모아",
-      "title": "진행중 2026년 제3회 양평문화재단 직원 채용 공고 [무대기술]",
+      "title": "진행중 송은문화재단에서 《제26회 송은미술대상전》 도슨트/지킴이를 모집합니다.",
+      "school": "송은문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95588",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95552",
+      "source": "레슨인포",
+      "title": "[송파문화재단] 11월 24일 롯데콘서트홀 공연 티켓 운영 아르바이트 모집",
+      "school": "송파문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95552",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95545",
+      "source": "레슨인포",
+      "title": "2026년 안산문화재단 기간제근로자 모집 공고(대표이사 비서)",
+      "school": "안산문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95545",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95552",
+      "source": "아트모아",
+      "title": "진행중 [송파문화재단] 11월 24일 롯데콘서트홀 공연 티켓 운영 아르바이트 모집",
+      "school": "송파문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95552",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95545",
+      "source": "아트모아",
+      "title": "진행중 2026년 안산문화재단 기간제근로자 모집 공고(대표이사 비서)",
+      "school": "안산문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95545",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95505",
+      "source": "레슨인포",
+      "title": "삼성문화재단 경력직 채용 (대외협력 1, 홍보 1)",
+      "school": "삼성문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95505",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95504",
+      "source": "레슨인포",
+      "title": "2026년 제3차 (재)생거진천 문화재단 직원채용",
+      "school": "문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95480",
+      "source": "레슨인포",
+      "title": "2026년 제8회 인천서해구문화재단 직원 채용 공고(무대음향)",
+      "school": "인천서해구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95479",
+      "source": "레슨인포",
+      "title": "2026-08차 서초문화재단 직원 채용 공고",
+      "school": "서초문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95479",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95460",
+      "source": "레슨인포",
+      "title": "2026년 제6회 마포문화재단 직원 채용 공고( ~11.2.(월) 18:00 한)_5급 무대기계, 7급 무대음향",
+      "school": "마포문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95460",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95453",
+      "source": "레슨인포",
+      "title": "재단법인 관악문화재단 2026년 제3차 직원 채용공고",
+      "school": "관악문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95453",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95453",
+      "source": "아트모아",
+      "title": "진행중 재단법인 관악문화재단 2026년 제4차 직원 채용공고",
+      "school": "관악문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95453",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95441",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 전시부문 전시파트 인턴 채용 공고",
+      "school": "대림문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95441",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95440",
+      "source": "레슨인포",
+      "title": "2026 수성문화재단 미술관 전문 학예인력 채용 재공고",
+      "school": "수성문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95410",
+      "source": "레슨인포",
+      "title": "2026년 서울문화재단 대학로 극장 쿼드 QUAD 하우스 안내원 모집 (~2026.10.21)",
+      "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95409",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 대림미술관 크루 모집(전시/뮤지엄샵)",
+      "school": "대림문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95409",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95406",
+      "source": "레슨인포",
+      "title": "파마리서치문화재단 강릉 사무국 전시·행사 운영 담당자 채용",
+      "school": "파마리서치문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95403",
+      "source": "레슨인포",
+      "title": "(재)중랑문화재단 2026년 직원(전문계약직, 문화예술분야) 신규채용 공고",
+      "school": "중랑문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95403",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95402",
+      "source": "레슨인포",
+      "title": "(재)중랑문화재단 2026년 직원(정규직) 신규채용 공고",
+      "school": "중랑문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95402",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95397",
+      "source": "레슨인포",
+      "title": "2026년 (재)제물포문화재단 임원(대표이사, 비상임이사, 비상임감사) 공개모집 공고",
+      "school": "제물포문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95373",
+      "source": "레슨인포",
+      "title": "[GS문화재단] GS아트센터 하우스어셔 모집 공고 (~10/25 서류 접수 마감)",
+      "school": "GS문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95373",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95361",
+      "source": "레슨인포",
+      "title": "노원문화재단 2026년 제9차 공개채용 공고",
+      "school": "노원문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95360",
+      "source": "레슨인포",
+      "title": "노원문화재단 2026년 제8차 공개채용 공고",
+      "school": "노원문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95359",
+      "source": "레슨인포",
+      "title": "2026년 제8차 종로문화재단 직원 공개모집 공고",
+      "school": "종로문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95359",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95344",
+      "source": "레슨인포",
+      "title": "2026 수성문화재단 미술관 전문 학예인력 채용 공고",
+      "school": "수성문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95343",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 대림미술관 크루 모집(전시/뮤지엄샵)",
+      "school": "대림문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95343",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95342",
+      "source": "레슨인포",
+      "title": "[10월18일(일)]서울문화재단 문학행사 업무 보조 단기인력 구인(연희문학창작촌)",
+      "school": "10월18일(일)",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95342",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95338",
+      "source": "레슨인포",
+      "title": "[서울문화재단] 서울무용센터 입주예술가 작업공유회 단기스태프 모집",
+      "school": "서울문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95338",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95342",
+      "source": "아트모아",
+      "title": "진행중 [10월18일(일)]서울문화재단 문학행사 업무 보조 단기인력 구인(연희문학창작촌)",
+      "school": "10월18일(일)",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95342",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95331",
+      "source": "레슨인포",
+      "title": "서울문화재단 예술지원사업 및 입주공모 업무 보조 단기인력 구인(연희문학창작촌)",
+      "school": "서울문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95331",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95330",
+      "source": "레슨인포",
+      "title": "용산문화재단 용산아트홀 하우스 어셔 모집",
+      "school": "용산문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95330",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "artmore:95330",
+      "source": "아트모아",
+      "title": "진행중 용산문화재단 용산아트홀 하우스 어셔 모집",
+      "school": "용산문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95330",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95314",
+      "source": "레슨인포",
+      "title": "2026년 제5차 재공고 및 제6차 (재)양천문화재단 직원 채용 공고",
+      "school": "양천문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95314",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95312",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 홍보마케팅파트 인턴 채용공고",
+      "school": "대림문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95312",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95311",
+      "source": "레슨인포",
+      "title": "[공고 제2026-111호] 부천문화재단 임원 공개모집 공고",
+      "school": "공고 제2026-111호",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95311",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95309",
+      "source": "레슨인포",
+      "title": "[재]강북문화재단 2026년 제4차 정규직 및 기간제근로자 공개채용 공고",
+      "school": "강북문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95309",
+      "reason": "cold-browser-verified-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95297",
+      "source": "레슨인포",
+      "title": "성동문화재단(소월아트홀, 성수아트홀) 공연장안내원 모집 공고",
+      "school": "성동문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95293",
+      "source": "레슨인포",
+      "title": "서울문화재단 예술지원사업 업무 보조 단기인력 구인(서울무용센터)",
+      "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "artmore:95297",
+      "source": "아트모아",
+      "title": "진행중 성동문화재단(소월아트홀, 성수아트홀) 공연장안내원 모집 공고",
+      "school": "성동문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95297",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95259",
+      "source": "레슨인포",
+      "title": "2026년 제4차 (재)당진문화재단 직원 경력(제한)경쟁 채용 공고",
+      "school": "당진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95243",
+      "source": "레슨인포",
+      "title": "(재)광진문화재단 2026년도 제5회 직원 공개채용 공고",
+      "school": "광진문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95241",
+      "source": "레슨인포",
+      "title": "(재)연수문화재단 2026년 제6차 직원(기간제근로자) 공개채용 공고",
+      "school": "연수문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95192",
+      "source": "레슨인포",
+      "title": "(재)금천문화재단 2026년 제4차 공개채용 공고",
+      "school": "금천문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "official-foundation:gyeonggi:suwon:fc9c307f63b789a0439b",
+      "source": "수원문화재단",
+      "title": "2026년 하반기 수원문화재단 직원 채용 공고",
+      "school": "수원문화재단",
+      "url": "https://www.swcf.or.kr/?p=116&page=1&viewMode=view&idx=113884",
+      "reason": "unclassified-nongeneric-url",
+      "direct": true
+    },
+    {
+      "sourceIdentity": "culture:id:95127",
+      "source": "레슨인포",
+      "title": "[송파문화재단] 일일 하우스어셔 모집",
+      "school": "송파문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95126",
+      "source": "레슨인포",
+      "title": "[송파문화재단] 일일 티켓매니저 모집",
+      "school": "송파문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95110",
+      "source": "레슨인포",
+      "title": "(재)인천광역시부평구문화재단 대표이사 채용 공고",
+      "school": "인천광역시부평구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95108",
+      "source": "레슨인포",
+      "title": "2026 서울문화재단 연극배우 워크숍 참여자 모집: '화술을 위한 시각적 이미지 활용 훈련' (~9.28)",
+      "school": "서울문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95094",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 대림미술관 / 디뮤지엄 전시 도슨트 모집",
+      "school": "대림문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95058",
+      "source": "레슨인포",
+      "title": "2026년 제7회 인천서해구문화재단 직원(정규직) 채용 공고(시설관리)",
+      "school": "인천서해구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95040",
+      "source": "레슨인포",
+      "title": "2026년 (재)충북문화재단 제5차 직원(가급, 마급, 기간제) 공개채용 공고",
+      "school": "충북문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95039",
+      "source": "레슨인포",
+      "title": "(재)GS문화재단 기획홍보팀 정규직 채용 공고 (디지털 플랫폼·CRM 매니저)",
+      "school": "GS문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94996",
+      "source": "레슨인포",
+      "title": "2026년 제3회 양평문화재단 직원 채용 공고 [무대기술]",
       "school": "무대기술",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94996",
-      "reason": "artmore-rec-idx",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "artmore:94982",
-      "source": "아트모아",
-      "title": "진행중 [대림문화재단 채용공고] 전시해설 프로그램 담당 에듀케이터 경력직 채용공고 (1명, 계약직)",
+      "sourceIdentity": "culture:id:94982",
+      "source": "레슨인포",
+      "title": "[대림문화재단 채용공고] 전시해설 프로그램 담당 에듀케이터 경력직 채용공고 (1명, 계약직)",
       "school": "대림문화재단 채용공고",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94982",
-      "reason": "artmore-rec-idx",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000279:000005",
-      "source": "클린아이 잡플러스",
-      "title": "영등포문화재단 신규직원(블라인드) 채용 공고(26.10.15.임용) 4명",
-      "school": "영등포문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000005&ypEntId=B000279",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "cleaneye:2026:B000715:000004",
-      "source": "클린아이 잡플러스",
-      "title": "(재)도봉문화재단 기간제근로자 채용 공고",
-      "school": "도봉문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000004&ypEntId=B000715",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "artmore:94939",
-      "source": "아트모아",
-      "title": "진행중 [호반문화재단] 호반미술상 전시 스태프 모집 공고",
+      "sourceIdentity": "culture:id:94939",
+      "source": "레슨인포",
+      "title": "[호반문화재단] 호반미술상 전시 스태프 모집 공고",
       "school": "호반문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94939",
-      "reason": "artmore-rec-idx",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000436:000011",
-      "source": "클린아이 잡플러스",
+      "sourceIdentity": "culture:id:94905",
+      "source": "레슨인포",
       "title": "2026년 (재)용인문화재단 6차 기간제근로자(휴직대체인력) 채용 공고",
       "school": "용인문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000011&ypEntId=B000436",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "official-foundation:nsart:1731",
-      "source": "광주시문화재단",
-      "title": "광주시문화재단 비상임 임원 공개모집 공고",
-      "school": "광주시문화재단",
-      "url": "https://www.nsart.or.kr/board/recruit.do?act=read&bpoId=1731&bcaId=0&pageIndex=1",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "sourceIdentity": "culture:id:94887",
+      "source": "레슨인포",
+      "title": "[송파문화재단] 일일 하우스어셔 모집",
+      "school": "송파문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "official-foundation:nsart:1730",
-      "source": "광주시문화재단",
-      "title": "광주시문화재단 대표이사 공개모집 공고",
-      "school": "광주시문화재단",
-      "url": "https://www.nsart.or.kr/board/recruit.do?act=read&bpoId=1730&bcaId=0&pageIndex=1",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "sourceIdentity": "culture:id:94886",
+      "source": "레슨인포",
+      "title": "[송파문화재단] 일일 티켓매니저 모집",
+      "school": "송파문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "official-foundation:nsart:1728",
-      "source": "광주시문화재단",
-      "title": "2026년 광주시 생활문화센터(만선) 기간제(초단시간) 근로자 채용 공고",
-      "school": "광주시문화재단",
-      "url": "https://www.nsart.or.kr/board/recruit.do?act=read&bpoId=1728&bcaId=0&pageIndex=1",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "cleaneye:2026:B000648:000011",
-      "source": "클린아이 잡플러스",
+      "sourceIdentity": "culture:id:94883",
+      "source": "레슨인포",
       "title": "2026-07차 서초문화재단 직원 채용 공고",
       "school": "서초문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000011&ypEntId=B000648",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000713:000004",
-      "source": "클린아이 잡플러스",
-      "title": "(재)강북문화재단 임원(비상임이사) 공개모집 공고",
-      "school": "강북문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000004&ypEntId=B000713",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "sourceIdentity": "culture:id:94869",
+      "source": "레슨인포",
+      "title": "2026년 제5차 (재)양천문화재단 직원 채용 공고",
+      "school": "양천문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000647:000038",
-      "source": "클린아이 잡플러스",
-      "title": "성동12호점 우리동네키움센터 서울숲아이꿈누리터 기간제 근로자(육아휴직 대체) 채용 공고",
+      "sourceIdentity": "culture:id:94831",
+      "source": "레슨인포",
+      "title": "(재)인천서해구문화재단 임원(비상임이사) 공개모집 공고",
+      "school": "인천서해구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94817",
+      "source": "레슨인포",
+      "title": "[반도문화재단] 라운지 안내원 모집",
+      "school": "반도문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94796",
+      "source": "레슨인포",
+      "title": "경기문화재단 2026 경기창작캠퍼스 프리 레지던시 운영요원 모집",
+      "school": "경기문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94795",
+      "source": "레슨인포",
+      "title": "경기문화재단 경기창작캠퍼스 <우리가 서로 사랑한 이유에 대해서는 묻지 않기로 해요> 전시 운영요원모집",
+      "school": "경기문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94794",
+      "source": "레슨인포",
+      "title": "(재)성동문화재단 직원 채용 공고(기간제/육아대체/공연기획)",
       "school": "성동문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000038&ypEntId=B000647",
-      "reason": "unclassified-nongeneric-url",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94793",
+      "source": "레슨인포",
+      "title": "[라인문화재단] 홍보기획 경력직 채용",
+      "school": "라인문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94792",
+      "source": "레슨인포",
+      "title": "파마리서치문화재단 출판·인쇄물 제작 담당 채용 공고",
+      "school": "파마리서치문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94772",
+      "source": "레슨인포",
+      "title": "2026년 제3차 용산문화재단 직원 공개경쟁채용",
+      "school": "용산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94763",
+      "source": "레슨인포",
+      "title": "2026년 제7차 종로문화재단 직원 공개모집 공고",
+      "school": "종로문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94707",
+      "source": "레슨인포",
+      "title": "파마리서치문화재단 어시스턴트 큐레이터 채용 공고",
+      "school": "파마리서치문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94690",
+      "source": "레슨인포",
+      "title": "2026년 제6회 인천서해구문화재단 직원 채용 공고(기간제근로자)",
+      "school": "인천서해구문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94673",
+      "source": "레슨인포",
+      "title": "국립박물관문화재단 2026년 3차 직원 채용",
+      "school": "국립박물관문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94619",
+      "source": "레슨인포",
+      "title": "2026 광명문화재단 꿈의 무용단 예비거점기관 감독 모집(~8.21.)",
+      "school": "광명문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94611",
+      "source": "레슨인포",
+      "title": "2026년 안산문화재단 단시간근로자 모집 공고(공연장안내원)",
+      "school": "안산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94609",
+      "source": "레슨인포",
+      "title": "2026년 안산문화재단 단시간근로자 모집 공고(김홍도미술관 전시안내원)",
+      "school": "안산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94608",
+      "source": "레슨인포",
+      "title": "2026년 안산문화재단 기간제근로자 모집 공고(안산국제거리극축제 운영PD, 홍보PD)",
+      "school": "안산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94607",
+      "source": "레슨인포",
+      "title": "2026년 안산문화재단 기간제근로자 모집 공고(문화행정_육아휴직대체)",
+      "school": "안산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:94605",
+      "source": "레슨인포",
+      "title": "(재)천안문화재단 임원(이사, 감사) 공개모집 공고",
+      "school": "천안문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "artmore:94583",
+      "source": "아트모아",
+      "title": "진행중 [고양문화재단] 어울림문화학교 강사 상시 모집",
+      "school": "고양문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
+      "reason": "artmore-rec-idx",
       "direct": true
     },
     {
-      "sourceIdentity": "cleaneye:2026:B000431:000004",
-      "source": "클린아이 잡플러스",
-      "title": "(재)고양문화재단 대표이사 채용 공고",
-      "school": "고양문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000004&ypEntId=B000431",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "cleaneye:2026:B000431:000003",
-      "source": "클린아이 잡플러스",
-      "title": "(재)고양문화재단 비상임 감사 공개 모집 공고",
-      "school": "고양문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000003&ypEntId=B000431",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "cleaneye:2026:B000431:000002",
-      "source": "클린아이 잡플러스",
-      "title": "(재)고양문화재단 비상임 이사 공개 모집 공고",
-      "school": "고양문화재단",
-      "url": "https://job.cleaneye.go.kr/user/ypCareersData.do?empyear=2026&entSeq=000002&ypEntId=B000431",
-      "reason": "unclassified-nongeneric-url",
-      "direct": true
+      "sourceIdentity": "culture:id:93859",
+      "source": "레슨인포",
+      "title": "2026년 제2차 용산문화재단 직원 공개경쟁채용",
+      "school": "용산문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     }
   ]
 }

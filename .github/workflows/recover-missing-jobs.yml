@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 
 # The recovery workflow performs long network scans before it is ready to publish.
 # Keep those scans serialized with each other, but do not hold the shared data-writer
@@ -55,7 +56,7 @@ jobs:
           # Recovery validates stable production contracts and then proves pagination,
           # reconciliation, exact links and regional completeness through executable
           # validators below. Do not bind this gate to implementation-source strings.
-          python -m py_compile scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_gyeonggi_central_90d.py scripts/verify_central_reconciliation_consistency.py scripts/merge_recovery_snapshot.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/verify_support_completeness.py scripts/verify_jobs.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sync_effective_audit_status.py scripts/sanitize_job_dates.py scripts/merge_incheon_official.py scripts/verify_required_regions.py
+          python -m py_compile scripts/scrape_jobs.py scripts/repair_gyeonggi_support.py scripts/complete_support_coverage.py scripts/reconcile_source_ids.py scripts/verify_central_pagination.py scripts/verify_gyeonggi_central_90d.py scripts/verify_central_reconciliation_consistency.py scripts/merge_recovery_snapshot.py scripts/resolve_support_links.py scripts/enrich_support_periods.py scripts/enrich_seoul_get_fallback.py scripts/verify_support_completeness.py scripts/verify_jobs.py scripts/update_collection_state.py scripts/update_collector_status.py scripts/sync_effective_audit_status.py scripts/sanitize_job_dates.py scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/verify_required_regions.py
           grep -q 'coverageComplete' scripts/complete_support_coverage.py
           git diff --exit-code -- scripts
 
@@ -77,7 +78,9 @@ jobs:
           python scripts/complete_support_coverage.py
 
       - name: Collect complete Incheon official network
-        run: python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
+        run: |
+          python scripts/merge_incheon_official.py --lookback-days 90 --transient-retries 2 --retry-delay-seconds 15
+          python scripts/collect_incheon_support.py --lookback-days 90
 
       - name: Refresh independent Gyeonggi 90-day proof in current audit window
         run: python scripts/verify_gyeonggi_central_90d.py
@@ -162,7 +165,7 @@ jobs:
           rm -f recovery_failure_report.json
           # Recovery is a data workflow. Source/config files are deliberately excluded: any
           # collector hardening or registry change must arrive through a reviewed code change.
-          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json collector_status.json deep_audit_status.json board_cache.json missing_recovery_report.json source_reconciliation_report.json central_pagination_report.json gyeonggi_central_90d_report.json date_anomaly_report.json support_coverage_report.json support_link_resolution.json support_period_cache.json incheon_official_report.json
+          git add jobs.json job_ledger.json source_id_ledger.json collection_state.json collector_status.json deep_audit_status.json board_cache.json missing_recovery_report.json source_reconciliation_report.json central_pagination_report.json gyeonggi_central_90d_report.json date_anomaly_report.json support_coverage_report.json support_link_resolution.json support_period_cache.json incheon_official_report.json incheon_support_report.json
           git ls-files --error-unmatch recovery_failure_report.json >/dev/null 2>&1 && git add -u -- recovery_failure_report.json || true
           git diff --cached --quiet && exit 0
           python scripts/publication_transaction.py publish \
@@ -173,13 +176,46 @@ jobs:
             --allow-concurrent-path operational_quality_history.json \
             --revalidate-command 'python scripts/verify_jobs.py --previous /tmp/jobs_recovery_base.json && python scripts/validate_reconciliation_policy.py && python scripts/verify_central_reconciliation_consistency.py && python scripts/verify_required_regions.py'
 
+
+      - name: Dispatch unified publication when canonical jobs advanced
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          jobs_ts="$(git log -1 --format=%ct origin/main -- jobs.json || true)"
+          unified_ts="$(git log -1 --format=%ct origin/main -- unified_jobs.json || true)"
+          if [ -z "$jobs_ts" ]; then
+            echo "No canonical jobs.json commit found; refusing follow-up dispatch."
+            exit 1
+          fi
+          if [ -n "$unified_ts" ] && [ "$jobs_ts" -le "$unified_ts" ]; then
+            echo "Unified publication is already current."
+            exit 0
+          fi
+          active="$(gh api \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/runs?per_page=10" \
+            --jq '[.workflow_runs[] | select(.status == "queued" or .status == "in_progress")] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Unified publication already queued/in progress; skipping duplicate dispatch."
+            exit 0
+          fi
+          gh api --method POST \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/dispatches" \
+            -f ref=main
+          echo "Dispatched unified publication immediately after verified data publication."
+
       - name: Preserve failed recovery diagnostics without publishing unverified data
         if: failure()
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/recovery-diagnostics
-          for f in support_coverage_report.json support_link_resolution.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json gyeonggi_central_90d_report.json missing_recovery_report.json date_anomaly_report.json incheon_official_report.json; do
+          for f in support_coverage_report.json support_link_resolution.json source_reconciliation_report.json source_id_ledger.json central_pagination_report.json gyeonggi_central_90d_report.json missing_recovery_report.json date_anomaly_report.json incheon_official_report.json incheon_support_report.json; do
             if [ -f "$f" ]; then cp "$f" "/tmp/recovery-diagnostics/$f"; fi
           done
 

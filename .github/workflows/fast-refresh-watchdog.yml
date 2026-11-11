@@ -3,9 +3,13 @@ name: Production operations watchdog
 on:
   workflow_dispatch:
   schedule:
-    # Single scheduler. All production writer workflows remain dispatch-only.
-    # Shifted two minutes to re-register the schedule after multiple missed events.
-    - cron: '19,49 * * * *'
+    # One scheduled supervisor; shift all offsets by two minutes to re-register missed schedule events.
+    # The 15-minute cadence and independent registrations remain unchanged.
+    # schedule registration when GitHub delays or drops individual scheduled events.
+    - cron: '6 * * * *'
+    - cron: '21 * * * *'
+    - cron: '36 * * * *'
+    - cron: '51 * * * *'
 
 permissions:
   contents: read
@@ -14,7 +18,7 @@ permissions:
 
 concurrency:
   group: production-operations-watchdog
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   watchdog:
@@ -34,6 +38,41 @@ jobs:
           set -euo pipefail
           git fetch origin main
           git checkout -B main origin/main
+      - name: Cancel stale Fast run beyond hard-timeout grace
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          now_epoch="$(date -u +%s)"
+          gh api             -H 'Accept: application/vnd.github+json'             "/repos/${GITHUB_REPOSITORY}/actions/workflows/update-jobs.yml/runs?per_page=30"             > /tmp/fast-runs.json
+          stale_ids="$(NOW_EPOCH="$now_epoch" python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          HARD_TIMEOUT_GRACE_SECONDS = 130 * 60
+          now_epoch = int(os.environ["NOW_EPOCH"])
+          data = json.loads(Path("/tmp/fast-runs.json").read_text(encoding="utf-8"))
+          for run in data.get("workflow_runs", []):
+              if run.get("event") != "workflow_dispatch":
+                  continue
+              if run.get("head_branch") != "main" or run.get("status") != "in_progress":
+                  continue
+              raw = run.get("run_started_at") or run.get("created_at") or ""
+              try:
+                  started = datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(timezone.utc)
+              except Exception:
+                  continue
+              age_seconds = now_epoch - int(started.timestamp())
+              if age_seconds > HARD_TIMEOUT_GRACE_SECONDS:
+                  print(run.get("id"))
+          PY
+          )"
+          for run_id in $stale_ids; do
+            echo "Cancelling stale Fast run ${run_id}: exceeded 120-minute job timeout plus 10-minute grace."
+            gh api --method POST               -H 'Accept: application/vnd.github+json'               "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/cancel"
+          done
       - name: Decide one safe action and manage incidents
         id: gate
         shell: bash
@@ -41,30 +80,85 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python scripts/production_supervisor.py \
+          python scripts/private_refresh_policy.py \
             --github-output "$GITHUB_OUTPUT" \
             --state-file /tmp/production-supervisor.json \
             --manage-issues
-      - name: Dispatch the selected production action
-        if: steps.gate.outputs.action == 'fast' || steps.gate.outputs.action == 'recovery' || steps.gate.outputs.action == 'completeness' || steps.gate.outputs.action == 'unified'
+      - name: Select verified regional refresh while Incheon is held
+        id: regional_gate
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          ACTION: ${{ steps.gate.outputs.action }}
+          PRIOR_ACTION: ${{ steps.gate.outputs.action }}
+        run: |
+          set -euo pipefail
+          gh api -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/seoul-gyeonggi-official.yml/runs?per_page=50" \
+            > /tmp/seoul-gyeonggi-runs.json
+          gh api -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/unified-search.yml/runs?per_page=50" \
+            > /tmp/verified-unified-runs.json
+          python scripts/seoul_gyeonggi_watchdog.py \
+            --selected-action "$PRIOR_ACTION" \
+            --supervisor-state /tmp/production-supervisor.json \
+            --runs /tmp/seoul-gyeonggi-runs.json \
+            --unified-runs /tmp/verified-unified-runs.json \
+            --github-output "$GITHUB_OUTPUT"
+      - name: Dispatch the selected production action
+        if: steps.regional_gate.outputs.action == 'seoul-gyeonggi' || steps.regional_gate.outputs.action == 'fast' || steps.regional_gate.outputs.action == 'recovery' || steps.regional_gate.outputs.action == 'completeness' || steps.regional_gate.outputs.action == 'unified' || startsWith(steps.regional_gate.outputs.action, 'private-')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTION: ${{ steps.regional_gate.outputs.action }}
         run: |
           set -euo pipefail
           case "$ACTION" in
+            seoul-gyeonggi) workflow='seoul-gyeonggi-official.yml' ;;
             fast) workflow='update-jobs.yml' ;;
             recovery) workflow='recover-missing-jobs.yml' ;;
             completeness) workflow='official-completeness-audit.yml' ;;
             unified) workflow='unified-search.yml' ;;
+            private-lessoninfo) workflow='update-lessoninfo-jobs.yml' ;;
+            private-lessoninfo-links) workflow='lessoninfo-culture-cold-verify.yml' ;;
+            private-jobteacher) workflow='update-jobteacher-jobs.yml' ;;
+            private-artmore-candidate) workflow='update-artmore-candidate.yml' ;;
+            private-artmore-promote) workflow='promote-artmore.yml' ;;
+            private-gonggonggangsa) workflow='update-gonggonggangsa-jobs.yml' ;;
+            private-cleaneye) workflow='update-cleaneye-jobs.yml' ;;
+            private-seekle) workflow='update-seekle-instructor-jobs.yml' ;;
+            private-boramyc) workflow='update-boramyc-instructor-jobs.yml' ;;
+            private-foundation) workflow='cultural-foundation-coverage.yml' ;;
             *) echo "Unknown action: $ACTION" >&2; exit 2 ;;
           esac
+          # Re-check the selected writer immediately before dispatch using the
+          # selected workflow's unfiltered run list. This intentionally differs from
+          # the supervisor's repository-wide backstop so one API view can cover the
+          # other's visibility/filtering edge cases. API failures remain fail-closed.
+          active="$(gh api \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/runs?per_page=100" \
+            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Production workflow already active; no duplicate dispatch: ${workflow}."
+            exit 0
+          fi
           gh api --method POST \
             -H 'Accept: application/vnd.github+json' \
             "/repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/dispatches" \
             -f ref=main
           echo "Dispatched ${workflow} for action=${ACTION}."
+      - name: Measure official visibility latency
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/measure_visibility_latency.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --window-hours 48 \
+            --slo-hours 4 \
+            --output /tmp/visibility_latency_report.json
+
       - name: Show supervisor decision
         if: always()
         shell: bash

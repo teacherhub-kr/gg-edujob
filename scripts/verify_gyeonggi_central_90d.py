@@ -9,6 +9,7 @@ the 90-day boundary or a structural end is proven. The resulting count is used t
 """
 import json
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -81,12 +82,25 @@ def semantic_row(li):
 
 
 def post(url, data):
-    try:
-        r = S.post(url, data=data, timeout=22, allow_redirects=True)
-        r.raise_for_status()
-        return r
-    except Exception:
-        return None
+    # Keep this audit independent of the reconciliation crawler. Requests can
+    # raise body-decoding errors after the adapter has returned headers; retry
+    # the exact same read-only list request, never skip the affected page.
+    for attempt in range(3):
+        try:
+            r = S.post(url, data=data, timeout=22, allow_redirects=True)
+            r.raise_for_status()
+            return r
+        except (requests.exceptions.ChunkedEncodingError,
+                requests.exceptions.ContentDecodingError) as exc:
+            print("AUDIT CENTRAL BODY RETRY", data.get("srchOcptCd"),
+                  data.get("currPage"), attempt + 1, type(exc).__name__, flush=True)
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+        except requests.RequestException as exc:
+            print("AUDIT CENTRAL POST FAIL", data.get("srchOcptCd"),
+                  data.get("currPage"), type(exc).__name__, str(exc)[:120], flush=True)
+            return None
+    return None
 
 
 def main():

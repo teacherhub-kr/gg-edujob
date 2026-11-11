@@ -1,0 +1,313 @@
+name: Maintenance operations
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Maintenance operation
+        required: true
+        type: choice
+        options:
+          - frontend-performance
+          - normalize-collector-status
+          - operational-quality
+          - search-integrity
+          - service-health
+          - exact-link-integrity
+
+permissions:
+  contents: write
+
+jobs:
+  frontend-performance:
+    if: inputs.target == 'frontend-performance'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: metro-edujob-frontend
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Apply safe browser performance patch
+        run: |
+          if [ ! -f unified_jobs.json ]; then
+            echo 'Unified dataset has not been published yet; leaving current frontend untouched.'
+            exit 0
+          fi
+          python scripts/optimize_frontend_performance.py
+          grep -q 'let visibleLimit=80;const PAGE_SIZE=80;' index.html
+          grep -q "fetch('unified_jobs.json',{cache:'no-cache'})" index.html
+          grep -q 'let searchTimer=0;' index.html
+      - name: Commit optimized frontend
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html scripts/optimize_frontend_performance.py
+          git diff --cached --quiet && exit 0
+          git commit -m 'Keep unified recruitment search responsive in browser'
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i*4))
+          done
+          exit 1
+
+  normalize-collector-status:
+    if: inputs.target == 'normalize-collector-status'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: metro-edujob-data
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Detect rejected-candidate status
+        id: detect
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('collector_status.json')
+          d=json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
+          fast=d.get('fast',{}) if isinstance(d,dict) else {}
+          should=fast.get('state')=='failed' and not fast.get('publishedBaselineNormalized')
+          Path('/tmp/should_normalize').write_text('yes' if should else 'no')
+          if should:
+              Path('/tmp/rejected_fast_status.json').write_text(
+                  json.dumps(fast, ensure_ascii=False, indent=2), encoding='utf-8'
+              )
+          PY
+          echo "run=$(cat /tmp/should_normalize)" >> "$GITHUB_OUTPUT"
+      - name: Recompute status from preserved published dataset
+        if: steps.detect.outputs.run == 'yes'
+        run: |
+          python scripts/update_collector_status.py --workflow fast --state failed
+          python - <<'PY'
+          import json
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+          KST=timezone(timedelta(hours=9))
+          status=json.loads(Path('collector_status.json').read_text(encoding='utf-8'))
+          rejected=json.loads(Path('/tmp/rejected_fast_status.json').read_text(encoding='utf-8'))
+          fast=status.setdefault('fast',{})
+          fast['publishedBaselineNormalized']=True
+          fast['publishedJobsCount']=fast.get('jobsCount')
+          fast['rejectedCandidate']={
+              'updatedAt': rejected.get('updatedAt'),
+              'stage': rejected.get('stage'),
+              'jobsCount': rejected.get('jobsCount'),
+              'coverageEvidence': rejected.get('coverageEvidence'),
+          }
+          report={
+              'generatedAt': datetime.now(KST).strftime('%Y-%m-%d %H:%M:%S KST'),
+              'note': 'Rejected candidate diagnostics preserved separately; collector_status now describes the last published jobs.json.',
+              'candidate': fast['rejectedCandidate'],
+              'published': {
+                  'jobsCount': fast.get('publishedJobsCount'),
+                  'coverageEvidence': fast.get('coverageEvidence'),
+              },
+          }
+          Path('rejected_fast_candidate_status.json').write_text(
+              json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8'
+          )
+          Path('collector_status.json').write_text(
+              json.dumps(status, ensure_ascii=False, indent=2)+'\n', encoding='utf-8'
+          )
+          PY
+      - name: Commit normalized status only
+        if: steps.detect.outputs.run == 'yes'
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add collector_status.json rejected_fast_candidate_status.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Normalize failed collector status to published baseline'
+          git pull --rebase
+          git push
+
+  operational-quality:
+    if: inputs.target == 'operational-quality'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: metro-edujob-quality-audit
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Synchronize latest verified publication
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Compile independent quality auditor
+        run: python -m py_compile scripts/audit_operational_quality.py
+      - name: Audit duplicates freshness contamination and overcollection
+        id: audit
+        continue-on-error: true
+        run: python scripts/audit_operational_quality.py
+      - name: Commit quality evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add operational_quality_report.json operational_quality_history.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Audit recruitment data quality and freshness'
+          git reset --hard HEAD
+          git pull --rebase
+          git push
+      - name: Fail after preserving hard-quality diagnostics
+        if: steps.audit.outcome == 'failure'
+        run: exit 1
+
+  search-integrity:
+    if: inputs.target == 'search-integrity'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: metro-edujob-search-integrity
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Compile search guard scripts
+        run: python -m py_compile scripts/ensure_search_logic.py scripts/verify_search.py
+      - name: Enforce robust frontend search logic
+        run: python scripts/ensure_search_logic.py
+      - name: Verify Lessoninfo culture links fail closed until cold-safe
+        run: node tests/test_lessoninfo_culture_failclosed.js
+      - name: Check JavaScript syntax
+        run: |
+          node --check direct-link-guard.js
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('index.html').read_text(encoding='utf-8')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,flags=re.S|re.I)
+          if not blocks:
+              raise SystemExit('No inline JavaScript found in index.html')
+          Path('/tmp/index-inline.js').write_text('\n'.join(blocks),encoding='utf-8')
+          PY
+          node --check /tmp/index-inline.js
+      - name: Verify search against real collected postings
+        run: python scripts/verify_search.py
+      - name: Commit search UI repair only after all checks pass
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Keep search aligned with collected job data'
+          git pull --rebase
+          git push
+
+  service-health:
+    if: inputs.target == 'service-health'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: metro-edujob-observability
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Synchronize latest verified state
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Syntax check trend observers
+        run: python -m py_compile scripts/update_health_trends.py scripts/update_official_source_trends.py scripts/check_official_source_freshness.py
+      - name: Record rolling health snapshot
+        id: trend
+        continue-on-error: true
+        run: python scripts/update_health_trends.py
+      - name: Record exact official-source trend snapshot
+        id: official_trend
+        continue-on-error: true
+        run: python scripts/update_official_source_trends.py
+      - name: Detect already-stale official sources
+        id: official_freshness
+        continue-on-error: true
+        run: python scripts/check_official_source_freshness.py
+      - name: Commit evidence before alerting
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add health_trend_history.json health_anomaly_report.json official_source_trend_history.json official_source_trend_report.json official_source_freshness_report.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record recruitment service health trend'
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i*4))
+          done
+          exit 1
+      - name: Fail visibly only on hard integrity failure
+        if: steps.trend.outcome != 'success' || steps.official_trend.outcome != 'success' || steps.official_freshness.outcome != 'success'
+        run: exit 1
+
+  exact-link-integrity:
+    if: inputs.target == 'exact-link-integrity'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    concurrency:
+      group: metro-edujob-exact-links
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install resolver dependencies
+        run: pip install requests beautifulsoup4
+      - name: Verify target-aware resolver pagination guard
+        run: |
+          python scripts/hotfix_link_resolver_pagination.py
+          python -m py_compile scripts/resolve_support_links.py scripts/hotfix_link_resolver_pagination.py scripts/verify_exact_support_links.py
+          ! grep -q 'MAX_FALLBACK_PAGES' scripts/resolve_support_links.py
+          ! grep -q 'for page in range(1, 9):' scripts/resolve_support_links.py
+          ! grep -q 'for page in range(1, 501):' scripts/resolve_support_links.py
+          grep -q 'while True:' scripts/resolve_support_links.py
+          grep -q 'seen_page_sigs' scripts/resolve_support_links.py
+          grep -q 'def exact_gyeonggi_url' scripts/resolve_support_links.py
+      - name: Resolve exact individual posting links through board exhaustion
+        run: python scripts/resolve_support_links.py
+      - name: Require exact links for every support-office job
+        run: python scripts/verify_exact_support_links.py
+      - name: Commit verified resolver, jobs and link report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/resolve_support_links.py jobs.json support_link_resolution.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Refresh complete exact support-office links'
+          git pull --rebase
+          git push

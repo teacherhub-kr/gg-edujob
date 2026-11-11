@@ -18,6 +18,13 @@ INCHOEN_REQUIRED_BOARDS = {
     "1981": "https://www.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997",
     "1534": "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571",
 }
+INCHEON_REQUIRED_SUPPORT = {
+    "nambu": "인천남부교육지원청",
+    "bukbu": "인천북부교육지원청",
+    "dongbu": "인천동부교육지원청",
+    "seobu": "인천서부교육지원청",
+    "ganghwa": "인천강화교육지원청",
+}
 
 
 def load(name):
@@ -60,6 +67,21 @@ def main() -> None:
     if missing_incheon_boards:
         missing_registry.append("인천 필수게시판:" + ",".join(missing_incheon_boards))
 
+    support_registry = (incheon_group or {}).get("supportOffices") or []
+    support_by_key = {
+        str(item.get("key") or ""): item
+        for item in support_registry
+        if isinstance(item, dict)
+    }
+    missing_support = [
+        key for key, name in INCHEON_REQUIRED_SUPPORT.items()
+        if key not in support_by_key
+        or support_by_key[key].get("name") != name
+        or not str(support_by_key[key].get("url") or "").startswith("https://")
+    ]
+    if missing_support:
+        missing_registry.append("인천 교육지원청:" + ",".join(missing_support))
+
     if missing_registry:
         raise SystemExit("Required official region/source absent from registry: " + ", ".join(missing_registry))
     if unhealthy:
@@ -99,6 +121,22 @@ def main() -> None:
             "Incheon required board lacks complete runtime traversal evidence: " + ", ".join(missing_runtime_proof)
         )
 
+    runtime_support = ((status.get("incheon") or {}).get("supportOffices") or []) if isinstance(status, dict) else []
+    runtime_support_by_name = {
+        str(item.get("name") or ""): item
+        for item in runtime_support
+        if isinstance(item, dict)
+    }
+    unhealthy_support = []
+    for _key, name in INCHEON_REQUIRED_SUPPORT.items():
+        item = runtime_support_by_name.get(name)
+        if not item or item.get("ok") is not True or item.get("coverageComplete") is not True:
+            unhealthy_support.append(name)
+    if unhealthy_support:
+        raise SystemExit(
+            "Incheon support-office runtime traversal is incomplete: " + ", ".join(unhealthy_support)
+        )
+
     malformed = []
     for job in incheon[:200]:
         raw = str(job.get("url") or "")
@@ -126,6 +164,7 @@ def main() -> None:
         "incheonPublishedJobs": len(incheon),
         "incheonRequiredBoards": sorted(INCHOEN_REQUIRED_BOARDS),
         "incheonPublishedBoards": sorted(present_bbs & set(INCHOEN_REQUIRED_BOARDS)),
+        "incheonSupportOffices": sorted(runtime_support_by_name),
         "state": "ok",
     }, ensure_ascii=False))
 

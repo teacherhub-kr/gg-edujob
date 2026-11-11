@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-13T07:30:27+09:00",
-  "policy": "official-foundation-primary-fail-closed-v6-sfac-saramin-careerlink",
+  "generatedAt": "2026-10-06T04:26:59+09:00",
+  "policy": "official-foundation-primary-fail-closed-v7-metro-generic",
   "healthy": true,
-  "registryInstitutions": 49,
-  "officialBoardsConfigured": 2,
-  "supportedBoardsChecked": 2,
+  "registryInstitutions": 55,
+  "officialBoardsConfigured": 21,
+  "supportedBoardsChecked": 21,
   "unsupportedConfiguredBoards": [],
-  "jobs": 3,
+  "jobs": 9,
   "errors": [],
   "boards": [
     {
@@ -23,7 +23,7 @@
       "inspectedDetailLinks": 1,
       "publishedCurrentJobs": 0,
       "active": false,
-      "registered": "2026-11-23",
+      "registered": "",
       "applyEnd": "2026-08-20",
       "secondarySurfaces": [
         {
@@ -38,6 +38,108 @@
       "adapterStatus": "implemented"
     },
     {
+      "foundationRegistryId": "seoul:gangnam",
+      "foundationName": "강남문화재단",
+      "boardUrl": "https://www.gangnam.go.kr/office/gfac/board/gfac_staffrec/list.do?mid=gfac_staffRec",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.gangnam.go.kr/office/gfac/board/gfac_staffrec/list.do?mid=gfac_staffRec"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "seoul:guro",
+      "foundationName": "구로문화재단",
+      "boardUrl": "https://www.guro.go.kr/www/selectBbsNttList.do?bbsNo=664&key=1792",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.guro.go.kr/www/selectBbsNttList.do?bbsNo=664&key=1792"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 1,
+      "publishedCurrentJobs": 1,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 1,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "seoul:nowon",
+      "foundationName": "노원문화재단",
+      "boardUrl": "https://nowonarts.kr/channels/job/posts",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://nowonarts.kr/channels/job/posts"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "seoul:yangcheon",
+      "foundationName": "양천문화재단",
+      "boardUrl": "https://yfac.kr/main/contents.do?a_num=78696582&v_page=1",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://yfac.kr/main/contents.do?a_num=78696582&v_page=1"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "seoul:yeongdeungpo",
+      "foundationName": "영등포문화재단",
+      "boardUrl": "https://www.ydpcf.or.kr/board.do?bid=3&category=17&p=1",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.ydpcf.or.kr/board.do?bid=3&category=17&p=1"
+      ],
+      "discoveredDetailLinks": 11,
+      "datedRecruitmentRowsOnList": 11,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:gwacheon",
+      "foundationName": "과천문화재단",
+      "boardUrl": "https://www.gcart.or.kr/kr/commu/recruitList.do",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.gcart.or.kr/kr/commu/recruitList.do"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 1,
+      "publishedCurrentJobs": 1,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 1,
+      "identityVerified": true
+    },
+    {
       "foundationRegistryId": "gyeonggi:gwangju",
       "foundationName": "광주시문화재단",
       "boardUrl": "https://www.nsart.or.kr/board/recruit.do",
@@ -48,8 +150,230 @@
         "https://www.nsart.or.kr/index.do"
       ],
       "discoveredDetailLinks": 10,
-      "inspectedDetailLinks": 10,
-      "publishedCurrentJobs": 3
+      "inspectedDetailLinks": 6,
+      "staleListCandidatesSkipped": 4,
+      "publishedCurrentJobs": 0
+    },
+    {
+      "foundationRegistryId": "gyeonggi:gimpo",
+      "foundationName": "김포문화재단",
+      "boardUrl": "https://www.gcf.or.kr/main/pst/list.do?pst_id=recruit&pst_se=C",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.gcf.or.kr/main/pst/list.do?pst_id=recruit&pst_se=C"
+      ],
+      "discoveredDetailLinks": 4,
+      "datedRecruitmentRowsOnList": 4,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:suwon",
+      "foundationName": "수원문화재단",
+      "boardUrl": "https://www.swcf.or.kr/?p=116",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.swcf.or.kr/?p=116"
+      ],
+      "discoveredDetailLinks": 6,
+      "datedRecruitmentRowsOnList": 6,
+      "inspectedDetailLinks": 2,
+      "publishedCurrentJobs": 2,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:ansan",
+      "foundationName": "안산문화재단",
+      "boardUrl": "https://www.ansanart.com/lay1/bbs/S1T84C408/A/62/list.do",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.ansanart.com/lay1/bbs/S1T84C408/A/62/list.do"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:yangpyeong",
+      "foundationName": "양평문화재단",
+      "boardUrl": "https://ypcf.or.kr/recruit",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://ypcf.or.kr/recruit"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:uijeongbu",
+      "foundationName": "의정부문화재단",
+      "boardUrl": "https://uac.or.kr/newuac/community/community_09.php",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://uac.or.kr/newuac/community/community_09.php"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:icheon",
+      "foundationName": "이천문화재단",
+      "boardUrl": "https://www.artic.or.kr/base/board/list?boardManagementNo=15&menuLevel=3&menuNo=50",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.artic.or.kr/base/board/list?boardManagementNo=15&menuLevel=3&menuNo=50"
+      ],
+      "discoveredDetailLinks": 4,
+      "datedRecruitmentRowsOnList": 4,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "gyeonggi:hanam",
+      "foundationName": "하남문화재단",
+      "boardUrl": "https://www.hanam.go.kr/www/selectGosiList.do?key=174&not_ancmt_se_code=05&pageIndex=1&searchCnd=all&searchKrwd=",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.hanam.go.kr/www/selectGosiList.do?key=174&not_ancmt_se_code=05&pageIndex=1&searchCnd=all&searchKrwd="
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 1,
+      "publishedCurrentJobs": 1,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:metropolitan",
+      "foundationName": "인천문화재단",
+      "boardUrl": "https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://ifac.or.kr/bbs/list.do?bbsCtgrySn=74&key=m2501152808232"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 3,
+      "publishedCurrentJobs": 3,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:jemulpo",
+      "foundationName": "제물포문화재단",
+      "boardUrl": "https://www.jcf.or.kr/main/inform/job.jsp",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.jcf.or.kr/main/inform/job.jsp"
+      ],
+      "discoveredDetailLinks": 2,
+      "datedRecruitmentRowsOnList": 2,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:seohae",
+      "foundationName": "인천서해구문화재단",
+      "boardUrl": "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.seohae.go.kr/open_content/main/bbs/bbsMsgList.do?bcd=job&pgno=1"
+      ],
+      "discoveredDetailLinks": 0,
+      "datedRecruitmentRowsOnList": 0,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:yeonsu",
+      "foundationName": "연수문화재단",
+      "boardUrl": "https://www.ysfac.or.kr/user/board/list.php?board_code=announcement&cat=3",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.ysfac.or.kr/user/board/list.php?board_code=announcement&cat=3"
+      ],
+      "discoveredDetailLinks": 4,
+      "datedRecruitmentRowsOnList": 4,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:bupyeong",
+      "foundationName": "부평구문화재단",
+      "boardUrl": "https://www.bpcf.or.kr/bpcf/bbs/BMSR00063/list.do?menuNo=200059",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.bpcf.or.kr/bpcf/bbs/BMSR00063/list.do?menuNo=200059"
+      ],
+      "discoveredDetailLinks": 3,
+      "datedRecruitmentRowsOnList": 3,
+      "inspectedDetailLinks": 1,
+      "publishedCurrentJobs": 1,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
+    },
+    {
+      "foundationRegistryId": "incheon:namdong",
+      "foundationName": "남동문화재단",
+      "boardUrl": "https://www.namdong.go.kr/main/bbs/bbsMsgList.do?bcd=hireannounce",
+      "healthy": true,
+      "adapter": "generic-official-board-v1",
+      "surfacesChecked": [
+        "https://www.namdong.go.kr/main/bbs/bbsMsgList.do?bcd=hireannounce"
+      ],
+      "discoveredDetailLinks": 1,
+      "datedRecruitmentRowsOnList": 1,
+      "inspectedDetailLinks": 0,
+      "publishedCurrentJobs": 0,
+      "detailErrors": [],
+      "recentPostsWithUnverifiedDeadline": 0,
+      "identityVerified": true
     }
   ]
 }

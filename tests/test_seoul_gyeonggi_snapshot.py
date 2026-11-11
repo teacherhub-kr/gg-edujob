@@ -1,0 +1,569 @@
+import copy
+import json
+import sys
+import unittest
+from pathlib import Path
+from unittest import mock
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import publish_seoul_gyeonggi_snapshot as sg  # noqa: E402
+import validate_required_metro_publication as guard  # noqa: E402
+
+
+def scenario():
+    registry = json.loads((ROOT / "sources.json").read_text(encoding="utf-8"))
+    sources = {}
+    for key in ("gyeonggi", "seoul"):
+        offices = []
+        for office in registry[key]["supportOffices"]:
+            offices.append({
+                "name": office["name"], "ok": True, "coverageComplete": True,
+                "boardHealth": [{
+                    "url": "https://example.invalid/read",
+                    "pagesScanned": 1, "coverageComplete": True,
+                    "accessError": False, "paginationRepeated": False,
+                    "naturalEnd": True,
+                }]
+            })
+        sources[key] = {
+            "central": {"ok": True, "count": 50},
+            "supportOffices": offices,
+        }
+    rows = [
+        {"province": "경기" if i % 2 else "서울", "id": f"synthetic:{i}", "title": f"테스트 {i}"}
+        for i in range(120)
+    ]
+    candidate = {
+        "jobs": rows, "sources": sources, "errors": [],
+        "regionalCentral90d": {"coverageComplete": True, "sourceRows": 100},
+        "supportCompleteness": {
+            "lookbackDays": 90, "gyeonggiComplete": 25, "gyeonggiTotal": 25,
+            "seoulComplete": 11, "seoulTotal": 11,
+        },
+        "supportLinkResolution": {
+            "gyeonggiTotal": 40, "gyeonggiExact": 40,
+            "seoulTotal": 20, "seoulExact": 20,
+        },
+        "verification": {"state": "ok"},
+    }
+    central = {
+        "complete": True,
+        "sources": [
+            {"province": "경기", "complete": True, "stableIdCount": 50},
+            {"province": "서울", "complete": True, "stableIdCount": 50},
+        ],
+    }
+    gyeonggi = {"complete": True, "lookbackDays": 90, "stableIdCount": 100}
+    return candidate, registry, central, gyeonggi
+
+
+class CentralTruncatedBodyTests(unittest.TestCase):
+    def test_retry_truncated_body_without_advancing_page(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        response = mock.Mock()
+        response.encoding = "utf-8"
+        data = {"srchOcptCd": "B", "currPage": "5", "pageIndex": "50", "srchEcptDl": ""}
+        with mock.patch.object(crawler.primary.S, "post", side_effect=[
+            requests.exceptions.ChunkedEncodingError("Response ended prematurely"),
+            response,
+        ]) as post, mock.patch.object(crawler.time, "sleep"):
+            self.assertIs(crawler.post_complete_central_page("https://example.invalid/list", data), response)
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(post.call_args_list[0], post.call_args_list[1])
+
+    def test_persistent_truncation_remains_fail_closed(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        with mock.patch.object(crawler.primary.S, "post", side_effect=
+                               requests.exceptions.ChunkedEncodingError("truncated")) as post, mock.patch.object(crawler.time, "sleep"):
+            self.assertIsNone(crawler.post_complete_central_page("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 3)
+
+    def test_http_access_denial_is_not_retried(self):
+        import requests
+        import crawl_gyeonggi_central_recent as crawler
+
+        response = mock.Mock()
+        response.raise_for_status.side_effect = requests.HTTPError("403 Forbidden")
+        with mock.patch.object(crawler.primary.S, "post", return_value=response) as post:
+            self.assertIsNone(crawler.post_complete_central_page("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 1)
+
+
+class IndependentCentralBodyRetryTests(unittest.TestCase):
+    def test_audit_retries_same_page_after_truncated_body(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        data = {"srchOcptCd": "B", "currPage": "5", "pageIndex": "50"}
+        response = mock.Mock()
+        with mock.patch.object(audit.S, "post", side_effect=[
+            requests.exceptions.ChunkedEncodingError("Response ended prematurely"),
+            response,
+        ]) as post, mock.patch.object(audit.time, "sleep"):
+            self.assertIs(audit.post("https://example.invalid/list", data), response)
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(post.call_args_list[0], post.call_args_list[1])
+
+    def test_audit_exhaustion_returns_no_response(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        with mock.patch.object(audit.S, "post", side_effect=
+                               requests.exceptions.ContentDecodingError("invalid body")) as post, mock.patch.object(audit.time, "sleep"):
+            self.assertIsNone(audit.post("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 3)
+
+    def test_audit_http_denial_remains_fail_closed(self):
+        import requests
+        import verify_gyeonggi_central_90d as audit
+
+        response = mock.Mock()
+        response.raise_for_status.side_effect = requests.HTTPError("403 Forbidden")
+        with mock.patch.object(audit.S, "post", return_value=response) as post:
+            self.assertIsNone(audit.post("https://example.invalid/list", {"currPage": "5"}))
+            self.assertEqual(post.call_count, 1)
+
+
+class RegionalSnapshotTests(unittest.TestCase):
+    def test_complete_two_region_proof_accepted(self):
+        c, reg, central, gg = scenario()
+        self.assertEqual(sg.validate_snapshot(c, reg, central, gg), {"gyeonggi": 60, "seoul": 60})
+
+    def test_missing_office_fails_closed(self):
+        c, reg, central, gg = scenario()
+        c["sources"]["seoul"]["supportOffices"].pop()
+        with self.assertRaisesRegex(ValueError, "registry mismatch"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_truncated_board_fails_closed(self):
+        c, reg, central, gg = scenario()
+        c["sources"]["gyeonggi"]["supportOffices"][0]["boardHealth"][0]["paginationRepeated"] = True
+        with self.assertRaisesRegex(ValueError, "unproven board traversal"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_incheon_job_cannot_enter_regional_snapshot(self):
+        c, reg, central, gg = scenario()
+        c["jobs"].append({"province": "인천", "title": "금지"})
+        with self.assertRaisesRegex(ValueError, "non-Seoul/Gyeonggi"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_failed_independent_central_scan_fails(self):
+        c, reg, central, gg = scenario()
+        central["complete"] = False
+        with self.assertRaisesRegex(ValueError, "pagination not complete"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_mismatched_central_90d_fails(self):
+        c, reg, central, gg = scenario()
+        gg["stableIdCount"] = 120
+        with self.assertRaisesRegex(ValueError, "disagrees materially"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_unresolved_exact_links_fails(self):
+        c, reg, central, gg = scenario()
+        c["supportLinkResolution"]["seoulExact"] = 19
+        with self.assertRaisesRegex(ValueError, "exact support"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_critical_verification_fails(self):
+        c, reg, central, gg = scenario()
+        c["verification"]["state"] = "critical"
+        with self.assertRaisesRegex(ValueError, "critical"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+class UnifiedRegionalGateTests(unittest.TestCase):
+    def data(self):
+        registry = {"gyeonggi": {}, "seoul": {}, "incheon": {}}
+        meta = {
+            "policy": "seoul-gyeonggi-isolated-verified-v1", "state": "verified",
+            "refreshedRegions": ["경기", "서울"], "refreshedOfficialSourceCount": 38,
+            "heldRegions": {"인천": {"state": "stale"}},
+        }
+        unified = {
+            "officialSourceCount": 44,
+            "sources": {"gyeonggi": {}, "seoul": {}, "incheon": {}},
+            "jobs": [{"feedKind": "official", "sourceSurface": "official", "province": p}
+                     for p in ("경기", "서울")],
+            "regionalPublication": meta,
+        }
+        return registry, unified
+
+    def invoke(self, registry, unified):
+        with mock.patch.object(guard, "load_json", side_effect=lambda path: {
+            "sources.json": registry, "unified_jobs.json": unified
+        }[path]), mock.patch.object(guard, "official_source_count", return_value=44):
+            guard.main()
+
+    def test_verified_held_incheon_allows_two_region_display(self):
+        self.invoke(*self.data())
+
+    def test_stale_incheon_cannot_be_described_as_fresh(self):
+        registry, unified = self.data()
+        unified["jobs"].append({
+            "feedKind": "official", "sourceSurface": "official", "province": "인천"
+        })
+        with self.assertRaisesRegex(SystemExit, "stale Incheon"):
+            self.invoke(registry, unified)
+
+    def test_unverified_held_status_fails_closed(self):
+        registry, unified = self.data()
+        unified["regionalPublication"]["heldRegions"]["인천"]["state"] = "fresh"
+        with self.assertRaisesRegex(SystemExit, "not trusted"):
+            self.invoke(registry, unified)
+
+    def test_legacy_mode_still_requires_incheon(self):
+        registry, unified = self.data()
+        del unified["regionalPublication"]
+        with self.assertRaisesRegex(SystemExit, "missing mandatory provinces"):
+            self.invoke(registry, unified)
+
+
+from datetime import datetime, timedelta, timezone
+import seoul_gyeonggi_watchdog as scheduler
+
+
+class ProtectedRegionalWatchdogTests(unittest.TestCase):
+    NOW = datetime(2026, 11, 10, 1, 0, tzinfo=timezone.utc)
+
+    def matching_regional_proof(self):
+        generated = (self.NOW - timedelta(hours=2)).isoformat()
+        counts = {"gyeonggi": 60, "seoul": 60}
+        metadata = {
+            "policy": scheduler.REGIONAL_POLICY,
+            "state": "verified", "generatedAt": generated,
+            "refreshedRegions": ["경기", "서울"],
+            "refreshedOfficialSourceCount": 38,
+            "heldRegions": {"인천": {"state": "stale"}},
+            "officialJobs": counts,
+        }
+        report = {
+            "policy": scheduler.REGIONAL_POLICY,
+            "generatedAt": generated, "state": "verified",
+            "counts": counts,
+        }
+        snapshot = {
+            "regionalPublication": metadata, "officialSourceCount": 38,
+            "sources": {"gyeonggi": {}, "seoul": {}},
+            "jobs": [{"province": "경기" if i % 2 else "서울"}
+                     for i in range(120)],
+        }
+        unified = {
+            "regionalPublication": dict(metadata),
+            "jobs": [{"feedKind": "official", "province": "경기"}
+                     for _ in range(120)],
+        }
+        return report, snapshot, unified
+
+    def test_prioritizes_region_snapshot_instead_of_broken_incheon_fast(self):
+        action, _ = scheduler.decide("fast", {}, [], self.NOW)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_does_not_dispatch_full_incheon_after_fresh_regional_snapshot(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide("recovery", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_report_alone_does_not_prove_fresh_data(self):
+        report, _, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide("fast", report, [], self.NOW)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_mismatched_snapshot_fails_closed(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        snapshot["jobs"].append({"province": "인천"})
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_verified_regional_data_but_unified_not_published_drains_backlog(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=[])
+        self.assertEqual(action, "unified")
+
+    def test_unified_run_history_is_required_to_dispatch(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={})
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_running_unified_is_not_dispatched_again(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        running = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "in_progress", "conclusion": None,
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=running)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_recent_unified_failure_preserves_backoff(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        failure = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=10)).isoformat(),
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=failure)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_successful_unified_attempt_after_snapshot_not_repeated(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        success = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "success",
+            "updated_at": (self.NOW - timedelta(minutes=5)).isoformat(),
+        }]
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=success)
+        self.assertEqual(action, "private-jobteacher")
+
+
+    def test_unified_fresh_marker_prevents_unnecessary_rebuild(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide("private-jobteacher", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_unified_circuit_open_is_not_bypassed(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide("skip-unified-circuit-open", report, [], self.NOW,
+                                     snapshot=snapshot, unified={})
+        self.assertEqual(action, "skip-unified-circuit-open")
+
+    def test_region_proof_expired_requires_recollection(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        expired = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = expired
+        snapshot["regionalPublication"]["generatedAt"] = expired
+        unified["regionalPublication"]["generatedAt"] = expired
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_active_regional_run_blocks_duplicate(self):
+        runs = [{"event": "workflow_dispatch", "head_branch": "main", "status": "in_progress"}]
+        action, _ = scheduler.decide("fast", {}, runs, self.NOW)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_failed_regional_run_uses_six_hour_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=20)).isoformat()
+        }]
+        action, _ = scheduler.decide("fast", {}, runs, self.NOW)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_private_writer_continues_during_regional_failure_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(minutes=20)).isoformat()
+        }]
+        action, _ = scheduler.decide("private-jobteacher", {}, runs, self.NOW)
+        self.assertEqual(action, "private-jobteacher")
+
+    def test_existing_active_run_still_wins(self):
+        action, _ = scheduler.decide("skip-active-run", {}, [], self.NOW)
+        self.assertEqual(action, "skip-active-run")
+
+    def test_verified_published_snapshot_allows_private_during_regional_backoff(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(minutes=30)).isoformat()}]
+        action, reason = scheduler.decide(
+            "fast", report, failed, self.NOW, snapshot=snapshot, unified=unified,
+            unified_runs=[], private_fallback="private-lessoninfo")
+        self.assertEqual(action, "private-lessoninfo")
+        self.assertIn("6-hour failure backoff", reason)
+        self.assertEqual(report["generatedAt"], stamp)
+
+    def test_backoff_private_slot_requires_matching_verified_publication(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(minutes=30)).isoformat()}]
+        for kwargs in (
+            {"snapshot": {}, "unified": unified, "unified_runs": [], "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": {}, "unified_runs": [], "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": None, "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": [], "private_fallback": "private-foundation"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": [
+                {"event": "workflow_dispatch", "head_branch": "main", "status": "in_progress"}],
+             "private_fallback": "private-lessoninfo"},
+        ):
+            action, _ = scheduler.decide("fast", report, failed, self.NOW, **kwargs)
+            self.assertEqual(action, "skip-incheon-hold")
+
+    def test_regional_backoff_expiry_prioritizes_official_refresh_over_private(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(hours=7)).isoformat()}]
+        action, _ = scheduler.decide(
+            "fast", report, failed, self.NOW, snapshot=snapshot, unified=unified,
+            unified_runs=[], private_fallback="private-lessoninfo")
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_failed_region_writer_can_retry_after_backoff(self):
+        runs = [{
+            "event": "workflow_dispatch", "head_branch": "main",
+            "status": "completed", "conclusion": "failure",
+            "updated_at": (self.NOW - timedelta(hours=7)).isoformat()
+        }]
+        action, _ = scheduler.decide("skip-fast-circuit-open", {}, runs, self.NOW)
+        self.assertEqual(action, "seoul-gyeonggi")
+
+
+    def test_three_hour_snapshot_is_not_refreshed_early(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=3, minutes=55)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_four_hour_snapshot_triggers_early_collection_before_six_hour_stale_notice(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        action, reason = scheduler.decide("fast", report, [], self.NOW,
+                                          snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "seoul-gyeonggi")
+        self.assertIn("4-hour", reason)
+
+    def test_unified_publication_backlog_still_wins_during_preemptive_window(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        action, _ = scheduler.decide("fast", report, [], self.NOW,
+                                     snapshot=snapshot, unified={}, unified_runs=[])
+        self.assertEqual(action, "unified")
+
+    def test_active_regional_writer_still_blocks_early_duplicate(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        t = (self.NOW - timedelta(hours=4, minutes=5)).isoformat()
+        report["generatedAt"] = t
+        snapshot["regionalPublication"]["generatedAt"] = t
+        unified["regionalPublication"]["generatedAt"] = t
+        active = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "in_progress"}]
+        action, _ = scheduler.decide("fast", report, active, self.NOW,
+                                     snapshot=snapshot, unified=unified)
+        self.assertEqual(action, "skip-incheon-hold")
+
+
+    def test_verified_regional_idle_slot_dispatches_vetted_private_refresh(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, reason = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "private-lessoninfo")
+        self.assertIn("circuit-checked", reason)
+
+    def test_regional_refresh_deadline_outweighs_private_overdue(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=4, minutes=10)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_unpublished_regional_snapshot_outweighs_private_overdue(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified={},
+            unified_runs=[], private_fallback="private-jobteacher",
+        )
+        self.assertEqual(action, "unified")
+
+    def test_private_fallback_is_not_accepted_without_verified_region(self):
+        action, _ = scheduler.decide(
+            "fast", {}, [], self.NOW, private_fallback="private-lessoninfo"
+        )
+        self.assertEqual(action, "seoul-gyeonggi")
+
+    def test_unrecognized_private_action_is_rejected(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "fast", report, [], self.NOW, snapshot=snapshot, unified=unified,
+            private_fallback="private-arbitrary-workflow",
+        )
+        self.assertEqual(action, "skip-incheon-hold")
+
+    def test_supervisor_private_state_must_be_current_and_safe(self):
+        state = {
+            "generatedAt": (self.NOW - timedelta(minutes=2)).isoformat(),
+            "action": "fast", "activeTargets": [], "activePrivateTargets": [],
+            "regionalPrivateFallbackAction": "private-lessoninfo",
+            "privateFreshness": {"private-lessoninfo": {"overdue": True}},
+        }
+        self.assertEqual(scheduler.valid_private_fallback(state, "fast", self.NOW),
+                         "private-lessoninfo")
+        from copy import deepcopy
+        for mutate in (
+            lambda s: s.update(generatedAt=(self.NOW - timedelta(minutes=15)).isoformat()),
+            lambda s: s.update(generatedAt=(self.NOW + timedelta(minutes=6)).isoformat()),
+            lambda s: s.update(action="unified"),
+            lambda s: s.update(activeTargets=["fast"]),
+            lambda s: s.update(activePrivateTargets=["private-artmore-candidate"]),
+            lambda s: s["privateFreshness"]["private-lessoninfo"].update(overdue=False),
+            lambda s: s.update(regionalPrivateFallbackAction="private-arbitrary-workflow"),
+        ):
+            changed = deepcopy(state)
+            mutate(changed)
+            self.assertIsNone(scheduler.valid_private_fallback(changed, "fast", self.NOW))
+
+    def test_supervisor_artmore_promotion_uses_its_separate_verified_gate(self):
+        state = {
+            "generatedAt": self.NOW.isoformat(), "action": "fast",
+            "activeTargets": [], "activePrivateTargets": [],
+            "regionalPrivateFallbackAction": "private-artmore-promote",
+            "privateFreshness": {},
+        }
+        self.assertEqual(scheduler.valid_private_fallback(state, "fast", self.NOW),
+                         "private-artmore-promote")
+
+    def test_running_writer_cannot_be_overridden_by_private_idle_slot(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        action, _ = scheduler.decide(
+            "skip-active-run", report, [], self.NOW,
+            snapshot=snapshot, unified=unified,
+            private_fallback="private-lessoninfo",
+        )
+        self.assertEqual(action, "skip-active-run")
+
+
+if __name__ == "__main__":
+    unittest.main()

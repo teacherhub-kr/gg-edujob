@@ -28,17 +28,17 @@ jobs:
         run: python scripts/validate_cultural_foundation_registry.py
       - name: Collect official cultural-foundation jobs (single production writer)
         run: python scripts/crawl_official_foundation_jobs_v2.py
-      - name: Require v6 SFAC adapter report before any report commit
+      - name: Require metro official-board adapter report before any report commit
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           p=Path('official_foundation_report.json')
           d=json.loads(p.read_text(encoding='utf-8'))
-          assert d.get('policy') == 'official-foundation-primary-fail-closed-v6-sfac-saramin-careerlink', d.get('policy')
+          assert d.get('policy') == 'official-foundation-primary-fail-closed-v7-metro-generic', d.get('policy')
           unsupported=d.get('unsupportedConfiguredBoards') or []
           assert not any(x.get('reason') == 'adapter-not-yet-implemented' for x in unsupported), unsupported
-          print('v6 foundation report verified', d.get('jobs'), d.get('policy'))
+          print('metro foundation report verified', d.get('jobs'), d.get('policy'))
           PY
       - name: Probe CleanEye and ANCF surfaces
         run: python scripts/probe_cultural_sources.py

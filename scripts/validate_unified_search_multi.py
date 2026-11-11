@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from build_unified_search import RESULT_RE, private_current
-from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, publication_enabled, source_health
+from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
 from source_registry import official_source_count
 
 KST = timezone(timedelta(hours=9))
@@ -16,6 +16,7 @@ DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 BANNED = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
 ALLOWED_PROVINCES = {"서울", "경기"}
+LESSONINFO_ALLOWED_PROVINCES = {"서울", "경기", "인천"}
 
 
 def load(path, default=None):
@@ -110,18 +111,23 @@ def main():
     failclosed_links = []
     verified_culture_links = []
     for spec in PRIVATE_SOURCES:
-        raw_src = rows_from(load(spec["jobs"], []))
+        source_path = spec.get("full_jobs") if spec.get("key") == "lessoninfo" and spec.get("full_jobs") else spec["jobs"]
+        raw_src = rows_from(load(source_path, []))
+        if spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
+            raw_src = merge_lessoninfo_full_candidates(raw_src, rows_from(load(spec["jobs"], [])))
         rep = load(spec["report"], {})
         drep = load(spec["detail_report"], {}) if spec.get("detail_report") else None
         configured_enabled = publication_enabled(rep)
         healthy = source_health(spec, rep, drep)
         effective_enabled = configured_enabled and healthy
 
-        # The canonical source files may intentionally retain expired/history rows for audit
-        # and reconciliation. The builder applies private_current() before projecting into the
-        # unified search, so completeness and contamination checks must validate that same
-        # current-only population rather than demanding that expired archive rows be displayed.
-        src = [j for j in raw_src if private_current(j)] if effective_enabled else []
+        # Lessoninfo intentionally publishes the full 120-day candidate set (except rows
+        # explicitly classified out-of-scope/non-recruitment) so users can judge private
+        # postings themselves. Other private sources keep the current-only gate.
+        if effective_enabled and spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
+            src = [j for j in raw_src if lessoninfo_full_candidate_publishable(j)]
+        else:
+            src = [j for j in raw_src if private_current(j)] if effective_enabled else []
         source_reports[spec["key"]] = {
             "rawCount": len(raw_src),
             "currentCount": len(src),
@@ -148,10 +154,20 @@ def main():
 
         for j in src:
             ps = row_provinces(j)
-            if not ps or not ps.issubset(ALLOWED_PROVINCES):
+            lessoninfo_full = spec.get("key") == "lessoninfo" and "statusGroup" in j
+            if lessoninfo_full:
+                if ps and not ps.issubset(LESSONINFO_ALLOWED_PROVINCES):
+                    non_metro += 1
+            elif not ps or not ps.issubset(ALLOWED_PROVINCES):
                 non_metro += 1
             detail_url = j.get("detailUrl") or j.get("originalUrl") or j.get("openUrl") or j.get("url") or ""
-            if is_lessoninfo_culture(j, spec) and j.get("detailLinkVerified") is True:
+            if lessoninfo_full and j.get("clickable") is False and str(j.get("statusGroup") or "") in {"unverified-link", "review"}:
+                failclosed_links.append({
+                    "source": spec["key"],
+                    "sourceIdentity": j.get("sourceIdentity"),
+                    "title": j.get("title"),
+                })
+            elif is_lessoninfo_culture(j, spec) and j.get("detailLinkVerified") is True:
                 if not detail_url_is_specific(spec, detail_url) or not str(j.get("verifiedUrl") or "").strip():
                     non_detail_links.append({
                         "source": spec["key"],
@@ -182,9 +198,10 @@ def main():
                         "title": j.get("title"),
                         "url": detail_url,
                     })
-        banned += sum(1 for j in src if BANNED.search(str(j.get("title") or "")) or PROMO_ONLY.search(str(j.get("title") or "")))
-        expired += sum(1 for j in src if parse_date(j.get("applyEnd")) and parse_date(j.get("applyEnd")) < TODAY)
-        future += sum(1 for j in src if parse_date(j.get("registered")) and parse_date(j.get("registered")) > TODAY)
+        if spec.get("key") != "lessoninfo":
+            banned += sum(1 for j in src if BANNED.search(str(j.get("title") or "")) or PROMO_ONLY.search(str(j.get("title") or "")))
+            expired += sum(1 for j in src if parse_date(j.get("applyEnd")) and parse_date(j.get("applyEnd")) < TODAY)
+            future += sum(1 for j in src if parse_date(j.get("registered")) and parse_date(j.get("registered")) > TODAY)
 
     extra_private = sorted(represented - source_ids_union)
     if extra_private: errors.append(f"Unified dataset invented {len(extra_private)} private stable IDs")
@@ -254,7 +271,14 @@ def main():
     no_search_text = [j for j in jobs if not str(j.get("searchText") or "").strip()]
     if no_search_text: errors.append(f"Unified dataset has {len(no_search_text)} rows without searchText")
 
-    projected_non_metro = [j for j in private if not row_provinces(j) or not row_provinces(j).issubset(ALLOWED_PROVINCES)]
+    projected_non_metro = []
+    for j in private:
+        ps = row_provinces(j)
+        if j.get("source") == "레슨인포" and j.get("fullCandidate") is True:
+            if ps and not ps.issubset(LESSONINFO_ALLOWED_PROVINCES):
+                projected_non_metro.append(j)
+        elif not ps or not ps.issubset(ALLOWED_PROVINCES):
+            projected_non_metro.append(j)
     if projected_non_metro:
         errors.append(f"Unified private projection contains {len(projected_non_metro)} non-metro province sets")
 

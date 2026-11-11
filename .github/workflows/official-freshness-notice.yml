@@ -1,0 +1,23 @@
+name: Official recruitment freshness banner guard
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'official-freshness-notice.js'
+      - 'official-freshness-notice.css'
+      - 'tests/test_official_freshness_notice.js'
+      - '.github/workflows/official-freshness-notice.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  stale-feed-banner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax check
+        run: node --check official-freshness-notice.js
+      - name: Verify official feed warning respects independently verified evidence
+        run: node tests/test_official_freshness_notice.js

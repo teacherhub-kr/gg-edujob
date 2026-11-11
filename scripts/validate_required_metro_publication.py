@@ -60,7 +60,28 @@ def main() -> None:
     published: set[str] = set()
     for row in official_rows:
         published.update(provinces(row))
-    missing_published = REQUIRED_PROVINCES - published
+    # Normal 44-source publication still requires all three provinces.
+    # Only a separately verified regional snapshot may hold Incheon, and it
+    # MUST NOT display an old Incheon education posting as freshly collected.
+    regional = unified.get("regionalPublication")
+    required = REQUIRED_PROVINCES
+    if regional is not None:
+        if not isinstance(regional, dict) or (
+            regional.get("policy") != "seoul-gyeonggi-isolated-verified-v1"
+            or regional.get("state") != "verified"
+            or regional.get("refreshedRegions") != ["경기", "서울"]
+            or int(regional.get("refreshedOfficialSourceCount") or 0) != 38
+            or (regional.get("heldRegions") or {}).get("인천", {}).get("state") != "stale"
+        ):
+            raise SystemExit("invalid regional publication proof; Incheon hold not trusted")
+        required = {"경기", "서울"}
+        held_education = [
+            row for row in official_rows
+            if row.get("sourceSurface") == "official" and "인천" in provinces(row)
+        ]
+        if held_education:
+            raise SystemExit(f"stale Incheon education posts leaked into regional publication: {len(held_education)}")
+    missing_published = required - published
     if missing_published:
         raise SystemExit(
             f"unified official publication missing mandatory provinces: {sorted(missing_published)}"
@@ -68,7 +89,7 @@ def main() -> None:
 
     print(
         "mandatory metro publication verified:",
-        sorted(REQUIRED_PROVINCES),
+        sorted(required),
         f"officialSources={expected_sources}",
         f"officialRows={len(official_rows)}",
     )

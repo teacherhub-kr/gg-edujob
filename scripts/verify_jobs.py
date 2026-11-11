@@ -11,6 +11,9 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from source_registry import official_source_count
+from stable_source_identity import canonical_source_id
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "jobs.json"
 KST = timezone(timedelta(hours=9))
@@ -39,9 +42,10 @@ def authoritative_central_count(province):
     if not isinstance(report, dict):
         return None
     summary = report.get("summary") or {}
+    expected_sources = official_source_count()
     if (
-        int(summary.get("totalSources") or 0) != 38
-        or int(summary.get("reconciledSources") or 0) != 38
+        int(summary.get("totalSources") or 0) != expected_sources
+        or int(summary.get("reconciledSources") or 0) != expected_sources
         or int(summary.get("missingAfter") or -1) != 0
         or int(summary.get("lookbackDays") or report.get("lookbackDays") or 0) != 90
     ):
@@ -68,7 +72,7 @@ def authoritative_central_count(province):
 
 def support_issues(data):
     out = []
-    for province in ("gyeonggi", "seoul"):
+    for province in ("gyeonggi", "seoul", "incheon"):
         for s in data.get("sources", {}).get(province, {}).get("supportOffices", []):
             if not s.get("ok"):
                 out.append({"name": s.get("name", ""), "state": s.get("state", "error"), "message": s.get("message", "")})
@@ -108,6 +112,49 @@ def exact_support_link_issues(jobs):
                     reason = "서울 POST 상세열기 정보 불완전"
             except Exception:
                 reason = "서울 상세열기 정보 파싱 실패"
+        elif province == "인천":
+            raw = j.get("url", "") or ""
+            try:
+                u = urlparse(raw)
+                host = (u.hostname or "").lower()
+                q = parse_qs(u.query)
+                strong_id = canonical_source_id(j)
+                host_ok = host.endswith("ice.go.kr") or host.endswith("nambuice.go.kr")
+                detail_ok = False
+                if host == "nambu.ice.go.kr":
+                    detail_ok = bool(re.search(r"/BO/R/\d+/N/N(?:$|/)", u.fragment))
+                elif host == "seobu.ice.go.kr":
+                    detail_ok = (
+                        u.path.endswith("/bseobu/read.aspx")
+                        and str((q.get("board_code") or [""])[0]) == "4674"
+                        and str((q.get("board_idx") or [""])[0]).isdigit()
+                    )
+                elif host == "bukbu.ice.go.kr":
+                    detail_ok = (
+                        u.path.endswith("/bbs/data/view.do")
+                        and bool((q.get("data_idx") or [""])[0])
+                    )
+                elif host == "dongbu.ice.go.kr":
+                    detail_ok = (
+                        u.path.endswith("/bbs/bbsMsgDetail.do")
+                        and str((q.get("msg_seq") or [""])[0]).isdigit()
+                    )
+                elif host == "ganghwa.ice.go.kr":
+                    detail_ok = (
+                        u.path.endswith("/open/recruiting.asp")
+                        and str((q.get("num") or [""])[0]).isdigit()
+                        and str((q.get("ptype") or [""])[0]).lower() == "view"
+                    )
+                ok = (
+                    u.scheme == "https"
+                    and host_ok
+                    and detail_ok
+                    and strong_id.startswith("ice-support:")
+                )
+                if not ok:
+                    reason = "인천 개별공고 공식 상세 URL/강한 ID 불완전"
+            except Exception:
+                reason = "인천 개별공고 URL 파싱 실패"
         else:
             reason = "지원청 시도 구분 없음"
         if ok:

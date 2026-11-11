@@ -47,26 +47,67 @@ async def visible_click(loc):
     return False
 
 
+async def wait_for_region_radio(page, region: str, code: str, timeout_ms: int = 10000):
+    radio = page.locator(f"#area_level_{code}")
+    try:
+        await radio.wait_for(state="attached", timeout=timeout_ms)
+    except Exception as exc:
+        top_count = await page.locator('[id^="area_level_"]').count()
+        raise RuntimeError(
+            f"region radio missing after popup load: {region}/{code}; top_count={top_count}"
+        ) from exc
+    return radio
+
+
+async def wait_for_region_all(page, region: str, code: str, timeout_ms: int = 10000):
+    all_radio = page.locator("#all_3")
+    try:
+        await all_radio.wait_for(state="attached", timeout=timeout_ms)
+    except Exception as exc:
+        detail_count = await page.locator("#area_level_3 .area_level_3").count()
+        raise RuntimeError(
+            f"region all selector missing after ajax for {region}/{code}; detail_count={detail_count}"
+        ) from exc
+    return all_radio
+
+
+async def select_region_all(page, region: str, code: str, attempts: int = 3):
+    last_exc = None
+    for attempt in range(1, attempts + 1):
+        radio = await wait_for_region_radio(page, region, code)
+        await radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
+        try:
+            all_radio = await wait_for_region_all(page, region, code, timeout_ms=6000)
+            await all_radio.evaluate('e=>{e.checked=true;e.dispatchEvent(new Event("change",{bubbles:true}))}')
+            return all_radio
+        except Exception as exc:
+            last_exc = exc
+            if attempt < attempts:
+                await page.wait_for_timeout(500 * attempt)
+    raise RuntimeError(
+        f"region child ajax failed after {attempts} attempts for {region}/{code}: {last_exc}"
+    )
+
+
+async def confirm_region_selection(page, region: str, timeout_ms: int = 10000):
+    button = page.locator("#btn_area_ok")
+    try:
+        await button.wait_for(state="visible", timeout=timeout_ms)
+        await button.click()
+    except Exception as exc:
+        raise RuntimeError(f"region confirm button missing while selecting {region}") from exc
+
+
 async def restore_region_filter(page, region: str, code: str) -> str:
     expected = f"2000-{code}"
     if not await visible_click(page.get_by_role("button", name="지역 선택")):
         raise RuntimeError(f"region opener missing while restoring {region}")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing while restoring: {region}/{code}")
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
-    await page.wait_for_timeout(400)
-    all_radio = page.locator("#all_3")
-    if not await all_radio.count():
-        raise RuntimeError(f"region all selector missing while restoring {region}")
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
+    await select_region_all(page, region, code)
     await page.wait_for_timeout(200)
     vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
         raise RuntimeError(f"area selector not staged while restoring {region}: {expected}; got={vals}")
-    if not await visible_click(page.locator("#btn_area_ok")):
-        raise RuntimeError(f"region confirm button missing while restoring {region}")
+    await confirm_region_selection(page, region)
     await page.wait_for_timeout(350)
     vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
     if expected not in vals:
@@ -96,42 +137,69 @@ async def enable_current_only(page):
 
 
 async def establish_filter(page, region: str, code: str):
+    """Submit ArtMore's verified search contract directly.
+
+    The public region popup hydrates child controls through flaky Ajax. The server
+    contract itself is stable: array_area_type=2000-<region> plus
+    exclude_end_yn=Y. Submit that exact form payload, then verify the returned
+    page preserved both values before any rows are accepted.
+    """
+    expected = f"2000-{code}"
     await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
-    await page.wait_for_timeout(700)
+    await page.wait_for_timeout(500)
     body = await page.locator("body").inner_text()
     if BLOCK_RE.search(body):
         raise RuntimeError("human-check/block page detected")
-    if not await visible_click(page.get_by_role("button", name="지역 선택")):
-        raise RuntimeError("region opener missing")
-    await page.wait_for_timeout(250)
-    radio = page.locator(f"#area_level_{code}")
-    if not await radio.count():
-        raise RuntimeError(f"region radio missing: {region}/{code}")
-    await radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
-    await page.wait_for_timeout(500)
-    all_radio = page.locator("#all_3")
-    if not await all_radio.count():
-        raise RuntimeError("region all selector missing")
-    await all_radio.evaluate('e=>{e.click();e.dispatchEvent(new Event("change",{bubbles:true}))}')
-    await page.wait_for_timeout(250)
-    expected = f"2000-{code}"
-    vals = await page.locator('input[name="area_selector_val"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        raise RuntimeError(f"area selector not staged: {expected}; got={vals}")
-    if not await visible_click(page.locator("#btn_area_ok")):
-        raise RuntimeError("region confirm button missing")
-    await page.wait_for_timeout(350)
-    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        raise RuntimeError(f"area selector not committed: {expected}; got={vals}")
-    await enable_current_only(page)
-    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
-    if expected not in vals:
-        await restore_region_filter(page, region, code)
-        if await page.locator("#exclude_end_yn").input_value() != "Y":
-            raise RuntimeError(f"current-only state lost while restoring {region} filter")
-    return expected
 
+    page_input = page.locator("#page")
+    if not await page_input.count():
+        raise RuntimeError("ArtMore search page input missing")
+    form = page_input.locator("xpath=ancestor::form[1]")
+    if not await form.count():
+        raise RuntimeError("ArtMore search form missing")
+
+    await page.evaluate(
+        """expected=>{
+          const pageInput=document.querySelector('#page');
+          const form=pageInput?.form;
+          if(!form) throw new Error('search form missing');
+          form.querySelectorAll('input[name="array_area_type"]').forEach(e=>e.remove());
+          const area=document.createElement('input');
+          area.type='hidden';
+          area.name='array_area_type';
+          area.value=expected;
+          form.appendChild(area);
+
+          let current=form.querySelector('input[name="exclude_end_yn"]');
+          if(!current){
+            current=document.createElement('input');
+            current.type='hidden';
+            current.name='exclude_end_yn';
+            current.id='exclude_end_yn';
+            form.appendChild(current);
+          }
+          current.value='Y';
+          pageInput.value='1';
+        }""",
+        expected,
+    )
+    try:
+        async with page.expect_navigation(wait_until="domcontentloaded", timeout=60000):
+            await form.evaluate("f=>f.submit()")
+    except Exception as exc:
+        raise RuntimeError(f"direct region contract submit failed for {region}/{code}") from exc
+    await page.wait_for_timeout(500)
+
+    body = await page.locator("body").inner_text()
+    if BLOCK_RE.search(body):
+        raise RuntimeError("human-check/block page detected after region submit")
+    vals = await page.locator('input[name="array_area_type"]').evaluate_all("els=>els.map(e=>e.value)")
+    current = await page.locator("#exclude_end_yn").input_value() if await page.locator("#exclude_end_yn").count() else ""
+    if expected not in vals or current != "Y":
+        raise RuntimeError(
+            f"direct region contract not preserved for {region}: area={vals} current={current}"
+        )
+    return expected
 
 async def page_rows(page, region: str):
     anchors = page.locator('a[href*="rec_idx="]')
@@ -238,8 +306,6 @@ async def collect_surface(browser, region: str, code: str):
                 if r["stableId"] not in seen_ids:
                     seen_ids.add(r["stableId"])
                     out.append(r)
-            if len(rows) < 10:
-                break
         if len(page_reports) >= max_pages and page_reports[-1].get("newIdCount"):
             raise RuntimeError(f"max page safety cap reached for {region}: {max_pages}")
         if not out:
