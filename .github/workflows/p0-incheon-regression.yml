@@ -130,6 +130,8 @@ jobs:
           print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY
       - name: Prove five Incheon support offices on live official sites
+        # Run after central failure too; failure still fails the whole job.
+        if: ${{ !cancelled() }}
         timeout-minutes: 12
         env:
           PYTHONPATH: scripts
@@ -147,3 +149,14 @@ jobs:
           },report
           print('five-office live probe ok',[(x.get('name'),x.get('count'),x.get('pagesScanned')) for x in report.get('offices',[])])
           PY
+      - name: Preserve redacted Incheon live proof reports
+        # Retain public status/digest diagnostics without cookies/tokens/bodies.
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: incheon-live-proof-${{ github.run_id }}
+          path: |
+            incheon_official_report.json
+            incheon_support_report.json
+          if-no-files-found: warn
+          retention-days: 14
