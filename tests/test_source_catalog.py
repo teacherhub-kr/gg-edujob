@@ -11,7 +11,7 @@ class SourceCatalogTests(unittest.TestCase):
         self.assertEqual(source_catalog.validate_catalog(catalog), [])
         self.assertEqual(catalog["counts"]["officialEducation"], 44)
         self.assertEqual(catalog["counts"]["publicFoundations"], 55)
-        self.assertGreaterEqual(catalog["counts"]["publicFoundationsDirect"], 20)
+        self.assertEqual(catalog["counts"]["publicFoundationsDirect"], 55)
 
     def test_public_and_private_supplemental_sources_are_not_conflated(self):
         catalog = source_catalog.build_catalog()
