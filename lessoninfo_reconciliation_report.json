@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T02:36:32+09:00",
+  "generatedAt": "2026-11-11T15:53:57+09:00",
   "policy": "lessoninfo-active-browser-v1",
   "healthy": true,
   "traversalComplete": true,
@@ -8,38 +8,37 @@
       "surface": "방과후교사•늘봄학교 강사",
       "listUrl": "https://www.lessoninfo.co.kr/board/board.php?board_code=20130529164321_7227&code=&bo_table=20170316171033_6494",
       "complete": true,
-      "pagesScanned": 7,
-      "ids": 500,
+      "pagesScanned": 5,
+      "ids": 360,
       "stopReason": "discovery_horizon_crossed"
     },
     {
       "surface": "문화예술 채용",
       "listUrl": "https://www.lessoninfo.co.kr/culture-jobs/list.php",
       "complete": true,
-      "pagesScanned": 19,
-      "ids": 1100,
-      "stopReason": "discovery_horizon_crossed"
+      "pagesScanned": 11,
+      "ids": 544,
+      "stopReason": "end_of_pages"
     }
   ],
-  "candidateIdCount": 1600,
-  "activeIdCount": 158,
-  "publishedIdCount": 158,
-  "allCandidatePublishedCount": 1600,
+  "candidateIdCount": 904,
+  "activeIdCount": 157,
+  "publishedIdCount": 157,
+  "allCandidatePublishedCount": 904,
   "perSurfaceActive": {
-    "afterschool-nulbom": 27,
-    "culture-arts": 131
+    "afterschool-nulbom": 15,
+    "culture-arts": 142
   },
   "missingAfterCount": 0,
   "missingAfterExamples": [],
   "detailErrorCount": 0,
   "detailErrorExamples": [],
   "classificationCounts": {
-    "active": 158,
-    "stale-without-deadline": 468,
-    "closed-marker": 5,
-    "detail-route-mismatch": 956,
-    "outside-seoul-gyeonggi": 12,
-    "non-recruitment": 1
+    "outside-seoul-gyeonggi": 11,
+    "active": 157,
+    "stale-without-deadline": 344,
+    "detail-route-mismatch": 387,
+    "non-recruitment": 5
   },
   "preservedPreviousDataset": false,
   "errors": []
