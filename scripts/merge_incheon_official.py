@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import time
 from datetime import datetime, timedelta, timezone
@@ -115,6 +116,27 @@ def build_session() -> requests.Session:
 
 SESSION = build_session()
 
+# ICE replay window observed from the user's 2026-11-11 browser experiment.
+# Publication still requires independent live completeness proof.
+DEFAULT_MIN_REQUEST_INTERVAL_SECONDS = 12.5
+MIN_REQUEST_INTERVAL_SECONDS = float(os.environ.get(
+    "ICE_MIN_REQUEST_INTERVAL_SECONDS", DEFAULT_MIN_REQUEST_INTERVAL_SECONDS
+))
+_LAST_ICE_REQUEST_AT = None
+
+
+def pace_ice_request() -> float:
+    """Space ICE requests without changing fail-closed pagination evidence."""
+    global _LAST_ICE_REQUEST_AT
+    waited = 0.0
+    now = time.monotonic()
+    if _LAST_ICE_REQUEST_AT is not None:
+        waited = max(0.0, MIN_REQUEST_INTERVAL_SECONDS - (now - _LAST_ICE_REQUEST_AT))
+        if waited:
+            time.sleep(waited)
+    _LAST_ICE_REQUEST_AT = time.monotonic()
+    return waited
+
 
 def reset_session() -> None:
     """Drop cookies and pooled connections before a bounded transient retry."""
@@ -136,6 +158,7 @@ def bootstrap_board_session(board: dict) -> dict:
     if not landing_url:
         return {"attempted": False, "ok": False, "status": 0, "contentLength": 0}
     try:
+        pace_ice_request()
         response = SESSION.get(
             landing_url,
             timeout=(8, 25),
@@ -196,6 +219,7 @@ def with_page(url: str, page: int) -> str:
 
 
 def fetch(url: str):
+    pace_ice_request()
     response = SESSION.get(url, timeout=(8, 25), allow_redirects=True)
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
@@ -293,6 +317,7 @@ def fetch_paging_form(previous_response, page: int, board: dict):
         raise ValueError("ICE official pagingForm path mismatch")
 
     origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
+    pace_ice_request()
     response = SESSION.post(
         target,
         data=fields,
@@ -649,7 +674,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         if check_only and page >= max_pages:
             stop_reason = "check-page-limit"
             break
-        time.sleep(0.04)
+        # Request pacing is enforced in each ICE request helper.
     else:
         stop_reason = "emergency-page-ceiling"
 
@@ -883,13 +908,18 @@ def registry_is_complete(sources: dict) -> bool:
 
 
 def main() -> int:
+    global MIN_REQUEST_INTERVAL_SECONDS
     parser = argparse.ArgumentParser()
     parser.add_argument("--lookback-days", type=int, default=90)
     parser.add_argument("--max-pages", type=int, default=1000)
     parser.add_argument("--check-only", action="store_true")
     parser.add_argument("--transient-retries", type=int, default=2)
     parser.add_argument("--retry-delay-seconds", type=float, default=15.0)
+    parser.add_argument("--min-request-interval-seconds", type=float,
+                        default=MIN_REQUEST_INTERVAL_SECONDS,
+                        help="Minimum seconds between ICE requests; default passes observed replay window.")
     args = parser.parse_args()
+    MIN_REQUEST_INTERVAL_SECONDS = max(0.0, float(args.min_request_interval_seconds))
 
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
     if not registry_is_complete(sources):
