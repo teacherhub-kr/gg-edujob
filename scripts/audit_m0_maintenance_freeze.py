@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Read-only audit for the maintenance freeze with one explicit P0 recovery exception.
+"""Read-only audit of the limited, explicitly authorized automatic schedulers.
 
-Automatic state-changing workflows remain frozen except the dedicated Fast freshness watchdog,
-which may run on ``schedule`` and dispatch the already-guarded Fast workflow only when the
-repository's existing stale/active checks allow it.
+The automatic refresh exception is restricted to the existing production
+watchdog, the separately guarded verified regional scheduler, and the
+independent circuit-checked private scheduler. Every other automatic
+state-changing workflow remains frozen; pull requests stay read-only.
 """
 
 from __future__ import annotations
@@ -20,6 +21,8 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 FORBIDDEN_AUTOMATIC_EVENTS = {"schedule", "workflow_run", "repository_dispatch"}
 ALLOWED_AUTOMATIC_EVENTS = {
     "production-operations-watchdog.yml": {"schedule"},
+    "seoul-gyeonggi-official.yml": {"schedule"},
+    "independent-private-scheduler.yml": {"schedule"},
 }
 WRITE_MARKERS = (
     "contents: write",
@@ -150,7 +153,7 @@ def main() -> int:
     print(f"Audited {len(workflow_files)} workflow files")
     print("Triggers: " + ", ".join(f"{key}={totals[key]}" for key in sorted(totals) if key != "read_only_pull_request_workflows"))
     print(f"Read-only pull_request workflows: {totals['read_only_pull_request_workflows']}")
-    print("Allowed automatic exception: production-operations-watchdog.yml schedule")
+    print("Allowed guarded schedules: " + ", ".join(sorted(ALLOWED_AUTOMATIC_EVENTS)))
     if failures:
         print("Maintenance freeze audit FAILED", file=sys.stderr)
         for failure in failures:
