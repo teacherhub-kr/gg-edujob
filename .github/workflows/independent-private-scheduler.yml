@@ -1,0 +1,83 @@
+name: Independent guarded private recruitment scheduler
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Twice each hour, separated from :08/:23/:38/:53 official supervisor slots.
+    # Source freshness remains 4–10 hours, with its existing failure circuit.
+    - cron: '13,43 * * * *'
+  pull_request:
+    paths:
+      - '.github/workflows/independent-private-scheduler.yml'
+      - 'scripts/scheduled_private_refresh.py'
+      - 'tests/test_independent_private_scheduler.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: metro-edujob-independent-private-scheduler
+  cancel-in-progress: false
+
+jobs:
+  contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify private scheduler and shared-writer contracts
+        run: |
+          python -m py_compile scripts/scheduled_private_refresh.py
+          PYTHONPATH=scripts python -m unittest tests.test_independent_private_scheduler
+
+  dispatch:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Synchronize latest private refresh policy
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+      - name: Select one overdue source using existing circuit and active-run policy
+        id: private_gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python scripts/scheduled_private_refresh.py --github-output "$GITHUB_OUTPUT"
+      - name: Dispatch at most one guarded private collector
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.private_gate.outputs.workflow != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WORKFLOW: ${{ steps.private_gate.outputs.workflow }}
+        run: |
+          set -euo pipefail
+          # Defense in depth: the choice must be a known, existing collector.
+          case "$WORKFLOW" in
+            update-lessoninfo-jobs.yml|lessoninfo-culture-cold-verify.yml|update-jobteacher-jobs.yml|update-artmore-candidate.yml|promote-artmore.yml|update-gonggonggangsa-jobs.yml|update-cleaneye-jobs.yml|update-seekle-instructor-jobs.yml|update-boramyc-instructor-jobs.yml|cultural-foundation-coverage.yml) ;;
+            *) echo "Unexpected private target" >&2; exit 2 ;;
+          esac
+          # Re-check race with the original watchdog's dispatch path.
+          active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/runs?per_page=100" \
+            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Private writer already active: ${WORKFLOW}; no duplicate."
+            exit 0
+          fi
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/dispatches" -f ref=main
+          echo "Dispatched one circuit-checked private collector: ${WORKFLOW}"
