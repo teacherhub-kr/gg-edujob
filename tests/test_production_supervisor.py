@@ -304,7 +304,7 @@ class ProductionSupervisorTests(unittest.TestCase):
     def test_watchdog_rechecks_active_writer_immediately_before_dispatch(self):
         from pathlib import Path
 
-        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        text = Path(".github/workflows/production-operations-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("Production workflow already active; no duplicate dispatch", text)
         self.assertIn("/actions/workflows/${workflow}/runs?per_page=100", text)
         self.assertNotIn('.path == $path', text)
@@ -340,7 +340,7 @@ class ProductionSupervisorTests(unittest.TestCase):
     def test_private_refresh_targets_are_dispatched_only_by_single_watchdog(self):
         from pathlib import Path
 
-        watchdog = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        watchdog = Path(".github/workflows/production-operations-watchdog.yml").read_text(encoding="utf-8")
         # The protected regional selector now mediates the single watchdog action.
         self.assertIn("startsWith(steps.regional_gate.outputs.action, 'private-')", watchdog)
         self.assertIn("PRIOR_ACTION: ${{ steps.gate.outputs.action }}", watchdog)
@@ -449,7 +449,7 @@ class ProductionSupervisorTests(unittest.TestCase):
     def test_watchdog_cancels_only_stale_in_progress_fast_runs_after_timeout_grace(self):
         from pathlib import Path
 
-        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        text = Path(".github/workflows/production-operations-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("Cancel stale Fast run beyond hard-timeout grace", text)
         self.assertIn("HARD_TIMEOUT_GRACE_SECONDS = 130 * 60", text)
         self.assertIn('run.get("status") != "in_progress"', text)
@@ -461,7 +461,7 @@ class ProductionSupervisorTests(unittest.TestCase):
     def test_watchdog_does_not_cancel_in_progress_decision(self):
         from pathlib import Path
 
-        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        text = Path(".github/workflows/production-operations-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("group: production-operations-watchdog", text)
         self.assertIn("cancel-in-progress: false", text)
 

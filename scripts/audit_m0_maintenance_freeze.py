@@ -19,7 +19,7 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 FORBIDDEN_AUTOMATIC_EVENTS = {"schedule", "workflow_run", "repository_dispatch"}
 ALLOWED_AUTOMATIC_EVENTS = {
-    "fast-refresh-watchdog.yml": {"schedule"},
+    "production-operations-watchdog.yml": {"schedule"},
 }
 WRITE_MARKERS = (
     "contents: write",
@@ -150,7 +150,7 @@ def main() -> int:
     print(f"Audited {len(workflow_files)} workflow files")
     print("Triggers: " + ", ".join(f"{key}={totals[key]}" for key in sorted(totals) if key != "read_only_pull_request_workflows"))
     print(f"Read-only pull_request workflows: {totals['read_only_pull_request_workflows']}")
-    print("Allowed automatic exception: fast-refresh-watchdog.yml schedule")
+    print("Allowed automatic exception: production-operations-watchdog.yml schedule")
     if failures:
         print("Maintenance freeze audit FAILED", file=sys.stderr)
         for failure in failures:

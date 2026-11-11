@@ -77,7 +77,7 @@ class PrivateRefreshPolicyTests(unittest.TestCase):
         self.assertEqual(supervisor.P0_STALE_AFTER, timedelta(hours=6))
 
     def test_watchdog_uses_policy_wrapper_as_single_dispatcher(self):
-        text = Path(".github/workflows/fast-refresh-watchdog.yml").read_text(encoding="utf-8")
+        text = Path(".github/workflows/production-operations-watchdog.yml").read_text(encoding="utf-8")
         self.assertIn("python scripts/private_refresh_policy.py", text)
         self.assertNotIn("python scripts/production_supervisor.py \\", text)
         self.assertIn(
