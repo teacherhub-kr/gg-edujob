@@ -3,13 +3,13 @@ name: Production operations watchdog
 on:
   workflow_dispatch:
   schedule:
-    # One scheduled supervisor, but register each offset as an independent cron.
-    # This keeps the same 15-minute cadence while reducing dependence on a single
+    # One scheduled supervisor; shift all offsets by two minutes to re-register missed schedule events.
+    # The 15-minute cadence and independent registrations remain unchanged.
     # schedule registration when GitHub delays or drops individual scheduled events.
-    - cron: '4 * * * *'
-    - cron: '19 * * * *'
-    - cron: '34 * * * *'
-    - cron: '49 * * * *'
+    - cron: '6 * * * *'
+    - cron: '21 * * * *'
+    - cron: '36 * * * *'
+    - cron: '51 * * * *'
 
 permissions:
   contents: read
