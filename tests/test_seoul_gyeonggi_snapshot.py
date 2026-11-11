@@ -340,6 +340,57 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
         action, _ = scheduler.decide("skip-active-run", {}, [], self.NOW)
         self.assertEqual(action, "skip-active-run")
 
+    def test_verified_published_snapshot_allows_private_during_regional_backoff(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(minutes=30)).isoformat()}]
+        action, reason = scheduler.decide(
+            "fast", report, failed, self.NOW, snapshot=snapshot, unified=unified,
+            unified_runs=[], private_fallback="private-lessoninfo")
+        self.assertEqual(action, "private-lessoninfo")
+        self.assertIn("6-hour failure backoff", reason)
+        self.assertEqual(report["generatedAt"], stamp)
+
+    def test_backoff_private_slot_requires_matching_verified_publication(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(minutes=30)).isoformat()}]
+        for kwargs in (
+            {"snapshot": {}, "unified": unified, "unified_runs": [], "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": {}, "unified_runs": [], "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": None, "private_fallback": "private-lessoninfo"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": [], "private_fallback": "private-foundation"},
+            {"snapshot": snapshot, "unified": unified, "unified_runs": [
+                {"event": "workflow_dispatch", "head_branch": "main", "status": "in_progress"}],
+             "private_fallback": "private-lessoninfo"},
+        ):
+            action, _ = scheduler.decide("fast", report, failed, self.NOW, **kwargs)
+            self.assertEqual(action, "skip-incheon-hold")
+
+    def test_regional_backoff_expiry_prioritizes_official_refresh_over_private(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        stamp = (self.NOW - timedelta(hours=8)).isoformat()
+        report["generatedAt"] = stamp
+        snapshot["regionalPublication"]["generatedAt"] = stamp
+        unified["regionalPublication"]["generatedAt"] = stamp
+        failed = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "completed", "conclusion": "failure",
+                   "updated_at": (self.NOW - timedelta(hours=7)).isoformat()}]
+        action, _ = scheduler.decide(
+            "fast", report, failed, self.NOW, snapshot=snapshot, unified=unified,
+            unified_runs=[], private_fallback="private-lessoninfo")
+        self.assertEqual(action, "seoul-gyeonggi")
+
     def test_failed_region_writer_can_retry_after_backoff(self):
         runs = [{
             "event": "workflow_dispatch", "head_branch": "main",
