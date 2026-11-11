@@ -16,6 +16,7 @@ import re
 import time
 from datetime import datetime, timedelta
 
+import requests
 from bs4 import BeautifulSoup
 
 import scrape_jobs as primary
@@ -35,6 +36,32 @@ def _old(value):
         return d < primary.NOW - timedelta(days=LOOKBACK_DAYS)
     except Exception:
         return False
+
+
+def post_complete_central_page(url, data):
+    """Retry a truncated read-only list response at the SAME category/page.
+
+    requests may raise ChunkedEncodingError while consuming the response body
+    after urllib3's adapter has returned headers. Do not advance pagination or
+    interpret the failed response as an empty final page.
+    """
+    for attempt in range(3):
+        try:
+            r = primary.S.post(url, data=data, timeout=20, allow_redirects=True)
+            r.raise_for_status()
+            if not r.encoding or r.encoding.lower() == "iso-8859-1":
+                r.encoding = r.apparent_encoding or "utf-8"
+            return r
+        except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ContentDecodingError) as exc:
+            print("CENTRAL BODY RETRY", data.get("srchOcptCd"), data.get("currPage"),
+                  attempt + 1, type(exc).__name__, flush=True)
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+        except requests.RequestException as exc:
+            print("CENTRAL POST FAIL", data.get("srchOcptCd"), data.get("currPage"),
+                  type(exc).__name__, str(exc)[:120], flush=True)
+            return None
+    return None
 
 
 def scrape_gyeonggi_central_recent():
@@ -63,7 +90,7 @@ def scrape_gyeonggi_central_recent():
                 "orderbyType": "reg", "searchType": "", "searchValue": "",
                 "btchDlYn": "", "cndNo": "", "srchSchlSe": "",
             }
-            r = primary.post(central_url, data)
+            r = post_complete_central_page(central_url, data)
             if not r:
                 access_error = True
                 break
