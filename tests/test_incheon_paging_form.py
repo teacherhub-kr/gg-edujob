@@ -3,6 +3,17 @@ from unittest.mock import patch
 
 from scripts import merge_incheon_official as ice
 
+def setUpModule():
+    # Canned-response tests must not incur live ICE request spacing.
+    global _interval_patch
+    _interval_patch = patch.object(ice, "MIN_REQUEST_INTERVAL_SECONDS", 0.0)
+    _interval_patch.start()
+
+
+def tearDownModule():
+    _interval_patch.stop()
+
+
 
 class Response:
     def __init__(self, text, url=ice.LIST_URL, content=None):
