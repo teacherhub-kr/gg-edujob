@@ -7,6 +7,7 @@ on:
       - 'scripts/collect_incheon_support.py'
       - 'scripts/ice_transport_evidence.py'
       - 'tests/test_ice_transport_evidence.py'
+      - 'tests/test_incheon_request_pacing.py'
       - 'scripts/ensure_incheon_registry.py'
       - 'scripts/verify_required_regions.py'
       - 'scripts/stable_source_identity.py'
@@ -46,7 +47,7 @@ jobs:
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_ice_transport_evidence tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
+        run: python -m unittest tests.test_incheon_request_pacing tests.test_ice_transport_evidence tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
