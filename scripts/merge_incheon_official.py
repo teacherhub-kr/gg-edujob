@@ -932,12 +932,16 @@ def main() -> int:
         transient_retries=args.transient_retries,
         retry_delay_seconds=args.retry_delay_seconds,
     )
+    # Persist read-only diagnostics before fail-closed exits so a failed
+    # live probe still provides page counts/digests and redacted transport.
+    # Never publish or update jobs.json when evidence is incomplete.
+    if args.check_only:
+        write_report(meta, rows, merged=False)
     if not rows:
         raise SystemExit(f"No Incheon official recruitment rows parsed: {meta}")
     if meta.get("accessError") or meta.get("paginationRepeated"):
         raise SystemExit(f"Incheon official traversal is not trustworthy: {meta}")
     if args.check_only:
-        write_report(meta, rows, merged=False)
         print(json.dumps(meta, ensure_ascii=False))
         return 0
     if not meta.get("coverageComplete"):
