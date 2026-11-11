@@ -6,7 +6,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: metro-edujob-lessoninfo-culture-cold
+  group: metro-edujob-lessoninfo
   cancel-in-progress: false
 
 jobs:
