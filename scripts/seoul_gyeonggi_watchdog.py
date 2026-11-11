@@ -34,7 +34,8 @@ REGIONAL_POLICY = "seoul-gyeonggi-isolated-verified-v1"
 # two-hour margin for collection, independent checks, Unified and Pages.
 REGIONAL_REFRESH_AFTER = timedelta(hours=4)
 # Only an already vetted private-source dispatch key from the same supervisor
-# execution may fill the otherwise idle gap while verified regional data is fresh.
+# execution may fill an idle gap while verified regional data is fresh, or
+# during regional failure backoff when the last verified snapshot is published.
 ALLOWED_PRIVATE_FALLBACK = {
     "private-lessoninfo", "private-lessoninfo-links", "private-jobteacher",
     "private-artmore-candidate", "private-artmore-promote",
@@ -199,6 +200,24 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
     if finished and finished[0].get("conclusion") in FAILED:
         ended = parse_time(finished[0].get("updated_at") or finished[0].get("created_at"))
         if ended and timedelta(0) <= now - ended < timedelta(hours=6):
+            # The regional retry is still blocked. An independently guarded
+            # private collector may use this idle slot only if the last
+            # verified regional snapshot is also the one already published.
+            # Its age is unchanged; never pretend the official refresh ran.
+            if (
+                official_paused
+                and private_fallback in ALLOWED_PRIVATE_FALLBACK
+                and private_fallback != "private-foundation"
+                and snapshot_age is not None
+                and snapshot_age >= timedelta(0)
+                and unified_has_snapshot(unified, snapshot)
+                and isinstance(unified_runs, list)
+                and not any(r.get("status") in ACTIVE for r in unified_runs
+                            if isinstance(r, dict)
+                            and r.get("event") == "workflow_dispatch"
+                            and r.get("head_branch") == "main")
+            ):
+                return private_fallback, "regional writer in 6-hour failure backoff; preserve verified published snapshot and use circuit-checked private slot"
             return ("skip-incheon-hold", "regional writer in 6-hour failure backoff") if official_paused else (selected, "regional writer in failure backoff")
     return REGIONAL_ACTION, "Seoul/Gyeonggi snapshot missing or older than the 4-hour preemptive refresh threshold; Incheon held"
 
