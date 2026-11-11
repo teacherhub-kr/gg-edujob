@@ -577,10 +577,24 @@ def choose_private_refresh_action(
             and latest_time
             and now - latest_time < timedelta(hours=1)
         )
-        if blocked or recent_failure:
-            skipped_private.append(
-                f"{key}:{'circuit' if blocked else 'backoff'}:{failures}"
+        # An overdue private source must not monopolize the sole dispatch slot
+        # with repeated real failures (e.g. a stable HTTP 403). Two consecutive
+        # failures trigger a six-hour conservative backoff; official policy and
+        # the existing three-failure circuit remain unchanged.
+        repeated_failure_backoff = bool(
+            failures >= 2
+            and latest
+            and latest.get("conclusion") in REAL_FAILURES
+            and latest_time
+            and now - latest_time < timedelta(hours=6)
+        )
+        if blocked or recent_failure or repeated_failure_backoff:
+            label = (
+                "circuit" if blocked
+                else "repeat-backoff" if repeated_failure_backoff
+                else "backoff"
             )
+            skipped_private.append(f"{key}:{label}:{failures}")
             continue
         if key == ARTMORE_PROMOTE_KEY:
             return (
