@@ -5,7 +5,7 @@ on:
   schedule:
     # Twice each hour, separated from :08/:23/:38/:53 official supervisor slots.
     # Source freshness remains 4–10 hours, with its existing failure circuit.
-    - cron: '13,43 * * * *'
+    - cron: '14,44 * * * *'
   pull_request:
     paths:
       - '.github/workflows/independent-private-scheduler.yml'
