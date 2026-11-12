@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlencode, urljoin, urlparse
@@ -21,6 +22,10 @@ OUT = Path("cleaneye_foundation_jobs.json")
 REPORT = Path("cleaneye_foundation_report.json")
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/151 Safari/537.36"
 CLOSED_STATUS = {"709003"}
+BOOTSTRAP_ATTEMPTS = 2
+BOOTSTRAP_CONNECT_TIMEOUT_SECONDS = 15
+BOOTSTRAP_READ_TIMEOUT_SECONDS = 30
+BOOTSTRAP_RETRY_BACKOFF_SECONDS = 2
 
 
 def norm(s: str) -> str:
@@ -33,10 +38,25 @@ def parse_date(raw: str) -> date | None:
     except Exception: return None
 
 
+def bootstrap(s: requests.Session) -> None:
+    for attempt in range(1, BOOTSTRAP_ATTEMPTS + 1):
+        try:
+            response = s.get(
+                PAGE,
+                timeout=(BOOTSTRAP_CONNECT_TIMEOUT_SECONDS, BOOTSTRAP_READ_TIMEOUT_SECONDS),
+            )
+            response.raise_for_status()
+            return
+        except requests.ConnectTimeout:
+            if attempt >= BOOTSTRAP_ATTEMPTS:
+                raise
+            time.sleep(BOOTSTRAP_RETRY_BACKOFF_SECONDS)
+
+
 def session() -> requests.Session:
     s = requests.Session()
     s.headers.update({"User-Agent":UA,"Accept-Language":"ko-KR,ko;q=0.9","X-Requested-With":"XMLHttpRequest","Referer":PAGE})
-    s.get(PAGE, timeout=30).raise_for_status()
+    bootstrap(s)
     return s
 
 
