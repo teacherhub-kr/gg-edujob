@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T01:32:38+09:00",
+  "generatedAt": "2026-11-12T16:55:10+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
   "healthy": true,
@@ -9,19 +9,19 @@
       "surface": "seoul",
       "pagesExpected": 91,
       "pagesTraversed": 91,
-      "ids": 1756,
+      "ids": 1758,
       "complete": true
     },
     {
       "surface": "gyeonggi",
-      "pagesExpected": 127,
-      "pagesTraversed": 127,
-      "ids": 2462,
+      "pagesExpected": 128,
+      "pagesTraversed": 128,
+      "ids": 2473,
       "complete": true
     }
   ],
-  "candidateIdCount": 4054,
-  "publishedIdCount": 4054,
+  "candidateIdCount": 4067,
+  "publishedIdCount": 4067,
   "missingAfterCount": 0,
   "missingAfter": [],
   "missingRegisteredCount": 0,
@@ -35,20 +35,9 @@
   ],
   "detailDateFallbackErrors": [],
   "errors": [],
-  "previousPublishedCount": 4023,
+  "previousPublishedCount": 4054,
   "severeDrop": false,
   "preservedPreviousDataset": false,
-  "publicationEnabled": true,
-  "nextGate": "unified candidate + validator + regression",
-  "currentPostingSemantics": {
-    "policy": "source-visible-open-row-v1",
-    "verifiedAt": "2026-11-09T01:32:54+09:00",
-    "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
-    "counts": {
-      "indefinite": 4044,
-      "dday": 2,
-      "dated": 8
-    },
-    "rejectedCount": 0
-  }
+  "publicationEnabled": false,
+  "nextGate": "verify current-posting freshness semantics, then unified validator"
 }
