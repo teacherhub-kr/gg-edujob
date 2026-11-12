@@ -137,8 +137,8 @@ jobs:
           report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps({'publicationEnabled':True,'count':len(jobs),'deadlineKinds':kinds},ensure_ascii=False))
           PY
-      - name: Commit isolated evidence and healthy dataset
-        if: always()
+      - name: Commit verified isolated dataset
+        if: steps.collect.outcome == 'success' && steps.detail_links.outcome == 'success' && steps.validate.outcome == 'success' && steps.promote.outcome == 'success'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
