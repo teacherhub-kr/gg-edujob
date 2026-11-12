@@ -13,6 +13,7 @@ on:
       - 'scripts/source_catalog.py'
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
+      - 'scripts/crawl_cleaneye_foundation_jobs.py'
       - 'tests/test_production_supervisor.py'
       - 'tests/test_supervisor_blocked_official_simulation.py'
       - 'tests/test_supervisor_decision_e2e.py'
@@ -21,6 +22,7 @@ on:
       - 'tests/test_source_catalog.py'
       - 'tests/test_source_onboarding_workflow.py'
       - 'tests/test_maintenance_ops_workflow.py'
+      - 'tests/test_cleaneye_retry_contract.py'
       - 'app.js'
       - 'app.css'
       - 'index.html'
@@ -41,6 +43,8 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify CleanEye bounded bootstrap retry
+        run: python -m unittest tests.test_cleaneye_retry_contract
       - name: Verify canonical metropolitan source catalog
         run: |
           python scripts/source_catalog.py --validate
