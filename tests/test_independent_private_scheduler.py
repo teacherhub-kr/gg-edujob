@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class PrivateSchedulerContracts(TestCase):
     def test_workflow_is_read_only_for_pr_and_staggered_for_dispatch(self):
         s = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
-        self.assertIn("cron: '13,43 * * * *'", s)
+        self.assertIn("cron: '14,44 * * * *'", s)
         self.assertIn("if: github.event_name == 'pull_request'", s)
         self.assertIn("github.event_name == 'schedule'", s)
         self.assertIn("github.ref == 'refs/heads/main'", s)
