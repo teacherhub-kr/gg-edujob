@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-13T12:26:11+09:00",
+  "generatedAt": "2026-11-14T03:10:52+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 15606,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 5223,
-  "selectedCanonicalOfficialJobs": 4725,
+  "canonicalPrivateJobs": 5242,
+  "selectedCanonicalOfficialJobs": 4383,
   "selectedFoundationOfficialJobs": 1,
-  "selectedOfficialJobs": 4726,
-  "selectedPrivateJobs": 5154,
-  "publishedJobs": 9880,
+  "selectedOfficialJobs": 4384,
+  "selectedPrivateJobs": 5178,
+  "publishedJobs": 9562,
   "perFeed": {
-    "official": 4726,
-    "private": 5154
+    "official": 4384,
+    "private": 5178
   },
   "privateSources": {
     "lessoninfo": {
@@ -27,7 +27,7 @@
       "lastVerifiedAt": "2026-11-11T15:53:57+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 44.54,
+        "ageHours": 59.28,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-11T15:53:57+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 737.83,
+        "ageHours": 752.58,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-09T01:32:53+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 106.89,
+        "ageHours": 121.64,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-09T01:32:38+09:00"
       },
@@ -89,22 +89,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 183,
-      "count": 183,
-      "rawCandidateCount": 193,
-      "excludedFromUnifiedCount": 10,
-      "lastVerifiedAt": "2026-11-09T11:58:36+09:00",
+      "candidateCount": 212,
+      "count": 212,
+      "rawCandidateCount": 212,
+      "excludedFromUnifiedCount": 0,
+      "lastVerifiedAt": "2026-11-13T21:11:21+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 96.46,
+        "state": "fresh",
+        "ageHours": 5.99,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-09T11:58:36+09:00"
+        "evidenceAt": "2026-11-13T21:11:21+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 183
+      "displayedAsPrivate": 212
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -112,14 +112,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 28,
-      "count": 28,
+      "candidateCount": 23,
+      "count": 23,
       "rawCandidateCount": 40,
-      "excludedFromUnifiedCount": 12,
+      "excludedFromUnifiedCount": 17,
       "lastVerifiedAt": "2026-11-09T21:05:10+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 87.35,
+        "ageHours": 102.09,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-09T21:05:10+09:00"
       },
@@ -127,7 +127,7 @@
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 28
+      "displayedAsPrivate": 23
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 761.63,
+        "ageHours": 776.37,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 777.68,
+        "ageHours": 792.43,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -188,7 +188,6 @@
     "lessoninfo",
     "cleaneye",
     "jobteacher",
-    "artmore",
     "gonggonggangsa",
     "seekle",
     "boramyc"

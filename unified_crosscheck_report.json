@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-13T12:26:14+09:00",
+  "generatedAt": "2026-11-14T03:10:56+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4476,
+  "privateJobs": 4495,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 193
+      "canonicalCount": 212
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -81,10 +81,10 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 193,
+      "jobs": 212,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 5
+      "officialGapCandidates": 7
     },
     "gonggonggangsa": {
       "jobs": 40,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 1,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 62,
+  "officialGapCandidates": 64,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -809,6 +809,30 @@
       ],
       "registered": "2026-10-01",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95647",
+      "privateTitle": "진행중 2026 고양문화재단 어울림문화학교 단시간 근로자 채용 공고",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-09",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95647",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95646",
+      "privateTitle": "진행중 유치원·초등학교 전통문화 체험 현장 강사, 전통문화지도사 (프리랜서)",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-09",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95646",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
