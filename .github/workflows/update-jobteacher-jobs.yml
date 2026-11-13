@@ -80,8 +80,10 @@ jobs:
         continue-on-error: true
         run: |
           python - <<'PY'
-          import json, pathlib, re
-          from datetime import date, datetime, timedelta, timezone
+          import json, pathlib, re, sys
+          from datetime import datetime, timedelta, timezone
+          sys.path.insert(0, 'scripts')
+          from jobteacher_deadline_semantics import resolve_yearless_deadline
 
           KST=timezone(timedelta(hours=9))
           today=datetime.now(KST).date()
@@ -109,15 +111,12 @@ jobs:
               m=monthday.search(deadline)
               if m:
                   month,day=map(int,m.groups())
-                  try:
-                      end=date(today.year,month,day)
-                  except ValueError:
+                  # Resolve the source's yearless date using only the narrow
+                  # Nov/Dec -> Jan/Feb New-Year window; reject any other expired
+                  # month/day rather than relying on an ambiguous old year.
+                  end=resolve_yearless_deadline(today,month,day)
+                  if end is None:
                       bad.append((j.get('sourceIdentity'),'invalid-deadline',deadline)); continue
-                  # JobTeacher omits the year. Only permit a year rollover in the
-                  # narrow, unambiguous New-Year window: Jan/Feb scanning a Nov/Dec
-                  # deadline. At all other times, a past MM.DD is expired.
-                  if end < today and today.month <= 2 and month >= 11:
-                      end=date(today.year+1,month,day)
                   if end < today:
                       bad.append((j.get('sourceIdentity'),'expired-deadline',deadline)); continue
                   kinds['dated']+=1; continue
@@ -129,7 +128,7 @@ jobs:
           report['currentPostingSemantics']={
               'policy':'source-visible-open-row-v1',
               'verifiedAt':datetime.now(KST).isoformat(timespec='seconds'),
-              'rule':'public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec',
+              'rule':'public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only when viewed in Nov/Dec for a Jan/Feb deadline',
               'counts':kinds,
               'rejectedCount':0,
           }
