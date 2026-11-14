@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-14T03:10:56+09:00",
+  "generatedAt": "2026-11-14T09:29:28+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4495,
+  "privateJobs": 4512,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 40
+      "canonicalCount": 57
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -87,10 +87,10 @@
       "officialGapCandidates": 7
     },
     "gonggonggangsa": {
-      "jobs": 40,
+      "jobs": 57,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 4
+      "officialGapCandidates": 15
     },
     "seekle": {
       "jobs": 7,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 1,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 64,
+  "officialGapCandidates": 75,
   "strongMatches": [
     {
       "privateSource": "lessoninfo",
@@ -850,13 +850,145 @@
     {
       "privateSource": "gonggonggangsa",
       "privateSourceName": "공공강사",
-      "privateId": "gonggonggangsa:24253",
-      "privateTitle": "2026학년도 한봄고등학교 기간제교원(시간강사) 채용 계획 및 공고 - 국어",
+      "privateId": "gonggonggangsa:24429",
+      "privateTitle": "2026학년도 한봄고등학교 계약제교원(시간강사) 채용 계획 및 공고(체육) - 체육",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-12",
+      "url": "https://00gangsa.com/recruitments/24429",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24414",
+      "privateTitle": "2026학년도 경기자동차과학고등학교 시간강사(기계) 채용 공고 (2026.12.8~2027.1.6일까지 주 15시간) - 교과목/학업",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-12",
+      "url": "https://00gangsa.com/recruitments/24414",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24409",
+      "privateTitle": "2026학년도 한봄고등학교 기간제교원(시간강사) 채용 계획 및 공고(국어) - 국어",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-12",
+      "url": "https://00gangsa.com/recruitments/24409",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24393",
+      "privateTitle": "학교 내 대안교실(미술치료) 강사 채용 공고 - 미술심리치료",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-12",
+      "url": "https://00gangsa.com/recruitments/24393",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24257",
+      "privateTitle": "2027학년도 경기예술고등학교 미술과 실기 강사 공고 - 드로잉/스케치, 그림/회화, 유화/서양화 외 2건",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-12",
+      "url": "https://00gangsa.com/recruitments/24257",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24368",
+      "privateTitle": "2026학년도 중학교 3학년 학년말 전환기 교육과정 외부강사 채용 - 합창, 난타/장구, 치어리딩 외 1건",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-11",
+      "url": "https://00gangsa.com/recruitments/24368",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24365",
+      "privateTitle": "2026학년도 남대문중학교 국어 시간강사 채용 공고 - 국어",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-11",
+      "url": "https://00gangsa.com/recruitments/24365",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24358",
+      "privateTitle": "겨울방학 방과후 강사(수영) 채용 공고 - 수영",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-11",
+      "url": "https://00gangsa.com/recruitments/24358",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24341",
+      "privateTitle": "2026년 방과후교실 코딩프로그램 대체강사 모집 공고 - 코딩/프로그래밍",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-11",
+      "url": "https://00gangsa.com/recruitments/24341",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24332",
+      "privateTitle": "2027학년도 태강삼육초등학교 방과후학교 개인위탁 강사 모집 공고(독서논술,큐브,창의수학,생명과학,미술,아트공예,축구,놀이체육,골프,음악줄넘기) - 독서논술, 수학, 보드게임 외 8건",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-10",
+      "url": "https://00gangsa.com/recruitments/24332",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24318",
+      "privateTitle": "2027학년도 태강삼육초등학교 방과후학교 개인위탁 강사 모집 공고(드럼, 바이올린, 첼로, 클라리넷, 피아노) - 바이올린/비올라, 피아노, 첼로/더블베이스 외 2건",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-10",
+      "url": "https://00gangsa.com/recruitments/24318",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24333",
+      "privateTitle": "2026학년도 유한대학교 한국어교육원 4학기(겨울) 한국어강사 채용 공고 - 한국어/다문화",
       "provinces": [
         "경기"
       ],
       "registered": "2026-11-09",
-      "url": "https://00gangsa.com/recruitments/24253",
+      "url": "https://00gangsa.com/recruitments/24333",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -874,13 +1006,13 @@
     {
       "privateSource": "gonggonggangsa",
       "privateSourceName": "공공강사",
-      "privateId": "gonggonggangsa:24194",
-      "privateTitle": "2026년 겨울학기 한양대학교 국제교육원(서울캠퍼스) 한국어 강사 모집 공고 - 한국어/다문화",
+      "privateId": "gonggonggangsa:24342",
+      "privateTitle": "2027년 영등포문화원 문화학교 강사 공개 모집 - 국악기(가야금·해금·대금), 난타/장구, 한국무용 외 39건",
       "provinces": [
         "서울"
       ],
-      "registered": "2026-11-06",
-      "url": "https://00gangsa.com/recruitments/24194",
+      "registered": "2026-11-05",
+      "url": "https://00gangsa.com/recruitments/24342",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
