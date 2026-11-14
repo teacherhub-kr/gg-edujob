@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 KST = timezone(timedelta(hours=9))
 LIST = "https://www.seekle.or.kr/sub07/sub01.php"
-HEADERS = {"User-Agent": "gg-edujob-source-audit/1.0 (+https://github.com/puzzlex5/gg-edujob)"}
+HEADERS = {"User-Agent": "gg-edujob-source-audit/1.0 (+https://github.com/teacherhub-kr/gg-edujob)"}
 MAX_PAGES = 8
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 INSTRUCTOR_RE = re.compile(r"강사\s*(?:채용|모집)|신규\s*강사", re.I)
@@ -37,7 +37,10 @@ def get(session, url, **kwargs):
             last = r
             if r.status_code < 500:
                 r.raise_for_status(); return r
-        except requests.RequestException:
+        except requests.RequestException as exc:
+            # A denied site is not a transient network failure; respect 401/403.
+            if isinstance(exc, requests.HTTPError) and getattr(exc.response, "status_code", None) in {401, 403}:
+                raise
             if attempt == 2: raise
     assert last is not None
     last.raise_for_status()
