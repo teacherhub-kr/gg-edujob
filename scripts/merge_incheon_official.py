@@ -15,17 +15,19 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
+from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from ice_transport_evidence import MAX_EXCERPT_SOURCE_BYTES, transport_fingerprint
 from source_registry import official_source_count
 from stable_source_identity import canonical_source_id
 
@@ -47,7 +49,7 @@ AFTERSCHOOL_BBS_ID = "1534"
 AFTERSCHOOL_MI = "10571"
 # Alternate official ICE hostnames serve the same first-party CMS. They are used only
 # when www.ice.go.kr returns the observed tiny HTTP-200 placeholder on page 1.
-OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr")
+OFFICIAL_FETCH_ALIASES = ("iss.ice.go.kr", "inpei.ice.go.kr", "iwee.ice.go.kr")
 
 REQUIRED_BOARDS = (
     {
@@ -76,6 +78,10 @@ REQUIRED_BOARDS = (
 
 UA = "Mozilla/5.0 (compatible; metro-edujob/3.2; public recruitment aggregator)"
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
+CSRF_UUID_RE = re.compile(
+    r"(?<![0-9a-f])([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})(?![0-9a-f])",
+    re.IGNORECASE,
+)
 EXCLUDE_WORDS = re.compile(
     r"최종\s*합격|합격자|서류\s*심사|서류전형|면접\s*대상|선정\s*결과|"
     r"채용\s*결과|전형\s*결과|합격\s*공고|인사\s*발령"
@@ -110,6 +116,27 @@ def build_session() -> requests.Session:
 
 SESSION = build_session()
 
+# ICE replay window observed from the user's 2026-11-11 browser experiment.
+# Publication still requires independent live completeness proof.
+DEFAULT_MIN_REQUEST_INTERVAL_SECONDS = 12.5
+MIN_REQUEST_INTERVAL_SECONDS = float(os.environ.get(
+    "ICE_MIN_REQUEST_INTERVAL_SECONDS", DEFAULT_MIN_REQUEST_INTERVAL_SECONDS
+))
+_LAST_ICE_REQUEST_AT = None
+
+
+def pace_ice_request() -> float:
+    """Space ICE requests without changing fail-closed pagination evidence."""
+    global _LAST_ICE_REQUEST_AT
+    waited = 0.0
+    now = time.monotonic()
+    if _LAST_ICE_REQUEST_AT is not None:
+        waited = max(0.0, MIN_REQUEST_INTERVAL_SECONDS - (now - _LAST_ICE_REQUEST_AT))
+        if waited:
+            time.sleep(waited)
+    _LAST_ICE_REQUEST_AT = time.monotonic()
+    return waited
+
 
 def reset_session() -> None:
     """Drop cookies and pooled connections before a bounded transient retry."""
@@ -131,6 +158,7 @@ def bootstrap_board_session(board: dict) -> dict:
     if not landing_url:
         return {"attempted": False, "ok": False, "status": 0, "contentLength": 0}
     try:
+        pace_ice_request()
         response = SESSION.get(
             landing_url,
             timeout=(8, 25),
@@ -191,6 +219,7 @@ def with_page(url: str, page: int) -> str:
 
 
 def fetch(url: str):
+    pace_ice_request()
     response = SESSION.get(url, timeout=(8, 25), allow_redirects=True)
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
@@ -208,6 +237,98 @@ def fetch_with_one_explicit_retry(url: str):
             if attempt == 0:
                 time.sleep(0.8)
     raise last_error
+
+
+def extract_document_csrf(soup: BeautifulSoup) -> str:
+    """Return one unambiguous CSRF token from DOM markup or its injector script."""
+    candidates = [
+        str(item.get("value") or "")
+        for item in soup.find_all("input", attrs={"name": "CSRFToken"})
+        if str(item.get("value") or "")
+    ]
+    for script in soup.find_all("script"):
+        content = script.string or script.get_text() or ""
+        if "CSRFTOKEN" not in content.upper():
+            continue
+        for marker in re.finditer(r"CSRFToken", content, re.IGNORECASE):
+            start = max(0, marker.start() - 300)
+            end = min(len(content), marker.end() + 500)
+            candidates.extend(CSRF_UUID_RE.findall(content[start:end]))
+
+    # ICE currently emits one session CSRF UUID in the raw document without a
+    # CSRFToken label, then client-side code injects that same value into every
+    # form. Accept it only when it is the sole UUID in the entire document.
+    # Multiple UUIDs remain ambiguous and fail closed before any POST.
+    candidates.extend(CSRF_UUID_RE.findall(str(soup)))
+    unique = list(dict.fromkeys(candidates))
+    return unique[0] if len(unique) == 1 else ""
+
+
+def fetch_paging_form(previous_response, page: int, board: dict):
+    """Submit the official ICE pagingForm with the current session and CSRF state.
+
+    ICE pagination is a POST contract. The complete hidden form from the
+    immediately preceding official response is replayed, changing only
+    currPage. Host, path, board identity, and CSRF state are validated before
+    any request is sent. A malformed contract fails closed.
+    """
+    soup = BeautifulSoup(previous_response.text, "html.parser")
+    form = soup.find("form", attrs={"name": "pagingForm"})
+    if form is None:
+        raise ValueError("ICE official pagingForm missing")
+
+    fields = []
+    observed = {}
+    for element in form.find_all(["input", "select", "textarea"]):
+        name = clean(element.get("name"))
+        field_type = clean(element.get("type")).lower()
+        if not name or field_type in {"submit", "button", "image", "file"}:
+            continue
+        if element.name == "select":
+            selected = element.find("option", selected=True) or element.find("option")
+            value = clean(selected.get("value") if selected else "")
+        else:
+            value = str(element.get("value") or "")
+        if name == "currPage":
+            value = str(page)
+        fields.append((name, value))
+        observed[name] = value
+
+    if not observed.get("CSRFToken"):
+        document_token = extract_document_csrf(soup)
+        if document_token:
+            fields.append(("CSRFToken", document_token))
+            observed["CSRFToken"] = document_token
+
+    if observed.get("currPage") != str(page):
+        raise ValueError("ICE official currPage field missing")
+    if observed.get("bbsId") != str(board["bbsId"]) or observed.get("mi") != str(board["mi"]):
+        raise ValueError("ICE official pagingForm board identity mismatch")
+    if not observed.get("CSRFToken"):
+        raise ValueError("ICE official pagingForm CSRF token missing or ambiguous")
+
+    target = urljoin(str(previous_response.url or board["url"]), str(form.get("action") or ""))
+    parsed_target = urlparse(target)
+    canonical = urlparse(board["url"])
+    allowed_hosts = {canonical.hostname, *OFFICIAL_FETCH_ALIASES}
+    if parsed_target.scheme != "https" or parsed_target.hostname not in allowed_hosts:
+        raise ValueError("ICE official pagingForm host is not allowlisted")
+    if parsed_target.path != canonical.path:
+        raise ValueError("ICE official pagingForm path mismatch")
+
+    origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
+    pace_ice_request()
+    response = SESSION.post(
+        target,
+        data=fields,
+        headers={"Referer": str(previous_response.url or board["url"]), "Origin": origin},
+        timeout=(8, 25),
+        allow_redirects=True,
+    )
+    response.raise_for_status()
+    if not response.encoding or response.encoding.lower() == "iso-8859-1":
+        response.encoding = response.apparent_encoding or "utf-8"
+    return response
 
 
 def with_host(url: str, host: str) -> str:
@@ -400,23 +521,28 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
     all_rows = []
     seen_ids = set()
     previous_signature = None
+    seen_page_signatures = set()
     pages_scanned = 0
     stop_reason = ""
     access_error = ""
     empty_page_evidence = {}
     alias_fallback_evidence = {}
 
+    previous_response = None
+    page_response_evidence = []
     for page in range(1, max_pages + 1):
         page_url = with_page(board["url"], page)
         try:
-            response = fetch_with_one_explicit_retry(page_url)
+            if page == 1 or previous_response is None:
+                response = fetch_with_one_explicit_retry(page_url)
+            else:
+                response = fetch_paging_form(previous_response, page, board)
         except Exception as exc:
             access_error = f"{type(exc).__name__}: {str(exc)[:160]}"
             break
 
         pages_scanned += 1
         rows, meta = parse_table_rows(response.text, response.url, lookback_days, board)
-
         # ICE intermittently returns a tiny HTTP-200 body (~77 bytes) on the
         # first list page. Only for that narrow signature, reset the session,
         # visit the matching official landing page once, then retry the exact
@@ -442,10 +568,80 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
             if alias_response is not None and alias_meta.get("rawRows"):
                 response, rows, meta = alias_response, alias_rows, alias_meta
 
+        # ICE currently has two first-party paging contracts in the wild. Prefer
+        # the official pagingForm POST, but if it replays the entire preceding
+        # page, make one bounded GET using the same official currPage URL. Accept
+        # that fallback only when it contains parseable, non-replayed IDs.
+        get_fallback_evidence = {}
+        candidate_signature = tuple(meta.get("pageIds") or [])
+        if page > 1 and candidate_signature and candidate_signature in seen_page_signatures:
+            get_fallback_evidence = {"attempted": True, "success": False}
+            try:
+                # A replaying POST can leave ICE session state pinned to page 1.
+                # Start the single bounded GET fallback with a fresh session so
+                # currPage is evaluated independently by the official server.
+                reset_session()
+                get_response = fetch_with_one_explicit_retry(page_url)
+                get_rows, get_meta = parse_table_rows(
+                    get_response.text, get_response.url, lookback_days, board
+                )
+                get_signature = tuple(get_meta.get("pageIds") or [])
+                get_fallback_evidence.update({
+                    "httpStatus": int(get_response.status_code),
+                    "responseBytes": len(get_response.content or b""),
+                    "rawRows": int(get_meta.get("rawRows") or 0),
+                    "distinct": bool(get_signature and get_signature not in seen_page_signatures),
+                })
+                if get_signature and get_signature not in seen_page_signatures:
+                    response, rows, meta = get_response, get_rows, get_meta
+                    get_fallback_evidence["success"] = True
+            except Exception as exc:
+                get_fallback_evidence["errorType"] = type(exc).__name__
+
+        # Redacted diagnostics: never log cookies, tokens, request bodies, or headers.
+        page_response_evidence.append({
+            "requestedPage": page,
+            "httpStatus": int(response.status_code),
+            "responseBytes": len(response.content or b""),
+            "finalHost": urlparse(str(response.url or "")).hostname or "",
+            "rawRows": int(meta.get("rawRows") or 0),
+            "pageIdDigest": hashlib.sha256(
+                "|".join(meta.get("pageIds") or []).encode("utf-8")
+            ).hexdigest()[:16],
+            "getFallback": get_fallback_evidence,
+        })
+        if len(response.content or b"") <= MAX_EXCERPT_SOURCE_BYTES:
+            # Identify whether the small body is a redirect, block notice, or template.
+            page_response_evidence[-1]["transport"] = transport_fingerprint(response)
+
+        previous_response = response
         signature = tuple(meta.get("pageIds") or [])
-        if signature and signature == previous_signature:
+        if signature and signature in seen_page_signatures:
+            # Diagnose the page-2 replay without recording session cookies,
+            # CSRF tokens, form values, or raw request bodies.
+            try:
+                form = BeautifulSoup(previous_response.text, "html.parser").find(
+                    "form", attrs={"name": "pagingForm"}
+                )
+                page_response_evidence[-1]["replayDiagnosis"] = {
+                    "requestedPage": page,
+                    "responseFinalPath": urlparse(str(response.url or "")).path,
+                    "formPresent": form is not None,
+                    "formMethod": clean(form.get("method") if form else "").upper(),
+                    "formActionPath": urlparse(
+                        urljoin(str(response.url or board["url"]), str(form.get("action") or ""))
+                    ).path if form else "",
+                    "formFieldNames": sorted({
+                        clean(item.get("name")) for item in form.find_all(["input", "select", "textarea"])
+                        if clean(item.get("name")) and clean(item.get("name")) != "CSRFToken"
+                    }) if form else [],
+                }
+            except Exception:
+                pass
             stop_reason = "repeated-page"
             break
+        if signature:
+            seen_page_signatures.add(signature)
         previous_signature = signature or previous_signature
 
         for row in rows:
@@ -463,7 +659,9 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
                 "bootstrap": bootstrap_evidence,
                 "aliasFallback": alias_fallback_evidence,
             }
-            stop_reason = "empty-page"
+            # A tiny HTTP-200 placeholder is an access failure, not proof that
+            # pagination reached the natural end of the official board.
+            stop_reason = "tiny-empty-response" if len(response.content or b"") <= 256 else "empty-page"
             break
 
         parsed_dates = [as_date(value) for value in meta["pageDates"] if as_date(value) is not None]
@@ -476,18 +674,18 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         if check_only and page >= max_pages:
             stop_reason = "check-page-limit"
             break
-        time.sleep(0.04)
+        # Request pacing is enforced in each ICE request helper.
     else:
         stop_reason = "emergency-page-ceiling"
 
     all_rows.sort(key=lambda job: (job.get("registered", ""), job.get("applyEnd", "")), reverse=True)
+    # A check-only page cap proves only the sampled prefix, never full coverage.
+    # Preserve the same fail-closed meaning for both diagnostic and publish runs.
     coverage_complete = bool(
         not access_error
-        and stop_reason in {"empty-page", "lookback-exhausted", "check-page-limit"}
+        and stop_reason in {"empty-page", "lookback-exhausted"}
         and all_rows
     )
-    if not check_only and stop_reason == "check-page-limit":
-        coverage_complete = False
 
     return all_rows, {
         "key": board["key"],
@@ -500,6 +698,7 @@ def scrape_board(board: dict, lookback_days: int, max_pages: int, check_only: bo
         "coverageComplete": coverage_complete,
         "accessError": access_error,
         "paginationRepeated": stop_reason == "repeated-page",
+        "pageResponseEvidence": page_response_evidence[:3] + page_response_evidence[-17:] if len(page_response_evidence) > 20 else page_response_evidence,
         "stopReason": stop_reason,
         "emptyPageEvidence": empty_page_evidence,
         "latestRegistered": all_rows[0].get("registered", "") if all_rows else "",
@@ -559,6 +758,42 @@ def is_transient_all_empty(meta: dict, rows: list) -> bool:
     )
 
 
+def is_transient_repeated_page(meta: dict, rows: list) -> bool:
+    """Return True only for a parsed ICE population whose next page repeated exactly.
+
+    ICE has intermittently returned page 1 again for a valid official pagingForm POST.
+    This is retryable only when rows were parsed, no board reports an access error, and
+    at least one required board stopped on the explicit repeated-page guard. A retry
+    never converts repeated evidence into completeness; it starts a fresh session and
+    the normal traversal guards must independently pass.
+    """
+    if not rows or meta.get("accessError") or not meta.get("paginationRepeated"):
+        return False
+    health = meta.get("boardHealth") or []
+    if len(health) != len(REQUIRED_BOARDS):
+        return False
+    if any(item.get("accessError") for item in health):
+        return False
+    return any(
+        int(item.get("count") or 0) > 0
+        and item.get("stopReason") == "repeated-page"
+        and item.get("paginationRepeated") is True
+        and item.get("coverageComplete") is False
+        for item in health
+    )
+
+
+def is_retryable_transient(meta: dict, rows: list) -> bool:
+    """Retry only bounded ICE transport/session failures; never declare them complete."""
+    health = meta.get("boardHealth") or []
+    tiny_placeholder = (
+        len(health) == len(REQUIRED_BOARDS)
+        and not meta.get("accessError")
+        and any(item.get("stopReason") == "tiny-empty-response" for item in health)
+    )
+    return tiny_placeholder or is_transient_all_empty(meta, rows) or is_transient_repeated_page(meta, rows)
+
+
 def scrape_incheon_with_transient_retry(
     lookback_days: int,
     max_pages: int,
@@ -566,17 +801,17 @@ def scrape_incheon_with_transient_retry(
     transient_retries: int = 2,
     retry_delay_seconds: float = 15.0,
 ):
-    """Retry only the narrow all-empty official-board response; keep every other failure fail-closed.
+    """Retry bounded empty or repeated-page ICE transport failures with a fresh session.
 
     The same bounded contract is used by read-only completeness probes and production collection.
     A retry always starts from a fresh HTTP session so a stale cookie/connection state cannot make
-    every attempt repeat the same empty response. Exhausted retries still return the failed evidence
-    and the caller fails closed.
+    every attempt repeat the same empty response or page-1 replay. Exhausted retries still return
+    the failed evidence and the caller fails closed.
     """
     rows, meta = scrape_incheon_central(lookback_days, max_pages, check_only)
     retries = max(0, int(transient_retries))
     for attempt in range(retries):
-        if not is_transient_all_empty(meta, rows):
+        if not is_retryable_transient(meta, rows):
             break
         delay = max(0.0, float(retry_delay_seconds)) * (attempt + 1)
         if delay:
@@ -673,13 +908,18 @@ def registry_is_complete(sources: dict) -> bool:
 
 
 def main() -> int:
+    global MIN_REQUEST_INTERVAL_SECONDS
     parser = argparse.ArgumentParser()
     parser.add_argument("--lookback-days", type=int, default=90)
     parser.add_argument("--max-pages", type=int, default=1000)
     parser.add_argument("--check-only", action="store_true")
     parser.add_argument("--transient-retries", type=int, default=2)
     parser.add_argument("--retry-delay-seconds", type=float, default=15.0)
+    parser.add_argument("--min-request-interval-seconds", type=float,
+                        default=MIN_REQUEST_INTERVAL_SECONDS,
+                        help="Minimum seconds between ICE requests; default passes observed replay window.")
     args = parser.parse_args()
+    MIN_REQUEST_INTERVAL_SECONDS = max(0.0, float(args.min_request_interval_seconds))
 
     sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
     if not registry_is_complete(sources):
