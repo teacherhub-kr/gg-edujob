@@ -1,15 +1,21 @@
 {
-  "generatedAt": "2026-11-11T16:06:33+09:00",
-  "startedAt": "2026-11-11T15:58:15+09:00",
+  "generatedAt": "2026-11-15T09:06:29+09:00",
+  "startedAt": "2026-11-15T08:55:35+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 157,
-  "expiredCultureRemoved": 0,
-  "expiredCultureExamples": [],
-  "eligibleCultureRows": 142,
-  "verifiedCultureRows": 140,
-  "verifiedOfficialRows": 139,
-  "verifiedLessoninfoRows": 1,
+  "totalInputJobs": 154,
+  "expiredCultureRemoved": 1,
+  "expiredCultureExamples": [
+    {
+      "sourceIdentity": "culture:id:95671",
+      "title": "(재)부천아트센터 2026년 제3차 공연장 안내원(아르바이트생) 모집 공고(~11/11)",
+      "applyEnd": "2026-11-11"
+    }
+  ],
+  "eligibleCultureRows": 149,
+  "verifiedCultureRows": 147,
+  "verifiedOfficialRows": 147,
+  "verifiedLessoninfoRows": 0,
   "unverifiedCultureRows": 2,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
@@ -18,15 +24,14 @@
   ],
   "reasonCounts": {
     "cold-browser-official-title-match": 53,
-    "cold-browser-id-title-match": 1,
-    "cold-browser-artmore-id-title-match": 86,
-    "cold-browser-route-mismatch": 2
+    "cold-browser-route-mismatch": 2,
+    "cold-browser-artmore-id-title-match": 94
   },
-  "artmoreFallbackAttemptedRows": 88,
-  "artmoreFallbackRecoveredRows": 86,
+  "artmoreFallbackAttemptedRows": 96,
+  "artmoreFallbackRecoveredRows": 94,
   "artmoreFallbackOutcomeCounts": {
-    "recovered": 86,
-    "artmore-title-mismatch": 2
+    "artmore-title-mismatch": 2,
+    "recovered": 94
   },
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
 }
