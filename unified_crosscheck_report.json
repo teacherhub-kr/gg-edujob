@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-15T05:41:15+09:00",
+  "generatedAt": "2026-11-15T12:02:42+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4512,
+  "privateJobs": 4508,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 157
+      "canonicalCount": 153
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 157,
-      "strongOfficialMatches": 1,
+      "jobs": 153,
+      "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 18
+      "officialGapCandidates": 8
     },
     "cleaneye": {
       "jobs": 18,
@@ -105,25 +105,10 @@
       "officialGapCandidates": 0
     }
   },
-  "strongOfficialMatches": 1,
+  "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 75,
-  "strongMatches": [
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7668",
-      "privateTitle": "송파구 중학교 음악 채용 공고",
-      "matches": [
-        {
-          "officialSource": "강동송파교육지원청",
-          "officialTitle": "음악",
-          "officialUrl": "https://gdspedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=8324",
-          "evidence": "explicit-exact-official-url"
-        }
-      ]
-    }
-  ],
+  "officialGapCandidates": 65,
+  "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
     {
@@ -220,126 +205,6 @@
       ],
       "registered": "2026-10-19",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95405",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7667",
-      "privateTitle": "서울 동작구 초등학교 5학년 국악(단소) 강사 공고",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7667",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7666",
-      "privateTitle": "초등돌봄교실 단체활동 음악 프로그램 강사 모집",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7666",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7665",
-      "privateTitle": "유치원 방과후과정 특성화 프로그램 강사(드럼) 위탁 공고문",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7665",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7664",
-      "privateTitle": "문화예술(국악) 강사 채용 공고",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7664",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7663",
-      "privateTitle": "초1~2 맞춤형 프로그램 대체 강사 채용 공고(오카리나)",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7663",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7662",
-      "privateTitle": "초등학교 방과후돌봄 바이올린 외부강사 모집 공고",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7662",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7661",
-      "privateTitle": "초등학교 예술활동 음악(뮤지컬) 강사 모집 공고",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7661",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7660",
-      "privateTitle": "경기 성남시 음악 기간제교원 채용 공고",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7660",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7659",
-      "privateTitle": "화성시 고등학교 계약제교원 채용 공고(음악)",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-15",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7659",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7657",
-      "privateTitle": "경기도 구리시 초등학교 드럼 피아노 강사 채용",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-10-12",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7657",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
