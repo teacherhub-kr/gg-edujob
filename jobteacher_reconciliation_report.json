@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T01:32:38+09:00",
+  "generatedAt": "2026-11-16T03:11:21+09:00",
   "source": "잡티처",
   "policy": "jobteacher-active-browser-v2",
   "healthy": true,
@@ -7,21 +7,21 @@
   "sourceReports": [
     {
       "surface": "seoul",
-      "pagesExpected": 91,
-      "pagesTraversed": 91,
-      "ids": 1756,
+      "pagesExpected": 92,
+      "pagesTraversed": 92,
+      "ids": 1765,
       "complete": true
     },
     {
       "surface": "gyeonggi",
-      "pagesExpected": 127,
-      "pagesTraversed": 127,
-      "ids": 2462,
+      "pagesExpected": 128,
+      "pagesTraversed": 128,
+      "ids": 2476,
       "complete": true
     }
   ],
-  "candidateIdCount": 4054,
-  "publishedIdCount": 4054,
+  "candidateIdCount": 4076,
+  "publishedIdCount": 4076,
   "missingAfterCount": 0,
   "missingAfter": [],
   "missingRegisteredCount": 0,
@@ -35,19 +35,19 @@
   ],
   "detailDateFallbackErrors": [],
   "errors": [],
-  "previousPublishedCount": 4023,
+  "previousPublishedCount": 4054,
   "severeDrop": false,
   "preservedPreviousDataset": false,
   "publicationEnabled": true,
   "nextGate": "unified candidate + validator + regression",
   "currentPostingSemantics": {
     "policy": "source-visible-open-row-v1",
-    "verifiedAt": "2026-11-09T01:32:54+09:00",
-    "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only Jan/Feb -> Nov/Dec",
+    "verifiedAt": "2026-11-16T03:11:37+09:00",
+    "rule": "public listing row must have no closed marker and deadline must be indefinite, nonnegative D-day, or nonexpired MM.DD; year rollover is allowed only when viewed in Nov/Dec for a Jan/Feb deadline",
     "counts": {
-      "indefinite": 4044,
+      "indefinite": 4063,
       "dday": 2,
-      "dated": 8
+      "dated": 11
     },
     "rejectedCount": 0
   }
