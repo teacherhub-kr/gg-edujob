@@ -63,6 +63,63 @@ class IncheonTransientRetryTests(unittest.TestCase):
         self.assertFalse(ice.is_transient_all_empty(meta_for(access_error="timeout"), []))
         self.assertFalse(ice.is_transient_all_empty(meta_for(count=1), [{"id": "x"}]))
 
+    def test_explicit_repeated_page_is_retryable_but_remains_incomplete(self):
+        meta = meta_for(count=1)
+        meta["coverageComplete"] = False
+        meta["paginationRepeated"] = True
+        meta["boardHealth"][0].update({
+            "count": 10,
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        self.assertTrue(ice.is_transient_repeated_page(meta, [{"id": "partial"}]))
+        self.assertTrue(ice.is_retryable_transient(meta, [{"id": "partial"}]))
+
+    def test_repeated_page_with_access_error_is_not_retryable(self):
+        meta = meta_for(count=1, access_error="timeout")
+        meta["paginationRepeated"] = True
+        meta["boardHealth"][0].update({
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        self.assertFalse(ice.is_transient_repeated_page(meta, [{"id": "partial"}]))
+
+    @patch.object(ice, "reset_session")
+    @patch.object(ice.time, "sleep")
+    @patch.object(ice, "scrape_incheon_central")
+    def test_check_only_retries_repeated_page_then_accepts_complete_traversal(
+        self, scrape, sleep, reset
+    ):
+        repeated = meta_for(count=1)
+        repeated["coverageComplete"] = False
+        repeated["paginationRepeated"] = True
+        repeated["boardHealth"][0].update({
+            "count": 10,
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        scrape.side_effect = [
+            ([{"id": "partial"}], repeated),
+            ([{"id": "complete"}], meta_for(count=1)),
+        ]
+
+        rows, meta = ice.scrape_incheon_with_transient_retry(
+            lookback_days=90,
+            max_pages=1000,
+            check_only=True,
+            transient_retries=2,
+            retry_delay_seconds=15,
+        )
+
+        self.assertEqual(rows, [{"id": "complete"}])
+        self.assertTrue(meta["coverageComplete"])
+        self.assertEqual(scrape.call_count, 2)
+        sleep.assert_called_once_with(15.0)
+        reset.assert_called_once_with()
+
 
     @patch.object(ice, "reset_session")
     @patch.object(ice, "parse_table_rows")

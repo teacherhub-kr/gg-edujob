@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/merge_incheon_official.py'
       - 'scripts/collect_incheon_support.py'
+      - 'scripts/ice_transport_evidence.py'
+      - 'tests/test_ice_transport_evidence.py'
+      - 'tests/test_incheon_request_pacing.py'
       - 'scripts/ensure_incheon_registry.py'
       - 'scripts/verify_required_regions.py'
       - 'scripts/stable_source_identity.py'
@@ -30,7 +33,7 @@ permissions:
 jobs:
   verify-incheon:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -40,11 +43,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Static compile
         run: |
-          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py scripts/verify_jobs.py
+          python -m py_compile scripts/merge_incheon_official.py scripts/collect_incheon_support.py scripts/ice_transport_evidence.py scripts/ensure_incheon_registry.py scripts/verify_required_regions.py scripts/stable_source_identity.py scripts/reconcile_source_ids.py scripts/update_collector_status.py scripts/verify_central_reconciliation_consistency.py scripts/verify_support_completeness.py scripts/validate_reconciliation_policy_v3.py scripts/verify_jobs.py
       - name: Verify narrow Incheon transient retry contract
         env:
           PYTHONPATH: scripts
-        run: python -m unittest tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
+        run: python -m unittest tests.test_incheon_request_pacing tests.test_ice_transport_evidence tests.test_incheon_transient_retry tests.test_incheon_support_offices tests.test_verify_jobs_incheon_support tests.test_collector_status_identity_binding
       - name: Verify Fast and recovery are registry-aware and do not patch source code
         run: |
           python - <<'PY'
@@ -107,15 +110,31 @@ jobs:
           assert canonical_source_id(east) == 'ice-support:dongbu.ice.go.kr:msg_seq:6928'
           print('registry/identity ok',by_bbs,[x.get('name') for x in support])
           PY
-      - name: Probe complete live Incheon official network
+      - name: Prove Incheon central and Neulbom boards on live official site
+        timeout-minutes: 24
         env:
           PYTHONPATH: scripts
         run: |
-          # Use the production collector path as the live contract. A raw HTML/CSS
-          # diagnostic probe is intentionally not a merge gate because official sites
-          # can vary markup or bot handling while the collector remains healthy.
-          # Probe support offices first so a transient central-board outage never
-          # hides support-office diagnostics. Both gates are still mandatory.
+          # Read-only proof of the central site's replay-window fix independent
+          # of the five support-office transports. Neither step publishes jobs.
+          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 60
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
+          health=report.get('boardHealth') or []
+          assert report.get('coverageComplete') is True,report
+          assert len(health) == 2,health
+          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
+          assert all(int(x.get('count') or 0) > 0 for x in health),health
+          print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
+          PY
+      - name: Prove five Incheon support offices on live official sites
+        timeout-minutes: 12
+        env:
+          PYTHONPATH: scripts
+        run: |
+          # Both independent gates must pass before a release can be considered.
           python scripts/collect_incheon_support.py --check-only --lookback-days 14 --max-pages 10
           python - <<'PY'
           import json
@@ -127,16 +146,4 @@ jobs:
               '인천남부교육지원청','인천북부교육지원청','인천동부교육지원청','인천서부교육지원청','인천강화교육지원청'
           },report
           print('five-office live probe ok',[(x.get('name'),x.get('count'),x.get('pagesScanned')) for x in report.get('offices',[])])
-          PY
-          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 3
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report=json.loads(Path('incheon_official_report.json').read_text(encoding='utf-8'))
-          health=report.get('boardHealth') or []
-          assert report.get('coverageComplete') is True,report
-          assert len(health) == 2,health
-          assert {str(x.get('bbsId')) for x in health if x.get('coverageComplete') is True} == {'1981','1534'},health
-          assert all(int(x.get('count') or 0) > 0 for x in health),health
-          print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY

@@ -1,0 +1,26 @@
+name: ICE alternate menu transport probe (read-only)
+on:
+  push:
+    branches:
+      - fix/incheon-pagination-contract-20261105
+    paths:
+      - scripts/probe_incheon_menu_variants.py
+      - .github/workflows/ice-menu-transport-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install read-only probe dependencies
+        run: python -m pip install 'requests>=2.31,<3' 'beautifulsoup4>=4.12,<5'
+      - name: Compare ICE official menu variants and page IDs
+        run: python scripts/probe_incheon_menu_variants.py
