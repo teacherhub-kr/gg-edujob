@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 10362,
+  "totalRows": 10367,
   "nonDirectBeforeRepair": 396,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 396,
-  "cultureFoundationRows": 83,
+  "cultureFoundationRows": 82,
   "cultureFoundationNonDirectRows": 53,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -911,6 +911,15 @@
   ],
   "cultureFoundationExamples": [
     {
+      "sourceIdentity": "artmore:95727",
+      "source": "아트모아",
+      "title": "진행중 2026-09차 서초문화재단 직원 채용 공고",
+      "school": "서초문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95727",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
       "sourceIdentity": "culture:id:95707",
       "source": "레슨인포",
       "title": "[대림문화재단] 디뮤지엄 크루 모집(전시/인포/뮤지엄샵)",
@@ -1034,24 +1043,6 @@
       "school": "안산문화재단",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95545",
       "reason": "cold-browser-verified-url",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "artmore:95552",
-      "source": "아트모아",
-      "title": "진행중 [송파문화재단] 11월 24일 롯데콘서트홀 공연 티켓 운영 아르바이트 모집",
-      "school": "송파문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95552",
-      "reason": "artmore-rec-idx",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "artmore:95545",
-      "source": "아트모아",
-      "title": "진행중 2026년 안산문화재단 기간제근로자 모집 공고(대표이사 비서)",
-      "school": "안산문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95545",
-      "reason": "artmore-rec-idx",
       "direct": true
     },
     {
