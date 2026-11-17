@@ -72,6 +72,18 @@ jobs:
             update-lessoninfo-jobs.yml|lessoninfo-culture-cold-verify.yml|update-jobteacher-jobs.yml|update-artmore-candidate.yml|promote-artmore.yml|update-gonggonggangsa-jobs.yml|update-cleaneye-jobs.yml|update-seekle-instructor-jobs.yml|update-boramyc-instructor-jobs.yml|cultural-foundation-coverage.yml) ;;
             *) echo "Unexpected private target" >&2; exit 2 ;;
           esac
+          # Prevent independent private commits from racing a verified official
+          # or Unified writer. Recheck immediately before dispatch; GitHub
+          # API errors fail closed under set -euo pipefail.
+          for other in seoul-gyeonggi-official.yml update-jobs.yml recover-missing-jobs.yml unified-search.yml; do
+            other_active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${other}/runs?per_page=100" \
+              --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+            if [ "${other_active:-0}" -gt 0 ]; then
+              echo "Shared production writer active: ${other}; defer ${WORKFLOW}."
+              exit 0
+            fi
+          done
+
           # Re-check race with the original watchdog's dispatch path.
           active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/runs?per_page=100" \
             --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
