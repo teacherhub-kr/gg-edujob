@@ -233,6 +233,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             max_attempts=args.max_attempts,
         )
         print(json.dumps(asdict(result), ensure_ascii=False))
+        if result.state == "superseded":
+            print("::warning::Publication superseded; no data was published.", file=sys.stderr)
+            return 2
         return 0
     except (PublicationError, subprocess.CalledProcessError) as exc:
         print(f"publication transaction failed: {exc}", file=sys.stderr)
