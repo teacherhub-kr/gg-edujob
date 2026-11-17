@@ -19,6 +19,16 @@ class PrivateSchedulerContracts(TestCase):
         self.assertIn("scripts/scheduled_private_refresh.py", s)
         self.assertIn("gh api --method POST", s)
         self.assertIn("Private writer already active:", s)
+        # An isolated private collector must not race any canonical writer.
+        self.assertIn("Shared production writer active:", s)
+        for workflow in (
+            "seoul-gyeonggi-official.yml", "update-jobs.yml",
+            "recover-missing-jobs.yml", "unified-search.yml"
+        ):
+            self.assertIn(workflow, s)
+        self.assertIn('if [ "${other_active:-0}" -gt 0 ]; then', s)
+        self.assertLess(s.index("for other in seoul-gyeonggi-official.yml"), s.index("gh api --method POST"))
+
         self.assertNotIn("update-jobs.yml/dispatches", s)
 
     def test_collector_and_link_verifier_share_one_group(self):
