@@ -31,6 +31,60 @@ class PrivateSchedulerContracts(TestCase):
 
         self.assertNotIn("update-jobs.yml/dispatches", s)
 
+    def test_scheduled_run_drains_eligible_sources_serially_and_bounded(self):
+        s = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
+        self.assertIn("MAX_ROUNDS: '8'", s)
+        self.assertIn("DRAIN_DEADLINE_SECONDS: '2700'", s)
+        self.assertIn("COLLECTOR_WAIT_SECONDS: '1500'", s)
+        self.assertIn("timeout-minutes: 55", s)
+        loop = s[s.index('for round in $(seq 1 "$MAX_ROUNDS"); do'):]
+        self.assertLess(loop.index("git fetch -q origin main"), loop.index("scheduled_private_refresh.py"))
+        self.assertLess(loop.index("Shared production writer active:"), loop.index("gh api --method POST"))
+        self.assertLess(loop.index("Private writer already active:"), loop.index("gh api --method POST"))
+        self.assertLess(loop.index("before_id="), loop.index("gh api --method POST"))
+        self.assertLess(loop.index("gh api --method POST"), loop.index('elif length > 1'))
+        self.assertIn("Ambiguous or unknown collector run", loop)
+        self.assertIn("stop draining to keep one private writer", loop)
+        self.assertIn('skip_args+=(--skip-action "$done_action")', loop)
+        self.assertIn('completed_actions+=("$ACTION")', loop)
+
+    def test_completed_private_source_is_excluded_from_next_decision(self):
+        now = datetime.now(timezone.utc)
+        key = "private-jobteacher"
+        spec = {key: {"workflow": "update-jobteacher-jobs.yml", "report": "jobteacher_reconciliation_report.json", "maxAgeHours": 4}}
+        with mock.patch.object(lane.policy, "apply_private_refresh_policy"), \
+             mock.patch.object(lane.policy, "register_lessoninfo_link_verification"), \
+             mock.patch.object(lane.supervisor, "PRIVATE_REFRESH_TARGETS", spec), \
+             mock.patch.object(lane.supervisor, "gh_runs", return_value=[]), \
+             mock.patch.object(lane.supervisor, "gh_active_target_keys", return_value=set()), \
+             mock.patch.object(lane.supervisor, "git_commit_time", return_value=now - timedelta(hours=8)), \
+             mock.patch.object(lane.supervisor, "choose_private_refresh_action", return_value=(None, None)) as policy:
+            lane.choose(now, "teacherhub-kr/gg-edujob", skip_actions=(key,))
+            self.assertEqual(policy.call_args.kwargs["excluded_private"], frozenset({key}))
+
+    def test_exclusion_keeps_other_overdue_source_eligible(self):
+        now = datetime.now(timezone.utc)
+        supervisor = lane.supervisor
+        a, b = "private-lessoninfo", "private-jobteacher"
+        specs = {
+            a: {"workflow": "update-lessoninfo-jobs.yml", "report": "a.json", "maxAgeHours": 4},
+            b: {"workflow": "update-jobteacher-jobs.yml", "report": "b.json", "maxAgeHours": 4},
+        }
+        with mock.patch.object(supervisor, "PRIVATE_REFRESH_TARGETS", specs), \
+             mock.patch.object(supervisor, "git_commit_time", return_value=None), \
+             mock.patch.object(supervisor, "circuit_blocked", return_value=(False, 0, None)), \
+             mock.patch.object(supervisor, "latest_completed", return_value=None):
+            action, _ = supervisor.choose_private_refresh_action(
+                now=now, all_runs={a: [], b: []},
+                private_refresh_times={a: now - timedelta(hours=20), b: now - timedelta(hours=8)},
+                private_freshness={
+                    a: {"ageHours": 20, "maxAgeHours": 4},
+                    b: {"ageHours": 8, "maxAgeHours": 4},
+                },
+                active_private=[], excluded_private=frozenset({a}),
+            )
+        self.assertEqual(action, b)
+
     def test_collector_and_link_verifier_share_one_group(self):
         a = (ROOT / ".github/workflows/update-lessoninfo-jobs.yml").read_text()
         b = (ROOT / ".github/workflows/lessoninfo-culture-cold-verify.yml").read_text()

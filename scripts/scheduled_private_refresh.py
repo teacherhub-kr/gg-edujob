@@ -14,7 +14,7 @@ import private_refresh_policy as policy
 import production_supervisor as supervisor
 
 
-def choose(now, repo):
+def choose(now, repo, skip_actions=()):
     policy.apply_private_refresh_policy()
     policy.register_lessoninfo_link_verification()
 
@@ -40,12 +40,17 @@ def choose(now, repo):
             "overdue": supervisor.private_refresh_due(at, now, max_hours),
         }
 
+    known_actions = set(keys)
+    unknown = set(skip_actions) - known_actions
+    if unknown:
+        raise ValueError(f"unknown private actions: {sorted(unknown)}")
     action, reason = supervisor.choose_private_refresh_action(
         now=now,
         all_runs=all_runs,
         private_refresh_times=last_refresh,
         private_freshness=freshness,
         active_private=active_private,
+        excluded_private=frozenset(skip_actions),
     )
     if action not in keys or not action.startswith("private-"):
         return None, None, reason or "all private sources current or safely backed off"
@@ -56,10 +61,11 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", ""))
     p.add_argument("--github-output", required=True)
+    p.add_argument("--skip-action", action="append", default=[])
     args = p.parse_args()
     if not args.repo:
         raise SystemExit("GITHUB_REPOSITORY is required")
-    action, workflow, reason = choose(datetime.now(supervisor.KST), args.repo)
+    action, workflow, reason = choose(datetime.now(supervisor.KST), args.repo, args.skip_action)
     with open(args.github_output, "a", encoding="utf-8") as output:
         output.write("action=" + (action or "") + "\n")
         output.write("workflow=" + (workflow or "") + "\n")
