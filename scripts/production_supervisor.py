@@ -530,6 +530,7 @@ def choose_private_refresh_action(
     private_refresh_times: dict[str, datetime | None],
     private_freshness: dict[str, dict[str, Any]],
     active_private: list[str],
+    excluded_private: frozenset[str] = frozenset(),
 ) -> tuple[str | None, str | None]:
     """Choose one guarded private refresh without weakening official fail-closed gates."""
     if active_private:
@@ -550,9 +551,11 @@ def choose_private_refresh_action(
     )
 
     private_candidates: list[tuple[float, str]] = []
-    if artmore_ready:
+    if artmore_ready and ARTMORE_PROMOTE_KEY not in excluded_private:
         private_candidates.append((10_000.0, ARTMORE_PROMOTE_KEY))
     for key, spec in PRIVATE_REFRESH_TARGETS.items():
+        if key in excluded_private:
+            continue
         refreshed_at = private_refresh_times.get(key)
         if not private_refresh_due(refreshed_at, now, int(spec["maxAgeHours"])):
             continue
