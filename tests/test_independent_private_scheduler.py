@@ -31,6 +31,25 @@ class PrivateSchedulerContracts(TestCase):
 
         self.assertNotIn("update-jobs.yml/dispatches", s)
 
+    def test_unified_success_wakes_private_without_chained_dispatch_storm(self):
+        s = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
+        self.assertIn("workflow_run:", s)
+        self.assertIn("- Unified recruitment search", s)
+        self.assertIn("- completed", s)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", s)
+        self.assertIn("github.event.workflow_run.head_branch == 'main'", s)
+        self.assertIn("github.event.workflow_run.event == 'workflow_dispatch'", s)
+        self.assertIn("github.event.workflow_run.head_repository.full_name == github.repository", s)
+        self.assertIn('if [ "${GITHUB_EVENT_NAME}" = "workflow_run" ]; then', s)
+        self.assertIn("independent-private-scheduler.yml/runs?per_page=100", s)
+        self.assertIn('.id != ${GITHUB_RUN_ID}', s)
+        self.assertIn('and .event == \\"workflow_run\\"', s)
+        self.assertIn("(now - 7200)", s)
+        self.assertIn("earlier event-driven private run within 2h", s)
+        self.assertLess(s.index("Skip chained Unified wake"), s.index('for round in $(seq 1 "$MAX_ROUNDS"); do'))
+        # PRs may only run the contract check; never dispatch a collector.
+        self.assertIn("if: github.event_name == 'pull_request'", s)
+
     def test_scheduled_run_drains_eligible_sources_serially_and_bounded(self):
         s = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
         self.assertIn("MAX_ROUNDS: '8'", s)
