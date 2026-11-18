@@ -136,3 +136,88 @@ class PrivateSchedulerContracts(TestCase):
             action, workflow, reason = lane.choose(now, "teacherhub-kr/gg-edujob")
         self.assertEqual(policy.call_args.kwargs["active_private"], [key])
         self.assertEqual((action, workflow, reason), (None, None, "writer active"))
+
+
+class PrivateStarvationContracts(TestCase):
+    """A repeatedly failing source must not starve independently healthy sources."""
+
+    @staticmethod
+    def failed(at, n):
+        return [
+            {
+                "status": "completed",
+                "conclusion": "failure",
+                "event": "workflow_dispatch",
+                "head_branch": "main",
+                "run_started_at": (at - timedelta(minutes=i)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "updated_at": (at - timedelta(minutes=i)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "id": 1000 - i,
+            }
+            for i in range(n)
+        ]
+
+    def choose(self, now, specs, last_refresh, runs):
+        supervisor = lane.supervisor
+        with mock.patch.object(supervisor, "PRIVATE_REFRESH_TARGETS", specs), \
+             mock.patch.object(supervisor, "git_commit_time", return_value=None):
+            return supervisor.choose_private_refresh_action(
+                now=now,
+                all_runs=runs,
+                private_refresh_times=last_refresh,
+                private_freshness={
+                    k: {
+                        "ageHours": round((now - last_refresh[k]).total_seconds() / 3600, 2),
+                        "maxAgeHours": spec["maxAgeHours"],
+                    }
+                    for k, spec in specs.items()
+                },
+                active_private=[],
+            )
+
+    def test_healthy_overdue_source_precedes_staler_failed_source(self):
+        now = datetime(2026, 11, 18, 0, 0, tzinfo=timezone.utc)
+        failing, healthy = "private-cleaneye", "private-lessoninfo"
+        specs = {
+            failing: {"workflow": "update-cleaneye-jobs.yml", "report": "a.json", "maxAgeHours": 4},
+            healthy: {"workflow": "update-lessoninfo-jobs.yml", "report": "b.json", "maxAgeHours": 4},
+        }
+        runs = {failing: self.failed(now - timedelta(hours=9), 1), healthy: []}
+        last = {failing: now - timedelta(days=36), healthy: now - timedelta(days=3)}
+        self.assertEqual(self.choose(now, specs, last, runs)[0], healthy)
+
+    def test_failing_source_can_be_probed_if_only_due_source(self):
+        now = datetime(2026, 11, 18, 0, 0, tzinfo=timezone.utc)
+        failing = "private-cleaneye"
+        specs = {
+            failing: {"workflow": "update-cleaneye-jobs.yml", "report": "a.json", "maxAgeHours": 4},
+        }
+        runs = {failing: self.failed(now - timedelta(hours=9), 1)}
+        last = {failing: now - timedelta(days=36)}
+        self.assertEqual(self.choose(now, specs, last, runs)[0], failing)
+
+    def test_persistent_failures_backoff_exponentially_up_to_48_hours(self):
+        s = lane.supervisor
+        self.assertEqual(
+            [s.private_failure_backoff_hours(n) for n in (0, 1, 2, 3, 4, 5, 9)],
+            [0, 0, 6, 12, 24, 48, 48],
+        )
+        now = datetime(2026, 11, 18, 0, 0, tzinfo=timezone.utc)
+        failing = "private-seekle"
+        specs = {
+            failing: {"workflow": "update-seekle-instructor-jobs.yml", "report": "x", "maxAgeHours": 10},
+        }
+        runs = {failing: self.failed(now - timedelta(hours=20), 6)}
+        action, reason = self.choose(now, specs, {failing: now - timedelta(days=36)}, runs)
+        self.assertEqual(action, "skip-private-backoff")
+        self.assertIn(failing, reason)
+
+    def test_unaffected_private_circuit_still_applies(self):
+        now = datetime(2026, 11, 18, 0, 0, tzinfo=timezone.utc)
+        failing = "private-boramyc"
+        specs = {
+            failing: {"workflow": "update-boramyc-instructor-jobs.yml", "report": "x", "maxAgeHours": 10},
+        }
+        runs = {failing: self.failed(now - timedelta(minutes=30), 3)}
+        action, reason = self.choose(now, specs, {failing: now - timedelta(days=36)}, runs)
+        self.assertEqual(action, "skip-private-backoff")
+        self.assertIn("circuit", reason)

@@ -523,6 +523,16 @@ def private_refresh_due(
     return now - last_refresh > timedelta(hours=max_age_hours)
 
 
+PRIVATE_FAILURE_BACKOFF_CAP_HOURS = 48
+
+
+def private_failure_backoff_hours(failures: int) -> int:
+    """Backoff for a private source after consecutive real failures (>= 2)."""
+    if failures < 2:
+        return 0
+    return min(PRIVATE_FAILURE_BACKOFF_CAP_HOURS, 6 * 2 ** (failures - 2))
+
+
 def choose_private_refresh_action(
     *,
     now: datetime,
@@ -550,9 +560,11 @@ def choose_private_refresh_action(
         and int(candidate_report.get("missingAfterCount") or 0) == 0
     )
 
-    private_candidates: list[tuple[float, str]] = []
+    # Keep overdue collectors with no recent failures ahead of known failing sources.
+    # An extremely stale 403/timeout should not use the only dispatch opportunity.
+    private_candidates: list[tuple[int, float, str]] = []
     if artmore_ready and ARTMORE_PROMOTE_KEY not in excluded_private:
-        private_candidates.append((10_000.0, ARTMORE_PROMOTE_KEY))
+        private_candidates.append((1, 10_000.0, ARTMORE_PROMOTE_KEY))
     for key, spec in PRIVATE_REFRESH_TARGETS.items():
         if key in excluded_private:
             continue
@@ -564,12 +576,13 @@ def choose_private_refresh_action(
             if refreshed_at is not None
             else 10_000.0
         )
+        failing_now = consecutive_real_failures(all_runs.get(key, []))[0] > 0
         private_candidates.append(
-            (age_hours / float(spec["maxAgeHours"]), key)
+            (0 if failing_now else 1, age_hours / float(spec["maxAgeHours"]), key)
         )
 
     skipped_private: list[str] = []
-    for _, key in sorted(private_candidates, reverse=True):
+    for _, _, key in sorted(private_candidates, reverse=True):
         runs = all_runs[key]
         blocked, failures, _ = circuit_blocked(key, runs, now)
         latest = latest_completed(runs)
@@ -580,16 +593,15 @@ def choose_private_refresh_action(
             and latest_time
             and now - latest_time < timedelta(hours=1)
         )
-        # An overdue private source must not monopolize the sole dispatch slot
-        # with repeated real failures (e.g. a stable HTTP 403). Two consecutive
-        # failures trigger a six-hour conservative backoff; official policy and
-        # the existing three-failure circuit remain unchanged.
+        # Escalating private-only backoff (2 failures -> 6h, 3 -> 12h,
+        # 4 -> 24h, 5+ -> 48h) prevents known 403/timeouts from starving
+        # healthy sources. Official circuits and source access gates stay intact.
         repeated_failure_backoff = bool(
             failures >= 2
             and latest
             and latest.get("conclusion") in REAL_FAILURES
             and latest_time
-            and now - latest_time < timedelta(hours=6)
+            and now - latest_time < timedelta(hours=private_failure_backoff_hours(failures))
         )
         if blocked or recent_failure or repeated_failure_backoff:
             label = (
