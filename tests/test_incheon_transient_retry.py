@@ -114,11 +114,16 @@ class IncheonTransientRetryTests(unittest.TestCase):
 
         p0 = Path(".github/workflows/p0-incheon-regression.yml").read_text(encoding="utf-8")
         pre = Path(".github/workflows/reconciliation-population-preflight.yml").read_text(encoding="utf-8")
-        lock = "incheon-90d-live-read-"
-        self.assertIn(lock, p0)
-        self.assertIn(lock, pre)
+        # Full 90d source verification and independent population proof must
+        # be sequential, never two competing readers of the official site.
+        self.assertIn("incheon-90d-live-read-", p0)
         self.assertIn("cancel-in-progress: false", p0)
-        self.assertIn("cancel-in-progress: false", pre)
+        self.assertIn("reconcile-live-proof:", p0)
+        self.assertIn("needs: verify-incheon", p0)
+        self.assertIn("uses: ./.github/workflows/reconciliation-population-preflight.yml", p0)
+        self.assertIn("workflow_call:", pre)
+        self.assertNotIn("  pull_request:", pre.split("permissions:", 1)[0])
+        self.assertNotIn("concurrency:", pre)
         self.assertIn("timeout-minutes: 130", pre)
 
     @patch.object(ice, "reset_session")
