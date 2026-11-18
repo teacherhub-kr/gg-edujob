@@ -10,6 +10,10 @@ on:
       - 'tests/test_incheon_request_pacing.py'
       - 'tests/test_incheon_paging_form.py'
       - 'scripts/ensure_incheon_registry.py'
+      - 'scripts/source_registry.py'
+      - 'scripts/verify_central_pagination.py'
+      - 'scripts/scrape_jobs.py'
+      - '.github/workflows/reconciliation-population-preflight.yml'
       - 'scripts/verify_required_regions.py'
       - 'scripts/stable_source_identity.py'
       - 'scripts/reconcile_source_ids.py'
@@ -28,8 +32,8 @@ on:
       - 'tests/test_collector_status_identity_binding.py'
   workflow_dispatch:
 
-# One in-flight ICE live reader per PR across both independent CI workflows.
-# The source has been observed replaying/tiny-response under concurrent reads.
+# Serialize PR revisions of the complete two-phase read-only ICE verification.
+# The second, independent 44-source proof is a dependent reusable workflow.
 concurrency:
   group: incheon-90d-live-read-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
@@ -167,3 +171,12 @@ jobs:
             incheon_support_report.json
           if-no-files-found: warn
           retention-days: 14
+
+  reconcile-live-proof:
+    # Avoid competing sessions with the same ICE site. A green 90-day
+    # isolated probe is necessary but not sufficient: this independent
+    # 44-source identity/reconciliation preflight must *also* pass.
+    needs: verify-incheon
+    uses: ./.github/workflows/reconciliation-population-preflight.yml
+    permissions:
+      contents: read
