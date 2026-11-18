@@ -2,6 +2,13 @@ name: Independent guarded private recruitment scheduler
 
 on:
   workflow_dispatch:
+  # Event-driven wake when a verified production Unified refresh finishes.
+  # A delayed/missed cron should not strand overdue private sources indefinitely.
+  workflow_run:
+    workflows:
+      - Unified recruitment search
+    types:
+      - completed
   schedule:
     # Twice each hour, separated from :08/:23/:38/:53 official supervisor slots.
     # Source freshness remains 4–10 hours, with its existing failure circuit.
@@ -34,7 +41,14 @@ jobs:
           PYTHONPATH=scripts python -m unittest tests.test_independent_private_scheduler
 
   dispatch:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    if: >-
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.event == 'workflow_dispatch' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 55
     permissions:
@@ -55,7 +69,14 @@ jobs:
           git checkout -B main origin/main
       - name: Drain overdue private sources one at a time
         # Catch up despite irregular GitHub schedule delivery. No publishing from this workflow.
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+        if: >-
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.event == 'workflow_dispatch' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
         env:
           GH_TOKEN: ${{ github.token }}
           MAX_ROUNDS: '8'
@@ -63,6 +84,17 @@ jobs:
           COLLECTOR_WAIT_SECONDS: '1500'
         run: |
           set -euo pipefail
+          # Avoid a private-collector -> Unified -> scheduler feedback storm.
+          # Event-driven wakeups may run at most once per two hours. Normal
+          # schedules and manual dispatches are not throttled.
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_run" ]; then
+            previous="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/independent-private-scheduler.yml/runs?per_page=100" \
+              --jq "[.workflow_runs[] | select(.id != ${GITHUB_RUN_ID} and .event == \"workflow_run\" and .head_branch == \"main\" and (.created_at | fromdateiso8601) > (now - 7200))] | length")"
+            if [ "${previous:-0}" -gt 0 ]; then
+              echo "Skip chained Unified wake: earlier event-driven private run within 2h."
+              exit 0
+            fi
+          fi
           started="$(date +%s)"
           deadline=$((started + DRAIN_DEADLINE_SECONDS))
           completed_actions=()
