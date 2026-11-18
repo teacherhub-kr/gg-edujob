@@ -77,6 +77,40 @@ def abnormal_drop(candidate_count: int, previous_count: int) -> tuple[bool, floa
     return candidate_count < previous_count * 0.60, drop_ratio
 
 
+async def verify_detail_once(page, url: str, sid: str) -> dict:
+    """Verify the exact source-native ID, not just a 200 response."""
+    response = await page.goto(url, wait_until="domcontentloaded", timeout=45000)
+    status = response.status if response else 0
+    body = await page.locator("body").inner_text()
+    if status != 200:
+        raise RuntimeError(f"HTTP {status}")
+    # An access denial, challenge, or a redirected detail is never retryable.
+    if BLOCK_RE.search(body):
+        raise RuntimeError("human-check/block page detected")
+    if stable_id_from_url(page.url) != sid:
+        raise RuntimeError(f"detail redirected away from rec_idx={sid}: {page.url}")
+    if len(body.strip()) < 200:
+        return {"shortBody": True, "httpStatus": status}
+    return {"shortBody": False, "httpStatus": status, "url": page.url}
+
+
+async def validate_one_detail(page, url: str, sid: str) -> dict:
+    """One additional ordinary navigation only for an HTTP-200 short body.
+
+    An official ArtMore page occasionally responds with a tiny incomplete body.
+    Never retry a 401/403, challenge, wrong-source-ID redirect, or any other
+    failure. A second short page is still a hard failure and blocks promotion.
+    """
+    initial = await verify_detail_once(page, url, sid)
+    if not initial["shortBody"]:
+        return initial
+    await asyncio.sleep(1.0)
+    repeated = await verify_detail_once(page, url, sid)
+    if repeated["shortBody"]:
+        raise RuntimeError("detail body unexpectedly short after one retry")
+    return repeated
+
+
 async def validate_links(jobs: list[dict]) -> tuple[list[dict], list[dict]]:
     verified, errors = [], []
     async with async_playwright() as pw:
@@ -88,23 +122,22 @@ async def validate_links(jobs: list[dict]) -> tuple[list[dict], list[dict]]:
             try:
                 if not sid or stable_id_from_url(url) != sid:
                     raise RuntimeError("stable ID does not match rec_idx URL")
-                response = await page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                status = response.status if response else 0
-                body = await page.locator("body").inner_text()
-                if status != 200:
-                    raise RuntimeError(f"HTTP {status}")
-                if BLOCK_RE.search(body):
-                    raise RuntimeError("human-check/block page detected")
-                if len(body.strip()) < 200:
-                    raise RuntimeError("detail body unexpectedly short")
-                if stable_id_from_url(page.url) != sid:
-                    raise RuntimeError(f"detail redirected away from rec_idx={sid}: {page.url}")
-                verified.append({"sourceIdentity": job.get("sourceIdentity"), "stableId": sid, "url": page.url, "httpStatus": status})
+                detail = await validate_one_detail(page, url, sid)
+                verified.append({
+                    "sourceIdentity": job.get("sourceIdentity"),
+                    "stableId": sid,
+                    "url": detail["url"],
+                    "httpStatus": detail["httpStatus"],
+                })
             except Exception as exc:
-                errors.append({"sourceIdentity": job.get("sourceIdentity"), "stableId": sid, "url": url, "error": f"{type(exc).__name__}: {exc}"})
+                errors.append({
+                    "sourceIdentity": job.get("sourceIdentity"),
+                    "stableId": sid,
+                    "url": url,
+                    "error": f"{type(exc).__name__}: {exc}",
+                })
         await browser.close()
     return verified, errors
-
 
 async def main() -> int:
     generated = datetime.now(KST).isoformat(timespec="seconds")
