@@ -1,0 +1,131 @@
+name: Regional official source-ID and URL diff (read-only)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/audit-regional-source-id-diff.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Independently compare regional 90-day publication populations
+        env:
+          OLD_REF: '6f6e8008970b767971f41421c89433b7ea93e73c'
+          NEW_REF: 'a2f76fd40ee4241f2eaec1a6390d1c0f78c36251'
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python - <<'PY'
+          import collections
+          from datetime import datetime, timedelta
+          import json
+          import os
+          import re
+          import subprocess
+          from urllib.parse import urlparse
+
+          from stable_source_identity import canonical_source_id
+
+          old_ref, new_ref = os.environ["OLD_REF"], os.environ["NEW_REF"]
+
+          def at(ref, path):
+              raw = subprocess.check_output(["git", "show", f"{ref}:{path}"])
+              return json.loads(raw)
+
+          old, new = at(old_ref, "seoul_gyeonggi_jobs.json"), at(new_ref, "seoul_gyeonggi_jobs.json")
+          old_report = at(old_ref, "seoul_gyeonggi_refresh_report.json")
+          new_report = at(new_ref, "seoul_gyeonggi_refresh_report.json")
+          assert old_report["generatedAt"] == "2026-11-17T21:41:33+09:00"
+          assert new_report["generatedAt"] == "2026-11-18T06:48:12+09:00"
+
+          def keyed(rows):
+              result = collections.defaultdict(list)
+              for row in rows:
+                  native = canonical_source_id(row)
+                  link = str(row.get("url") or row.get("openUrl") or "").strip()
+                  rid = str(row.get("id") or "")
+                  if native:
+                      key = "strong:" + native
+                  elif link:
+                      key = "url:" + link
+                  elif rid:
+                      key = "legacy:" + str(row.get("province")) + ":" + rid
+                  else:
+                      key = None
+                  if key is not None:
+                      result[key].append(row)
+              return result
+
+          old_rows, new_rows = old.get("jobs") or [], new.get("jobs") or []
+          expected_old = sum(old_report["counts"].values())
+          expected_new = sum(new_report["counts"].values())
+          if len(old_rows) != expected_old or len(new_rows) != expected_new:
+              raise SystemExit(f"Snapshot/report row mismatch {len(old_rows)}/{expected_old}, {len(new_rows)}/{expected_new}")
+          if (len(old_rows), len(new_rows)) != (15595, 15224):
+              raise SystemExit(f"Unexpected comparison snapshots: {len(old_rows)}, {len(new_rows)}")
+          a, b = keyed(old_rows), keyed(new_rows)
+          dropped, added = sorted(a.keys() - b.keys()), sorted(b.keys() - a.keys())
+          fallback_old = sum(not canonical_source_id(r) for r in old_rows)
+          fallback_new = sum(not canonical_source_id(r) for r in new_rows)
+          duplicates_old = sum(len(v) - 1 for v in a.values())
+          duplicates_new = sum(len(v) - 1 for v in b.values())
+          new_date = datetime.fromisoformat(new_report["generatedAt"]).date()
+          cutoff = new_date - timedelta(days=90)
+
+          def registered(row):
+              value = str(row.get("registered") or "")
+              match = re.search(r"\b(20\d\d)-(\d\d)-(\d\d)\b", value)
+              if not match:
+                  return None
+              try:
+                  return datetime.strptime(match.group(0), "%Y-%m-%d").date()
+              except ValueError:
+                  return None
+
+          def host(row):
+              url = str(row.get("url") or row.get("openUrl") or "")
+              return (urlparse(url).hostname or "(no URL)").lower()
+
+          removed_province = collections.Counter()
+          added_province = collections.Counter()
+          lost_host = collections.Counter()
+          old_recent = old_older = old_unknown = 0
+          for key in dropped:
+              row = a[key][0]
+              removed_province[str(row.get("province") or "?")] += 1
+              lost_host[(str(row.get("province") or "?"), host(row))] += 1
+              when = registered(row)
+              if when is None:
+                  old_unknown += 1
+              elif when < cutoff:
+                  old_older += 1
+              else:
+                  old_recent += 1
+          for key in added:
+              added_province[str(b[key][0].get("province") or "?")] += 1
+
+          old_urls = {str(r.get("url") or r.get("openUrl") or "").strip() for r in old_rows if r.get("url") or r.get("openUrl")}
+          new_urls = {str(r.get("url") or r.get("openUrl") or "").strip() for r in new_rows if r.get("url") or r.get("openUrl")}
+          print("=== VERIFIED READ-ONLY REGIONAL SOURCE-ID DIFF ===", flush=True)
+          print(f"oldDate={old_report['generatedAt']} newDate={new_report['generatedAt']}")
+          print(f"oldRows={len(old_rows)} newRows={len(new_rows)} delta={len(new_rows)-len(old_rows)}")
+          print(f"oldUniqueKeys={len(a)} newUniqueKeys={len(b)} removedKeys={len(dropped)} addedKeys={len(added)} commonKeys={len(a.keys() & b.keys())}")
+          print(f"removedByProvince={dict(removed_province)} addedByProvince={dict(added_province)}")
+          print(f"fallbackIDs=old:{fallback_old},new:{fallback_new} duplicateKeyRows=old:{duplicates_old},new:{duplicates_new}")
+          print(f"lostRegisteredWithin90d={old_recent} olderThan90d={old_older} dateUnparseable={old_unknown} cutoff={cutoff}")
+          print(f"exactUrlRemoved={len(old_urls - new_urls)} exactUrlAdded={len(new_urls - old_urls)}")
+          print("Top removed source hosts:", *[f"{prov} {domain}: {n}" for (prov,domain),n in lost_host.most_common(25)], sep="\n  ")
+          # Expose only official source-native keys and dates, not student/person names.
+          for key in dropped[:20]:
+              row=a[key][0]
+              print(f"lostKey type={key.split(':',1)[0]} province={row.get('province')} registered={registered(row)} host={host(row)} native={canonical_source_id(row)[:90]}")
+          print("DO NOT claim official completeness solely from 36/36 support traversal; reconcile actual source removals against live official boards.")
+          PY
