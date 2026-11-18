@@ -1,0 +1,156 @@
+name: Regional official source-ID and URL diff 2026-11-19 (read only)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/audit-regional-source-id-diff-20261119.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Independently compare current regional publication populations
+        env:
+          OLD_REF: '1d8a79f97ba048d6f175eb4f38822732c3f14ea2'
+          NEW_REF: 'a37ca76d8f8aa77089c0e99ec9e9fc898c61e16c'
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python - <<'PY'
+          import collections
+          from datetime import datetime, timedelta
+          import json
+          import os
+          import re
+          import subprocess
+          from urllib.parse import urlparse
+
+          from stable_source_identity import canonical_source_id
+
+          old_ref, new_ref = os.environ["OLD_REF"], os.environ["NEW_REF"]
+
+          def at(ref, path):
+              raw = subprocess.check_output(["git", "show", f"{ref}:{path}"])
+              return json.loads(raw)
+
+          old = at(old_ref, "seoul_gyeonggi_jobs.json")
+          new = at(new_ref, "seoul_gyeonggi_jobs.json")
+          old_report = at(old_ref, "seoul_gyeonggi_refresh_report.json")
+          new_report = at(new_ref, "seoul_gyeonggi_refresh_report.json")
+          assert old_report["generatedAt"] == "2026-11-18T21:42:14+09:00"
+          assert new_report["generatedAt"] == "2026-11-19T06:34:31+09:00"
+
+          def keyed(rows):
+              result = collections.defaultdict(list)
+              for row in rows:
+                  native = canonical_source_id(row)
+                  link = str(row.get("url") or row.get("openUrl") or "").strip()
+                  rid = str(row.get("id") or "")
+                  if native:
+                      key = "strong:" + native
+                  elif link:
+                      key = "url:" + link
+                  elif rid:
+                      key = "legacy:" + str(row.get("province")) + ":" + rid
+                  else:
+                      continue
+                  result[key].append(row)
+              return result
+
+          def parse_date(value):
+              match = re.search(r"\b(20\d\d)[./-](\d\d?)[./-](\d\d?)\b", str(value or ""))
+              if not match:
+                  return None
+              try:
+                  return datetime(int(match.group(1)), int(match.group(2)), int(match.group(3))).date()
+              except ValueError:
+                  return None
+
+          def host(row):
+              link = str(row.get("url") or row.get("openUrl") or "")
+              return (urlparse(link).hostname or "(no URL)").lower()
+
+          old_rows, new_rows = old.get("jobs") or [], new.get("jobs") or []
+          expected_old = sum(old_report["counts"].values())
+          expected_new = sum(new_report["counts"].values())
+          assert len(old_rows) == expected_old == 15423
+          assert len(new_rows) == expected_new == 14959
+
+          a, b = keyed(old_rows), keyed(new_rows)
+          dropped = sorted(a.keys() - b.keys())
+          added = sorted(b.keys() - a.keys())
+          common = a.keys() & b.keys()
+          cutoff = datetime.fromisoformat(new_report["generatedAt"]).date() - timedelta(days=90)
+          snapshot_date = datetime.fromisoformat(new_report["generatedAt"]).date()
+
+          removed_province = collections.Counter()
+          added_province = collections.Counter()
+          removed_hosts = collections.Counter()
+          removed_dates = collections.Counter()
+          date_class = collections.Counter()
+          recent_deadline_class = collections.Counter()
+          recent_rows = []
+
+          for key in dropped:
+              row = a[key][0]
+              province = str(row.get("province") or "?")
+              removed_province[province] += 1
+              removed_hosts[(province, host(row))] += 1
+              registered = parse_date(row.get("registered"))
+              deadline = parse_date(row.get("applyEnd"))
+              removed_dates[str(registered) if registered else "(unparseable)"] += 1
+              if registered is None:
+                  date_class["unparseable"] += 1
+              elif registered < cutoff:
+                  date_class["before_cutoff"] += 1
+              elif registered == cutoff:
+                  date_class["on_cutoff"] += 1
+              else:
+                  date_class["after_cutoff"] += 1
+                  if deadline is None:
+                      recent_deadline_class["unknown"] += 1
+                  elif deadline < snapshot_date:
+                      recent_deadline_class["ended_before_snapshot"] += 1
+                  elif deadline == snapshot_date:
+                      recent_deadline_class["ended_on_snapshot"] += 1
+                  else:
+                      recent_deadline_class["ends_after_snapshot"] += 1
+                  recent_rows.append((key, row, registered, deadline))
+
+          for key in added:
+              added_province[str(b[key][0].get("province") or "?")] += 1
+
+          old_urls = {str(r.get("url") or r.get("openUrl") or "").strip() for r in old_rows if r.get("url") or r.get("openUrl")}
+          new_urls = {str(r.get("url") or r.get("openUrl") or "").strip() for r in new_rows if r.get("url") or r.get("openUrl")}
+          fallback_old = sum(not canonical_source_id(r) for r in old_rows)
+          fallback_new = sum(not canonical_source_id(r) for r in new_rows)
+          duplicates_old = sum(len(v) - 1 for v in a.values())
+          duplicates_new = sum(len(v) - 1 for v in b.values())
+
+          print("=== VERIFIED READ-ONLY REGIONAL SOURCE-ID DIFF 2026-11-19 ===", flush=True)
+          print(f"oldDate={old_report['generatedAt']} newDate={new_report['generatedAt']}")
+          print(f"oldRows={len(old_rows)} newRows={len(new_rows)} delta={len(new_rows)-len(old_rows)}")
+          print(f"oldUniqueKeys={len(a)} newUniqueKeys={len(b)} removedKeys={len(dropped)} addedKeys={len(added)} commonKeys={len(common)}")
+          print(f"removedByProvince={dict(removed_province)} addedByProvince={dict(added_province)}")
+          print(f"fallbackIDs=old:{fallback_old},new:{fallback_new} duplicateKeyRows=old:{duplicates_old},new:{duplicates_new}")
+          print(f"cutoffDate={cutoff} removedDateClass={dict(date_class)}")
+          print(f"recentRemovedDeadlineClass={dict(recent_deadline_class)}")
+          print(f"removedDateHistogram={removed_dates.most_common(20)}")
+          print(f"exactUrlRemoved={len(old_urls-new_urls)} exactUrlAdded={len(new_urls-old_urls)}")
+          print("Top removed source hosts:", *[f"{p} {h}: {n}" for (p,h),n in removed_hosts.most_common(30)], sep="\n  ")
+          for key, row, registered, deadline in recent_rows:
+              print(
+                  "RECENT_REMOVED "
+                  f"province={row.get('province')} registered={registered} applyEnd={deadline} "
+                  f"host={host(row)} native={canonical_source_id(row)} "
+                  f"url={row.get('url') or row.get('openUrl')}"
+              )
+          print("Evidence only: do not restore rows without current official-list proof.")
+          PY
