@@ -86,6 +86,41 @@ class IncheonTransientRetryTests(unittest.TestCase):
         })
         self.assertFalse(ice.is_transient_repeated_page(meta, [{"id": "partial"}]))
 
+    def test_official_id_reconciliation_uses_bounded_90d_retries_and_shared_live_lock(self):
+        # Contract must be exercised by the live 44-source reconciliation,
+        # not merely an unrelated read-only ICE proof job.
+        from pathlib import Path
+        from scripts import reconcile_source_ids as recon
+
+        with patch.object(recon.central_recent, "scrape_gyeonggi_central_recent", return_value=[]) as gg, \
+             patch.object(recon.cov, "SOURCES", {"gyeonggi": {"supportOffices": []}, "seoul": {"supportOffices": []}}), \
+             patch.object(recon.incheon, "scrape_incheon_with_transient_retry", return_value=(
+                 [], {"coverageComplete": False, "pagesScanned": 2, "accessError": "",
+                      "boards": ["https://www.ice.go.kr/ice/na/ntt/selectNttList.do"]}
+             )) as ice_retry, \
+             patch.object(recon.incheon_support, "crawl_all_support_offices", return_value=([], [])), \
+             patch.object(recon.primary, "scrape_seoul_central", return_value=[]):
+            gg.last_coverage = []
+            sources, rows = recon.crawl_official_ids()
+        ice_retry.assert_called_once_with(
+            lookback_days=recon.cov.LOOKBACK_DAYS,
+            max_pages=240,
+            check_only=True,
+            transient_retries=2,
+            retry_delay_seconds=15.0,
+        )
+        self.assertEqual(rows, {})
+        self.assertFalse(next(src for src in sources if src["province"] == "인천")["coverageComplete"])
+
+        p0 = Path(".github/workflows/p0-incheon-regression.yml").read_text(encoding="utf-8")
+        pre = Path(".github/workflows/reconciliation-population-preflight.yml").read_text(encoding="utf-8")
+        lock = "incheon-90d-live-read-"
+        self.assertIn(lock, p0)
+        self.assertIn(lock, pre)
+        self.assertIn("cancel-in-progress: false", p0)
+        self.assertIn("cancel-in-progress: false", pre)
+        self.assertIn("timeout-minutes: 130", pre)
+
     @patch.object(ice, "reset_session")
     @patch.object(ice.time, "sleep")
     @patch.object(ice, "scrape_incheon_central")
