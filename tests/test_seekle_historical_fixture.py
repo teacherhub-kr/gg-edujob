@@ -36,6 +36,25 @@ class Session:
 
 
 class SeekleHistoricalFixtureTest(unittest.TestCase):
+    def test_denied_401_and_403_abort_without_repeated_requests(self):
+        for denied_status in (401, 403):
+            class DeniedResponse:
+                status_code = denied_status
+                def raise_for_status(self):
+                    raise seekle.requests.HTTPError(
+                        str(denied_status), response=self
+                    )
+            class FakeSession:
+                def __init__(self):
+                    self.requests = 0
+                def get(self, *args, **kwargs):
+                    self.requests += 1
+                    return DeniedResponse()
+            session = FakeSession()
+            with self.assertRaises(seekle.requests.HTTPError):
+                seekle.get(session, seekle.LIST)
+            self.assertEqual(session.requests, 1, denied_status)
+
     def test_21827_parser_and_direct_link_contract(self):
         fixture = (ROOT / "tests" / "fixtures" / "seekle_21827.html").read_text(encoding="utf-8")
         title = "2026년 문화예술 강사 채용 공고 (2026. 9. 1. ~ 2026. 9. 18.)"
