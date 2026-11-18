@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-18T12:52:32+09:00",
+  "generatedAt": "2026-11-18T13:33:11+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 15322,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 5290,
+  "canonicalPrivateJobs": 5027,
   "selectedCanonicalOfficialJobs": 5013,
   "selectedFoundationOfficialJobs": 1,
   "selectedOfficialJobs": 5014,
-  "selectedPrivateJobs": 5210,
-  "publishedJobs": 10224,
+  "selectedPrivateJobs": 4969,
+  "publishedJobs": 9983,
   "perFeed": {
     "official": 5014,
-    "private": 5210
+    "private": 4969
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,22 +20,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 902,
-      "count": 902,
-      "rawCandidateCount": 917,
+      "candidateCount": 622,
+      "count": 622,
+      "rawCandidateCount": 637,
       "excludedFromUnifiedCount": 15,
-      "lastVerifiedAt": "2026-11-15T08:29:22+09:00",
+      "lastVerifiedAt": "2026-11-18T13:05:34+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 76.39,
+        "state": "fresh",
+        "ageHours": 0.46,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-15T08:29:22+09:00"
+        "evidenceAt": "2026-11-18T13:05:34+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 396,
-      "displayedAsPrivate": 902
+      "unverifiedLinkCount": 115,
+      "displayedAsPrivate": 622
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 858.27,
+        "ageHours": 858.95,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -66,22 +66,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 4076,
-      "count": 4076,
-      "rawCandidateCount": 4076,
+      "candidateCount": 4080,
+      "count": 4080,
+      "rawCandidateCount": 4080,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-16T03:11:37+09:00",
+      "lastVerifiedAt": "2026-11-18T13:26:30+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 57.69,
+        "state": "fresh",
+        "ageHours": 0.12,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-16T03:11:21+09:00"
+        "evidenceAt": "2026-11-18T13:26:16+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 4076
+      "displayedAsPrivate": 4080
     },
     "artmore": {
       "name": "아트모아",
@@ -96,7 +96,7 @@
       "lastVerifiedAt": "2026-11-16T17:00:02+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 43.87,
+        "ageHours": 44.55,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-16T17:00:02+09:00"
       },
@@ -112,22 +112,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 35,
-      "count": 35,
-      "rawCandidateCount": 57,
-      "excludedFromUnifiedCount": 22,
-      "lastVerifiedAt": "2026-11-14T08:58:44+09:00",
+      "candidateCount": 70,
+      "count": 70,
+      "rawCandidateCount": 70,
+      "excludedFromUnifiedCount": 0,
+      "lastVerifiedAt": "2026-11-18T12:55:41+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 99.9,
+        "state": "fresh",
+        "ageHours": 0.63,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-14T08:58:44+09:00"
+        "evidenceAt": "2026-11-18T12:55:41+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 35
+      "displayedAsPrivate": 70
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 882.06,
+        "ageHours": 882.74,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 898.12,
+        "ageHours": 898.8,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -185,11 +185,8 @@
   "allPublicationEnabledSourcesHealthy": true,
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
-    "lessoninfo",
     "cleaneye",
-    "jobteacher",
     "artmore",
-    "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
