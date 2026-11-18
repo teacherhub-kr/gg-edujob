@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-18T23:48:26+09:00",
+  "generatedAt": "2026-11-19T06:35:54+09:00",
   "healthy": true,
-  "total": 10148,
-  "official": 5133,
-  "privateDisplayed": 5015,
+  "total": 9784,
+  "official": 4772,
+  "privateDisplayed": 5012,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 5015,
-  "privateRepresentedDirectly": 5015,
+  "privateStableIds": 5012,
+  "privateRepresentedDirectly": 5012,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,7 +44,7 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 148,
+  "verifiedLessoninfoCultureLinks": 52,
   "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -68,12 +68,6 @@
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95747",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95747",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95746",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95746",
       "resolvedUrlType": "official"
     },
     {
@@ -165,9 +159,15 @@
       "sourceIdentity": "culture:id:95721",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95721",
       "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95716",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95716",
+      "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 110,
+  "failClosedLessoninfoCultureLinks": 118,
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -270,7 +270,7 @@
       "title": "제주 에코랜드 테마파크 인력난 극복 프로젝트 마감임박"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 148,
+  "projectedVerifiedLessoninfoCultureLinks": 52,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -306,12 +306,6 @@
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95742",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
-      "resolvedUrlType": "official"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95746",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95746",
       "resolvedUrlType": "official"
     },
     {
@@ -391,12 +385,23 @@
       "sourceIdentity": "culture:id:95721",
       "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95721",
       "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95716",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95716",
+      "resolvedUrlType": "official"
     }
   ],
   "projectedNonDirectPrivateLinks": 0,
   "projectedNonDirectPrivateLinkExamples": [],
-  "projectedFailClosedLessoninfoCultureLinks": 4,
+  "projectedFailClosedLessoninfoCultureLinks": 5,
   "projectedFailClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95746",
+      "title": "아르코·대학로예술극장 고객지원센터 안내원(파트타이머) 모집공고(~11.18)"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95723",
@@ -433,16 +438,16 @@
       "currentCount": 0
     },
     "jobteacher": {
-      "rawCount": 4081,
-      "currentCount": 4081
+      "rawCount": 4082,
+      "currentCount": 4082
     },
     "artmore": {
-      "rawCount": 210,
-      "currentCount": 210
+      "rawCount": 205,
+      "currentCount": 205
     },
     "gonggonggangsa": {
-      "rawCount": 100,
-      "currentCount": 100
+      "rawCount": 101,
+      "currentCount": 101
     },
     "seekle": {
       "rawCount": 7,
