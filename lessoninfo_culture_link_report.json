@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-11-18T22:13:57+09:00",
-  "startedAt": "2026-11-18T22:06:16+09:00",
+  "generatedAt": "2026-11-19T05:04:26+09:00",
+  "startedAt": "2026-11-19T04:58:41+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 156,
-  "expiredCultureRemoved": 2,
+  "totalInputJobs": 148,
+  "expiredCultureRemoved": 3,
   "expiredCultureExamples": [
+    {
+      "sourceIdentity": "culture:id:95746",
+      "title": "아르코·대학로예술극장 고객지원센터 안내원(파트타이머) 모집공고(~11.18)",
+      "applyEnd": "2026-11-18"
+    },
     {
       "sourceIdentity": "culture:id:95723",
       "title": "국립극장 안내원(공연, 매표, 고객지원센터) 모집 공고(~11/16)",
@@ -17,27 +22,24 @@
       "applyEnd": "2026-11-11"
     }
   ],
-  "eligibleCultureRows": 150,
-  "verifiedCultureRows": 148,
-  "verifiedOfficialRows": 147,
+  "eligibleCultureRows": 141,
+  "verifiedCultureRows": 52,
+  "verifiedOfficialRows": 51,
   "verifiedLessoninfoRows": 1,
-  "unverifiedCultureRows": 2,
+  "unverifiedCultureRows": 89,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
   "knownBadSentinels": [
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 52,
+    "cold-browser-official-title-match": 51,
     "cold-browser-id-title-match": 1,
-    "cold-browser-artmore-id-title-match": 95,
-    "cold-browser-route-mismatch": 2
+    "cold-browser-error:TimeoutError": 29,
+    "cold-browser-title-mismatch": 60
   },
-  "artmoreFallbackAttemptedRows": 97,
-  "artmoreFallbackRecoveredRows": 95,
-  "artmoreFallbackOutcomeCounts": {
-    "recovered": 95,
-    "artmore-title-mismatch": 2
-  },
+  "artmoreFallbackAttemptedRows": 0,
+  "artmoreFallbackRecoveredRows": 0,
+  "artmoreFallbackOutcomeCounts": {},
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
 }
