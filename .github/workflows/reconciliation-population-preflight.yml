@@ -16,14 +16,18 @@ on:
 permissions:
   contents: read
 
+# Must not scrape the same ICE session window simultaneously with
+# the independent 90-day regression in this PR.
 concurrency:
-  group: reconciliation-population-preflight-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  group: incheon-90d-live-read-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   live-proof:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Gyeonggi independent 90d (~5m) + 38-source reconciliation (~25m)
+    # + ICE 90d (~45m) cannot finish within the previous 60m budget.
+    timeout-minutes: 130
     steps:
       - uses: actions/checkout@v7
         with:
