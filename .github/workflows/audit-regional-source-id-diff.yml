@@ -101,6 +101,8 @@ jobs:
           lost_host = collections.Counter()
           old_recent = old_boundary = old_older = old_unknown = 0
           lost_date_counts = collections.Counter()
+          recent_lost_rows = []
+          recent_lost_hosts = collections.Counter()
           for key in dropped:
               row = a[key][0]
               removed_province[str(row.get("province") or "?")] += 1
@@ -119,6 +121,8 @@ jobs:
                       old_boundary += 1
                   else:
                       old_recent += 1
+                      recent_lost_hosts[(str(row.get('province') or '?'), host(row))] += 1
+                      recent_lost_rows.append((key, row, str(when)))
           for key in added:
               added_province[str(b[key][0].get("province") or "?")] += 1
 
@@ -132,6 +136,9 @@ jobs:
           print(f"fallbackIDs=old:{fallback_old},new:{fallback_new} duplicateKeyRows=old:{duplicates_old},new:{duplicates_new}")
           print(f"lostRegisteredStrictlyAfterCutoff={old_recent} onCutoffDate={old_boundary} beforeCutoff={old_older} dateUnparseable={old_unknown} cutoffDate={cutoff}")
           print(f"lostDateHistogram={lost_date_counts.most_common(15)}")
+          print(f"recentLostSourceHosts={recent_lost_hosts.most_common(30)}")
+          for key, row, when in recent_lost_rows:
+              print(f"RECENT_LOST_ID province={row.get('province')} registered={when} applyEnd={row.get('applyEnd')} host={host(row)} native={canonical_source_id(row)} url={row.get('url') or row.get('openUrl')}")
           print(f"exactUrlRemoved={len(old_urls - new_urls)} exactUrlAdded={len(new_urls - old_urls)}")
           print("Top removed source hosts:", *[f"{prov} {domain}: {n}" for (prov,domain),n in lost_host.most_common(25)], sep="\n  ")
           # Expose only official source-native keys and dates, not student/person names.
