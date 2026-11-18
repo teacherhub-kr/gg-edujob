@@ -34,7 +34,7 @@ permissions:
 jobs:
   verify-incheon:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -111,14 +111,14 @@ jobs:
           assert canonical_source_id(east) == 'ice-support:dongbu.ice.go.kr:msg_seq:6928'
           print('registry/identity ok',by_bbs,[x.get('name') for x in support])
           PY
-      - name: Prove Incheon central and Neulbom boards on live official site
-        timeout-minutes: 24
+      - name: Prove full 90-day Incheon central and Neulbom boards on live official site
+        timeout-minutes: 125
         env:
           PYTHONPATH: scripts
         run: |
           # Read-only proof of the central site's replay-window fix independent
           # of the five support-office transports. Neither step publishes jobs.
-          python scripts/merge_incheon_official.py --check-only --lookback-days 14 --max-pages 60
+          python scripts/merge_incheon_official.py --check-only --lookback-days 90 --max-pages 240
           python - <<'PY'
           import json
           from pathlib import Path
@@ -130,15 +130,15 @@ jobs:
           assert all(int(x.get('count') or 0) > 0 for x in health),health
           print('two-board live probe ok',[(x.get('bbsId'),x.get('count'),x.get('pagesScanned'),x.get('stopReason')) for x in health])
           PY
-      - name: Prove five Incheon support offices on live official sites
+      - name: Prove full 90-day coverage for five Incheon support offices on live official sites
         # Run after central failure too; failure still fails the whole job.
         if: ${{ !cancelled() }}
-        timeout-minutes: 12
+        timeout-minutes: 40
         env:
           PYTHONPATH: scripts
         run: |
-          # Both independent gates must pass before a release can be considered.
-          python scripts/collect_incheon_support.py --check-only --lookback-days 14 --max-pages 10
+          # Both 90-day independent gates must pass before a release can be considered.
+          python scripts/collect_incheon_support.py --check-only --lookback-days 90 --max-pages 120
           python - <<'PY'
           import json
           from pathlib import Path
