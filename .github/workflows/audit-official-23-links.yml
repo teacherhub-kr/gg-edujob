@@ -1,0 +1,129 @@
+name: One-time official 23 URL loss audit (read only)
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/audit-official-23-links.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Compare current main Regional and Unified against 23 exact official posting URLs
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import collections
+          from datetime import date
+          import json
+          import re
+          import subprocess
+          from urllib.parse import urlsplit, parse_qs
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+
+          candidates = """sen-114237|2026-11-20|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114237
+          sen-114326|2026-11-19|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114326
+          goe-office-0f20f862ce8ad4b3cecc|2026-11-19|https://www.goegm.kr/goegm/na/ntt/selectNttInfo.do?bbsId=4225&mi=5826&nttSn=1263030
+          goe-office-bab96c4e93ac19c62512|2026-11-18|https://www.goepj.kr/goepj/na/ntt/selectNttInfo.do?bbsId=7202&mi=10838&nttSn=1359397
+          goe-office-27cb66e9a47bcd9a7698|2026-11-17|https://www.goept.kr/goept/na/ntt/selectNttInfo.do?bbsId=10111&mi=10118&nttSn=2577939
+          goe-office-e9fae5955815d5dd6086|2026-11-16|https://www.goegn.kr/goegn/na/ntt/selectNttInfo.do?bbsId=8653&mi=16003&nttSn=1418664
+          sen-114216|2026-12-07|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114216
+          sen-office-gdspedu.sen.go.kr-8371|2026-11-27|https://gdspedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=8371
+          sen-114155|2026-11-26|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114155
+          sen-114196|2026-11-20|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114196
+          sen-114063|2026-11-20|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114063
+          sen-114180|2026-11-20|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114180
+          sen-114192|2026-11-19|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114192
+          sen-114224|2026-11-18|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114224
+          sen-114164|2026-11-18|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_r_rcrtSn=114164
+          goe-office2-41f1fe56ecee57edaf|2026-12-05|https://www.goesn.kr/goesn/na/ntt/selectNttInfo.do?bbsId=17872&mi=23603&nttSn=1968243
+          sen-114108|2026-11-16|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=114108
+          sen-113892|2026-11-16|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=113892
+          goe-65156|2026-11-30|https://www.goe.go.kr/recruit/ad/func/pb/hnfpPbancInfoView.do?mi=10502&pbancSn=65156
+          sen-113663|2026-12-04|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=113663
+          sen-office-gdspedu.sen.go.kr-8340|2026-12-01|https://gdspedu.sen.go.kr/FUS/JO/JOV11.do?job_seq=8340
+          sen-113240|2026-12-18|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=113240
+          sen-112917|2026-11-16|https://work.sen.go.kr/work/search/recInfo/BD_selectRecDetail.do?q_rcrtSn=112917"""
+          # The issue's original URL for 114164 uses q_rcrtSn; do not
+          # accidentally test a typo in the audit's hard-coded fixture.
+          candidates=candidates.replace("?q_r_rcrtSn=114164","?q_rcrtSn=114164")
+          rows=[tuple(line.strip().split("|",2)) for line in candidates.splitlines() if line.strip()]
+          assert len(rows)==23 and len({x[0] for x in rows})==23
+          def data(path):
+              raw=subprocess.check_output(["git","show",f"origin/main:{path}"])
+              obj=json.loads(raw)
+              assert isinstance(obj,dict) and isinstance(obj.get("jobs"),list)
+              return obj["jobs"]
+          regional=data("seoul_gyeonggi_jobs.json")
+          unified=data("unified_jobs.json")
+          official=[x for x in unified if x.get("feedKind")=="official"]
+          def link_keys(url):
+              if not url: return set()
+              try:
+                  p=urlsplit(str(url).strip())
+                  if not p.hostname or not p.path:return set()
+                  qs=parse_qs(p.query)
+                  # Preserve source-host and path to avoid ID collisions,
+                  # but ignore menu aliases, query ordering and tracking.
+                  host=p.hostname.lower().removeprefix("www.")
+                  for name in ("q_rcrtSn","nttSn","pbancSn","job_seq"):
+                      if qs.get(name):return {(host,p.path.lower(),name.lower(),qs[name][0])}
+                  return {(host,p.path.lower(),"exact",p.query)}
+              except Exception:
+                  return set()
+          def row_keys(row):
+              keys=set()
+              for attr in ("url","originalUrl","verifiedUrl","openUrl","detailUrl","directUrl"):
+                  keys.update(link_keys(row.get(attr)))
+              return keys
+          def index(records):
+              idx=collections.defaultdict(list)
+              for row in records:
+                  for key in row_keys(row):
+                      idx[key].append(row)
+              return idx
+          r_index=index(regional)
+          u_index=index(official)
+          print("COMPARISON mainSHA",subprocess.check_output(["git","rev-parse","origin/main"],text=True).strip())
+          print("COUNTS regional",len(regional),"unified",len(unified),"unifiedOfficial",len(official))
+          print("LIVE checks do NOT prove a posting is still on the source listing or still accepting applications.")
+          counters=collections.Counter()
+          print("id | deadline | regional | unifiedOfficial | liveHttp | bodyBytes | idHint | notes")
+          for sid,deadline,url in rows:
+              key=next(iter(link_keys(url)))
+              rrows=r_index.get(key,[])
+              urows=u_index.get(key,[])
+              ctr="presentBoth" if rrows and urows else "rawOnly" if rrows else "unifiedOnly" if urows else "absentBoth"
+              counters[ctr]+=1
+              # Keep HTTP probe informational; a 200 may still be a portal
+              # shell, a stale notice, an anti-bot page or a withdrawn post.
+              code="not-probed"; length=0; hint=False; note=""
+              try:
+                  request=Request(url,headers={"Accept":"text/html"})
+                  with urlopen(request,timeout=8) as res:
+                      code=res.status
+                      body=res.read(50000).decode("utf-8","replace")
+                      length=len(body)
+                      native=key[-1]
+                      hint=native in body
+                      note="body-may-be-shell"
+              except HTTPError as e:
+                  code=e.code;note="HTTP error; NOT evidence posting removed"
+              except (URLError,TimeoutError,OSError) as e:
+                  code=type(e).__name__;note="connectivity inconclusive"
+              print(f"{sid} | {deadline} | {len(rrows)} | {len(urows)} | {code} | {length} | {hint} | {note}",flush=True)
+          print("SUMMARY",dict(counters))
+          future=[(sid,due,url) for sid,due,url in rows if due>date(2026,11,18).isoformat()]
+          print("dueAfterNov18",len(future))
+          print("Interpretation: absent source snapshot URL is a candidate, not a proven missing currently active posting; require independent official listing and deadline proof before classifying P0.")
+          PY
