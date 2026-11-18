@@ -32,6 +32,25 @@ class Session:
 
 
 class BoramaeHistoricalFixtureTest(unittest.TestCase):
+    def test_denied_401_and_403_abort_without_repeated_requests(self):
+        for denied_status in (401, 403):
+            class DeniedResponse:
+                status_code = denied_status
+                def raise_for_status(self):
+                    raise boramyc.requests.HTTPError(
+                        str(denied_status), response=self
+                    )
+            class FakeSession:
+                def __init__(self):
+                    self.requests = 0
+                def get(self, *args, **kwargs):
+                    self.requests += 1
+                    return DeniedResponse()
+            session = FakeSession()
+            with self.assertRaises(boramyc.requests.HTTPError):
+                boramyc.get(session, boramyc.LIST)
+            self.assertEqual(session.requests, 1, denied_status)
+
     def test_25441_parser_and_direct_link_contract(self):
         fixture = (ROOT / "tests" / "fixtures" / "boramyc_25441.html").read_text(encoding="utf-8")
         url = boramyc.exact_url("25441")
