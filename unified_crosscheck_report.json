@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-18T22:32:51+09:00",
+  "generatedAt": "2026-11-18T23:48:28+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4575,
+  "privateJobs": 4577,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 208
+      "canonicalCount": 210
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -81,10 +81,10 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 208,
+      "jobs": 210,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 7
+      "officialGapCandidates": 9
     },
     "gonggonggangsa": {
       "jobs": 100,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 66,
+  "officialGapCandidates": 68,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -643,6 +643,18 @@
     {
       "privateSource": "artmore",
       "privateSourceName": "아트모아",
+      "privateId": "artmore:95742",
+      "privateTitle": "진행중 [국민대학교] 학생지원팀 계약직원 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
       "privateId": "artmore:95615",
       "privateTitle": "진행중 [2027 문화예술교육 지원사업 | 미술강사 모집 공고]",
       "provinces": [
@@ -686,6 +698,18 @@
       ],
       "registered": "2026-10-01",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95183",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95753",
+      "privateTitle": "진행중 다지기 에듀짐 장애인 주간&방과후 센터 사...",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95753",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
