@@ -99,7 +99,8 @@ jobs:
           removed_province = collections.Counter()
           added_province = collections.Counter()
           lost_host = collections.Counter()
-          old_recent = old_older = old_unknown = 0
+          old_recent = old_boundary = old_older = old_unknown = 0
+          lost_date_counts = collections.Counter()
           for key in dropped:
               row = a[key][0]
               removed_province[str(row.get("province") or "?")] += 1
@@ -107,10 +108,17 @@ jobs:
               when = registered(row)
               if when is None:
                   old_unknown += 1
-              elif when < cutoff:
-                  old_older += 1
               else:
-                  old_recent += 1
+                  lost_date_counts[str(when)] += 1
+                  if when < cutoff:
+                      old_older += 1
+                  elif when == cutoff:
+                      # The source parses registration dates at midnight: this
+                      # boundary day can legitimately fall outside the rolling
+                      # 90-day window depending on the collection clock time.
+                      old_boundary += 1
+                  else:
+                      old_recent += 1
           for key in added:
               added_province[str(b[key][0].get("province") or "?")] += 1
 
@@ -122,7 +130,8 @@ jobs:
           print(f"oldUniqueKeys={len(a)} newUniqueKeys={len(b)} removedKeys={len(dropped)} addedKeys={len(added)} commonKeys={len(a.keys() & b.keys())}")
           print(f"removedByProvince={dict(removed_province)} addedByProvince={dict(added_province)}")
           print(f"fallbackIDs=old:{fallback_old},new:{fallback_new} duplicateKeyRows=old:{duplicates_old},new:{duplicates_new}")
-          print(f"lostRegisteredWithin90d={old_recent} olderThan90d={old_older} dateUnparseable={old_unknown} cutoff={cutoff}")
+          print(f"lostRegisteredStrictlyAfterCutoff={old_recent} onCutoffDate={old_boundary} beforeCutoff={old_older} dateUnparseable={old_unknown} cutoffDate={cutoff}")
+          print(f"lostDateHistogram={lost_date_counts.most_common(15)}")
           print(f"exactUrlRemoved={len(old_urls - new_urls)} exactUrlAdded={len(new_urls - old_urls)}")
           print("Top removed source hosts:", *[f"{prov} {domain}: {n}" for (prov,domain),n in lost_host.most_common(25)], sep="\n  ")
           # Expose only official source-native keys and dates, not student/person names.
