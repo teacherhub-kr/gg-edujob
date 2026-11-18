@@ -73,6 +73,10 @@ jobs:
       - name: Re-prove the same live population and require agreement
         run: |
           python scripts/verify_central_pagination.py
+          # The full 44-source reconciliation can exceed the 45-minute audit window.
+          # Refresh the independent 90-day proof immediately before comparing it;
+          # keep the existing skew and population-drift gates unchanged.
+          python scripts/verify_gyeonggi_central_90d.py
           python scripts/verify_central_reconciliation_consistency.py
       - name: Assert structural IDs are never hidden by recruitment filtering
         run: |
