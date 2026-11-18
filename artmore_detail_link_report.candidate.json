@@ -1,23 +1,64 @@
 {
-  "generatedAt": "2026-11-18T21:47:18+09:00",
+  "generatedAt": "2026-11-18T23:39:16+09:00",
   "source": "아트모아",
-  "healthy": false,
-  "detailCoverageComplete": false,
-  "candidateCount": 204,
-  "verifiedCount": 203,
-  "detailErrorCount": 1,
+  "healthy": true,
+  "detailCoverageComplete": true,
+  "candidateCount": 210,
+  "verifiedCount": 210,
+  "detailErrorCount": 0,
   "abnormalDrop": false,
   "previousCanonicalCount": 208,
-  "candidateDropRatio": 0.0192,
-  "errors": [
-    {
-      "sourceIdentity": "artmore:95724",
-      "stableId": "95724",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95724",
-      "error": "RuntimeError: detail body unexpectedly short"
-    }
-  ],
+  "candidateDropRatio": 0.0,
+  "errors": [],
   "verifiedExamples": [
+    {
+      "sourceIdentity": "artmore:95767",
+      "stableId": "95767",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95767",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95766",
+      "stableId": "95766",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95766",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95764",
+      "stableId": "95764",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95764",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95763",
+      "stableId": "95763",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95763",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95762",
+      "stableId": "95762",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95762",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95761",
+      "stableId": "95761",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95761",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95760",
+      "stableId": "95760",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95760",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95758",
+      "stableId": "95758",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95758",
+      "httpStatus": 200
+    },
     {
       "sourceIdentity": "artmore:95757",
       "stableId": "95757",
@@ -88,54 +129,6 @@
       "sourceIdentity": "artmore:95736",
       "stableId": "95736",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95736",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95735",
-      "stableId": "95735",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95735",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95733",
-      "stableId": "95733",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95733",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95731",
-      "stableId": "95731",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95731",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95729",
-      "stableId": "95729",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95729",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95727",
-      "stableId": "95727",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95727",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95726",
-      "stableId": "95726",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95726",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95718",
-      "stableId": "95718",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95718",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95717",
-      "stableId": "95717",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95717",
       "httpStatus": 200
     }
   ]
