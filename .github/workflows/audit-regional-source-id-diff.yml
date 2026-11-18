@@ -82,11 +82,13 @@ jobs:
 
           def registered(row):
               value = str(row.get("registered") or "")
-              match = re.search(r"\b(20\d\d)-(\d\d)-(\d\d)\b", value)
+              # Collector stores registration as YYYY/MM/DD; handle all three
+              # real source separators without changing official source rows.
+              match = re.search(r"\b(20\d\d)[./-](\d\d?)[./-](\d\d?)\b", value)
               if not match:
                   return None
               try:
-                  return datetime.strptime(match.group(0), "%Y-%m-%d").date()
+                  return datetime(int(match.group(1)), int(match.group(2)), int(match.group(3))).date()
               except ValueError:
                   return None
 
