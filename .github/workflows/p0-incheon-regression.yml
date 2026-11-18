@@ -28,6 +28,12 @@ on:
       - 'tests/test_collector_status_identity_binding.py'
   workflow_dispatch:
 
+# One in-flight ICE live reader per PR across both independent CI workflows.
+# The source has been observed replaying/tiny-response under concurrent reads.
+concurrency:
+  group: incheon-90d-live-read-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
