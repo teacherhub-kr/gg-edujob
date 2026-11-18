@@ -37,7 +37,10 @@ def get(session, url, **kwargs):
             last = r
             if r.status_code < 500:
                 r.raise_for_status(); return r
-        except requests.RequestException:
+        except requests.RequestException as exc:
+            # HTTP 401/403 is a source access denial, never a transient retry.
+            if isinstance(exc, requests.HTTPError) and getattr(exc.response, "status_code", None) in {401, 403}:
+                raise
             if attempt == 2: raise
     assert last is not None
     last.raise_for_status()
