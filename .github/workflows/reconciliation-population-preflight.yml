@@ -1,26 +1,13 @@
 name: Reconciliation population preflight
 
+# This live population proof runs *after* the Incheon full 90-day regression
+# as a reusable read-only job. It must not start simultaneously on the same PR.
 on:
-  pull_request:
-    paths:
-      - 'scripts/ensure_incheon_registry.py'
-      - 'scripts/merge_incheon_official.py'
-      - 'scripts/source_registry.py'
-      - 'scripts/verify_required_regions.py'
-      - 'scripts/verify_central_pagination.py'
-      - 'scripts/scrape_jobs.py'
-      - 'scripts/reconcile_source_ids.py'
-      - 'scripts/verify_central_reconciliation_consistency.py'
-      - '.github/workflows/reconciliation-population-preflight.yml'
+  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
-
-# Must not scrape the same ICE session window simultaneously with
-# the independent 90-day regression in this PR.
-concurrency:
-  group: incheon-90d-live-read-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
 
 jobs:
   live-proof:
