@@ -189,7 +189,17 @@ def crawl_official_ids():
 
     # Incheon central + all five support offices are independently traversed. Registry presence
     # alone never satisfies completeness; every logical source must provide current traversal proof.
-    incheon_rows, incheon_meta = incheon.scrape_incheon_central(lookback_days=cov.LOOKBACK_DAYS)
+    # Use the same bounded, fully validated ICE live contract as the separate
+    # 90-day source regression. A single tiny/replayed page cannot count as
+    # empty complete evidence; retries always restart a new verified session.
+    # The caller still fails closed unless every board/source traverses.
+    incheon_rows, incheon_meta = incheon.scrape_incheon_with_transient_retry(
+        lookback_days=cov.LOOKBACK_DAYS,
+        max_pages=240,
+        check_only=True,
+        transient_retries=2,
+        retry_delay_seconds=15.0,
+    )
     sources.insert(2, source_status(
         "인천", incheon.SOURCE_NAME, incheon_rows,
         coverage_complete=bool(incheon_meta.get("coverageComplete")),
