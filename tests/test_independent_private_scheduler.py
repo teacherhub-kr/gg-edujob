@@ -31,6 +31,29 @@ class PrivateSchedulerContracts(TestCase):
 
         self.assertNotIn("update-jobs.yml/dispatches", s)
 
+    def test_unified_success_wakes_existing_scheduler_with_two_hour_feedback_guard(self):
+        s = (ROOT / ".github/workflows/unified-search.yml").read_text()
+        scheduler = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
+        self.assertIn("wake_private_backlog:", s)
+        wake = s[s.index("  wake_private_backlog:"):]
+        self.assertIn("needs: build", wake)
+        self.assertIn("needs.build.result == 'success'", wake)
+        self.assertIn("github.event_name == 'workflow_dispatch'", wake)
+        self.assertIn("github.ref == 'refs/heads/main'", wake)
+        self.assertIn("actions: write", wake)
+        self.assertIn("contents: read", wake)
+        self.assertIn("independent-private-scheduler.yml/runs?per_page=100", wake)
+        self.assertIn("event=workflow_dispatch&branch=main", wake)
+        self.assertIn("(now - (.created_at | fromdateiso8601)) < 7200", wake)
+        self.assertIn("Private scheduler already running or queued", wake)
+        self.assertIn("Follow-on private scheduler dispatched after verified Unified success", wake)
+        self.assertLess(wake.index("recent="), wake.index("active="))
+        self.assertLess(wake.index("active="), wake.index("gh api --method POST"))
+        # Only existing M0-approved cron events may fire the private scheduler.
+        self.assertIn("cron: '14,44 * * * *'", scheduler)
+        on = scheduler.split("permissions:", 1)[0]
+        self.assertNotIn("workflow_run:", on)
+
     def test_scheduled_run_drains_eligible_sources_serially_and_bounded(self):
         s = (ROOT / ".github/workflows/independent-private-scheduler.yml").read_text()
         self.assertIn("MAX_ROUNDS: '8'", s)
