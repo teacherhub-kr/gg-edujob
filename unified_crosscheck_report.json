@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-18T21:43:34+09:00",
+  "generatedAt": "2026-11-18T22:32:51+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4544,
+  "privateJobs": 4575,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4080
+      "canonicalCount": 4081
     },
     "artmore": {
       "name": "아트모아",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 70
+      "canonicalCount": 100
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -66,7 +66,7 @@
       "jobs": 154,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 8
+      "officialGapCandidates": 9
     },
     "cleaneye": {
       "jobs": 18,
@@ -75,7 +75,7 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4080,
+      "jobs": 4081,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
@@ -87,10 +87,10 @@
       "officialGapCandidates": 7
     },
     "gonggonggangsa": {
-      "jobs": 70,
+      "jobs": 100,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 11
+      "officialGapCandidates": 15
     },
     "seekle": {
       "jobs": 7,
@@ -107,10 +107,22 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 61,
+  "officialGapCandidates": 66,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "culture:id:95742",
+      "privateTitle": "[국민대학교] 학생지원팀 계약직원 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
@@ -710,6 +722,54 @@
       ],
       "registered": "2026-08-14",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24699",
+      "privateTitle": "[긴급]2026학년도 안산국제비즈니스고등학교 협력강사(떡제조, 제과, 바리스타) 채용 공고문(2026.11.18.) - 떡/한과, 제과제빵, 바리스타/커피",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-18",
+      "url": "https://00gangsa.com/recruitments/24699",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24717",
+      "privateTitle": "2026 문현중학교 교육과정 내 학교스포츠클럽(농구) 강사 채용 공고 - 농구",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://00gangsa.com/recruitments/24717",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24675",
+      "privateTitle": "수정 (면목초) 2026학년도 6학년 문화예술교육강사 채용 공고 - 방송댄스/K-POP, 합창",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://00gangsa.com/recruitments/24675",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24667",
+      "privateTitle": "2026학년도 보성여자중학교 학교스포츠클럽강사 초빙 공고 - 체육",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-17",
+      "url": "https://00gangsa.com/recruitments/24667",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
