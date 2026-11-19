@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-19T20:46:17+09:00",
+  "generatedAt": "2026-11-19T22:28:07+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 15137,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 5059,
+  "canonicalPrivateJobs": 5060,
   "selectedCanonicalOfficialJobs": 4975,
   "selectedFoundationOfficialJobs": 1,
   "selectedOfficialJobs": 4976,
-  "selectedPrivateJobs": 5015,
-  "publishedJobs": 9991,
+  "selectedPrivateJobs": 5016,
+  "publishedJobs": 9992,
   "perFeed": {
     "official": 4976,
-    "private": 5015
+    "private": 5016
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,22 +20,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 623,
-      "count": 623,
-      "rawCandidateCount": 636,
+      "candidateCount": 624,
+      "count": 624,
+      "rawCandidateCount": 637,
       "excludedFromUnifiedCount": 13,
-      "lastVerifiedAt": "2026-11-19T10:40:10+09:00",
+      "lastVerifiedAt": "2026-11-19T20:53:25+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 10.1,
+        "state": "fresh",
+        "ageHours": 1.58,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-19T10:40:10+09:00"
+        "evidenceAt": "2026-11-19T20:53:25+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "full-120d-source-labelled-user-judgment",
-      "unverifiedLinkCount": 125,
-      "displayedAsPrivate": 623
+      "unverifiedLinkCount": 126,
+      "displayedAsPrivate": 624
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 890.17,
+        "ageHours": 891.87,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-19T18:49:11+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 1.96,
+        "ageHours": 3.65,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T18:48:56+09:00"
       },
@@ -96,7 +96,7 @@
       "lastVerifiedAt": "2026-11-19T18:58:03+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 1.8,
+        "ageHours": 3.5,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T18:58:03+09:00"
       },
@@ -119,7 +119,7 @@
       "lastVerifiedAt": "2026-11-19T18:32:43+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 2.23,
+        "ageHours": 3.92,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T18:32:43+09:00"
       },
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 913.96,
+        "ageHours": 915.66,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 930.02,
+        "ageHours": 931.71,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -185,7 +185,6 @@
   "allPublicationEnabledSourcesHealthy": true,
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
-    "lessoninfo",
     "cleaneye",
     "seekle",
     "boramyc"
