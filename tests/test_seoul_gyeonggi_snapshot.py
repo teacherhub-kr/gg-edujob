@@ -351,7 +351,28 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
     def test_active_regional_run_blocks_duplicate(self):
         runs = [{"event": "workflow_dispatch", "head_branch": "main", "status": "in_progress"}]
         action, _ = scheduler.decide("fast", {}, runs, self.NOW)
-        self.assertEqual(action, "skip-incheon-hold")
+        self.assertEqual(action, "skip-active-run")
+
+    def test_active_regional_writer_blocks_unified_commit(self):
+        report, snapshot, _ = self.matching_regional_proof()
+        active = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "in_progress"}]
+        action, reason = scheduler.decide(
+            "unified", report, active, self.NOW,
+            snapshot=snapshot, unified={}, unified_runs=[],
+        )
+        self.assertEqual(action, "skip-active-run")
+        self.assertIn("competing production writers", reason)
+
+    def test_active_regional_writer_blocks_private_commit(self):
+        report, snapshot, unified = self.matching_regional_proof()
+        active = [{"event": "workflow_dispatch", "head_branch": "main",
+                   "status": "in_progress"}]
+        action, _ = scheduler.decide(
+            "private-jobteacher", report, active, self.NOW,
+            snapshot=snapshot, unified=unified,
+        )
+        self.assertEqual(action, "skip-active-run")
 
     def test_failed_regional_run_uses_six_hour_backoff(self):
         runs = [{
@@ -476,7 +497,7 @@ class ProtectedRegionalWatchdogTests(unittest.TestCase):
                    "status": "in_progress"}]
         action, _ = scheduler.decide("fast", report, active, self.NOW,
                                      snapshot=snapshot, unified=unified)
-        self.assertEqual(action, "skip-incheon-hold")
+        self.assertEqual(action, "skip-active-run")
 
 
     def test_verified_regional_idle_slot_dispatches_vetted_private_refresh(self):
