@@ -142,7 +142,7 @@ jobs:
                   failures.append(f"page={page}:{type(e).__name__}")
                   terminal="access-or-transport-error"
                   break
-              ids=list(dict.fromkeys(re.findall(r"BD_selectRecDetail\\.do\\?q_rcrtSn=(\\d+)",body)))
+              ids=list(dict.fromkeys(re.findall(r"BD_selectRecDetail\.do\?q_rcrtSn=(\d+)",body)))
               digest=hashlib.sha256(",".join(ids).encode()).hexdigest()[:12]
               print("LIVE_PAGE",page,"http",code,"nativeIds",len(ids),"digest",digest,flush=True)
               if not ids:
