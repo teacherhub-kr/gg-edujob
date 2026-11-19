@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+from unittest.mock import Mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,6 +49,18 @@ class BoramaeHistoricalFixtureTest(unittest.TestCase):
         self.assertIn("idx=25441", job["url"])
         self.assertIn("ptype=view", job["url"])
         self.assertTrue(is_direct_post(job)[0], is_direct_post(job))
+
+
+    def test_forbidden_source_does_not_retry_and_identifies_operator(self):
+        response = boramyc.requests.Response()
+        response.status_code = 403
+        response.url = boramyc.LIST
+        session = Mock()
+        session.get.return_value = response
+        with self.assertRaises(boramyc.requests.HTTPError):
+            boramyc.get(session, boramyc.LIST)
+        session.get.assert_called_once()
+        self.assertIn("github.com/teacherhub-kr/gg-edujob", boramyc.HEADERS["User-Agent"])
 
 
 if __name__ == "__main__":
