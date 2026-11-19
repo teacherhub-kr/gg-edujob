@@ -164,3 +164,45 @@ jobs:
                          "terminal":terminal,"failures":failures},ensure_ascii=False))
           print("Live list-ID presence is positive evidence; absence is not proven without full, source-independent traversal and current deadline.")
           PY
+
+      - name: Inspect the live listed 113663 row and recorded application period (read only)
+        run: |
+          python - <<'PY'
+          import html
+          import json
+          import re
+          from urllib.parse import urlsplit,urlunsplit,parse_qsl,urlencode
+          from urllib.request import Request,urlopen
+          from urllib.error import HTTPError,URLError
+          base=json.load(open("sources.json",encoding="utf-8"))["seoul"]["central"]["url"]
+          p=urlsplit(base)
+          assert p.hostname=="work.sen.go.kr"
+          q=dict(parse_qsl(p.query))
+          q.update({"type":"term","q_currPage":"8","q_rowPerPage":"50","q_sortBy":"regDt","q_recClosed":"closed"})
+          u=urlunsplit((p.scheme,p.netloc,p.path,urlencode(q),""))
+          req=Request(u,headers={"User-Agent":"gg-edujob-source-audit/1.0 (+https://github.com/teacherhub-kr/gg-edujob)","Accept":"text/html"})
+          try:
+              with urlopen(req,timeout=12) as r:
+                  body=r.read(1000000).decode("utf-8","replace")
+                  assert r.status==200 and urlsplit(r.url).hostname=="work.sen.go.kr"
+          except (HTTPError,URLError,TimeoutError,OSError,AssertionError) as e:
+              print("NATIVE_113663_ROW inconclusive",type(e).__name__)
+              raise SystemExit(0)
+          marker="BD_selectRecDetail.do?q_rcrtSn=113663"
+          pos=body.find(marker)
+          if pos<0:
+              print("NATIVE_113663_ROW not-present-on-page-8; live listing may have changed")
+              raise SystemExit(0)
+          start=body.rfind("<li",0,pos)
+          end=body.find("</li>",pos)
+          if start<0 or end<0 or end-start>25000:
+              print("NATIVE_113663_ROW present-but-card-boundary-not-parsed")
+              raise SystemExit(0)
+          card=body[start:end+5]
+          card=re.sub(r"(?is)<script[^>]*>.*?</script>"," ",card)
+          card=re.sub(r"(?s)<[^>]*>"," ",card)
+          card=html.unescape(re.sub(r"\s+"," ",card)).strip()
+          # Source-list text only: no applicant or confidential data.
+          print("NATIVE_113663_LIVE_ROW_TEXT",card[:1100])
+          print("NATIVE_113663_LIVE_DATES",re.findall(r"20\d{2}[./-]\d{1,2}[./-]\d{1,2}",card)[:10])
+          PY
