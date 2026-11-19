@@ -101,3 +101,66 @@ jobs:
           print("HIGH_PRIORITY_HISTORICAL_DEADLINE_CANDIDATES",json.dumps(urgent,ensure_ascii=False))
           print("No P0 verdict without independent current official-list source ID + actual live deadline. Never auto-restore missing URLs.")
           PY
+
+      - name: Probe Seoul central official-list native IDs independently (read only, inconclusive on denial)
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          import time
+          from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+
+          registry=json.load(open("sources.json",encoding="utf-8"))
+          base=registry["seoul"]["central"]["url"]
+          assert urlsplit(base).hostname=="work.sen.go.kr"
+          targets={"114237","114216","114155","114196","114063","114180","113663","113240"}
+          # Source-native list IDs, NOT detail URL 200. No cookies, auth, bypass,
+          # credentials, third-party probes, or publication writes.
+          seen={}
+          digests=set()
+          failures=[]
+          terminal="limit"
+          for page in range(1,19):
+              p=urlsplit(base)
+              q=dict(parse_qsl(p.query))
+              q.update({"type":"term","q_currPage":str(page),
+                        "q_rowPerPage":"50","q_sortBy":"regDt","q_recClosed":"closed"})
+              url=urlunsplit((p.scheme,p.netloc,p.path,urlencode(q),""))
+              req=Request(url,headers={"User-Agent":"gg-edujob-source-audit/1.0 (+https://github.com/teacherhub-kr/gg-edujob)",
+                                       "Accept":"text/html"})
+              try:
+                  with urlopen(req,timeout=12) as res:
+                      code=res.status
+                      body=res.read(1000000).decode("utf-8","replace")
+                      final_host=urlsplit(res.url).hostname
+                  if code!=200 or final_host!="work.sen.go.kr":
+                      raise ValueError("HTTP/status or host mismatch")
+              except (HTTPError,URLError,TimeoutError,OSError,ValueError) as e:
+                  failures.append(f"page={page}:{type(e).__name__}")
+                  terminal="access-or-transport-error"
+                  break
+              ids=list(dict.fromkeys(re.findall(r"BD_selectRecDetail\\.do\\?q_rcrtSn=(\\d+)",body)))
+              digest=hashlib.sha256(",".join(ids).encode()).hexdigest()[:12]
+              print("LIVE_PAGE",page,"http",code,"nativeIds",len(ids),"digest",digest,flush=True)
+              if not ids:
+                  terminal="empty-or-unparseable"
+                  break
+              if digest in digests:
+                  terminal="page-replay"
+                  break
+              digests.add(digest)
+              for sid in ids:
+                  seen.setdefault(sid,page)
+              if len(ids)<50:
+                  terminal="short-page"
+                  break
+              time.sleep(0.5)
+          print("LIVE_SEOUL_TARGETS",json.dumps({sid:{"foundOnList":sid in seen,"page":seen.get(sid)}
+                                                    for sid in sorted(targets)},sort_keys=True))
+          print("LIVE_SEOUL_TRAVERSAL",json.dumps({"pagesUnique":len(digests),"nativeIds":len(seen),
+                         "terminal":terminal,"failures":failures},ensure_ascii=False))
+          print("Live list-ID presence is positive evidence; absence is not proven without full, source-independent traversal and current deadline.")
+          PY
