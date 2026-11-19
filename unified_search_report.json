@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T11:53:26+09:00",
+  "generatedAt": "2026-11-19T12:51:17+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 14959,
   "canonicalFoundationOfficialJobs": 9,
@@ -27,7 +27,7 @@
       "lastVerifiedAt": "2026-11-19T10:40:10+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 1.22,
+        "ageHours": 2.19,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T10:40:10+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 881.29,
+        "ageHours": 882.25,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-19T11:01:56+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 0.86,
+        "ageHours": 1.83,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T11:01:44+09:00"
       },
@@ -93,12 +93,12 @@
       "count": 205,
       "rawCandidateCount": 205,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-19T05:20:48+09:00",
+      "lastVerifiedAt": "2026-11-19T12:41:07+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 6.54,
+        "state": "fresh",
+        "ageHours": 0.17,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-19T05:20:48+09:00"
+        "evidenceAt": "2026-11-19T12:41:07+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
@@ -119,7 +119,7 @@
       "lastVerifiedAt": "2026-11-19T10:31:53+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 1.36,
+        "ageHours": 2.32,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-19T10:31:53+09:00"
       },
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 905.08,
+        "ageHours": 906.04,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 921.14,
+        "ageHours": 922.1,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -186,7 +186,6 @@
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
     "cleaneye",
-    "artmore",
     "seekle",
     "boramyc"
   ],
