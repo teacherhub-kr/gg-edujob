@@ -46,6 +46,8 @@ def scenario():
             "seoulTotal": 20, "seoulExact": 20,
         },
         "verification": {"state": "ok"},
+        "seoulCentralIdReconciliation": {"verified": True, "expectedSourceIds": 50,
+                                         "missingAfter": 0, "recoveredNow": 0},
     }
     central = {
         "complete": True,
@@ -133,6 +135,18 @@ class RegionalSnapshotTests(unittest.TestCase):
     def test_complete_two_region_proof_accepted(self):
         c, reg, central, gg = scenario()
         self.assertEqual(sg.validate_snapshot(c, reg, central, gg), {"gyeonggi": 60, "seoul": 60})
+
+    def test_missing_seoul_native_identity_proof_fails_closed(self):
+        c, reg, central, gg = scenario()
+        del c["seoulCentralIdReconciliation"]
+        with self.assertRaisesRegex(ValueError, "source-native ID reconciliation"):
+            sg.validate_snapshot(c, reg, central, gg)
+
+    def test_native_identity_missing_after_fails_closed(self):
+        c, reg, central, gg = scenario()
+        c["seoulCentralIdReconciliation"]["missingAfter"] = 1
+        with self.assertRaisesRegex(ValueError, "source-native ID reconciliation"):
+            sg.validate_snapshot(c, reg, central, gg)
 
     def test_missing_office_fails_closed(self):
         c, reg, central, gg = scenario()
