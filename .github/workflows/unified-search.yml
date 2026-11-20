@@ -14,7 +14,9 @@ on:
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
       - 'scripts/promote_artmore_candidate.py'
+      - 'scripts/crawl_artmore_browser.py'
       - 'tests/test_artmore_short_detail_retry.py'
+      - 'tests/test_artmore_list_navigation_retry.py'
       - 'tests/test_private_source_freshness.py'
       - 'tests/test_official_freshness_notice.js'
       - 'official-freshness-notice.js'
@@ -103,6 +105,8 @@ jobs:
           PY
       - name: Historical private-source parser and direct-link regressions
         run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view tests.test_lessoninfo_drop_guard
+      - name: Verify ArtMore candidate initial page timeouts are bounded and fail-closed
+        run: python -m unittest tests.test_artmore_list_navigation_retry
       - name: Verify bounded ArtMore detail retry never bypasses source identity or access denial
         run: python -m unittest tests.test_artmore_short_detail_retry
       - name: Verify independent private verification recency and conservative timestamps
