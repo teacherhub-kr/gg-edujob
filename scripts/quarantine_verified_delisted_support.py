@@ -140,6 +140,49 @@ def quarantine(jobs, findings, registry, scan_board, probe):
     return safe, report
 
 
+
+def proactively_quarantine_office(jobs, registry, office, scan_board, probe):
+    """Source-wide native-ID verification is independent of the 50-link sample.
+
+    Only the currently P0-affected one-board Kimpo source is enabled in the
+    production call below. The full source-list proof must succeed before
+    inspecting any missing candidates, and exact HTTP 400/404/410 must recur.
+    """
+    sources = [x for x in registry.get("gyeonggi", {}).get("supportOffices", [])
+               if x.get("name") == office]
+    if len(sources) != 1 or len(sources[0].get("boardUrls") or []) != 1:
+        raise ValueError("proactive source requires exactly one canonical official board")
+    src = sources[0]
+    board = src["boardUrls"][0]
+    candidates = [j for j in jobs if isinstance(j, dict) and
+                  j.get("source") == office and
+                  canonical_board_id(j.get("url", ""), board)]
+    if not candidates:
+        return list(jobs), {"checkedDeadLinks": 0, "quarantined": 0, "ids": [],
+                            "sourceScanned": False}
+    full_rows, health = scan_board(board, src)
+    if not (health.get("coverageComplete") is True and
+            not health.get("accessError") and not health.get("paginationRepeated") and
+            not health.get("paginationCounterMismatch") and
+            (health.get("crossedLookback") or health.get("naturalEnd"))):
+        raise ValueError("proactive full 90-day official source proof incomplete")
+    actual = {canonical_board_id(j.get("url", ""), board)
+              for j in full_rows if isinstance(j, dict)} - {""}
+    if not actual:
+        raise ValueError("proactive full source scan produced no strong native IDs")
+    missing = [j for j in candidates if canonical_board_id(j["url"], board) not in actual]
+    if len(missing) > MAX_SUSPECTS:
+        raise ValueError("too many missing Kimpo posting IDs; refuse bulk quarantine")
+    removed_urls = set()
+    native_ids = set()
+    for j in missing:
+        if probe(j["url"], board):
+            removed_urls.add(j["url"])
+            native_ids.add(canonical_board_id(j["url"], board))
+    result = [j for j in jobs if str(j.get("url") or "") not in removed_urls]
+    return result, {"checkedDeadLinks": len(missing), "quarantined": len(jobs) - len(result),
+                    "ids": sorted(native_ids), "sourceScanned": True}
+
 def main():
     path = ROOT / "jobs.json"
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -147,10 +190,23 @@ def main():
     _, findings = verify_jobs.verify_links(jobs)
     source = coverage.SOURCES
     session = verify_jobs.build_session()
-    result, report = quarantine(
-        jobs, findings, source, coverage.gyeonggi_board,
-        lambda url, board: confirmed_unavailable(session, url, board)
+    live_probe = lambda url, board: confirmed_unavailable(session, url, board)
+    # Kimpo's broken 1148220 was one of 50 verified links on the failed run,
+    # but could fall OUT of the sample after a new posting arrives. Prove all
+    # exact Kimpo IDs proactively against the full authentic board population.
+    after_proactive, proactive = proactively_quarantine_office(
+        jobs, source, "김포교육지원청", coverage.gyeonggi_board, live_probe
     )
+    result, sampled = quarantine(
+        after_proactive, findings, source, coverage.gyeonggi_board, live_probe
+    )
+    report = {
+        "checkedDeadLinks": proactive["checkedDeadLinks"] + sampled["checkedDeadLinks"],
+        "quarantined": proactive["quarantined"] + sampled["quarantined"],
+        "ids": sorted(set(proactive["ids"] + sampled["ids"])),
+        "proactiveKimpoFullScan": proactive["sourceScanned"],
+        "policy": "complete-live-90d-absent-and-confirmed-http400-404-410-v1",
+    }
     if report["quarantined"]:
         # The write is to the private WORKSPACE ONLY; public publication remains
         # guarded by all existing 90-day, exact URL and transaction checks.
