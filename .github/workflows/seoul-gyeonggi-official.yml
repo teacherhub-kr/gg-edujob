@@ -19,6 +19,8 @@ on:
       - 'tests/test_guri_support_board_contract.py'
       - 'tests/test_mircms_pagination_proof.py'
       - 'scripts/complete_support_coverage.py'
+      - 'scripts/quarantine_verified_delisted_support.py'
+      - 'tests/test_verified_delisted_support.py'
       - 'scripts/probe_guri_support.py'
       - 'sources.json'
       - 'board_cache.json'
@@ -163,8 +165,8 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Static and regression contracts (no Incheon network calls)
         run: |
-          python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py
-          PYTHONPATH=scripts python -m unittest tests.test_seoul_central_id_reconciliation tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
+          python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py scripts/quarantine_verified_delisted_support.py
+          PYTHONPATH=scripts python -m unittest tests.test_verified_delisted_support tests.test_seoul_central_id_reconciliation tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |
@@ -202,6 +204,11 @@ jobs:
           # recover verified missing IDs via first-party re-crawl or fail closed.
           python scripts/reconcile_seoul_central_ids.py
           python scripts/verify_gyeonggi_central_90d.py
+          # A confirmed HTTP400/404/410 can be removed from the unpublished
+          # workspace only when its exact native ID is absent from a second
+          # complete 90-day first-party board traversal and its URL fails again.
+          # All unverified errors retain fail-closed verification below.
+          python scripts/quarantine_verified_delisted_support.py
           python scripts/verify_jobs.py
       - name: Construct verified regional snapshot without touching jobs.json
         if: github.event_name != 'pull_request'
