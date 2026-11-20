@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-20T12:44:11+09:00",
+  "generatedAt": "2026-11-20T20:30:28+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4556,
+  "privateJobs": 4558,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4081
+      "canonicalCount": 4082
     },
     "artmore": {
       "name": "아트모아",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 96
+      "canonicalCount": 97
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -75,7 +75,7 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4081,
+      "jobs": 4082,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
@@ -87,10 +87,10 @@
       "officialGapCandidates": 9
     },
     "gonggonggangsa": {
-      "jobs": 96,
+      "jobs": 97,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 11
+      "officialGapCandidates": 12
     },
     "seekle": {
       "jobs": 7,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 63,
+  "officialGapCandidates": 64,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -734,6 +734,18 @@
       ],
       "registered": "2026-08-14",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24739",
+      "privateTitle": "남양주 경기유니티 (커뮤니티 센터) 초등 늘봄학교 뉴스포츠 선생님 구인",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-19",
+      "url": "https://00gangsa.com/recruitments/24739",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
