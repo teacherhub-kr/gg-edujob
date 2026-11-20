@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T10:28:17+09:00",
+  "generatedAt": "2026-11-20T20:37:13+09:00",
   "policy": "lessoninfo-active-browser-v1",
   "healthy": true,
   "traversalComplete": true,
@@ -34,9 +34,10 @@
   "detailErrorCount": 0,
   "detailErrorExamples": [],
   "classificationCounts": {
+    "closed-marker": 1,
     "outside-seoul-gyeonggi": 15,
     "active": 142,
-    "stale-without-deadline": 355,
+    "stale-without-deadline": 354,
     "detail-route-mismatch": 125
   },
   "preservedPreviousDataset": false,
