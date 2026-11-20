@@ -276,8 +276,8 @@ jobs:
                "title":"[김포금빛초]계약제교원(시간강사) 채용 2차 공고(2학년 담임)",
                "url":url}
           session=verify_jobs.build_session()
-          result,report=q.quarantine(
-             [row],[{"url":url,"status":400,"hard":True}],cov.SOURCES,
+          result,report=q.proactively_quarantine_office(
+             [row],cov.SOURCES,"김포교육지원청",
              cov.gyeonggi_board,
              lambda u,b:q.confirmed_unavailable(session,u,b))
           print("DELISTED_SUPPORT_LIVE_TEST",json.dumps(report,ensure_ascii=False))
