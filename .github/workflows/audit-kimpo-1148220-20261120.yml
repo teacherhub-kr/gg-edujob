@@ -1,0 +1,68 @@
+# One-shot, read-only issue reproduction; not for merging into main.
+name: One-time Kimpo official detail 1148220 HTTP 400 audit
+on:
+  pull_request:
+    paths:
+      - .github/workflows/audit-kimpo-1148220-20261120.yml
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v7
+      - name: Independently check official Kimpo board list and exact detail URL (no publishing)
+        run: |
+          python -m pip install -q requests beautifulsoup4
+          python - <<'PY'
+          import hashlib,json,re
+          from urllib.parse import urlencode,urlsplit,parse_qs,urljoin
+          import requests
+          from bs4 import BeautifulSoup
+
+          bbs="5218"; mi="9406"; ntt="1148220"
+          origin="https://www.gpoe.kr"
+          base=origin+"/gpoe/na/ntt/"
+          board=base+"selectNttList.do?"+urlencode({"bbsId":bbs,"mi":mi})
+          s=requests.Session()
+          s.headers.update({"User-Agent":"Mozilla/5.0 (compatible; metro-edujob/3.0; public recruitment aggregator)",
+                            "Accept-Language":"ko-KR,ko;q=0.9"})
+          hit=[]
+          for page in range(1,5):
+              try:
+                  r=s.get(board+"&currPage="+str(page),timeout=(6,12),allow_redirects=True)
+                  print("OFFICIAL_LIST",page,"HTTP",r.status_code,"finalHost",urlsplit(r.url).hostname,
+                        "bodyBytes",len(r.content),"bodySha",hashlib.sha256(r.content).hexdigest()[:12],flush=True)
+                  if r.status_code>=400 or urlsplit(r.url).hostname!="www.gpoe.kr":break
+                  soup=BeautifulSoup(r.text,"html.parser")
+                  for tr in soup.find_all("tr"):
+                      raw=str(tr)
+                      if re.search(r"(?<!\d)"+ntt+r"(?!\d)",raw):
+                          print("OFFICIAL_NATIVE_ID_ROW",page,re.sub(r"\s+"," ",tr.get_text(" ",strip=True))[:450],
+                                "htmlHrefHints",[(a.get("href","") or "")[:270] for a in tr.find_all("a")][:4])
+                          hit.append(page)
+              except requests.RequestException as e:
+                  print("OFFICIAL_LIST_ERR",page,type(e).__name__,flush=True);break
+          print("OFFICIAL_ROW_DISCOVERED",bool(hit),"pages",hit,"absence-not-proven-by-short-scan")
+          basepath=base+"selectNttInfo.do"
+          variants=[
+              ("original",{"bbsId":bbs,"mi":mi,"nttSn":ntt}),
+              ("native-minimal",{"bbsId":bbs,"nttSn":ntt}),
+              ("native-reordered",{"mi":mi,"bbsId":bbs,"nttSn":ntt}),
+          ]
+          for name,params in variants:
+              url=basepath+"?"+urlencode(params)
+              try:
+                  r=s.get(url,headers={"Referer":board},timeout=(6,12),allow_redirects=True)
+                  soup=BeautifulSoup(r.text,"html.parser")
+                  title=(soup.title.get_text(" ",strip=True) if soup.title else "")[:160]
+                  txt=re.sub(r"\s+"," ",soup.get_text(" ",strip=True))[:1500]
+                  want=("김포금빛초" in txt or "시간강사" in txt)
+                  print("OFFICIAL_DETAIL",name,"HTTP",r.status_code,"finalHost",urlsplit(r.url).hostname,
+                        "bodyBytes",len(r.content),"title",title,"matchesNoticeTitle",want,
+                        "bodySha",hashlib.sha256(r.content).hexdigest()[:16],flush=True)
+              except requests.RequestException as e:
+                  print("OFFICIAL_DETAIL_ERR",name,type(e).__name__,flush=True)
+          print("AUDIT_END read-only, status-200 is not proof of correct notice; no 403/400 bypass or production writes")
+          PY
