@@ -95,5 +95,52 @@ class VerifiedDelistedLinkTests(unittest.TestCase):
         self.assertEqual(result[0]["url"],original[1]["url"])
 
 
+class ProactiveKimpoSourceCoverageTests(unittest.TestCase):
+    def test_delisted_link_quarantined_even_if_not_selected_by_50_link_sample(self):
+        original=[row(1148220),row(1148251)]
+        scan=Mock(return_value=([row(1148251)],proof()))
+        probe=Mock(return_value=True)
+        result,report=q.proactively_quarantine_office(original,REGISTRY,"김포교육지원청",scan,probe)
+        self.assertEqual(len(result),1)
+        self.assertEqual(q.canonical_board_id(result[0]["url"],BOARD),"1148251")
+        self.assertEqual(report["ids"],["1148220"])
+        self.assertTrue(report["sourceScanned"])
+        scan.assert_called_once()
+        probe.assert_called_once()
+
+    def test_all_listed_ids_are_retained_no_probe(self):
+        original=[row(1148220),row(1148251)]
+        probe=Mock(side_effect=AssertionError("should not request active detail"))
+        result,report=q.proactively_quarantine_office(
+            original,REGISTRY,"김포교육지원청",
+            lambda *a:(list(original),proof()),probe)
+        self.assertEqual(result,original)
+        self.assertEqual(report["quarantined"],0)
+        probe.assert_not_called()
+
+    def test_failed_independent_source_proof_cannot_authorize_any_deletion(self):
+        original=[row(1148220)]
+        with self.assertRaisesRegex(ValueError,"proof incomplete"):
+            q.proactively_quarantine_office(
+                original,REGISTRY,"김포교육지원청",
+                lambda *a:([row(1148251)],proof(paginationRepeated=True)),lambda *a:True)
+        self.assertEqual(len(original),1)
+
+    def test_many_missing_ids_fail_closed_instead_of_mass_deleting(self):
+        original=[row(1148220+i) for i in range(q.MAX_SUSPECTS+1)]
+        with self.assertRaisesRegex(ValueError,"refuse bulk quarantine"):
+            q.proactively_quarantine_office(
+                original,REGISTRY,"김포교육지원청",
+                lambda *a:([row(1150000)],proof()),lambda *a:True)
+
+    def test_dead_link_not_reconfirmed_remains_published_candidate(self):
+        original=[row(1148220)]
+        result,report=q.proactively_quarantine_office(
+            original,REGISTRY,"김포교육지원청",
+            lambda *a:([row(1148251)],proof()),lambda *a:False)
+        self.assertEqual(result,original)
+        self.assertEqual(report["quarantined"],0)
+
+
 if __name__=="__main__":
     unittest.main()
