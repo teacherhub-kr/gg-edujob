@@ -316,6 +316,7 @@ def audit_seoul():
         "name": primary.SEOUL["central"]["name"], "province": "서울",
         "parsedStableIdCount": len(structural_seen),
         "stableIdCount": len(recruitment_seen),
+        "sourceNativeRecruitmentIds": sorted(recruitment_seen, key=int),
         "excludedNonRecruitmentCount": len(structural_seen - recruitment_seen),
         "pagesScanned": pages, "rawRows": raw_rows,
         "terminalEvidence": terminal, "accessError": access_error,
