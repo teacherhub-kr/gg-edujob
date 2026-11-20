@@ -1,29 +1,20 @@
 name: Reconciliation population preflight
 
+# This live population proof runs *after* the Incheon full 90-day regression
+# as a reusable read-only job. It must not start simultaneously on the same PR.
 on:
-  pull_request:
-    paths:
-      - 'scripts/ensure_incheon_registry.py'
-      - 'scripts/merge_incheon_official.py'
-      - 'scripts/source_registry.py'
-      - 'scripts/verify_required_regions.py'
-      - 'scripts/verify_central_pagination.py'
-      - 'scripts/scrape_jobs.py'
-      - 'scripts/reconcile_source_ids.py'
-      - 'scripts/verify_central_reconciliation_consistency.py'
-      - '.github/workflows/reconciliation-population-preflight.yml'
+  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: reconciliation-population-preflight-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
   live-proof:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Gyeonggi independent 90d (~5m) + 38-source reconciliation (~25m)
+    # + ICE 90d (~45m) cannot finish within the previous 60m budget.
+    timeout-minutes: 130
     steps:
       - uses: actions/checkout@v7
         with:
@@ -82,6 +73,10 @@ jobs:
       - name: Re-prove the same live population and require agreement
         run: |
           python scripts/verify_central_pagination.py
+          # The full 44-source reconciliation can exceed the 45-minute audit window.
+          # Refresh the independent 90-day proof immediately before comparing it;
+          # keep the existing skew and population-drift gates unchanged.
+          python scripts/verify_gyeonggi_central_90d.py
           python scripts/verify_central_reconciliation_consistency.py
       - name: Assert structural IDs are never hidden by recruitment filtering
         run: |

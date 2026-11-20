@@ -63,6 +63,103 @@ class IncheonTransientRetryTests(unittest.TestCase):
         self.assertFalse(ice.is_transient_all_empty(meta_for(access_error="timeout"), []))
         self.assertFalse(ice.is_transient_all_empty(meta_for(count=1), [{"id": "x"}]))
 
+    def test_explicit_repeated_page_is_retryable_but_remains_incomplete(self):
+        meta = meta_for(count=1)
+        meta["coverageComplete"] = False
+        meta["paginationRepeated"] = True
+        meta["boardHealth"][0].update({
+            "count": 10,
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        self.assertTrue(ice.is_transient_repeated_page(meta, [{"id": "partial"}]))
+        self.assertTrue(ice.is_retryable_transient(meta, [{"id": "partial"}]))
+
+    def test_repeated_page_with_access_error_is_not_retryable(self):
+        meta = meta_for(count=1, access_error="timeout")
+        meta["paginationRepeated"] = True
+        meta["boardHealth"][0].update({
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        self.assertFalse(ice.is_transient_repeated_page(meta, [{"id": "partial"}]))
+
+    def test_official_id_reconciliation_uses_bounded_90d_retries_and_shared_live_lock(self):
+        # Contract must be exercised by the live 44-source reconciliation,
+        # not merely an unrelated read-only ICE proof job.
+        from pathlib import Path
+        from scripts import reconcile_source_ids as recon
+
+        with patch.object(recon.central_recent, "scrape_gyeonggi_central_recent", return_value=[]) as gg, \
+             patch.object(recon.cov, "SOURCES", {"gyeonggi": {"supportOffices": []}, "seoul": {"supportOffices": []}}), \
+             patch.object(recon.incheon, "scrape_incheon_with_transient_retry", return_value=(
+                 [], {"coverageComplete": False, "pagesScanned": 2, "accessError": "",
+                      "boards": ["https://www.ice.go.kr/ice/na/ntt/selectNttList.do"]}
+             )) as ice_retry, \
+             patch.object(recon.incheon_support, "crawl_all_support_offices", return_value=([], [])), \
+             patch.object(recon.primary, "scrape_seoul_central", return_value=[]):
+            gg.last_coverage = []
+            sources, rows = recon.crawl_official_ids()
+        ice_retry.assert_called_once_with(
+            lookback_days=recon.cov.LOOKBACK_DAYS,
+            max_pages=240,
+            check_only=True,
+            transient_retries=2,
+            retry_delay_seconds=15.0,
+        )
+        self.assertEqual(rows, {})
+        self.assertFalse(next(src for src in sources if src["province"] == "인천")["coverageComplete"])
+
+        p0 = Path(".github/workflows/p0-incheon-regression.yml").read_text(encoding="utf-8")
+        pre = Path(".github/workflows/reconciliation-population-preflight.yml").read_text(encoding="utf-8")
+        # Full 90d source verification and independent population proof must
+        # be sequential, never two competing readers of the official site.
+        self.assertIn("incheon-90d-live-read-", p0)
+        self.assertIn("cancel-in-progress: false", p0)
+        self.assertIn("reconcile-live-proof:", p0)
+        self.assertIn("needs: verify-incheon", p0)
+        self.assertIn("uses: ./.github/workflows/reconciliation-population-preflight.yml", p0)
+        self.assertIn("workflow_call:", pre)
+        self.assertNotIn("  pull_request:", pre.split("permissions:", 1)[0])
+        self.assertNotIn("concurrency:", pre)
+        self.assertIn("timeout-minutes: 130", pre)
+
+    @patch.object(ice, "reset_session")
+    @patch.object(ice.time, "sleep")
+    @patch.object(ice, "scrape_incheon_central")
+    def test_check_only_retries_repeated_page_then_accepts_complete_traversal(
+        self, scrape, sleep, reset
+    ):
+        repeated = meta_for(count=1)
+        repeated["coverageComplete"] = False
+        repeated["paginationRepeated"] = True
+        repeated["boardHealth"][0].update({
+            "count": 10,
+            "stopReason": "repeated-page",
+            "paginationRepeated": True,
+            "coverageComplete": False,
+        })
+        scrape.side_effect = [
+            ([{"id": "partial"}], repeated),
+            ([{"id": "complete"}], meta_for(count=1)),
+        ]
+
+        rows, meta = ice.scrape_incheon_with_transient_retry(
+            lookback_days=90,
+            max_pages=1000,
+            check_only=True,
+            transient_retries=2,
+            retry_delay_seconds=15,
+        )
+
+        self.assertEqual(rows, [{"id": "complete"}])
+        self.assertTrue(meta["coverageComplete"])
+        self.assertEqual(scrape.call_count, 2)
+        sleep.assert_called_once_with(15.0)
+        reset.assert_called_once_with()
+
 
     @patch.object(ice, "reset_session")
     @patch.object(ice, "parse_table_rows")
