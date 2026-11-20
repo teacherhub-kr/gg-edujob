@@ -249,3 +249,39 @@ jobs:
             seoul_gyeonggi_refresh_report.json
           if-no-files-found: warn
           retention-days: 14
+
+  delisted_support_live_proof:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install exact source crawler dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Prove Kimpo native ID is delisted, HTTP400 persists and in-memory quarantine is bounded
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import json
+          import quarantine_verified_delisted_support as q
+          import complete_support_coverage as cov
+          import verify_jobs
+          url="https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1148220"
+          row={"province":"경기","source":"김포교육지원청",
+               "sourceType":"교육지원청 개별 게시판",
+               "title":"[김포금빛초]계약제교원(시간강사) 채용 2차 공고(2학년 담임)",
+               "url":url}
+          session=verify_jobs.build_session()
+          result,report=q.quarantine(
+             [row],[{"url":url,"status":400,"hard":True}],cov.SOURCES,
+             cov.gyeonggi_board,
+             lambda u,b:q.confirmed_unavailable(session,u,b))
+          print("DELISTED_SUPPORT_LIVE_TEST",json.dumps(report,ensure_ascii=False))
+          assert not result and report["quarantined"]==1 and report["ids"]==["1148220"],(
+              "Source-list absence and exact error must BOTH prove quarantine")
+          print("DELISTED_SUPPORT_LIVE_TEST_PASSED (in-memory only; published data untouched)")
+          PY
