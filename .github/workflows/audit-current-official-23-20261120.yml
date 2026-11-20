@@ -206,3 +206,36 @@ jobs:
           print("NATIVE_113663_LIVE_ROW_TEXT",card[:1100])
           print("NATIVE_113663_LIVE_DATES",re.findall(r"20\d{2}[./-]\d{1,2}[./-]\d{1,2}",card)[:10])
           PY
+
+      - name: Trace public source ID 113663 and same-school semantic collisions (read only)
+        run: |
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import json
+          import subprocess
+          import re
+          def read(path):
+              return json.loads(subprocess.check_output(["git","show",f"origin/main:{path}"]))["jobs"]
+          for path in ("seoul_gyeonggi_jobs.json","unified_jobs.json"):
+              rows=read(path)
+              hit_id=[];same_school=[];similar=[]
+              for j in rows:
+                  sid=str(j.get("id") or "")
+                  identities=" ".join(str(x) for x in (j.get("sourceIdentities") or []))
+                  url=str(j.get("url") or "")
+                  if "113663" in " ".join((sid,identities,url,str(j.get("sourceIdentity") or ""))):
+                      hit_id.append(j)
+                  school=str(j.get("school") or "")
+                  title=str(j.get("title") or "")
+                  if "북한산유" in school:
+                      same_school.append(j)
+                  if "방과후" in title and "대체강사" in title and str(j.get("province") or "")=="서울":
+                      similar.append(j)
+              def brief(j):
+                  return {k:j.get(k) for k in ("id","province","school","title","registered",
+                                                "applyStart","applyEnd","url","source","sourceType",
+                                                "sourceIdentity","sourceIdentities")}
+              print("P0_TRACE",path,"rows",len(rows),"native113663",json.dumps([brief(x) for x in hit_id[:12]],ensure_ascii=False))
+              print("P0_SAME_SCHOOL",path,json.dumps([brief(x) for x in same_school[:35]],ensure_ascii=False))
+              print("P0_SIMILAR_TITLE",path,json.dumps([brief(x) for x in similar[:25]],ensure_ascii=False))
+          PY
