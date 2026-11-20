@@ -239,3 +239,23 @@ jobs:
               print("P0_SAME_SCHOOL",path,json.dumps([brief(x) for x in same_school[:35]],ensure_ascii=False))
               print("P0_SIMILAR_TITLE",path,json.dumps([brief(x) for x in similar[:25]],ensure_ascii=False))
           PY
+
+      - name: Reproduce actual Seoul central production collector path without publishing
+        run: |
+          python -m pip install --disable-pip-version-check -q requests beautifulsoup4
+          PYTHONPATH=scripts python - <<'PY'
+          import json
+          import scrape_jobs as primary
+          primary.CENTRAL_MAX_PAGES = 13
+          rows=primary.scrape_seoul_central()
+          target=[j for j in rows if str(j.get("id"))=="sen-113663"]
+          deduped=primary.dedupe_merge(rows)
+          remaining=[j for j in deduped if str(j.get("id"))=="sen-113663"]
+          north=[j for j in rows if "북한산유" in str(j.get("school") or "")]
+          print("PRIMARY_SEOUL_SOURCE_COUNT",len(rows))
+          print("PRIMARY_SEOUL_SOURCE_113663",json.dumps(target,ensure_ascii=False))
+          print("PRIMARY_SEOUL_DEDUPED_COUNT",len(deduped))
+          print("PRIMARY_SEOUL_DEDUPED_113663",json.dumps(remaining,ensure_ascii=False))
+          print("PRIMARY_SEOUL_SAME_SCHOOL",json.dumps(north,ensure_ascii=False))
+          print("This is an isolated live-read and pure in-memory dedupe; no jobs.json write, merge, or publication.")
+          PY
