@@ -66,3 +66,29 @@ jobs:
                   print("OFFICIAL_DETAIL_ERR",name,type(e).__name__,flush=True)
           print("AUDIT_END read-only, status-200 is not proof of correct notice; no 403/400 bypass or production writes")
           PY
+
+
+      - name: Independently traverse full Kimpo recruitment board 90 days and check native ID
+        run: |
+          python -m pip install -q requests beautifulsoup4
+          PYTHONPATH=scripts python - <<'PY'
+          import json
+          import complete_support_coverage as cover
+          from urllib.parse import parse_qs,urlparse
+          src=next(x for x in cover.SOURCES["gyeonggi"]["supportOffices"] if x.get("name")=="김포교육지원청")
+          board=src["boardUrls"][0]
+          rows,meta=cover.gyeonggi_board(board,src)
+          target=[]
+          for row in rows:
+              native=(parse_qs(urlparse(str(row.get("url") or "")).query).get("nttSn") or [""])[0]
+              if native=="1148220":
+                  target.append({k:row.get(k) for k in
+                      ("id","title","school","registered","applyEnd","url","boardUrl")})
+          print("KIMPO_FULL_90DAY_PROOF",json.dumps(meta,ensure_ascii=False),flush=True)
+          print("KIMPO_1148220_ON_CURRENT_OFFICIAL_90DAY_BOARD",
+                json.dumps({"present":bool(target),"rows":target},ensure_ascii=False),flush=True)
+          print("KIMPO_LATEST_SOURCE_SAMPLE",json.dumps(
+             [{k:j.get(k) for k in ("title","registered","applyEnd","url")} for j in rows[:8]],
+             ensure_ascii=False),flush=True)
+          print("Interpretation: absent ID is proven only if coverageComplete=true and all source pages/90d proven. Do not auto-remove or auto-publish.")
+          PY
