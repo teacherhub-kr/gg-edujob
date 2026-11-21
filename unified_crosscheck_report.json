@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-22T01:40:48+09:00",
+  "generatedAt": "2026-11-22T02:28:45+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4573,
+  "privateJobs": 4559,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 215
+      "canonicalCount": 204
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 99
+      "canonicalCount": 96
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -81,16 +81,16 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 215,
+      "jobs": 204,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 9
+      "officialGapCandidates": 8
     },
     "gonggonggangsa": {
-      "jobs": 99,
+      "jobs": 96,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 11
+      "officialGapCandidates": 10
     },
     "seekle": {
       "jobs": 7,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 63,
+  "officialGapCandidates": 61,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -631,18 +631,6 @@
     {
       "privateSource": "artmore",
       "privateSourceName": "아트모아",
-      "privateId": "artmore:95742",
-      "privateTitle": "진행중 [국민대학교] 학생지원팀 계약직원 모집",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-11-17",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "artmore",
-      "privateSourceName": "아트모아",
       "privateId": "artmore:95615",
       "privateTitle": "진행중 [2027 문화예술교육 지원사업 | 미술강사 모집 공고]",
       "provinces": [
@@ -806,18 +794,6 @@
       ],
       "registered": "2026-11-17",
       "url": "https://00gangsa.com/recruitments/24667",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "gonggonggangsa",
-      "privateSourceName": "공공강사",
-      "privateId": "gonggonggangsa:24568",
-      "privateTitle": "2027학년도 국립국악고등학교 방과후학교 강사 모집 - 국악기(가야금·해금·대금), 난타/장구, 국악/민요 외 5건",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-11-17",
-      "url": "https://00gangsa.com/recruitments/24568",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

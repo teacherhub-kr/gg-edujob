@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-22T01:40:46+09:00",
+  "generatedAt": "2026-11-22T02:28:42+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 14932,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 5064,
+  "canonicalPrivateJobs": 5050,
   "selectedCanonicalOfficialJobs": 4762,
   "selectedFoundationOfficialJobs": 1,
   "selectedOfficialJobs": 4763,
-  "selectedPrivateJobs": 5016,
-  "publishedJobs": 9779,
+  "selectedPrivateJobs": 5005,
+  "publishedJobs": 9768,
   "perFeed": {
     "official": 4763,
-    "private": 5016
+    "private": 5005
   },
   "privateSources": {
     "lessoninfo": {
@@ -27,7 +27,7 @@
       "lastVerifiedAt": "2026-11-21T18:21:36+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 7.32,
+        "ageHours": 8.12,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-21T18:21:36+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 943.08,
+        "ageHours": 943.88,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -70,12 +70,12 @@
       "count": 4081,
       "rawCandidateCount": 4081,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-21T18:41:28+09:00",
+      "lastVerifiedAt": "2026-11-22T02:13:50+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 6.99,
+        "state": "fresh",
+        "ageHours": 0.25,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-21T18:41:17+09:00"
+        "evidenceAt": "2026-11-22T02:13:38+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
@@ -89,22 +89,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 215,
-      "count": 215,
-      "rawCandidateCount": 215,
+      "candidateCount": 204,
+      "count": 204,
+      "rawCandidateCount": 204,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-21T18:05:06+09:00",
+      "lastVerifiedAt": "2026-11-22T01:49:32+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 7.59,
+        "state": "fresh",
+        "ageHours": 0.65,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-21T18:05:06+09:00"
+        "evidenceAt": "2026-11-22T01:49:32+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 215
+      "displayedAsPrivate": 204
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -114,14 +114,14 @@
       "ok": true,
       "candidateCount": 96,
       "count": 96,
-      "rawCandidateCount": 99,
-      "excludedFromUnifiedCount": 3,
-      "lastVerifiedAt": "2026-11-21T18:12:52+09:00",
+      "rawCandidateCount": 96,
+      "excludedFromUnifiedCount": 0,
+      "lastVerifiedAt": "2026-11-22T01:57:34+09:00",
       "verificationFreshness": {
-        "state": "stale",
-        "ageHours": 7.47,
+        "state": "fresh",
+        "ageHours": 0.52,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-21T18:12:52+09:00"
+        "evidenceAt": "2026-11-22T01:57:34+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 966.87,
+        "ageHours": 967.67,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 982.93,
+        "ageHours": 983.72,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -187,9 +187,6 @@
   "stalePrivateSources": [
     "lessoninfo",
     "cleaneye",
-    "jobteacher",
-    "artmore",
-    "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
