@@ -1,11 +1,11 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9768,
-  "nonDirectBeforeRepair": 123,
+  "totalRows": 9770,
+  "nonDirectBeforeRepair": 125,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 123,
+  "nonDirectAfterRepair": 125,
   "cultureFoundationRows": 69,
-  "cultureFoundationNonDirectRows": 24,
+  "cultureFoundationNonDirectRows": 25,
   "recoveredExamples": [],
   "nonDirectExamples": [
     {
@@ -351,6 +351,15 @@
       "direct": false
     },
     {
+      "sourceIdentity": "culture:id:95444",
+      "source": "레슨인포",
+      "title": "11월7일-8일 동두천 시민회관에서 근무하실 하우스어셔 모집합니다.",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
       "sourceIdentity": "culture:id:95443",
       "source": "레슨인포",
       "title": "2026년 제2회 (재)여주세종문화관광재단 직원 채용 공고",
@@ -364,6 +373,15 @@
       "source": "레슨인포",
       "title": "2027년 천안어린이꿈누리터 문화예술교육 제안사 모집 공고",
       "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95441",
+      "source": "레슨인포",
+      "title": "[대림문화재단] 전시부문 전시파트 인턴 채용 공고",
+      "school": "대림문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
@@ -889,24 +907,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95318",
-      "source": "레슨인포",
-      "title": "[국제갤러리 리셉션 채용공고]",
-      "school": "국제갤러리 리셉션 채용공고",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95314",
-      "source": "레슨인포",
-      "title": "2026년 제5차 재공고 및 제6차 (재)양천문화재단 직원 채용 공고",
-      "school": "양천문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
     }
   ],
   "cultureFoundationExamples": [
@@ -1284,9 +1284,9 @@
       "source": "레슨인포",
       "title": "[대림문화재단] 전시부문 전시파트 인턴 채용 공고",
       "school": "대림문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95441",
-      "reason": "cold-browser-verified-url",
-      "direct": true
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
     },
     {
       "sourceIdentity": "culture:id:95440",
