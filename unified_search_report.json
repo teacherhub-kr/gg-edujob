@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-21T18:44:50+09:00",
+  "generatedAt": "2026-11-22T01:40:46+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 15345,
+  "canonicalOfficialJobs": 14932,
   "canonicalFoundationOfficialJobs": 9,
   "canonicalPrivateJobs": 5064,
-  "selectedCanonicalOfficialJobs": 4876,
+  "selectedCanonicalOfficialJobs": 4762,
   "selectedFoundationOfficialJobs": 1,
-  "selectedOfficialJobs": 4877,
-  "selectedPrivateJobs": 5019,
-  "publishedJobs": 9896,
+  "selectedOfficialJobs": 4763,
+  "selectedPrivateJobs": 5016,
+  "publishedJobs": 9779,
   "perFeed": {
-    "official": 4877,
-    "private": 5019
+    "official": 4763,
+    "private": 5016
   },
   "privateSources": {
     "lessoninfo": {
@@ -26,8 +26,8 @@
       "excludedFromUnifiedCount": 14,
       "lastVerifiedAt": "2026-11-21T18:21:36+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.39,
+        "state": "stale",
+        "ageHours": 7.32,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-21T18:21:36+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 936.15,
+        "ageHours": 943.08,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -72,8 +72,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-21T18:41:28+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.06,
+        "state": "stale",
+        "ageHours": 6.99,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-21T18:41:17+09:00"
       },
@@ -95,8 +95,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-21T18:05:06+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.66,
+        "state": "stale",
+        "ageHours": 7.59,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-21T18:05:06+09:00"
       },
@@ -112,14 +112,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 99,
-      "count": 99,
+      "candidateCount": 96,
+      "count": 96,
       "rawCandidateCount": 99,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 3,
       "lastVerifiedAt": "2026-11-21T18:12:52+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.53,
+        "state": "stale",
+        "ageHours": 7.47,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-21T18:12:52+09:00"
       },
@@ -127,7 +127,7 @@
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 99
+      "displayedAsPrivate": 96
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 959.94,
+        "ageHours": 966.87,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 975.99,
+        "ageHours": 982.93,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -185,7 +185,11 @@
   "allPublicationEnabledSourcesHealthy": true,
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
+    "lessoninfo",
     "cleaneye",
+    "jobteacher",
+    "artmore",
+    "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
