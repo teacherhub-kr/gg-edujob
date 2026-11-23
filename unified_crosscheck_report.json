@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-23T12:52:20+09:00",
+  "generatedAt": "2026-11-23T21:25:56+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4550,
+  "privateJobs": 4552,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 140
+      "canonicalCount": 137
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 195
+      "canonicalCount": 200
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 140,
+      "jobs": 137,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 8
@@ -81,10 +81,10 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 195,
+      "jobs": 200,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 8
+      "officialGapCandidates": 9
     },
     "gonggonggangsa": {
       "jobs": 101,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 60,
+  "officialGapCandidates": 61,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -120,7 +120,7 @@
         "서울"
       ],
       "registered": "2026-11-17",
-      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95742",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -132,7 +132,7 @@
         "경기"
       ],
       "registered": "2026-11-09",
-      "url": "",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95647",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -144,7 +144,7 @@
         "경기"
       ],
       "registered": "2026-11-09",
-      "url": "",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95646",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -156,7 +156,7 @@
         "서울"
       ],
       "registered": "2026-11-05",
-      "url": "",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95615",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -631,6 +631,18 @@
     {
       "privateSource": "artmore",
       "privateSourceName": "아트모아",
+      "privateId": "artmore:95794",
+      "privateTitle": "진행중 [국민대학교] 학생지원팀 계약직원 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-23",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95794",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
       "privateId": "artmore:95615",
       "privateTitle": "진행중 [2027 문화예술교육 지원사업 | 미술강사 모집 공고]",
       "provinces": [
@@ -740,7 +752,7 @@
       "privateSource": "gonggonggangsa",
       "privateSourceName": "공공강사",
       "privateId": "gonggonggangsa:24739",
-      "privateTitle": "남양주 경기유니티 (커뮤니티 센터) 초등 늘봄학교 뉴스포츠 선생님 구인",
+      "privateTitle": "남양주 다산별빛초 늘봄학교 단기 특강 뉴스포츠 선생님 구인",
       "provinces": [
         "경기"
       ],

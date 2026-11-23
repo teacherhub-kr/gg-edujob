@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-23T12:52:18+09:00",
+  "generatedAt": "2026-11-23T21:25:55+09:00",
   "healthy": true,
-  "total": 9837,
+  "total": 9842,
   "official": 4835,
-  "privateDisplayed": 5002,
+  "privateDisplayed": 5007,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 5002,
-  "privateRepresentedDirectly": 5002,
+  "privateStableIds": 5007,
+  "privateRepresentedDirectly": 5007,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,40 +44,131 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 0,
-  "verifiedLessoninfoCultureLinkExamples": [],
-  "failClosedLessoninfoCultureLinks": 209,
-  "failClosedLessoninfoCultureLinkExamples": [
+  "verifiedLessoninfoCultureLinks": 132,
+  "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95767",
-      "title": "국립극단 제4차 직원 채용 공고"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95767",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95766",
-      "title": "[대림문화재단] 대림미술관 크루 모집"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95766",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95669",
-      "title": "2026년 고양문화재단 무대기술인턴십(무대기계) 채용공고"
+      "sourceIdentity": "culture:id:95764",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95764",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95667",
-      "title": "[할리퀸크리에이션즈㈜] 서울어린이대공원 아트센터 하우스스태프 채용 공고 (광진구)"
+      "sourceIdentity": "culture:id:95763",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95763",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95664",
-      "title": "LG아트센터 서울 하우스 안내원 채용공고"
+      "sourceIdentity": "culture:id:95762",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95762",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95662",
-      "title": "국립중앙박물관 극장 용 <티켓 및 고객만족센터 근로자> 채용 공고(~11.22.(일) 23:59까지)"
+      "sourceIdentity": "culture:id:95761",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95761",
+      "resolvedUrlType": "official"
     },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95760",
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95760&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95759",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95759",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95757",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95757",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95756",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95756",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95755",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95755",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95750",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95750",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95749",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95749",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95748",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95748",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95747",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95747",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95745",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95745",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95742",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95740",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95740",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95738",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95738",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95737",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95737",
+      "resolvedUrlType": "official"
+    }
+  ],
+  "failClosedLessoninfoCultureLinks": 126,
+  "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95661",
@@ -85,38 +176,8 @@
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95660",
-      "title": "[라인문화재단] 큐레이터 경력직 채용"
-    },
-    {
-      "source": "lessoninfo",
       "sourceIdentity": "culture:id:95649",
       "title": "[CNCITY에너지] 헤레디움 큐레이터 채용"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95648",
-      "title": "예술의전당 <미라, 봉인된 신비> 온느뮤지엄 도슨트 모집"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95647",
-      "title": "2026 고양문화재단 어울림문화학교 단시간 근로자 채용 공고"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95646",
-      "title": "유치원·초등학교 전통문화 체험 현장 강사, 전통문화지도사 (프리랜서)"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95645",
-      "title": "(주)수컴퍼니 기획피디 및 홍보팀 직원 채용 공고"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95644",
-      "title": "(재)서초문화재단 임원(비상임 이사) 공개모집 공고"
     },
     {
       "source": "lessoninfo",
@@ -135,91 +196,207 @@
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95640",
-      "title": "2026 티켓링크 1975 씨어터 공연장 안내원 모집"
-    },
-    {
-      "source": "lessoninfo",
       "sourceIdentity": "culture:id:95639",
       "title": "[스테이지엠] 공연사업 운영 사무직 경력 모집"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95627",
-      "title": "롯데뮤지엄 “사랑을 담아, 미셸 들라크루아 드림” 전시 티켓 스태프/운영 스태프 모집공고"
+      "sourceIdentity": "culture:id:95622",
+      "title": "[2027 아티스트 오브 당진] 객원기획자(큐레이터) 모집공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95613",
+      "title": "[놀씨어터] 코엑스아티움 하우스 부매니저 (계약직)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95579",
+      "title": "2027년 천안어린이꿈누리터 문화예술교육 제안사 모집 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95568",
+      "title": "2027년도 제15회 무주산골영화제 사무국 스태프 2차 채용공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95555",
+      "title": "[놀씨어터] Venue사업2팀 PD (정규직)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95551",
+      "title": "오케스트라 무대스텝 - 제 3회 정기연주회"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95547",
+      "title": "(재)세종문화회관 계약직 직원(비서, 시설전문직(전기), 총괄 티켓매니저 등) 공개채용 공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95546",
+      "title": "대구문화예술진흥원 임원(공연본부장) 후보 공개모집 재공고"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95544",
+      "title": "[프란츠클래식] 음악공간 리셉션·운영 담당자 모집(신입·경력)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95539",
+      "title": "[프란츠클래식] 공연·음악공간 홍보 운영 담당자 모집(신입·경력)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95538",
+      "title": "[스테이지엠] 공연사업 운영 사무직 신입 모집"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95536",
+      "title": "아티스트 IP 홍보 팀장"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95530",
+      "title": "부산광역시 임기제공무원 임용시험 공고(클래식부산 부산오페라하우스 공연기획팀장/무대기술팀장)"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95523",
+      "title": "[국립아시아문화전당] 2026 ACC 크리에이터스 레지던시 전시 운영요원 모집"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 0,
-  "projectedVerifiedLessoninfoCultureLinkExamples": [],
-  "projectedNonDirectPrivateLinks": 0,
-  "projectedNonDirectPrivateLinkExamples": [],
-  "projectedFailClosedLessoninfoCultureLinks": 55,
-  "projectedFailClosedLessoninfoCultureLinkExamples": [
+  "projectedVerifiedLessoninfoCultureLinks": 132,
+  "projectedVerifiedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95767",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95767",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95766",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95766",
+      "resolvedUrlType": "official"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95764",
-      "title": "성동문화재단(소월아트홀, 성수아트홀) 공연장안내원 모집 공고"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95764",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95763",
-      "title": "㈜쇼노트 컴퍼니 매니저 채용공고"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95763",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95762",
-      "title": "유니버설발레단 공연사업2팀 단원관리 직원 채용"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95762",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95761",
-      "title": "[컬쳐웍스] 공연 티켓 매니저 모집"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95761",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95760",
-      "title": "플러스씨어터에서 뮤지컬 <풍월주> 하우스 안내원을 모집합니다."
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95760&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95759",
-      "title": "파마리서치문화재단 큐레이터(대리급) 채용"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95759",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95757",
-      "title": "[두산아트센터] 교육기획 매니저 채용 공고 (~26.12.2)"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95757",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95756",
-      "title": "[두산아트센터] 홍보마케팅 매니저 채용 공고 (~26.11.24)"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95756",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95755",
-      "title": "2027년 1분기 노원문화원 문화대학 신규 문화강좌 강사 공개모집 공고"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95755",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95750",
-      "title": "[한국사립박물관협회] 2026년 사립 및 사립대학박물관 예비 학예인력 지원사업 11차 인력 모집 공고"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95750",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95749",
-      "title": "[케이옥션] 신입·경력 경매스페셜리스트 양성과정 채용 (11월)"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95749",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95748",
-      "title": "홍익대 대학로 아트센터 하우스 안내원 기간제 근무자 모집"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95748",
+      "resolvedUrlType": "official"
     },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95747",
-      "title": "홍익대 대학로 아트센터 하우스 부매니저 기간제 근무자 모집"
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95747",
+      "resolvedUrlType": "official"
     },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95745",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95745",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95742",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95740",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95740",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95738",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95738",
+      "resolvedUrlType": "official"
+    },
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95737",
+      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95737",
+      "resolvedUrlType": "official"
+    }
+  ],
+  "projectedNonDirectPrivateLinks": 0,
+  "projectedNonDirectPrivateLinkExamples": [],
+  "projectedFailClosedLessoninfoCultureLinks": 5,
+  "projectedFailClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95746",
@@ -227,33 +404,23 @@
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95745",
-      "title": "(주)출판사 시공사에서 전시기획자를 채용합니다."
+      "sourceIdentity": "culture:id:95723",
+      "title": "국립극장 안내원(공연, 매표, 고객지원센터) 모집 공고(~11/16)"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95742",
-      "title": "[국민대학교] 학생지원팀 계약직원 모집"
+      "sourceIdentity": "culture:id:95711",
+      "title": "2027 꿈의 예술단(스튜디오) ‘미추홀’ 예술가 공개모집"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95740",
-      "title": "[브러쉬씨어터] 공연 티켓 매니저 채용"
+      "sourceIdentity": "culture:id:95709",
+      "title": "2027 꿈의 극단 ‘부평’ 창작인력 모집 공고"
     },
     {
       "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95738",
-      "title": "박서보미술관 전시장 스태프 채용"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95737",
-      "title": "[리틀엔젤스예술단] 위촉 무용강사 모집 (한국무용/발레)"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95736",
-      "title": "온느뮤지엄 도슨트 모집"
+      "sourceIdentity": "culture:id:95671",
+      "title": "(재)부천아트센터 2026년 제3차 공연장 안내원(아르바이트생) 모집 공고(~11/11)"
     }
   ],
   "projectedUnknownPrivateSources": 0,
@@ -275,8 +442,8 @@
       "currentCount": 4082
     },
     "artmore": {
-      "rawCount": 195,
-      "currentCount": 195
+      "rawCount": 200,
+      "currentCount": 200
     },
     "gonggonggangsa": {
       "rawCount": 101,
