@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-24T15:40:16+09:00",
-  "startedAt": "2026-11-24T15:34:15+09:00",
+  "generatedAt": "2026-11-24T20:12:42+09:00",
+  "startedAt": "2026-11-24T20:04:08+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 139,
-  "expiredCultureRemoved": 3,
+  "totalInputJobs": 147,
+  "expiredCultureRemoved": 2,
   "expiredCultureExamples": [
     {
       "sourceIdentity": "culture:id:95746",
@@ -15,16 +15,11 @@
       "sourceIdentity": "culture:id:95723",
       "title": "국립극장 안내원(공연, 매표, 고객지원센터) 모집 공고(~11/16)",
       "applyEnd": "2026-11-16"
-    },
-    {
-      "sourceIdentity": "culture:id:95671",
-      "title": "(재)부천아트센터 2026년 제3차 공연장 안내원(아르바이트생) 모집 공고(~11/11)",
-      "applyEnd": "2026-11-11"
     }
   ],
-  "eligibleCultureRows": 132,
-  "verifiedCultureRows": 131,
-  "verifiedOfficialRows": 128,
+  "eligibleCultureRows": 141,
+  "verifiedCultureRows": 140,
+  "verifiedOfficialRows": 137,
   "verifiedLessoninfoRows": 3,
   "unverifiedCultureRows": 1,
   "verificationMissingCount": 0,
@@ -33,15 +28,15 @@
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 49,
+    "cold-browser-official-title-match": 51,
     "cold-browser-id-title-match": 3,
-    "cold-browser-artmore-id-title-match": 79,
+    "cold-browser-artmore-id-title-match": 86,
     "cold-browser-route-mismatch": 1
   },
-  "artmoreFallbackAttemptedRows": 80,
-  "artmoreFallbackRecoveredRows": 79,
+  "artmoreFallbackAttemptedRows": 87,
+  "artmoreFallbackRecoveredRows": 86,
   "artmoreFallbackOutcomeCounts": {
-    "recovered": 79,
+    "recovered": 86,
     "artmore-title-mismatch": 1
   },
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
