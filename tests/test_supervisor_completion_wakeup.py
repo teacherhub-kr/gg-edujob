@@ -46,7 +46,7 @@ class SupervisorCompletionWakeupTests(unittest.TestCase):
         self.assertIn("python scripts/private_refresh_policy.py", self.source)
         self.assertIn("python scripts/seoul_gyeonggi_watchdog.py", self.source)
         self.assertIn("Production workflow already active; no duplicate dispatch", self.source)
-        self.assertIn("select(.event == \\"workflow_dispatch\\"", self.source)
+        self.assertIn('select(.event == "workflow_dispatch"', self.source)
 
 
 if __name__ == "__main__":
