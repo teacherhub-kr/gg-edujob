@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-23T22:07:16+09:00",
+  "generatedAt": "2026-11-24T09:51:07+09:00",
   "healthy": true,
-  "total": 9843,
-  "official": 4835,
-  "privateDisplayed": 5008,
+  "total": 9534,
+  "official": 4541,
+  "privateDisplayed": 4993,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 5008,
-  "privateRepresentedDirectly": 5008,
+  "privateStableIds": 4993,
+  "privateRepresentedDirectly": 4993,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,7 +44,7 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 132,
+  "verifiedLessoninfoCultureLinks": 131,
   "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -167,8 +167,13 @@
       "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 126,
+  "failClosedLessoninfoCultureLinks": 128,
   "failClosedLessoninfoCultureLinkExamples": [
+    {
+      "source": "lessoninfo",
+      "sourceIdentity": "culture:id:95765",
+      "title": "2026년 제4회 (재)여주세종문화관광재단 기간제근로자 채용 공고"
+    },
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95661",
@@ -263,14 +268,9 @@
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95530",
       "title": "부산광역시 임기제공무원 임용시험 공고(클래식부산 부산오페라하우스 공연기획팀장/무대기술팀장)"
-    },
-    {
-      "source": "lessoninfo",
-      "sourceIdentity": "culture:id:95523",
-      "title": "[국립아시아문화전당] 2026 ACC 크리에이터스 레지던시 전시 운영요원 모집"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 132,
+  "projectedVerifiedLessoninfoCultureLinks": 131,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -431,23 +431,23 @@
   "sourceValidationPopulations": {
     "lessoninfo": {
       "rawCount": 637,
-      "currentCount": 623
+      "currentCount": 624
     },
     "cleaneye": {
       "rawCount": 18,
       "currentCount": 0
     },
     "jobteacher": {
-      "rawCount": 4083,
-      "currentCount": 4083
+      "rawCount": 4082,
+      "currentCount": 4082
     },
     "artmore": {
-      "rawCount": 200,
-      "currentCount": 200
+      "rawCount": 198,
+      "currentCount": 198
     },
     "gonggonggangsa": {
-      "rawCount": 101,
-      "currentCount": 101
+      "rawCount": 88,
+      "currentCount": 88
     },
     "seekle": {
       "rawCount": 7,
