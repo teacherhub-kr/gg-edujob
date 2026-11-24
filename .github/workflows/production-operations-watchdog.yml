@@ -3,6 +3,18 @@ name: Production operations watchdog
 
 on:
   workflow_dispatch:
+  # Wake the EXISTING supervisor after major production workflows finish.
+  # Avoid an additional timer and keep all circuit/backoff policies in one place.
+  workflow_run:
+    workflows:
+      - 'Verified Seoul-Gyeonggi official refresh (Incheon isolated)'
+      - 'Unified recruitment search'
+      - 'Independent guarded private recruitment scheduler'
+    types: [completed]
+  pull_request:
+    paths:
+      - '.github/workflows/production-operations-watchdog.yml'
+      - 'tests/test_supervisor_completion_wakeup.py'
   schedule:
     # One scheduled supervisor; change the cron expressions on the fresh workflow identity
     # so GitHub re-registers the disabled schedule. Cadence and independent slots stay unchanged.
@@ -21,7 +33,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify safe event-driven supervisor wakeups
+        run: python -m unittest tests.test_supervisor_completion_wakeup
+
   watchdog:
+    # Reject PR-triggered and non-production upstream completions.
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       (github.event.workflow_run.event == 'workflow_dispatch' ||
+        github.event.workflow_run.event == 'schedule'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
