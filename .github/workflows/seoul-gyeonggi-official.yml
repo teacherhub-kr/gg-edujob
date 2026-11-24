@@ -10,6 +10,7 @@ on:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
       - 'scripts/publish_seoul_gyeonggi_snapshot.py'
+      - 'scripts/revalidate_regional_publication.py'
       - 'scripts/reconcile_seoul_central_ids.py'
       - 'scripts/verify_central_pagination.py'
       - 'tests/test_seoul_central_id_reconciliation.py'
@@ -165,8 +166,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Static and regression contracts (no Incheon network calls)
         run: |
-          python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py scripts/quarantine_verified_delisted_support.py
-          PYTHONPATH=scripts python -m unittest tests.test_verified_delisted_support tests.test_seoul_central_id_reconciliation tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
+          python -m py_compile scripts/revalidate_regional_publication.py scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py scripts/quarantine_verified_delisted_support.py
+          python scripts/revalidate_regional_publication.py
+          PYTHONPATH=scripts python -m unittest tests.test_publication_transaction tests.test_verified_delisted_support tests.test_seoul_central_id_reconciliation tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |
@@ -228,7 +230,18 @@ jobs:
           python scripts/publication_transaction.py publish \
             --baseline-file /tmp/sg-official-base-sha \
             --status-file /tmp/sg-official-transaction.json \
-            --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)'
+            --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)' \
+            --allow-concurrent-path 'jobteacher_*.json' \
+            --allow-concurrent-path 'gonggonggangsa_*.json' \
+            --allow-concurrent-path 'lessoninfo_*.json' \
+            --allow-concurrent-path 'artmore_*.json' \
+            --allow-concurrent-path 'boramyc_*.json' \
+            --allow-concurrent-path 'seekle_*.json' \
+            --allow-concurrent-path 'cleaneye_*.json' \
+            --allow-concurrent-path 'unified_*.json' \
+            --allow-concurrent-path 'direct_post_link_report.json' \
+            --allow-concurrent-path 'cultural_foundation_coverage_report.json' \
+            --revalidate-command 'python scripts/revalidate_regional_publication.py'
           python - <<'PY'
           import json
           from pathlib import Path
