@@ -47,7 +47,9 @@
     var stale=[],unverified=[];
     Object.keys(sources).forEach(function(key){
       var source=sources[key];
-      if(!source||source.publicationEnabled!==true||Number(source.count||0)<=0)return;
+      // A zero-count source may be empty precisely because collection is stale.
+      // Include configured sources even when fail-closed publication disabled them.
+      if(!source||(source.publicationEnabled!==true&&source.configuredPublicationEnabled!==true))return;
       var evidence=source.verificationFreshness||{};
       var when=Date.parse(String(evidence.evidenceAt||''));
       var limit=Number(evidence.maxAgeHours);
