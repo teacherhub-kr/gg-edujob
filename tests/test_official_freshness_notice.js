@@ -61,12 +61,16 @@ const priv={
      verificationFreshness:{state:'stale',maxAgeHours:24,evidenceAt:'2026-10-12T00:00:00Z'}}
  }
 };
-assert.deepEqual(freshness.classifyPrivate(priv,now).stale,['레슨인포']);
+assert.deepEqual(freshness.classifyPrivate(priv,now).stale,['레슨인포','클린아이'],
+ 'Zero-count publication-enabled stale sources must be visible to users');
 assert.equal(freshness.classifyPrivate(priv,now).status,'attention');
 assert.equal(freshness.classifyPrivate({privateSources:{}},now).status,'fresh');
 assert.equal(freshness.classifyPrivate({},now).status,'unknown');
 priv.privateSources.lessoninfo.verificationFreshness={
  state:'fresh',maxAgeHours:6,evidenceAt:'2026-11-05T00:00:00Z'
+};
+priv.privateSources.cleaneye.verificationFreshness={
+ state:'fresh',maxAgeHours:24,evidenceAt:'2026-11-05T00:00:00Z'
 };
 assert.equal(freshness.classifyPrivate(priv,now).status,'fresh');
 assert.equal(freshness.classifyPrivate(priv,now+8*60*60*1000).status,'attention',
@@ -76,4 +80,14 @@ priv.privateSources.jobteacher.verificationFreshness={
 };
 assert.deepEqual(freshness.classifyPrivate(priv,now).unverified,['잡티처']);
 
+// Sources configured for publication but fail-closed from the actual feed
+// still warrant a freshness notice; truly disabled sources do not.
+const zeroCountDegraded={privateSources:{
+  seekle:{name:'시클',publicationEnabled:false,configuredPublicationEnabled:true,count:0,
+    verificationFreshness:{state:'stale',maxAgeHours:6,evidenceAt:'2026-10-12T00:00:00Z'}},
+  excluded:{name:'사용중지',publicationEnabled:false,configuredPublicationEnabled:false,count:0,
+    verificationFreshness:{state:'stale',maxAgeHours:6,evidenceAt:'2026-10-12T00:00:00Z'}}
+}};
+assert.deepEqual(freshness.classifyPrivate(zeroCountDegraded,now).stale,['시클'],
+  'Fail-closed configured source should not become invisible when it has zero listings');
 console.log('Official+private recruitment freshness warnings + official direct links: PASS');
