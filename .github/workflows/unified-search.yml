@@ -203,6 +203,9 @@ jobs:
         id: foundation_degrade
         if: steps.foundation_reconcile.outcome == 'failure' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success'
         run: python scripts/mark_foundation_degraded.py
+      - name: Exercise latest-main Unified rebuild on PR without publishing
+        if: github.event_name == 'pull_request' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success' && (steps.foundation_reconcile.outcome == 'success' || steps.foundation_degrade.outcome == 'success')
+        run: python scripts/revalidate_unified_publication.py
       - name: Publish verified search transaction
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success' && (steps.foundation_reconcile.outcome == 'success' || steps.foundation_degrade.outcome == 'success')
         shell: bash
