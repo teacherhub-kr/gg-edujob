@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-24T22:57:30+09:00",
+  "generatedAt": "2026-11-25T05:01:22+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4551,
+  "privateJobs": 4534,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 145
+      "canonicalCount": 144
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4087
+      "canonicalCount": 4086
     },
     "artmore": {
       "name": "아트모아",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 199
+      "canonicalCount": 189
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 88
+      "canonicalCount": 83
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 145,
+      "jobs": 144,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 8
@@ -75,22 +75,22 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4087,
+      "jobs": 4086,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 199,
+      "jobs": 189,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 8
     },
     "gonggonggangsa": {
-      "jobs": 88,
+      "jobs": 83,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 4
+      "officialGapCandidates": 5
     },
     "seekle": {
       "jobs": 7,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 55,
+  "officialGapCandidates": 56,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -722,6 +722,18 @@
       ],
       "registered": "2026-08-14",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=94583",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "gonggonggangsa",
+      "privateSourceName": "공공강사",
+      "privateId": "gonggonggangsa:24677",
+      "privateTitle": "2027년 청소년방과후아카데미 수학 강사 모집 공고 - 수학",
+      "provinces": [
+        "경기"
+      ],
+      "registered": "2026-11-25",
+      "url": "https://00gangsa.com/recruitments/24677",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

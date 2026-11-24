@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-24T22:57:29+09:00",
+  "generatedAt": "2026-11-25T05:01:20+09:00",
   "healthy": true,
-  "total": 10042,
-  "official": 5047,
-  "privateDisplayed": 4995,
+  "total": 9828,
+  "official": 4847,
+  "privateDisplayed": 4981,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 4995,
-  "privateRepresentedDirectly": 4995,
+  "privateStableIds": 4981,
+  "privateRepresentedDirectly": 4981,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -44,13 +44,13 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 140,
+  "verifiedLessoninfoCultureLinks": 139,
   "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95787",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95787",
-      "resolvedUrlType": "official"
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95787&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
     },
     {
       "source": "lessoninfo",
@@ -167,7 +167,7 @@
       "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 116,
+  "failClosedLessoninfoCultureLinks": 119,
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -270,13 +270,13 @@
       "title": "[프란츠클래식] 공연·음악공간 홍보 운영 담당자 모집(신입·경력)"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 140,
+  "projectedVerifiedLessoninfoCultureLinks": 139,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95787",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95787",
-      "resolvedUrlType": "official"
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95787&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
     },
     {
       "source": "lessoninfo",
@@ -425,24 +425,24 @@
   "badCrossSourceAliasEvidence": 0,
   "sourceValidationPopulations": {
     "lessoninfo": {
-      "rawCount": 633,
-      "currentCount": 620
+      "rawCount": 635,
+      "currentCount": 622
     },
     "cleaneye": {
       "rawCount": 18,
       "currentCount": 0
     },
     "jobteacher": {
-      "rawCount": 4087,
-      "currentCount": 4087
+      "rawCount": 4086,
+      "currentCount": 4086
     },
     "artmore": {
-      "rawCount": 199,
-      "currentCount": 199
+      "rawCount": 189,
+      "currentCount": 189
     },
     "gonggonggangsa": {
-      "rawCount": 88,
-      "currentCount": 88
+      "rawCount": 83,
+      "currentCount": 83
     },
     "seekle": {
       "rawCount": 7,
