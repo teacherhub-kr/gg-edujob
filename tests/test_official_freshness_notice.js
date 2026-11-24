@@ -90,4 +90,20 @@ const zeroCountDegraded={privateSources:{
 }};
 assert.deepEqual(freshness.classifyPrivate(zeroCountDegraded,now).stale,['시클'],
   'Fail-closed configured source should not become invisible when it has zero listings');
+// A source may have a recently timestamped report yet fail the source health
+// or completeness contract: it is still not a healthy publication source.
+const freshButUnhealthy={privateSources:{
+  broken:{name:'검증실패',publicationEnabled:false,configuredPublicationEnabled:true,
+    degraded:true,ok:false,count:0,
+    verificationFreshness:{state:'fresh',maxAgeHours:6,evidenceAt:'2026-11-05T00:00:00Z'}},
+  rejected:{name:'수집오류',publicationEnabled:false,configuredPublicationEnabled:true,
+    ok:false,count:0,
+    verificationFreshness:{state:'fresh',maxAgeHours:6,evidenceAt:'2026-11-05T00:00:00Z'}}
+}};
+const healthStatus=freshness.classifyPrivate(freshButUnhealthy,now);
+assert.equal(healthStatus.status,'attention');
+assert.deepEqual(healthStatus.degraded,['검증실패','수집오류'],
+  'Healthy timestamp cannot conceal fail-closed source error');
+assert.deepEqual(healthStatus.stale,[]);
+assert.deepEqual(healthStatus.unverified,[]);
 console.log('Official+private recruitment freshness warnings + official direct links: PASS');
