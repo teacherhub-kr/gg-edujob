@@ -275,5 +275,71 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIsNone(crawler.ifac_detail_url(anchor,board))
 
 
+    def test_sfac_js_page_with_live_post_does_not_claim_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/jobs"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고 총 1건 의 공고가 있습니다. 2026년 서울문화재단 제3차 직원 공개채용 접수대기</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            with self.assertRaisesRegex(RuntimeError,"do not claim zero jobs"):
+                crawler.sfac_careerlink_probe(None)
+
+    def test_sfac_brand_only_shell_does_not_claim_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            with self.assertRaisesRegex(RuntimeError,"do not claim zero jobs"):
+                crawler.sfac_careerlink_probe(None)
+
+    def test_sfac_explicit_empty_state_may_prove_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/jobs"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고 현재 게시중인 공고가 없습니다.</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            result=crawler.sfac_careerlink_probe(None)
+        self.assertTrue(result["explicitEmpty"])
+        self.assertEqual(result["currentJobs"],0)
+
+    def test_sfac_timeout_falls_back_only_to_official_foundation_board(self):
+        class Session:
+            def __enter__(self): return self
+            def __exit__(self,*args): return False
+        foundation={"id":"seoul:metropolitan","name":"서울문화재단","region":"서울",
+                    "officialRecruitmentUrl":"https://sfac.saramin.co.kr/old"}
+        valid=[{"sourceIdentity":"official-foundation:sfac:verified","foundationRegistryId":"seoul:metropolitan",
+                "url":"https://www.sfac.or.kr/site/SFAC_KOR/ex/bbs/ViewSfac.do?bcIdx=123456&cbIdx=964",
+                "title":"서울문화재단 직원 공개채용","registered":"2026-11-16"}]
+        with patch.object(crawler,"make_session",return_value=Session()):
+            with patch.object(crawler,"sfac_rows",side_effect=crawler.requests.exceptions.ConnectTimeout("old site timeout")):
+                with patch.object(crawler,"generic_official_rows",return_value=(valid,{"identityVerified":True})) as generic:
+                    with patch.object(crawler,"sfac_careerlink_probe") as secondary:
+                        rows,report,unsupported,error=crawler.collect_board(foundation)
+        self.assertIsNone(error)
+        self.assertIsNone(unsupported)
+        self.assertEqual(rows,valid)
+        self.assertTrue(report["healthy"])
+        self.assertEqual(report["fallbackOfficialBoardUrl"],crawler.SFAC_FIRST_PARTY_BOARD_URL)
+        self.assertIn("www.sfac.or.kr",crawler.GENERIC_OFFICIAL_HOSTS)
+        self.assertEqual(generic.call_args.args[2],crawler.SFAC_FIRST_PARTY_BOARD_URL)
+        secondary.assert_not_called()
+
+    def test_sfac_unverified_fallback_still_fails_closed(self):
+        class Session:
+            def __enter__(self): return self
+            def __exit__(self,*args): return False
+        foundation={"id":"seoul:metropolitan","name":"서울문화재단",
+                    "officialRecruitmentUrl":"https://sfac.saramin.co.kr/old"}
+        with patch.object(crawler,"make_session",return_value=Session()):
+            with patch.object(crawler,"sfac_rows",side_effect=crawler.requests.exceptions.ConnectTimeout("blocked")):
+                with patch.object(crawler,"generic_official_rows",return_value=([],{"identityVerified":True})):
+                    rows,report,unsupported,error=crawler.collect_board(foundation)
+        self.assertEqual(rows,[])
+        self.assertFalse(report["healthy"])
+        self.assertIn("no verified current detail",error["error"])
+
+
 if __name__ == "__main__":
     unittest.main()
