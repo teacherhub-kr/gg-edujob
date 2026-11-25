@@ -381,5 +381,30 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(listing.call_count,3)
 
 
+    def test_unknown_foundation_board_diagnostic_never_exposes_query_values(self):
+        html=BeautifulSoup(
+            '<html><body><h3>하남문화재단 채용</h3><table><tr onclick="openRow(53309,\\\'do-not-log\\\')">'
+            '<td><a href="/www/selectGosiData.do?not_ancmt_mgt_no=53309&session_token=SECRET" '
+            'onclick="openRow(53309)">하남문화재단 직원 채용 공고</a></td>'
+            '</tr></table></body></html>',
+            "html.parser",
+        )
+        details=crawler.sanitized_unparsed_board_structure(html)
+        encoded=json.dumps(details,ensure_ascii=False)
+        self.assertIn("not_ancmt_mgt_no",encoded)
+        self.assertIn("hrefPath",encoded)
+        self.assertNotIn("SECRET",encoded)
+        self.assertNotIn("53309&session_token",encoded)
+        self.assertNotIn("do-not-log",encoded)
+        self.assertEqual(details["rowsTotal"],1)
+        class Response:
+            url="https://www.hanam.go.kr/www/selectGosiList.do?key=174"
+            text=str(html)
+            content=str(html).encode()
+        with self.assertRaisesRegex(RuntimeError,"safeStructure=") as raised:
+            crawler.verify_board_surface(html,{"id":"gyeonggi:hanam","name":"하남문화재단"},Response(),{})
+        self.assertNotIn("SECRET",str(raised.exception))
+
+
 if __name__ == "__main__":
     unittest.main()
