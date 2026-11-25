@@ -156,6 +156,40 @@ def seohae_shared_board_zero_is_structurally_verified(soup, foundation, response
     return False
 
 
+def sanitized_unparsed_board_structure(soup):
+    """Bounded failure evidence: public titles and URL structure, never query values or scripts."""
+    hints=[]
+    for a in soup.find_all("a",href=True):
+        label=base.normalize_space(a.get_text(" ",strip=True))
+        surrounding=base.normalize_space(a.parent.get_text(" ",strip=True)) if a.parent else ""
+        if not (RECRUITMENT_RE.search(label) or "문화재단" in label or "문화재단" in surrounding):
+            continue
+        href=str(a.get("href") or "").strip()
+        parsed=urlparse(href)
+        hints.append({
+            "text":label[:90],
+            "hrefScheme":parsed.scheme,
+            "hrefPath":parsed.path[:120],
+            "queryKeys":sorted(parse_qs(parsed.query).keys())[:12],
+            "onclickPresent":a.has_attr("onclick"),
+        })
+        if len(hints)>=5:
+            break
+    rows=[]
+    for row in soup.find_all("tr"):
+        content=base.normalize_space(row.get_text(" ",strip=True))
+        if "문화재단" in content and ("채용" in content or "모집" in content):
+            rows.append({"text":content[:130],"onclickPresent":row.has_attr("onclick")})
+        if len(rows)>=3:
+            break
+    return {
+        "anchorsTotal":len(soup.find_all("a",href=True)),
+        "rowsTotal":len(soup.find_all("tr")),
+        "candidateAnchorHints":hints,
+        "foundationRowHints":rows,
+    }
+
+
 def verify_board_surface(soup,foundation,response,candidates):
     visible=base.normalize_space(soup.get_text(" ",strip=True))
     if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
@@ -182,7 +216,8 @@ def verify_board_surface(soup,foundation,response,candidates):
         and seohae_shared_board_zero_is_structurally_verified(soup,foundation,response)
     )
     if not candidates and not EXPLICIT_EMPTY_RE.search(visible) and not shared_zero_verified:
-        raise RuntimeError("official board has no parseable details and no explicit empty state")
+        shape=sanitized_unparsed_board_structure(soup)
+        raise RuntimeError("official board has no parseable details and no explicit empty state; safeStructure="+json.dumps(shape,ensure_ascii=False))
     return True
 
 
