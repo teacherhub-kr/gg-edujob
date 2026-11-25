@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-25T13:40:26+09:00",
+  "generatedAt": "2026-11-25T18:54:32+09:00",
   "healthy": true,
-  "total": 9672,
+  "total": 9318,
   "official": 4687,
-  "privateDisplayed": 4985,
+  "privateDisplayed": 4631,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 4985,
-  "privateRepresentedDirectly": 4985,
+  "privateStableIds": 4631,
+  "privateRepresentedDirectly": 4631,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -41,6 +41,8 @@
   "projectedNonMetroPrivate": 0,
   "bannedPrivate": 0,
   "expiredPrivate": 0,
+  "publishedClosedOrExpired": 0,
+  "publishedClosedOrExpiredExamples": [],
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
@@ -426,7 +428,7 @@
   "sourceValidationPopulations": {
     "lessoninfo": {
       "rawCount": 635,
-      "currentCount": 622
+      "currentCount": 268
     },
     "cleaneye": {
       "rawCount": 18,
