@@ -157,12 +157,11 @@ def seohae_shared_board_zero_is_structurally_verified(soup, foundation, response
 
 
 def sanitized_unparsed_board_structure(soup):
-    """Bounded failure evidence: public titles and URL structure, never query values or scripts."""
+    """Bounded public HTML failure evidence, never query values, sessions or JS bodies."""
     hints=[]
     for a in soup.find_all("a",href=True):
         label=base.normalize_space(a.get_text(" ",strip=True))
-        surrounding=base.normalize_space(a.parent.get_text(" ",strip=True)) if a.parent else ""
-        if not (RECRUITMENT_RE.search(label) or "문화재단" in label or "문화재단" in surrounding):
+        if not (len(label)>=11 and RECRUITMENT_RE.search(label)):
             continue
         href=str(a.get("href") or "").strip()
         parsed=urlparse(href)
@@ -173,20 +172,21 @@ def sanitized_unparsed_board_structure(soup):
             "queryKeys":sorted(parse_qs(parsed.query).keys())[:12],
             "onclickPresent":a.has_attr("onclick"),
         })
-        if len(hints)>=5:
+        if len(hints)>=8:
             break
     rows=[]
     for row in soup.find_all("tr"):
+        if not row.find_all("td"):
+            continue
         content=base.normalize_space(row.get_text(" ",strip=True))
-        if "문화재단" in content and ("채용" in content or "모집" in content):
-            rows.append({"text":content[:130],"onclickPresent":row.has_attr("onclick")})
-        if len(rows)>=3:
+        rows.append({"publicText":content[:140],"onclickPresent":row.has_attr("onclick")})
+        if len(rows)>=5:
             break
     return {
         "anchorsTotal":len(soup.find_all("a",href=True)),
         "rowsTotal":len(soup.find_all("tr")),
         "candidateAnchorHints":hints,
-        "foundationRowHints":rows,
+        "firstTableRows":rows,
     }
 
 
