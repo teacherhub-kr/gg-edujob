@@ -349,15 +349,18 @@ class CulturalFoundationMetroTests(unittest.TestCase):
                 self.text="<html>하남문화재단 채용공고</html>"
                 self.content=self.text.encode()
         initial=Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174")
-        alternate=Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL)
+        focused=Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174&"+crawler.urlencode({"searchKrwd":"하남문화재단"}))
+        alternate=Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL+crawler.urlencode({"searchKrwd":"하남문화재단"}))
         html=BeautifulSoup("<html>하남문화재단 채용공고</html>","html.parser")
         native={"53309":{"url":"https://www.hanam.go.kr/sotong/selectGosiData.do?key=9440&not_ancmt_mgt_no=53309&not_ancmt_se_code=05","fallbackTitle":"2026년 제6회 하남문화재단 직원 채용 공고"}}
-        with patch.object(crawler,"list_detail_candidates",side_effect=[(initial,html,{},0),(alternate,html,native,1)]) as listing:
+        with patch.object(crawler,"list_detail_candidates",side_effect=[(initial,html,{},0),(focused,html,{},0),(alternate,html,native,1)]) as listing:
             with patch.object(crawler,"verify_board_surface",side_effect=RuntimeError("stop-before-detail")) as verify:
                 with self.assertRaisesRegex(RuntimeError,"stop-before-detail"):
                     crawler.generic_official_rows(None,foundation,initial.url)
-        self.assertEqual(listing.call_count,2)
-        self.assertEqual(listing.call_args_list[1].args[2],crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL)
+        self.assertEqual(listing.call_count,3)
+        self.assertIn("searchKrwd=",listing.call_args_list[1].args[2])
+        self.assertIn("www.hanam.go.kr/www",listing.call_args_list[1].args[2])
+        self.assertEqual(listing.call_args_list[2].args[2],alternate.url)
         self.assertIs(verify.call_args.args[2],alternate)
         self.assertEqual(verify.call_args.args[3],native)
 
@@ -370,11 +373,12 @@ class CulturalFoundationMetroTests(unittest.TestCase):
                 self.content=self.text.encode()
         html=BeautifulSoup("<html>하남문화재단 직원 채용 공고</html>","html.parser")
         responses=[(Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174"),html,{},0),
-                   (Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL),html,{},0)]
+                   (Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174&"+crawler.urlencode({"searchKrwd":"하남문화재단"})),html,{},0),
+                   (Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL+crawler.urlencode({"searchKrwd":"하남문화재단"})),html,{},0)]
         with patch.object(crawler,"list_detail_candidates",side_effect=responses) as listing:
             with self.assertRaisesRegex(RuntimeError,"no parseable details"):
                 crawler.generic_official_rows(None,foundation,responses[0][0].url)
-        self.assertEqual(listing.call_count,2)
+        self.assertEqual(listing.call_count,3)
 
 
 if __name__ == "__main__":
