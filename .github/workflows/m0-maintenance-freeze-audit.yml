@@ -25,6 +25,7 @@ on:
       - 'tests/test_cleaneye_retry_contract.py'
       - 'tests/test_jobteacher_workflow_contract.py'
       - 'app.js'
+      - 'tests/test_closed_jobs_visibility.js'
       - 'app.css'
       - 'index.html'
       - 'manifest.webmanifest'
@@ -44,6 +45,10 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify active recruitment cards expire at KST cutoff
+        run: |
+          node --check app.js
+          node tests/test_closed_jobs_visibility.js
       - name: Verify CleanEye bounded bootstrap retry
         run: python -m unittest tests.test_cleaneye_retry_contract
       - name: Verify JobTeacher publication is fail-closed
