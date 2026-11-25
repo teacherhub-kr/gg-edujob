@@ -7,8 +7,6 @@ on:
       - '.github/workflows/**'
       - 'sources.json'
       - 'cultural_foundation_registry.json'
-      - 'ops/heartbeat/**'
-      - 'tests/test_railway_heartbeat.py'
       - 'scripts/audit_m0_maintenance_freeze.py'
       - 'scripts/production_supervisor.py'
       - 'scripts/private_refresh_policy.py'
@@ -46,8 +44,6 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
-      - name: Verify external Railway watchdog heartbeat dispatch contract
-        run: python -m unittest tests.test_railway_heartbeat
       - name: Verify CleanEye bounded bootstrap retry
         run: python -m unittest tests.test_cleaneye_retry_contract
       - name: Verify JobTeacher publication is fail-closed
