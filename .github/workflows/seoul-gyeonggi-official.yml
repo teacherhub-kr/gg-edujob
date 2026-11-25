@@ -1,11 +1,11 @@
-# 2026-11-21: re-register this existing schedule after another confirmed cross-workflow delivery gap; cron cadence unchanged.
+# 2026-11-25: tighten existing read-only heartbeat from 3h to 1h after observed watchdog schedule delivery gaps.
 name: Verified Seoul-Gyeonggi official refresh (Incheon isolated)
 on:
   workflow_dispatch:
-  # Direct 3-hour official refresh. The scheduled job only dispatches when
+  # Hourly supervisor heartbeat. The scheduled job only dispatches collection when
   # the verified regional policy says collection is due and safe.
   schedule:
-    - cron: '17 */3 * * *'
+    - cron: '17 * * * *'
   pull_request:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
