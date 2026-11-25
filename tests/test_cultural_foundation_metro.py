@@ -341,5 +341,41 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIn("no verified current detail",error["error"])
 
 
+    def test_hanam_verified_alternate_municipal_board_on_no_detail_links(self):
+        foundation={"id":"gyeonggi:hanam","name":"하남문화재단"}
+        class Response:
+            def __init__(self,url):
+                self.url=url
+                self.text="<html>하남문화재단 채용공고</html>"
+                self.content=self.text.encode()
+        initial=Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174")
+        alternate=Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL)
+        html=BeautifulSoup("<html>하남문화재단 채용공고</html>","html.parser")
+        native={"53309":{"url":"https://www.hanam.go.kr/sotong/selectGosiData.do?key=9440&not_ancmt_mgt_no=53309&not_ancmt_se_code=05","fallbackTitle":"2026년 제6회 하남문화재단 직원 채용 공고"}}
+        with patch.object(crawler,"list_detail_candidates",side_effect=[(initial,html,{},0),(alternate,html,native,1)]) as listing:
+            with patch.object(crawler,"verify_board_surface",side_effect=RuntimeError("stop-before-detail")) as verify:
+                with self.assertRaisesRegex(RuntimeError,"stop-before-detail"):
+                    crawler.generic_official_rows(None,foundation,initial.url)
+        self.assertEqual(listing.call_count,2)
+        self.assertEqual(listing.call_args_list[1].args[2],crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL)
+        self.assertIs(verify.call_args.args[2],alternate)
+        self.assertEqual(verify.call_args.args[3],native)
+
+    def test_hanam_unparsed_on_both_official_routes_remains_fail_closed(self):
+        foundation={"id":"gyeonggi:hanam","name":"하남문화재단"}
+        class Response:
+            def __init__(self,url):
+                self.url=url
+                self.text="<html>하남문화재단 직원 채용 공고</html>"
+                self.content=self.text.encode()
+        html=BeautifulSoup("<html>하남문화재단 직원 채용 공고</html>","html.parser")
+        responses=[(Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174"),html,{},0),
+                   (Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL),html,{},0)]
+        with patch.object(crawler,"list_detail_candidates",side_effect=responses) as listing:
+            with self.assertRaisesRegex(RuntimeError,"no parseable details"):
+                crawler.generic_official_rows(None,foundation,responses[0][0].url)
+        self.assertEqual(listing.call_count,2)
+
+
 if __name__ == "__main__":
     unittest.main()
