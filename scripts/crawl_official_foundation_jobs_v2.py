@@ -308,19 +308,26 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
-    # Hanam City publishes the same official notices on a second municipal
-    # surface. Only try that first-party route when the configured board
-    # yields no exact recruitment detail links; never invent a posting.
+    # A municipal job board page is not a complete foundation search: its
+    # page one can be crowded out by unrelated municipal hiring notices.
+    # Search the same official host for the exact foundation name and then
+    # the alternate official municipal portal. Both remain fail-closed.
     fallback_from=""
     if str(foundation.get("id") or "")=="gyeonggi:hanam" and not candidates:
         host=(urlparse(str(board_response.url or "")).hostname or "").lower()
         if host in {"www.hanam.go.kr","hanam.go.kr"}:
-            alternative,alternative_soup,alternative_candidates,alternative_dated=list_detail_candidates(
-                session,foundation,HANAM_ALTERNATE_OFFICIAL_BOARD_URL
-            )
-            if alternative_candidates:
-                fallback_from=board_response.url
-                board_response,soup,candidates,dated_list_rows=alternative,alternative_soup,alternative_candidates,alternative_dated
+            encoded_term=urlencode({"searchKrwd":"하남문화재단"})
+            focused_url=re.sub(r"searchKrwd=[^&]*",encoded_term,board_url)
+            if focused_url==board_url:
+                focused_url=board_url+("&" if "?" in board_url else "?")+encoded_term
+            for official_url in (focused_url,HANAM_ALTERNATE_OFFICIAL_BOARD_URL+encoded_term):
+                alternative,alternative_soup,alternative_candidates,alternative_dated=list_detail_candidates(
+                    session,foundation,official_url
+                )
+                if alternative_candidates:
+                    fallback_from=board_response.url
+                    board_response,soup,candidates,dated_list_rows=alternative,alternative_soup,alternative_candidates,alternative_dated
+                    break
     identity_ok=verify_board_surface(soup,foundation,board_response,candidates)
     jobs=[]
     inspected=0
