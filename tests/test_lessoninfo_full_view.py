@@ -19,11 +19,18 @@ from private_source_registry import lessoninfo_full_candidate_publishable, merge
 
 
 class LessoninfoFullViewTests(unittest.TestCase):
-    def test_unified_publishable_excludes_only_explicit_out_of_scope_and_non_recruitment(self):
+    def test_unified_publishable_never_reintroduces_explicitly_closed_posts(self):
+        from datetime import datetime, timedelta
+        from build_unified_search import KST
+        today = datetime.now(KST).date()
         self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "current"}))
-        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "deadline-unknown"}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "deadline-unknown", "registered": today.isoformat()}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "deadline-unknown", "registered": (today - timedelta(days=15)).isoformat()}))
         self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "unverified-link"}))
-        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "closed"}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "closed"}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "current", "statusLabel": "마감"}))
+        self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "current", "applyEnd": (today - timedelta(days=1)).isoformat()}))
+        self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "current", "applyEnd": today.isoformat()}))
         self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope"}))
         self.assertTrue(lessoninfo_full_candidate_publishable({"statusGroup": "out-of-scope", "province": "인천"}))
         self.assertFalse(lessoninfo_full_candidate_publishable({"statusGroup": "excluded"}))

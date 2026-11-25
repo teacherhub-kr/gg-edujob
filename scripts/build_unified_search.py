@@ -50,6 +50,35 @@ def parse_date(value):
         return None
 
 
+def deadline_expired(value, now=None):
+    """Recruitment closes on its documented KST date or exact time.
+
+    Date-only deadlines remain open through the entire closing day; a
+    timestamp such as 2026-11-25 17:00 closes after 17:00 KST, not midnight.
+    """
+    raw = str(value or "")
+    match = DATE_RE.search(raw)
+    if not match:
+        return False
+    try:
+        end_day = datetime(int(match.group(1)), int(match.group(2)), int(match.group(3)), tzinfo=KST)
+    except ValueError:
+        return False
+    now = now or datetime.now(KST)
+    if now.tzinfo is None:
+        raise ValueError("deadline comparison requires timezone-aware time")
+    now = now.astimezone(KST)
+    suffix = raw[match.end():]
+    clock = re.match(r"\s*(?:T|오전\s*|오후\s*)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?", suffix)
+    if clock:
+        h, m, sec = map(int, (clock.group(1), clock.group(2), clock.group(3) or 0))
+        if h > 23 or m > 59 or sec > 59:
+            return False
+        end_at = end_day.replace(hour=h, minute=m, second=sec)
+        return now > end_at
+    return end_day.date() < now.date()
+
+
 def norm(value):
     s = unicodedata.normalize("NFKC", str(value or "")).lower()
     s = re.sub(r"[\u200b-\u200d\ufeff]", "", s)
@@ -86,7 +115,7 @@ def official_current(job, protected_ids):
     if RESULT_RE.search(title):
         return False
     end = parse_date(job.get("applyEnd"))
-    if end and end < TODAY:
+    if end and (end < TODAY or deadline_expired(job.get("applyEnd"))):
         return False
     reg = parse_date(job.get("registered"))
     if reg and reg > TODAY:
@@ -108,7 +137,7 @@ def private_current(job):
     if job.get("province") not in {"서울", "경기"}:
         return False
     end = parse_date(job.get("applyEnd"))
-    if end and end < TODAY:
+    if end and (end < TODAY or deadline_expired(job.get("applyEnd"))):
         return False
     reg = parse_date(job.get("registered"))
     if reg and reg > TODAY:

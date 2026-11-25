@@ -232,7 +232,7 @@ def foundation_official_current(job):
     deadline = base.parse_date(job.get("applyEnd"))
     if not registered or registered > base.TODAY or registered < base.TODAY - timedelta(days=120):
         return False
-    if deadline and (deadline < base.TODAY or registered > deadline):
+    if deadline and (base.deadline_expired(job.get("applyEnd")) or registered > deadline):
         return False
     if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=14)):
         return False
@@ -329,7 +329,7 @@ def main():
             enabled_private_sources+=1; canonical_private_total+=len(jobs); all_private.extend(projected)
         elif configured_enabled and not healthy: degraded_private_sources.append(spec["key"])
         unverified_links=sum(1 for j in selected if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
-        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"live-only-closed-excluded-14d-unknown-window" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
     stale_private_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="stale"]
     unknown_private_freshness_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="unknown"]
     remaining_private,explicit_aliases,ambiguous_aliases=base.merge_explicit_official_aliases(projected_official,all_private)
