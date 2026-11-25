@@ -18,6 +18,8 @@ on:
       - 'tests/test_supervisor_blocked_official_simulation.py'
       - 'tests/test_supervisor_decision_e2e.py'
       - 'tests/test_private_refresh_policy.py'
+      - 'scripts/pr_source_live_scope.py'
+      - 'tests/test_private_pr_live_scope.py'
       - 'tests/test_lessoninfo_publication_dependency.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_source_onboarding_workflow.py'
@@ -45,6 +47,8 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify private PR live-probe policy preserves direct source safety
+        run: python -m unittest tests.test_private_pr_live_scope
       - name: Verify active recruitment cards expire at KST cutoff
         run: |
           node --check app.js
