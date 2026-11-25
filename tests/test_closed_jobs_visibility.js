@@ -39,4 +39,21 @@ assert(!/\br\.active\b/.test(source),
 assert(source.includes("visibilitychange"),
   'returning to the tab must refresh expired results');
 
+for (const title of [
+  '[푸른솔유치원] 방과후 인력 채용(2차)(접수마감)',
+  '평택새빛초등학교 강사 구인 [구인완료]',
+  '대신초병설유치원 운영 인력 모집 재공고(채용마감)',
+  '방과후·돌봄 자원봉사자 모집 공고(2차)-접수 마감',
+]) {
+  assert.equal(afterCutoff.activeJob(j('2027-01-04', { title })), false,
+    'explicit title closure must override future deadline: ' + title);
+}
+for (const title of [
+  '2027년 서류 접수 마감일 변경 안내',
+  '기간제교사 채용 공고(2차)',
+  '서류 접수마감 시간 18시 공지',
+]) {
+  assert.equal(afterCutoff.activeJob(j('2027-01-04', { title })), true,
+    'ordinary deadline notice must not be falsely classified as closed: ' + title);
+}
 console.log('Closed and expired recruitment UI gates verified for KST cutoff and midnight');
