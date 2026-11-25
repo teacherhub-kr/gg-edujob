@@ -9,6 +9,8 @@ on:
   pull_request:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
+      - 'scripts/wake_overdue_supervisor.py'
+      - 'tests/test_wake_overdue_supervisor.py'
       - 'scripts/publish_seoul_gyeonggi_snapshot.py'
       - 'scripts/revalidate_regional_publication.py'
       - 'scripts/reconcile_seoul_central_ids.py'
@@ -65,6 +67,31 @@ jobs:
             --runs /tmp/sg-scheduled-runs.json \
             --unified-runs /tmp/sg-scheduled-unified.json \
             --github-output "$GITHUB_OUTPUT"
+      - name: Wake overdue existing production watchdog without bypassing safety
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          watchdog_runs="/tmp/sg-watchdog-runs.json"
+          fetch_runs() {
+            gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/production-operations-watchdog.yml/runs?per_page=100" > "$watchdog_runs"
+          }
+          fetch_runs
+          python scripts/wake_overdue_supervisor.py --runs "$watchdog_runs" --github-output /tmp/sg-watchdog-wake
+          if ! grep -qx 'wake=true' /tmp/sg-watchdog-wake; then
+            echo 'Watchdog is already fresh/active; no wake needed.'
+            exit 0
+          fi
+          # Recheck immediately before dispatch: a late schedule event may have arrived.
+          fetch_runs
+          python scripts/wake_overdue_supervisor.py --runs "$watchdog_runs" --github-output /tmp/sg-watchdog-recheck
+          if ! grep -qx 'wake=true' /tmp/sg-watchdog-recheck; then
+            echo 'Watchdog resumed between checks; skip redundant dispatch.'
+            exit 0
+          fi
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/production-operations-watchdog.yml/dispatches" -f ref=main
+          echo 'Woke overdue existing production watchdog; actual repair remains guarded by its own policy.'
       - name: Dispatch only independently due Seoul/Gyeonggi collection
         if: github.event_name == 'schedule' && steps.official_gate.outputs.action == 'seoul-gyeonggi'
         env:
@@ -164,6 +191,8 @@ jobs:
           python-version: '3.12'
       - name: Install verified collector dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Verify watchdog wake remains bounded and fail-closed
+        run: python -m unittest tests.test_wake_overdue_supervisor
       - name: Static and regression contracts (no Incheon network calls)
         run: |
           python -m py_compile scripts/revalidate_regional_publication.py scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py scripts/quarantine_verified_delisted_support.py
