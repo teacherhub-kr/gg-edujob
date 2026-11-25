@@ -246,7 +246,9 @@ const deadlineInstant=(v)=>{
   if(hour>23||minute>59||second>59)return null;
   return Date.UTC(year,month-1,day,hour-9,minute,second||0);
 };
+const explicitlyClosedTitle=(title)=>/(?:[\[(]\s*(?:구인\s*완료|채용\s*완료|채용\s*마감|접수\s*마감|모집\s*마감)\s*[\])]|[-—]\s*접수\s*마감\s*$)/i.test(String(title||''));
 const activeJob=(j)=>{
+  if(explicitlyClosedTitle(j?.title))return false;
   if(j?.statusGroup==='closed'||['마감','모집마감','접수마감'].includes(String(j?.statusLabel||'').trim()))return false;
   const cutoff=deadlineInstant(j?.applyEnd);
   if(cutoff!==null&&Date.now()>cutoff)return false;
