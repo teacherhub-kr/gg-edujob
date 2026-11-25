@@ -385,7 +385,7 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         html=BeautifulSoup(
             '<html><body><h3>하남문화재단 채용</h3><table><tr onclick="openRow(53309,\\\'do-not-log\\\')">'
             '<td><a href="/www/selectGosiData.do?not_ancmt_mgt_no=53309&session_token=SECRET" '
-            'onclick="openRow(53309)">하남문화재단 직원 채용 공고</a></td>'
+            '>하남문화재단 직원 채용 공고</a></td>'
             '</tr></table></body></html>',
             "html.parser",
         )
