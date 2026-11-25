@@ -40,5 +40,45 @@ class ScheduledOfficialCollectionContract(unittest.TestCase):
         self.assertNotIn("schedule:", legacy.split("permissions:", 1)[0])
 
 
+    def test_verified_publication_replays_only_explicit_independent_ui_and_ci_paths(self):
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from publication_transaction import _allowed
+        publish = self.workflow.split("      - name: Publish only independently verified regional files", 1)[1]
+        publish = publish.split("      - name:", 1)[0]
+        allowed = [
+            line.split("'", 2)[1]
+            for line in publish.splitlines()
+            if "--allow-concurrent-path '" in line
+        ]
+        safe_independent = {
+            "app.js", "app.css", "index.html",
+            "tests/test_app_frontend_contract.py",
+            "tests/test_closed_jobs_visibility.js",
+            ".github/workflows/m0-maintenance-freeze-audit.yml",
+            ".github/workflows/update-seekle-instructor-jobs.yml",
+            ".github/workflows/update-boramyc-instructor-jobs.yml",
+            "scripts/pr_source_live_scope.py",
+            "tests/test_private_pr_live_scope.py",
+        }
+        self.assertTrue(safe_independent.issubset(set(allowed)))
+        self.assertIn("--revalidate-command 'python scripts/revalidate_regional_publication.py'", publish)
+        self.assertIn("python scripts/publication_transaction.py publish", publish)
+        self.assertTrue(_allowed(safe_independent, allowed))
+        for sensitive in (
+            "jobs.json", "sources.json", "source_id_ledger.json",
+            "scripts/build_unified_search_multi.py",
+            "scripts/verify_central_pagination.py",
+            "scripts/reconcile_seoul_central_ids.py",
+            "scripts/publish_seoul_gyeonggi_snapshot.py",
+            "seoul_gyeonggi_jobs.json",
+            "seoul_gyeonggi_refresh_report.json",
+            ".github/workflows/seoul-gyeonggi-official.yml",
+        ):
+            with self.subTest(blocked=sensitive):
+                self.assertFalse(_allowed([sensitive], allowed))
+                self.assertFalse(_allowed(["app.js", sensitive], allowed))
+
+
 if __name__ == "__main__":
     unittest.main()
