@@ -6,7 +6,7 @@ import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from build_unified_search import RESULT_RE, private_current, deadline_expired
+from build_unified_search import RESULT_RE, private_current, deadline_expired, explicitly_closed_title
 from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
 from source_registry import official_source_count
 
@@ -264,6 +264,7 @@ def main():
         j for j in jobs
         if str(j.get("statusGroup") or "") == "closed"
         or str(j.get("statusLabel") or "").strip() in {"마감", "접수마감", "모집마감"}
+        or explicitly_closed_title(j.get("title"))
         or deadline_expired(j.get("applyEnd"))
     ]
     if published_closed:

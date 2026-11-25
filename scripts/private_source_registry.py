@@ -80,6 +80,9 @@ def lessoninfo_full_candidate_publishable(row) -> bool:
     # Keep the Edujob main feed scoped to plausible metro recruitment candidates.
     # Lessoninfo's legacy collector labels every non-Seoul/Gyeonggi row as out-of-scope,
     # but Edujob's actual metro scope also includes Incheon.
+    from build_unified_search import explicitly_closed_title
+    if explicitly_closed_title(row.get("title")):
+        return False
     status = str(row.get("statusGroup") or "")
     if status == "closed" or str(row.get("statusLabel") or "").strip() in {"마감", "접수마감", "모집마감"}:
         return False

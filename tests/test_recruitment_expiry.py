@@ -43,5 +43,56 @@ class RecruitmentExpiryTests(unittest.TestCase):
         self.assertTrue(base.private_current(row))
 
 
+    def test_terminal_status_in_title_overrides_future_or_unknown_end_date(self):
+        end = (base.TODAY + timedelta(days=35)).isoformat()
+        positive = (
+            "[푸른솔유치원] 2026 방과후 인력 채용 (2차)(접수마감)",
+            "유치원 음악강사 채용 [구인완료]",
+            "마감 2026학년도 초등학교 강사 모집 재공고(채용마감)",
+            "시간제 자원봉사자 모집 공고(2차)-접수 마감",
+            "음악강사 (구인완료 )",
+        )
+        for title in positive:
+            with self.subTest(title=title):
+                self.assertTrue(base.explicitly_closed_title(title))
+                row = {"title": title, "registered": base.TODAY.isoformat(),
+                       "applyEnd": end, "province": "경기"}
+                self.assertFalse(base.official_current(row, set()))
+                self.assertFalse(base.private_current(row))
+
+    def test_deadline_explanation_and_future_announcement_are_not_closed(self):
+        future = (base.TODAY + timedelta(days=30)).isoformat()
+        titles = (
+            "2027년 서류 접수 마감일 변경 안내",
+            "원서 접수마감 시간 18시 공지",
+            "기간제교사 채용 공고(2차)",
+            "2027년 1월 4일 접수 마감 예정 공고",
+        )
+        for title in titles:
+            with self.subTest(title=title):
+                self.assertFalse(base.explicitly_closed_title(title))
+                row = {"title": title, "registered": base.TODAY.isoformat(),
+                       "applyEnd": future, "province": "경기"}
+                self.assertTrue(base.official_current(row, set()))
+
+    def test_closed_foundation_and_lessoninfo_candidates_are_not_public(self):
+        from build_unified_search_multi import foundation_official_current
+        from private_source_registry import lessoninfo_full_candidate_publishable
+        future = (base.TODAY + timedelta(days=7)).isoformat()
+        f = {
+            "title": "문화재단 직원 채용 공고 (접수마감)", "province": "경기",
+            "registered": base.TODAY.isoformat(), "applyEnd": future,
+            "sourceRole": "primary-official", "detailLinkVerified": True,
+            "transportVerified": True, "foundationRegistryId": "gyeonggi:sample",
+            "sourceIdentity": "official-foundation:test:100",
+            "url": "https://example.org/job/100",
+        }
+        self.assertFalse(foundation_official_current(f))
+        self.assertFalse(lessoninfo_full_candidate_publishable({
+            "title": "일일 음악강사 모집 [구인완료]", "statusGroup": "current",
+            "applyEnd": future, "registered": base.TODAY.isoformat(),
+        }))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -28,6 +28,13 @@ RESULT_RE = re.compile(r"최종\s*합격|합격자|서류\s*(?:심사|전형)\s*
 ALWAYS_RE = re.compile(r"상시\s*(?:채용|모집)|채용\s*시까지|충원\s*시까지", re.I)
 PRIVATE_BANNED_RE = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY_RE = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
+# Terminal status labels are stronger than a stale/future date field. Match only
+# explicit closure tags, not ordinary phrases such as "접수 마감일 안내".
+CONFIRMED_CLOSED_TITLE_RE = re.compile(r"(?:[\[(]\s*(?:구인\s*완료|채용\s*완료|채용\s*마감|접수\s*마감|모집\s*마감)\s*[\])]|[-—]\s*접수\s*마감\s*$)", re.I)
+
+
+def explicitly_closed_title(title):
+    return bool(CONFIRMED_CLOSED_TITLE_RE.search(str(title or "")))
 INSTRUMENT_RE = re.compile(r"피아노|바이올린|비올라|첼로|플루트|클라리넷|오보에|바순|색소폰|트럼펫|트롬본|호른|튜바|타악기|드럼|기타|우쿨렐레|우크렐레|리코더|칼림바|국악|가야금|해금|대금|사물놀이|합창|성악|작곡|지휘|반주|오케스트라", re.I)
 
 
@@ -112,6 +119,8 @@ def latest_official_ids(ledger):
 
 def official_current(job, protected_ids):
     title = str(job.get("title") or "")
+    if explicitly_closed_title(title):
+        return False
     if RESULT_RE.search(title):
         return False
     end = parse_date(job.get("applyEnd"))
@@ -132,6 +141,8 @@ def official_current(job, protected_ids):
 
 def private_current(job):
     title = str(job.get("title") or "")
+    if explicitly_closed_title(title):
+        return False
     if PRIVATE_BANNED_RE.search(title) or PROMO_ONLY_RE.search(title):
         return False
     if job.get("province") not in {"서울", "경기"}:

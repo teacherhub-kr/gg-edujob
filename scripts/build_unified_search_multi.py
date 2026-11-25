@@ -226,6 +226,8 @@ def foundation_official_current(job):
     if not str(job.get("url") or "").startswith("https://"):
         return False
     title = str(job.get("title") or "")
+    if base.explicitly_closed_title(title):
+        return False
     if base.PRIVATE_BANNED_RE.search(title) or base.PROMO_ONLY_RE.search(title) or base.RESULT_RE.search(title):
         return False
     registered = base.parse_date(job.get("registered"))
