@@ -14,6 +14,7 @@ import crawl_official_foundation_jobs as base
 KST=base.KST; OUTPUT=base.OUTPUT; REPORT=base.REPORT; UA=base.UA
 SFAC_CAREERLINK_URL="https://sfac.careerlink.kr/"
 SFAC_FIRST_PARTY_BOARD_URL="https://www.sfac.or.kr/opensquare/notice/recruit_list.do?cbIdx=964"
+HANAM_ALTERNATE_OFFICIAL_BOARD_URL="https://www.hanam.go.kr/sotong/selectGosiList.do?key=9440&not_ancmt_se_code=05&pageIndex=1&searchCnd=all&searchKrwd="
 RETRY=Retry(total=4,connect=4,read=3,status=3,backoff_factor=1.0,status_forcelist=(408,429,500,502,503,504),allowed_methods=frozenset(("GET",)),respect_retry_after_header=True,raise_on_status=False)
 
 def make_session():
@@ -307,6 +308,19 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
+    # Hanam City publishes the same official notices on a second municipal
+    # surface. Only try that first-party route when the configured board
+    # yields no exact recruitment detail links; never invent a posting.
+    fallback_from=""
+    if str(foundation.get("id") or "")=="gyeonggi:hanam" and not candidates:
+        host=(urlparse(str(board_response.url or "")).hostname or "").lower()
+        if host in {"www.hanam.go.kr","hanam.go.kr"}:
+            alternative,alternative_soup,alternative_candidates,alternative_dated=list_detail_candidates(
+                session,foundation,HANAM_ALTERNATE_OFFICIAL_BOARD_URL
+            )
+            if alternative_candidates:
+                fallback_from=board_response.url
+                board_response,soup,candidates,dated_list_rows=alternative,alternative_soup,alternative_candidates,alternative_dated
     identity_ok=verify_board_surface(soup,foundation,board_response,candidates)
     jobs=[]
     inspected=0
@@ -390,6 +404,7 @@ def generic_official_rows(session,foundation,board_url):
         "detailErrors":errors[:10],
         "recentPostsWithUnverifiedDeadline":len(unverified_deadlines),
         "identityVerified":identity_ok,
+        "fallbackFrom":fallback_from,
     }
 
 
