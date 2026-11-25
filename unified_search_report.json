@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-25T20:18:42+09:00",
+  "generatedAt": "2026-11-26T01:31:06+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 14867,
+  "canonicalOfficialJobs": 14784,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 5042,
-  "selectedCanonicalOfficialJobs": 4687,
+  "canonicalPrivateJobs": 4972,
+  "selectedCanonicalOfficialJobs": 4652,
   "selectedFoundationOfficialJobs": 1,
-  "selectedOfficialJobs": 4688,
-  "selectedPrivateJobs": 4644,
-  "publishedJobs": 9331,
+  "selectedOfficialJobs": 4653,
+  "selectedPrivateJobs": 4630,
+  "publishedJobs": 9283,
   "perFeed": {
-    "official": 4687,
-    "private": 4644
+    "official": 4653,
+    "private": 4630
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,22 +20,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 269,
-      "count": 269,
-      "rawCandidateCount": 636,
-      "excludedFromUnifiedCount": 367,
-      "lastVerifiedAt": "2026-11-25T19:03:23+09:00",
+      "candidateCount": 268,
+      "count": 268,
+      "rawCandidateCount": 566,
+      "excludedFromUnifiedCount": 298,
+      "lastVerifiedAt": "2026-11-26T00:08:41+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 1.26,
+        "ageHours": 1.37,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-25T19:03:23+09:00"
+        "evidenceAt": "2026-11-26T00:08:41+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "live-only-closed-excluded-14d-unknown-window",
-      "unverifiedLinkCount": 124,
-      "displayedAsPrivate": 269
+      "unverifiedLinkCount": 264,
+      "displayedAsPrivate": 268
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1033.71,
+        "ageHours": 1038.92,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-25T19:42:17+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 0.61,
+        "ageHours": 5.82,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-25T19:42:07+09:00"
       },
@@ -95,8 +95,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-25T19:22:50+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.93,
+        "state": "stale",
+        "ageHours": 6.14,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-25T19:22:50+09:00"
       },
@@ -112,14 +112,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 84,
-      "count": 84,
+      "candidateCount": 71,
+      "count": 71,
       "rawCandidateCount": 84,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 13,
       "lastVerifiedAt": "2026-11-25T19:29:37+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.82,
+        "state": "stale",
+        "ageHours": 6.02,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-25T19:29:37+09:00"
       },
@@ -127,7 +127,7 @@
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 84
+      "displayedAsPrivate": 71
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1057.5,
+        "ageHours": 1062.71,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1073.56,
+        "ageHours": 1078.76,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -186,6 +186,8 @@
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
     "cleaneye",
+    "artmore",
+    "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
