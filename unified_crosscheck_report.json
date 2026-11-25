@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-25T18:54:34+09:00",
+  "generatedAt": "2026-11-25T20:18:44+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4539,
+  "privateJobs": 4552,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 145
+      "canonicalCount": 146
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4087
+      "canonicalCount": 4088
     },
     "artmore": {
       "name": "아트모아",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 191
+      "canonicalCount": 202
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 145,
+      "jobs": 146,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 9
@@ -75,16 +75,16 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4087,
+      "jobs": 4088,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 191,
+      "jobs": 202,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 8
+      "officialGapCandidates": 9
     },
     "gonggonggangsa": {
       "jobs": 84,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 57,
+  "officialGapCandidates": 58,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -638,6 +638,18 @@
       ],
       "registered": "2026-03-07",
       "url": "https://www.jobteacher.kr/employ/detail/20162",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "artmore",
+      "privateSourceName": "아트모아",
+      "privateId": "artmore:95834",
+      "privateTitle": "진행중 [한국종합예술학교 산학협력단] 2027-1학기 협력종합예술활동 예술강사 모집공고",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-25",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95834",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9318,
+  "totalRows": 9331,
   "nonDirectBeforeRepair": 124,
   "recoveredRows": 0,
   "nonDirectAfterRepair": 124,
-  "cultureFoundationRows": 71,
+  "cultureFoundationRows": 72,
   "cultureFoundationNonDirectRows": 26,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -425,7 +425,7 @@
     {
       "sourceIdentity": "culture:id:95453",
       "source": "레슨인포",
-      "title": "재단법인 관악문화재단 2026년 제4차 직원 채용공고",
+      "title": "재단법인 관악문화재단 2026년 제3차 직원 채용공고",
       "school": "관악문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
@@ -911,6 +911,15 @@
   ],
   "cultureFoundationExamples": [
     {
+      "sourceIdentity": "artmore:95841",
+      "source": "아트모아",
+      "title": "진행중 2027년 제1회 남양주문화재단 직원 채용",
+      "school": "남양주문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95841",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
+    {
       "sourceIdentity": "artmore:95829",
       "source": "아트모아",
       "title": "진행중 [라인문화재단] 미술관 공간기획, 운영기획, 운영관리, 상업시설 판매운영/공익재단 관리팀",
@@ -1300,7 +1309,7 @@
     {
       "sourceIdentity": "culture:id:95453",
       "source": "레슨인포",
-      "title": "재단법인 관악문화재단 2026년 제4차 직원 채용공고",
+      "title": "재단법인 관악문화재단 2026년 제3차 직원 채용공고",
       "school": "관악문화재단",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
