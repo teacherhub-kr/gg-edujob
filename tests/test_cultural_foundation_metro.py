@@ -275,5 +275,136 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertIsNone(crawler.ifac_detail_url(anchor,board))
 
 
+    def test_sfac_js_page_with_live_post_does_not_claim_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/jobs"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고 총 1건 의 공고가 있습니다. 2026년 서울문화재단 제3차 직원 공개채용 접수대기</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            with self.assertRaisesRegex(RuntimeError,"do not claim zero jobs"):
+                crawler.sfac_careerlink_probe(None)
+
+    def test_sfac_brand_only_shell_does_not_claim_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            with self.assertRaisesRegex(RuntimeError,"do not claim zero jobs"):
+                crawler.sfac_careerlink_probe(None)
+
+    def test_sfac_explicit_empty_state_may_prove_zero(self):
+        class Response:
+            url="https://sfac.careerlink.kr/jobs"
+            status_code=200
+            text="<html><body>서울문화재단 채용공고 현재 게시중인 공고가 없습니다.</body></html>"
+        with patch.object(crawler,"resilient_request",return_value=Response()):
+            result=crawler.sfac_careerlink_probe(None)
+        self.assertTrue(result["explicitEmpty"])
+        self.assertEqual(result["currentJobs"],0)
+
+    def test_sfac_timeout_falls_back_only_to_official_foundation_board(self):
+        class Session:
+            def __enter__(self): return self
+            def __exit__(self,*args): return False
+        foundation={"id":"seoul:metropolitan","name":"서울문화재단","region":"서울",
+                    "officialRecruitmentUrl":"https://sfac.saramin.co.kr/old"}
+        valid=[{"sourceIdentity":"official-foundation:sfac:verified","foundationRegistryId":"seoul:metropolitan",
+                "url":"https://www.sfac.or.kr/site/SFAC_KOR/ex/bbs/ViewSfac.do?bcIdx=123456&cbIdx=964",
+                "title":"서울문화재단 직원 공개채용","registered":"2026-11-16"}]
+        with patch.object(crawler,"make_session",return_value=Session()):
+            with patch.object(crawler,"sfac_rows",side_effect=crawler.requests.exceptions.ConnectTimeout("old site timeout")):
+                with patch.object(crawler,"generic_official_rows",return_value=(valid,{"identityVerified":True})) as generic:
+                    with patch.object(crawler,"sfac_careerlink_probe") as secondary:
+                        rows,report,unsupported,error=crawler.collect_board(foundation)
+        self.assertIsNone(error)
+        self.assertIsNone(unsupported)
+        self.assertEqual(rows,valid)
+        self.assertTrue(report["healthy"])
+        self.assertEqual(report["fallbackOfficialBoardUrl"],crawler.SFAC_FIRST_PARTY_BOARD_URL)
+        self.assertIn("www.sfac.or.kr",crawler.GENERIC_OFFICIAL_HOSTS)
+        self.assertEqual(generic.call_args.args[2],crawler.SFAC_FIRST_PARTY_BOARD_URL)
+        secondary.assert_not_called()
+
+    def test_sfac_unverified_fallback_still_fails_closed(self):
+        class Session:
+            def __enter__(self): return self
+            def __exit__(self,*args): return False
+        foundation={"id":"seoul:metropolitan","name":"서울문화재단",
+                    "officialRecruitmentUrl":"https://sfac.saramin.co.kr/old"}
+        with patch.object(crawler,"make_session",return_value=Session()):
+            with patch.object(crawler,"sfac_rows",side_effect=crawler.requests.exceptions.ConnectTimeout("blocked")):
+                with patch.object(crawler,"generic_official_rows",return_value=([],{"identityVerified":True})):
+                    rows,report,unsupported,error=crawler.collect_board(foundation)
+        self.assertEqual(rows,[])
+        self.assertFalse(report["healthy"])
+        self.assertIn("no verified current detail",error["error"])
+
+
+    def test_hanam_verified_alternate_municipal_board_on_no_detail_links(self):
+        foundation={"id":"gyeonggi:hanam","name":"하남문화재단"}
+        class Response:
+            def __init__(self,url):
+                self.url=url
+                self.text="<html>하남문화재단 채용공고</html>"
+                self.content=self.text.encode()
+        initial=Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174")
+        focused=Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174&"+crawler.urlencode({"searchKrwd":"하남문화재단"}))
+        alternate=Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL+crawler.urlencode({"searchKrwd":"하남문화재단"}))
+        html=BeautifulSoup("<html>하남문화재단 채용공고</html>","html.parser")
+        native={"53309":{"url":"https://www.hanam.go.kr/sotong/selectGosiData.do?key=9440&not_ancmt_mgt_no=53309&not_ancmt_se_code=05","fallbackTitle":"2026년 제6회 하남문화재단 직원 채용 공고"}}
+        with patch.object(crawler,"list_detail_candidates",side_effect=[(initial,html,{},0),(focused,html,{},0),(alternate,html,native,1)]) as listing:
+            with patch.object(crawler,"verify_board_surface",side_effect=RuntimeError("stop-before-detail")) as verify:
+                with self.assertRaisesRegex(RuntimeError,"stop-before-detail"):
+                    crawler.generic_official_rows(None,foundation,initial.url)
+        self.assertEqual(listing.call_count,3)
+        self.assertIn("searchKrwd=",listing.call_args_list[1].args[2])
+        self.assertIn("www.hanam.go.kr/www",listing.call_args_list[1].args[2])
+        self.assertEqual(listing.call_args_list[2].args[2],alternate.url)
+        self.assertIs(verify.call_args.args[2],alternate)
+        self.assertEqual(verify.call_args.args[3],native)
+
+    def test_hanam_unparsed_on_both_official_routes_remains_fail_closed(self):
+        foundation={"id":"gyeonggi:hanam","name":"하남문화재단"}
+        class Response:
+            def __init__(self,url):
+                self.url=url
+                self.text="<html>하남문화재단 직원 채용 공고</html>"
+                self.content=self.text.encode()
+        html=BeautifulSoup("<html>하남문화재단 직원 채용 공고</html>","html.parser")
+        responses=[(Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174"),html,{},0),
+                   (Response("https://www.hanam.go.kr/www/selectGosiList.do?key=174&"+crawler.urlencode({"searchKrwd":"하남문화재단"})),html,{},0),
+                   (Response(crawler.HANAM_ALTERNATE_OFFICIAL_BOARD_URL+crawler.urlencode({"searchKrwd":"하남문화재단"})),html,{},0)]
+        with patch.object(crawler,"list_detail_candidates",side_effect=responses) as listing:
+            with self.assertRaisesRegex(RuntimeError,"no parseable details"):
+                crawler.generic_official_rows(None,foundation,responses[0][0].url)
+        self.assertEqual(listing.call_count,3)
+
+
+    def test_unknown_foundation_board_diagnostic_never_exposes_query_values(self):
+        html=BeautifulSoup(
+            '<html><body><h3>하남문화재단 채용</h3><table><tr onclick="openRow(53309,\\\'do-not-log\\\')">'
+            '<td><a href="/www/selectGosiData.do?not_ancmt_mgt_no=53309&session_token=SECRET" '
+            '>하남문화재단 직원 채용 공고</a></td>'
+            '</tr></table></body></html>',
+            "html.parser",
+        )
+        details=crawler.sanitized_unparsed_board_structure(html)
+        encoded=json.dumps(details,ensure_ascii=False)
+        self.assertIn("not_ancmt_mgt_no",encoded)
+        self.assertIn("hrefPath",encoded)
+        self.assertNotIn("SECRET",encoded)
+        self.assertNotIn("53309&session_token",encoded)
+        self.assertNotIn("do-not-log",encoded)
+        self.assertEqual(details["rowsTotal"],1)
+        class Response:
+            url="https://www.hanam.go.kr/www/selectGosiList.do?key=174"
+            text=str(html)
+            content=str(html).encode()
+        with self.assertRaisesRegex(RuntimeError,"safeStructure=") as raised:
+            crawler.verify_board_surface(html,{"id":"gyeonggi:hanam","name":"하남문화재단"},Response(),{})
+        self.assertNotIn("SECRET",str(raised.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

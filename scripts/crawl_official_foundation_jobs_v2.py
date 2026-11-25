@@ -13,6 +13,8 @@ from urllib3.util.retry import Retry
 import crawl_official_foundation_jobs as base
 KST=base.KST; OUTPUT=base.OUTPUT; REPORT=base.REPORT; UA=base.UA
 SFAC_CAREERLINK_URL="https://sfac.careerlink.kr/"
+SFAC_FIRST_PARTY_BOARD_URL="https://www.sfac.or.kr/opensquare/notice/recruit_list.do?cbIdx=964"
+HANAM_ALTERNATE_OFFICIAL_BOARD_URL="https://www.hanam.go.kr/sotong/selectGosiList.do?key=9440&not_ancmt_se_code=05&pageIndex=1&searchCnd=all&searchKrwd="
 RETRY=Retry(total=4,connect=4,read=3,status=3,backoff_factor=1.0,status_forcelist=(408,429,500,502,503,504),allowed_methods=frozenset(("GET",)),respect_retry_after_header=True,raise_on_status=False)
 
 def make_session():
@@ -46,10 +48,15 @@ def sfac_rows(session,foundation,url):
 def sfac_careerlink_probe(session):
     r=resilient_request(session,SFAC_CAREERLINK_URL); soup=BeautifulSoup(r.text,"html.parser"); text=base.normalize_space(soup.get_text(" ",strip=True))
     detail_links=[a.get("href") for a in soup.find_all("a",href=True) if any(k in str(a.get("href")) for k in ("recruit","job","apply"))]
-    empty_phrase="현재 게시중인 공고가 없습니다" in text or ("0 / 0" in text and "채용공고" in text)
-    empty_markup=(r.status_code==200 and "서울문화재단" in text and "채용" in text and not detail_links)
-    if not (empty_phrase or empty_markup): raise RuntimeError("sfac.careerlink.kr is not explicitly empty; dedicated current-post parser is required before collection can continue")
-    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"phrase" if empty_phrase else "200-html-no-recruitment-detail-links","role":"secondary-official-contract-surface"}
+    # A JavaScript recruitment UI may have active jobs without literal HTML anchors.
+    # Never treat missing anchors as proof that there are no current postings.
+    hostname=(urlparse(str(r.url or "")).hostname or "").lower()
+    if hostname!="sfac.careerlink.kr" or "서울문화재단" not in text or "채용" not in text:
+        raise RuntimeError("SFAC careerlink official identity not verified")
+    explicit_empty=bool(re.search(r"현재\s*(?:게시중인\s*)?(?:채용)?공고가\s*없|등록된\s*(?:채용)?공고가\s*없",text))
+    if not explicit_empty or detail_links:
+        raise RuntimeError("SFAC careerlink may have jobs: no verified explicit-empty state; do not claim zero jobs")
+    return {"url":r.url,"healthy":True,"currentJobs":0,"explicitEmpty":True,"evidence":"verified-explicit-empty-phrase","role":"secondary-official-contract-surface"}
 
 
 RECRUITMENT_RE=re.compile(
@@ -87,6 +94,7 @@ GENERIC_OFFICIAL_HOSTS={
     "uac.or.kr","www.uac.or.kr",
     "artic.or.kr","www.artic.or.kr",
     "hanam.go.kr","www.hanam.go.kr",
+    "sfac.or.kr","www.sfac.or.kr",
     "gangnam.go.kr","www.gangnam.go.kr",
     "guro.go.kr","www.guro.go.kr",
     "yfac.kr","www.yfac.kr",
@@ -148,6 +156,40 @@ def seohae_shared_board_zero_is_structurally_verified(soup, foundation, response
     return False
 
 
+def sanitized_unparsed_board_structure(soup):
+    """Bounded public HTML failure evidence, never query values, sessions or JS bodies."""
+    hints=[]
+    for a in soup.find_all("a",href=True):
+        label=base.normalize_space(a.get_text(" ",strip=True))
+        if not (len(label)>=11 and RECRUITMENT_RE.search(label)):
+            continue
+        href=str(a.get("href") or "").strip()
+        parsed=urlparse(href)
+        hints.append({
+            "text":label[:90],
+            "hrefScheme":parsed.scheme,
+            "hrefPath":parsed.path[:120],
+            "queryKeys":sorted(parse_qs(parsed.query).keys())[:12],
+            "onclickPresent":a.has_attr("onclick"),
+        })
+        if len(hints)>=8:
+            break
+    rows=[]
+    for row in soup.find_all("tr"):
+        if not row.find_all("td"):
+            continue
+        content=base.normalize_space(row.get_text(" ",strip=True))
+        rows.append({"publicText":content[:140],"onclickPresent":row.has_attr("onclick")})
+        if len(rows)>=5:
+            break
+    return {
+        "anchorsTotal":len(soup.find_all("a",href=True)),
+        "rowsTotal":len(soup.find_all("tr")),
+        "candidateAnchorHints":hints,
+        "firstTableRows":rows,
+    }
+
+
 def verify_board_surface(soup,foundation,response,candidates):
     visible=base.normalize_space(soup.get_text(" ",strip=True))
     if BLOCK_PAGE_RE.search(visible[:4000]) or BLOCK_PAGE_RE.search(response.text[:4000]):
@@ -174,7 +216,8 @@ def verify_board_surface(soup,foundation,response,candidates):
         and seohae_shared_board_zero_is_structurally_verified(soup,foundation,response)
     )
     if not candidates and not EXPLICIT_EMPTY_RE.search(visible) and not shared_zero_verified:
-        raise RuntimeError("official board has no parseable details and no explicit empty state")
+        shape=sanitized_unparsed_board_structure(soup)
+        raise RuntimeError("official board has no parseable details and no explicit empty state; safeStructure="+json.dumps(shape,ensure_ascii=False))
     return True
 
 
@@ -300,6 +343,26 @@ def list_detail_candidates(session,foundation,board_url):
 def generic_official_rows(session,foundation,board_url):
     today=datetime.now(KST).date()
     board_response,soup,candidates,dated_list_rows=list_detail_candidates(session,foundation,board_url)
+    # A municipal job board page is not a complete foundation search: its
+    # page one can be crowded out by unrelated municipal hiring notices.
+    # Search the same official host for the exact foundation name and then
+    # the alternate official municipal portal. Both remain fail-closed.
+    fallback_from=""
+    if str(foundation.get("id") or "")=="gyeonggi:hanam" and not candidates:
+        host=(urlparse(str(board_response.url or "")).hostname or "").lower()
+        if host in {"www.hanam.go.kr","hanam.go.kr"}:
+            encoded_term=urlencode({"searchKrwd":"하남문화재단"})
+            focused_url=re.sub(r"searchKrwd=[^&]*",encoded_term,board_url)
+            if focused_url==board_url:
+                focused_url=board_url+("&" if "?" in board_url else "?")+encoded_term
+            for official_url in (focused_url,HANAM_ALTERNATE_OFFICIAL_BOARD_URL+encoded_term):
+                alternative,alternative_soup,alternative_candidates,alternative_dated=list_detail_candidates(
+                    session,foundation,official_url
+                )
+                if alternative_candidates:
+                    fallback_from=board_response.url
+                    board_response,soup,candidates,dated_list_rows=alternative,alternative_soup,alternative_candidates,alternative_dated
+                    break
     identity_ok=verify_board_surface(soup,foundation,board_response,candidates)
     jobs=[]
     inspected=0
@@ -383,6 +446,7 @@ def generic_official_rows(session,foundation,board_url):
         "detailErrors":errors[:10],
         "recentPostsWithUnverifiedDeadline":len(unverified_deadlines),
         "identityVerified":identity_ok,
+        "fallbackFrom":fallback_from,
     }
 
 
@@ -392,7 +456,21 @@ def collect_board(foundation):
         try:
             if host=="nsart.or.kr" or host.endswith(".nsart.or.kr"): found,meta=base.nsart_rows(session,foundation,board_url)
             elif host=="sfac.saramin.co.kr":
-                found,meta=sfac_rows(session,foundation,board_url); careerlink=sfac_careerlink_probe(session); meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]; meta["secondarySurfaces"]=[careerlink]; meta["adapterStatus"]="implemented"
+                try:
+                    found,meta=sfac_rows(session,foundation,board_url)
+                except (requests.exceptions.ConnectionError,requests.exceptions.Timeout) as previous_error:
+                    # Retry only the same foundation's official, first-party recruitment board.
+                    found,meta=generic_official_rows(session,foundation,SFAC_FIRST_PARTY_BOARD_URL)
+                    if not found:
+                        raise RuntimeError("SFAC old portal unavailable and official fallback has no verified current detail") from previous_error
+                    meta["fallbackFrom"]=board_url
+                    meta["fallbackOfficialBoardUrl"]=SFAC_FIRST_PARTY_BOARD_URL
+                    meta["adapterStatus"]="verified-first-party-recruitment-fallback"
+                else:
+                    careerlink=sfac_careerlink_probe(session)
+                    meta["surfacesChecked"]=meta.get("surfacesChecked",[])+[careerlink["url"]]
+                    meta["secondarySurfaces"]=[careerlink]
+                    meta["adapterStatus"]="implemented"
             elif host in GENERIC_OFFICIAL_HOSTS:
                 found,meta=generic_official_rows(session,foundation,board_url)
             else:
