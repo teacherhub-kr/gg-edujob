@@ -270,6 +270,16 @@ jobs:
             --allow-concurrent-path 'unified_*.json' \
             --allow-concurrent-path 'direct_post_link_report.json' \
             --allow-concurrent-path 'cultural_foundation_coverage_report.json' \
+            --allow-concurrent-path 'app.js' \
+            --allow-concurrent-path 'app.css' \
+            --allow-concurrent-path 'index.html' \
+            --allow-concurrent-path 'tests/test_app_frontend_contract.py' \
+            --allow-concurrent-path 'tests/test_closed_jobs_visibility.js' \
+            --allow-concurrent-path '.github/workflows/m0-maintenance-freeze-audit.yml' \
+            --allow-concurrent-path '.github/workflows/update-seekle-instructor-jobs.yml' \
+            --allow-concurrent-path '.github/workflows/update-boramyc-instructor-jobs.yml' \
+            --allow-concurrent-path 'scripts/pr_source_live_scope.py' \
+            --allow-concurrent-path 'tests/test_private_pr_live_scope.py' \
             --revalidate-command 'python scripts/revalidate_regional_publication.py'
           python - <<'PY'
           import json
