@@ -81,8 +81,21 @@ def lessoninfo_full_candidate_publishable(row) -> bool:
     # Lessoninfo's legacy collector labels every non-Seoul/Gyeonggi row as out-of-scope,
     # but Edujob's actual metro scope also includes Incheon.
     status = str(row.get("statusGroup") or "")
+    if status == "closed" or str(row.get("statusLabel") or "").strip() in {"마감", "접수마감", "모집마감"}:
+        return False
     if status == "excluded":
         return False
+
+    # The full 120-day source archive is useful for reconciliation, not a
+    # 120-day license to present finished recruitment as currently open.
+    from build_unified_search import KST, deadline_expired, parse_date
+    from datetime import datetime, timedelta
+    if deadline_expired(row.get("applyEnd")):
+        return False
+    if status == "deadline-unknown":
+        registered = parse_date(row.get("registered"))
+        if registered is None or registered < datetime.now(KST).date() - timedelta(days=14):
+            return False
     if status == "out-of-scope":
         return str(row.get("metroRegion") or row.get("province") or "") == "인천"
     return True
