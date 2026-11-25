@@ -1,4 +1,4 @@
-"""Contracts for independent 3-hour official collection while Incheon stays held."""
+"""Contracts for hourly guarded official scheduler while Incheon stays held."""
 from pathlib import Path
 import unittest
 
@@ -10,8 +10,11 @@ class ScheduledOfficialCollectionContract(unittest.TestCase):
     def setUpClass(cls):
         cls.workflow = (ROOT / ".github/workflows/seoul-gyeonggi-official.yml").read_text(encoding="utf-8")
 
-    def test_three_hour_direct_schedule(self):
-        self.assertIn("cron: '17 */3 * * *'", self.workflow)
+    def test_hourly_heartbeat_preserves_bounded_collection(self):
+        self.assertIn("cron: '17 * * * *'", self.workflow)
+        self.assertNotIn("cron: '17 */3 * * *'", self.workflow)
+        policy = (ROOT / "scripts/seoul_gyeonggi_watchdog.py").read_text(encoding="utf-8")
+        self.assertIn("REGIONAL_REFRESH_AFTER = timedelta(hours=4)", policy)
         self.assertIn("scheduled_official_dispatch:", self.workflow)
         self.assertIn("if: github.event_name == 'schedule'", self.workflow)
 
