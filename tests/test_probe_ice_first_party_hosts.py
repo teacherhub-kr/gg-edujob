@@ -40,7 +40,8 @@ class IceFirstPartyTransportTest(unittest.TestCase):
     def test_never_claim_full_collection(self):
         # This is a single-page transport probe; full 2+5 board and 90d
         # reconciliation checks remain mandatory in existing P0 workflow.
-        self.assertEqual(len(p.ENDPOINTS), 5)
+        self.assertEqual(len(p.ENDPOINTS), 8)
+        self.assertEqual(len({name for name, _ in p.ENDPOINTS}), 8)
         self.assertTrue(all(p.authorized_ice_host(url) for _, url in p.ENDPOINTS))
 
 
