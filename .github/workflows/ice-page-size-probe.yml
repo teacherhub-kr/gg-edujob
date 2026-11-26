@@ -6,6 +6,8 @@ on:
       - '.github/workflows/ice-page-size-probe.yml'
       - 'scripts/probe_ice_page_size.py'
       - 'tests/test_probe_ice_page_size.py'
+      - 'scripts/probe_ice_first_party_hosts.py'
+      - 'tests/test_probe_ice_first_party_hosts.py'
 permissions:
   contents: read
 jobs:
@@ -20,5 +22,9 @@ jobs:
       - run: pip install requests beautifulsoup4
       - name: Verify source-native ID extraction
         run: python -m unittest tests.test_probe_ice_page_size
+      - name: Verify first-party host diagnostic is fail-closed
+        run: python -m unittest tests.test_probe_ice_first_party_hosts
+      - name: Probe first-party ICE host responses without writing jobs
+        run: python scripts/probe_ice_first_party_hosts.py
       - name: Read-only ICE central pageUnit diagnostic
         run: python scripts/probe_ice_page_size.py --sizes 10,30,50,100
