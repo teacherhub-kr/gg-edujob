@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-26T13:41:51+09:00",
+  "generatedAt": "2026-11-26T14:26:12+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4574,
+  "privateJobs": 4579,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 140
+      "canonicalCount": 139
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 202
+      "canonicalCount": 206
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 112
+      "canonicalCount": 114
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 140,
+      "jobs": 139,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 8
+      "officialGapCandidates": 7
     },
     "cleaneye": {
       "jobs": 18,
@@ -81,13 +81,13 @@
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 202,
+      "jobs": 206,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 9
     },
     "gonggonggangsa": {
-      "jobs": 112,
+      "jobs": 114,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 11
@@ -107,22 +107,10 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 63,
+  "officialGapCandidates": 62,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
-    {
-      "privateSource": "lessoninfo",
-      "privateSourceName": "레슨인포",
-      "privateId": "board:20170316171033_6494:7678",
-      "privateTitle": "평택 청북읍 초등학교 음악놀이 12월 대체강사 구인 N",
-      "provinces": [
-        "경기"
-      ],
-      "registered": "2026-11-25",
-      "url": "https://www.lessoninfo.co.kr/board/board.php?bo_table=20170316171033_6494&board_code=20130529164321_7227&code=&wr_no=7678",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
