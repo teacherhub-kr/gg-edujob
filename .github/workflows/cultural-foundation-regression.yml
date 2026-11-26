@@ -9,6 +9,7 @@ on:
       - 'scripts/crawl_official_foundation_jobs_v2.py'
       - 'scripts/validate_cultural_foundation_registry.py'
       - 'tests/test_cultural_foundation_metro.py'
+      - 'tests/test_foundation_deadline_semantics.py'
       - '.github/workflows/cultural-foundation-regression.yml'
       - '.github/workflows/cultural-foundation-coverage.yml'
   workflow_dispatch:
@@ -34,6 +35,8 @@ jobs:
         run: |
           PYTHONPATH=scripts python -m unittest tests.test_cultural_foundation_metro
           python scripts/validate_cultural_foundation_registry.py
+      - name: Verify application deadline semantics independently of upstream availability
+        run: PYTHONPATH=scripts python -m unittest tests.test_foundation_deadline_semantics
       - name: Live-read configured official recruitment boards
         run: python scripts/crawl_official_foundation_jobs_v2.py
       - name: Retain exact detail evidence on success or failure
