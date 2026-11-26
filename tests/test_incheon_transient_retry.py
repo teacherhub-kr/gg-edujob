@@ -100,8 +100,18 @@ class IncheonTransientRetryTests(unittest.TestCase):
              )) as ice_retry, \
              patch.object(recon.incheon_support, "crawl_all_support_offices", return_value=([], [])), \
              patch.object(recon.primary, "scrape_seoul_central", return_value=[]):
+            events = []
+            gg.side_effect = lambda: (events.append("gyeonggi"), [])[1]
+            ice_retry.side_effect = lambda **kwargs: (
+                events.append("ice"), (
+                    [], {"coverageComplete": False, "pagesScanned": 2, "accessError": "",
+                         "boards": ["https://www.ice.go.kr/ice/na/ntt/selectNttList.do"]}
+                )
+            )[1]
             gg.last_coverage = []
             sources, rows = recon.crawl_official_ids()
+            self.assertEqual(events[:2], ["ice", "gyeonggi"],
+                             "Independent full reconciliation must read ICE before lengthy other-region crawls")
         ice_retry.assert_called_once_with(
             lookback_days=recon.cov.LOOKBACK_DAYS,
             max_pages=240,
@@ -111,6 +121,7 @@ class IncheonTransientRetryTests(unittest.TestCase):
         )
         self.assertEqual(rows, {})
         self.assertFalse(next(src for src in sources if src["province"] == "인천")["coverageComplete"])
+        self.assertEqual(len([x for x in sources if x["province"] == "인천"]), 1)
 
         p0 = Path(".github/workflows/p0-incheon-regression.yml").read_text(encoding="utf-8")
         pre = Path(".github/workflows/reconciliation-population-preflight.yml").read_text(encoding="utf-8")
