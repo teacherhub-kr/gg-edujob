@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-26T22:29:43+09:00",
+  "generatedAt": "2026-11-27T01:49:16+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 14969,
+  "canonicalOfficialJobs": 14964,
   "canonicalFoundationOfficialJobs": 9,
   "canonicalPrivateJobs": 5007,
-  "selectedCanonicalOfficialJobs": 4867,
+  "selectedCanonicalOfficialJobs": 4677,
   "selectedFoundationOfficialJobs": 1,
-  "selectedOfficialJobs": 4868,
-  "selectedPrivateJobs": 4677,
-  "publishedJobs": 9545,
+  "selectedOfficialJobs": 4678,
+  "selectedPrivateJobs": 4666,
+  "publishedJobs": 9344,
   "perFeed": {
-    "official": 4868,
-    "private": 4677
+    "official": 4678,
+    "private": 4666
   },
   "privateSources": {
     "lessoninfo": {
@@ -26,8 +26,8 @@
       "excludedFromUnifiedCount": 299,
       "lastVerifiedAt": "2026-11-26T19:42:29+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 2.79,
+        "state": "stale",
+        "ageHours": 6.11,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T19:42:29+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1059.89,
+        "ageHours": 1063.22,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-26T20:20:38+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 2.15,
+        "ageHours": 5.48,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T20:20:28+09:00"
       },
@@ -96,7 +96,7 @@
       "lastVerifiedAt": "2026-11-26T20:00:15+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 2.49,
+        "ageHours": 5.82,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T20:00:15+09:00"
       },
@@ -112,14 +112,14 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 115,
-      "count": 115,
+      "candidateCount": 104,
+      "count": 104,
       "rawCandidateCount": 115,
-      "excludedFromUnifiedCount": 0,
+      "excludedFromUnifiedCount": 11,
       "lastVerifiedAt": "2026-11-26T20:07:44+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 2.37,
+        "ageHours": 5.69,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T20:07:44+09:00"
       },
@@ -127,7 +127,7 @@
       "detailErrorCount": 0,
       "publicationPolicy": "verified-source",
       "unverifiedLinkCount": 0,
-      "displayedAsPrivate": 115
+      "displayedAsPrivate": 104
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1083.68,
+        "ageHours": 1087.01,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1099.74,
+        "ageHours": 1103.07,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -185,6 +185,7 @@
   "allPublicationEnabledSourcesHealthy": true,
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
+    "lessoninfo",
     "cleaneye",
     "seekle",
     "boramyc"
