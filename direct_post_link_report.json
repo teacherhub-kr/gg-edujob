@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9543,
-  "nonDirectBeforeRepair": 129,
+  "totalRows": 9545,
+  "nonDirectBeforeRepair": 130,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 129,
-  "cultureFoundationRows": 71,
+  "nonDirectAfterRepair": 130,
+  "cultureFoundationRows": 72,
   "cultureFoundationNonDirectRows": 27,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -130,6 +130,15 @@
       "source": "레슨인포",
       "title": "[스테이지엠] 공연사업 운영 사무직 경력 모집",
       "school": "스테이지엠",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95626",
+      "source": "레슨인포",
+      "title": "2026 제3회 경기 대학생 뮤지컬 페스티벌 무대 감독 프리랜서 모집",
+      "school": "레슨인포 구인",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
@@ -898,18 +907,18 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95361",
-      "source": "레슨인포",
-      "title": "노원문화재단 2026년 제9차 공개채용 공고",
-      "school": "노원문화재단",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
     }
   ],
   "cultureFoundationExamples": [
+    {
+      "sourceIdentity": "artmore:95859",
+      "source": "아트모아",
+      "title": "진행중 남양주문화재단 기간제 직원 채용 모집 공고",
+      "school": "남양주문화재단",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95859",
+      "reason": "artmore-rec-idx",
+      "direct": true
+    },
     {
       "sourceIdentity": "artmore:95844",
       "source": "아트모아",
