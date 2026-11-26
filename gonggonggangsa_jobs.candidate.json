@@ -40,7 +40,7 @@
         "phoneNumber": "01028869804"
       },
       "counts": {
-        "viewCnt": 4,
+        "viewCnt": 5,
         "scrapCnt": 0
       },
       "fields": [
@@ -145,7 +145,7 @@
         "phoneNumber": "01028869804"
       },
       "counts": {
-        "viewCnt": 2,
+        "viewCnt": 4,
         "scrapCnt": 0
       },
       "fields": [
@@ -240,8 +240,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 25,
-        "scrapCnt": 2
+        "viewCnt": 31,
+        "scrapCnt": 4
       },
       "fields": [
         {
@@ -372,7 +372,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 9,
+        "viewCnt": 11,
         "scrapCnt": 0
       },
       "fields": [
@@ -456,7 +456,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 14,
+        "viewCnt": 18,
         "scrapCnt": 0
       },
       "fields": [
@@ -544,7 +544,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 8,
         "scrapCnt": 0
       },
       "fields": [
@@ -628,7 +628,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 10,
         "scrapCnt": 0
       },
       "fields": [
@@ -756,7 +756,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 11,
+        "viewCnt": 13,
         "scrapCnt": 0
       },
       "fields": [
@@ -848,7 +848,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -932,7 +932,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 8,
         "scrapCnt": 0
       },
       "fields": [
@@ -1020,7 +1020,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 8,
         "scrapCnt": 0
       },
       "fields": [
@@ -1104,7 +1104,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 5,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -1188,7 +1188,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 10,
         "scrapCnt": 0
       },
       "fields": [
@@ -1296,7 +1296,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 5,
+        "viewCnt": 6,
         "scrapCnt": 0
       },
       "fields": [
@@ -1380,7 +1380,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 10,
+        "viewCnt": 11,
         "scrapCnt": 0
       },
       "fields": [
@@ -1422,6 +1422,121 @@
       "workDetailAddress": null,
       "workSchedules": [],
       "scrapId": null,
+      "isScrap": false,
+      "hasCurriculum": null,
+      "isAd": false
+    }
+  },
+  {
+    "sourceIdentity": "gonggonggangsa:24877",
+    "source": "공공강사",
+    "sourceType": "민간 구인",
+    "sourceSurface": "public-instructor",
+    "sourceSurfaceLabel": "공공강사",
+    "province": "서울",
+    "provinces": [
+      "서울"
+    ],
+    "region": "서초구",
+    "regions": [
+      "서초구"
+    ],
+    "location": "서울 서초구",
+    "school": "방배4동 느티나무쉼터",
+    "title": "[방배4동 느티나무쉼터] 2027년 1분기 강사(어학(영어, 일본어), 필라테스, 스트레칭, 그룹PT, 우쿨렐레) 강사 모집",
+    "subject": "기타/우쿨렐레 · 필라테스 · 척추/교정운동(SNPE) · 스트레칭/체조 · 영어회화 · 일본어",
+    "type": "시간강사/강사",
+    "applyStart": "2026-11-25",
+    "applyEnd": "2026-12-01",
+    "registered": "2026-11-25",
+    "url": "https://00gangsa.com/recruitments/24877",
+    "boardUrl": "https://00gangsa.com/recruitments",
+    "openUrl": "https://00gangsa.com/recruitments/24877",
+    "openMethod": "GET",
+    "stableSourceId": "24877",
+    "sourceState": "RECRUITING",
+    "raw": {
+      "id": 24877,
+      "type": "PROVIDER_SUBMIT",
+      "state": "RECRUITING",
+      "title": "[방배4동 느티나무쉼터] 2027년 1분기 강사(어학(영어, 일본어), 필라테스, 스트레칭, 그룹PT, 우쿨렐레) 강사 모집",
+      "description": null,
+      "institution": {
+        "id": 142,
+        "name": "방배4동 느티나무쉼터",
+        "email": "dustn0104@naver.com",
+        "phoneNumber": "01020614655"
+      },
+      "counts": {
+        "viewCnt": 37,
+        "scrapCnt": 1
+      },
+      "fields": [
+        {
+          "id": 95,
+          "name": "기타/우쿨렐레"
+        },
+        {
+          "id": 151,
+          "name": "필라테스"
+        },
+        {
+          "id": 154,
+          "name": "척추/교정운동(SNPE)"
+        },
+        {
+          "id": 155,
+          "name": "스트레칭/체조"
+        },
+        {
+          "id": 176,
+          "name": "영어회화"
+        },
+        {
+          "id": 178,
+          "name": "일본어"
+        }
+      ],
+      "regions": [
+        {
+          "province": {
+            "id": 1,
+            "isAll": false,
+            "name": "서울"
+          },
+          "city": {
+            "id": 16,
+            "isAll": false,
+            "name": "서초구"
+          }
+        }
+      ],
+      "recruitmentAt": "2026-11-25 16:03:30",
+      "deadlineAt": "2026-12-01 23:59:59",
+      "deadlineDay": 5,
+      "recruitCount": 0,
+      "applicationGender": "A",
+      "applicationMinAge": 0,
+      "applicationMaxAge": 0,
+      "applicationEducation": "ANY",
+      "managerName": "남연수",
+      "managerPhoneNumber": null,
+      "managerEmail": null,
+      "preferred": "*복지관 강의 경력 우대\n*공공강사로 지원해도 접수가 어렵습니다. 기관 홈페이지 내 양식을 사용하여 기관 이메일로 접수 부탁드립니다.\nhttp://decentsenior.org/site/board/index.do?mid=U00018&ARTICLE_NO=26&pageGubun=VIEW",
+      "workDetailAddress": "서울 서초구 방배중앙로 118, 2층, 느티나무쉼터",
+      "workSchedules": [
+        {
+          "id": 430,
+          "startDate": "2027-01-11",
+          "endDate": "2027-03-29",
+          "day": "ANY",
+          "startTime": "00:00:00",
+          "endTime": "00:00:00",
+          "paymentType": "ANY",
+          "paymentAmount": 0
+        }
+      ],
+      "scrapId": 11925,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -1470,8 +1585,8 @@
         "phoneNumber": "01057630691"
       },
       "counts": {
-        "viewCnt": 119,
-        "scrapCnt": 3
+        "viewCnt": 154,
+        "scrapCnt": 4
       },
       "fields": [
         {
@@ -1657,7 +1772,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 24,
+        "viewCnt": 26,
         "scrapCnt": 0
       },
       "fields": [
@@ -1741,7 +1856,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 21,
+        "viewCnt": 22,
         "scrapCnt": 0
       },
       "fields": [
@@ -1825,7 +1940,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 21,
+        "viewCnt": 22,
         "scrapCnt": 0
       },
       "fields": [
@@ -1909,7 +2024,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 11,
         "scrapCnt": 0
       },
       "fields": [
@@ -1997,7 +2112,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 20,
+        "viewCnt": 31,
         "scrapCnt": 0
       },
       "fields": [
@@ -2117,7 +2232,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -2201,7 +2316,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 10,
+        "viewCnt": 11,
         "scrapCnt": 0
       },
       "fields": [
@@ -2293,7 +2408,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 12,
+        "viewCnt": 14,
         "scrapCnt": 0
       },
       "fields": [
@@ -2377,7 +2492,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 5,
+        "viewCnt": 6,
         "scrapCnt": 0
       },
       "fields": [
@@ -2461,7 +2576,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 86,
+        "viewCnt": 87,
         "scrapCnt": 1
       },
       "fields": [
@@ -2597,7 +2712,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 39,
+        "viewCnt": 40,
         "scrapCnt": 2
       },
       "fields": [
@@ -2689,7 +2804,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 96,
+        "viewCnt": 104,
         "scrapCnt": 1
       },
       "fields": [
@@ -2825,7 +2940,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 25,
+        "viewCnt": 26,
         "scrapCnt": 0
       },
       "fields": [
@@ -2909,7 +3024,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 4,
+        "viewCnt": 5,
         "scrapCnt": 0
       },
       "fields": [
@@ -2993,7 +3108,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 8,
         "scrapCnt": 0
       },
       "fields": [
@@ -3077,7 +3192,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 14,
+        "viewCnt": 19,
         "scrapCnt": 1
       },
       "fields": [
@@ -3165,7 +3280,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 9,
         "scrapCnt": 1
       },
       "fields": [
@@ -3249,7 +3364,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -3337,7 +3452,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -3421,7 +3536,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -3505,7 +3620,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -3589,7 +3704,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 54,
+        "viewCnt": 62,
         "scrapCnt": 1
       },
       "fields": [
@@ -3757,7 +3872,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 0
       },
       "fields": [
@@ -3841,7 +3956,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 6,
+        "viewCnt": 7,
         "scrapCnt": 1
       },
       "fields": [
@@ -3929,7 +4044,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 9,
         "scrapCnt": 0
       },
       "fields": [
@@ -4021,7 +4136,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 5,
+        "viewCnt": 6,
         "scrapCnt": 0
       },
       "fields": [
@@ -4105,7 +4220,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 10,
+        "viewCnt": 11,
         "scrapCnt": 1
       },
       "fields": [
@@ -4189,7 +4304,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 17,
+        "viewCnt": 19,
         "scrapCnt": 0
       },
       "fields": [
@@ -4329,8 +4444,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 16,
-        "scrapCnt": 0
+        "viewCnt": 24,
+        "scrapCnt": 1
       },
       "fields": [
         {
@@ -4374,7 +4489,7 @@
       "preferred": null,
       "workDetailAddress": null,
       "workSchedules": [],
-      "scrapId": null,
+      "scrapId": 11932,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -4421,7 +4536,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 10,
         "scrapCnt": 0
       },
       "fields": [
@@ -4513,7 +4628,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 9,
+        "viewCnt": 14,
         "scrapCnt": 0
       },
       "fields": [
@@ -4621,7 +4736,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 5,
+        "viewCnt": 6,
         "scrapCnt": 0
       },
       "fields": [
@@ -4705,8 +4820,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 59,
-        "scrapCnt": 0
+        "viewCnt": 61,
+        "scrapCnt": 1
       },
       "fields": [
         {
@@ -4758,7 +4873,7 @@
       "preferred": null,
       "workDetailAddress": null,
       "workSchedules": [],
-      "scrapId": null,
+      "scrapId": 11930,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -4805,7 +4920,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 40,
+        "viewCnt": 41,
         "scrapCnt": 0
       },
       "fields": [
@@ -4897,8 +5012,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 86,
-        "scrapCnt": 1
+        "viewCnt": 91,
+        "scrapCnt": 2
       },
       "fields": [
         {
@@ -4990,7 +5105,7 @@
       "preferred": null,
       "workDetailAddress": null,
       "workSchedules": [],
-      "scrapId": null,
+      "scrapId": 11928,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -5037,7 +5152,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 104,
+        "viewCnt": 106,
         "scrapCnt": 1
       },
       "fields": [
@@ -5205,8 +5320,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 87,
-        "scrapCnt": 2
+        "viewCnt": 90,
+        "scrapCnt": 3
       },
       "fields": [
         {
@@ -5313,7 +5428,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 30,
+        "viewCnt": 31,
         "scrapCnt": 0
       },
       "fields": [
@@ -5397,7 +5512,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 7,
+        "viewCnt": 8,
         "scrapCnt": 0
       },
       "fields": [
@@ -5481,8 +5596,8 @@
         "phoneNumber": "01087417480"
       },
       "counts": {
-        "viewCnt": 51,
-        "scrapCnt": 0
+        "viewCnt": 55,
+        "scrapCnt": 1
       },
       "fields": [
         {
@@ -5529,7 +5644,7 @@
           "paymentAmount": 0
         }
       ],
-      "scrapId": null,
+      "scrapId": 11922,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -5576,7 +5691,7 @@
         "phoneNumber": "01087417480"
       },
       "counts": {
-        "viewCnt": 48,
+        "viewCnt": 51,
         "scrapCnt": 0
       },
       "fields": [
@@ -5675,8 +5790,8 @@
         "phoneNumber": "01099139634"
       },
       "counts": {
-        "viewCnt": 423,
-        "scrapCnt": 32
+        "viewCnt": 458,
+        "scrapCnt": 37
       },
       "fields": [
         {
@@ -5814,7 +5929,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 8,
+        "viewCnt": 12,
         "scrapCnt": 0
       },
       "fields": [
@@ -5898,7 +6013,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 37,
+        "viewCnt": 38,
         "scrapCnt": 0
       },
       "fields": [
@@ -5982,7 +6097,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 47,
+        "viewCnt": 51,
         "scrapCnt": 1
       },
       "fields": [
@@ -6066,7 +6181,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 69,
+        "viewCnt": 70,
         "scrapCnt": 3
       },
       "fields": [
@@ -6158,7 +6273,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 85,
+        "viewCnt": 87,
         "scrapCnt": 2
       },
       "fields": [
@@ -6262,7 +6377,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 121,
+        "viewCnt": 123,
         "scrapCnt": 3
       },
       "fields": [
@@ -6410,7 +6525,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 82,
+        "viewCnt": 86,
         "scrapCnt": 0
       },
       "fields": [
@@ -6502,7 +6617,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 123,
+        "viewCnt": 128,
         "scrapCnt": 3
       },
       "fields": [
@@ -6658,7 +6773,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 37,
+        "viewCnt": 38,
         "scrapCnt": 0
       },
       "fields": [
@@ -6742,7 +6857,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 31,
+        "viewCnt": 32,
         "scrapCnt": 0
       },
       "fields": [
@@ -6834,7 +6949,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 60,
+        "viewCnt": 61,
         "scrapCnt": 2
       },
       "fields": [
@@ -6922,7 +7037,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 35,
+        "viewCnt": 36,
         "scrapCnt": 1
       },
       "fields": [
@@ -7006,7 +7121,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 33,
+        "viewCnt": 34,
         "scrapCnt": 0
       },
       "fields": [
@@ -7090,7 +7205,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 86,
+        "viewCnt": 87,
         "scrapCnt": 0
       },
       "fields": [
@@ -7206,7 +7321,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 58,
+        "viewCnt": 59,
         "scrapCnt": 0
       },
       "fields": [
@@ -7290,7 +7405,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 84,
+        "viewCnt": 87,
         "scrapCnt": 2
       },
       "fields": [
@@ -7378,7 +7493,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 58,
+        "viewCnt": 59,
         "scrapCnt": 0
       },
       "fields": [
@@ -7462,7 +7577,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 31,
+        "viewCnt": 32,
         "scrapCnt": 0
       },
       "fields": [
@@ -7546,7 +7661,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 27,
+        "viewCnt": 28,
         "scrapCnt": 0
       },
       "fields": [
@@ -7630,7 +7745,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 44,
+        "viewCnt": 45,
         "scrapCnt": 0
       },
       "fields": [
@@ -7718,7 +7833,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 46,
+        "viewCnt": 47,
         "scrapCnt": 0
       },
       "fields": [
@@ -7802,7 +7917,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 82,
+        "viewCnt": 83,
         "scrapCnt": 1
       },
       "fields": [
@@ -7914,8 +8029,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 37,
-        "scrapCnt": 2
+        "viewCnt": 59,
+        "scrapCnt": 3
       },
       "fields": [
         {
@@ -8058,7 +8173,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 157,
+        "viewCnt": 160,
         "scrapCnt": 1
       },
       "fields": [
@@ -8158,7 +8273,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 45,
+        "viewCnt": 46,
         "scrapCnt": 0
       },
       "fields": [
@@ -8242,8 +8357,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 116,
-        "scrapCnt": 2
+        "viewCnt": 118,
+        "scrapCnt": 3
       },
       "fields": [
         {
@@ -8342,7 +8457,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 69,
+        "viewCnt": 72,
         "scrapCnt": 0
       },
       "fields": [
@@ -8446,7 +8561,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 91,
+        "viewCnt": 93,
         "scrapCnt": 3
       },
       "fields": [
@@ -8558,7 +8673,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 258,
+        "viewCnt": 264,
         "scrapCnt": 11
       },
       "fields": [
@@ -8710,7 +8825,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 130,
+        "viewCnt": 135,
         "scrapCnt": 5
       },
       "fields": [
@@ -8842,7 +8957,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 45,
+        "viewCnt": 46,
         "scrapCnt": 1
       },
       "fields": [
@@ -8938,7 +9053,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 65,
+        "viewCnt": 69,
         "scrapCnt": 1
       },
       "fields": [
@@ -9026,8 +9141,8 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 62,
-        "scrapCnt": 0
+        "viewCnt": 65,
+        "scrapCnt": 1
       },
       "fields": [
         {
@@ -9071,7 +9186,7 @@
       "preferred": null,
       "workDetailAddress": null,
       "workSchedules": [],
-      "scrapId": null,
+      "scrapId": 11929,
       "isScrap": false,
       "hasCurriculum": null,
       "isAd": false
@@ -9118,7 +9233,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 55,
+        "viewCnt": 59,
         "scrapCnt": 2
       },
       "fields": [
@@ -9210,7 +9325,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 44,
+        "viewCnt": 45,
         "scrapCnt": 0
       },
       "fields": [
@@ -9294,7 +9409,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 64,
+        "viewCnt": 65,
         "scrapCnt": 1
       },
       "fields": [
@@ -9378,7 +9493,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 51,
+        "viewCnt": 52,
         "scrapCnt": 0
       },
       "fields": [
@@ -9462,7 +9577,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 68,
+        "viewCnt": 69,
         "scrapCnt": 0
       },
       "fields": [
@@ -9558,7 +9673,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 125,
+        "viewCnt": 126,
         "scrapCnt": 4
       },
       "fields": [
@@ -9674,7 +9789,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 72,
+        "viewCnt": 73,
         "scrapCnt": 0
       },
       "fields": [
@@ -9758,7 +9873,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 60,
+        "viewCnt": 61,
         "scrapCnt": 1
       },
       "fields": [
@@ -9854,7 +9969,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 150,
+        "viewCnt": 151,
         "scrapCnt": 3
       },
       "fields": [
@@ -10002,7 +10117,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 47,
+        "viewCnt": 48,
         "scrapCnt": 0
       },
       "fields": [
@@ -10086,7 +10201,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 59,
+        "viewCnt": 60,
         "scrapCnt": 2
       },
       "fields": [
@@ -10174,7 +10289,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 113,
+        "viewCnt": 115,
         "scrapCnt": 2
       },
       "fields": [
@@ -10270,7 +10385,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 41,
+        "viewCnt": 42,
         "scrapCnt": 0
       },
       "fields": [
@@ -10362,7 +10477,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 72,
+        "viewCnt": 74,
         "scrapCnt": 2
       },
       "fields": [
@@ -10462,7 +10577,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 45,
+        "viewCnt": 46,
         "scrapCnt": 0
       },
       "fields": [
@@ -10546,7 +10661,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 48,
+        "viewCnt": 49,
         "scrapCnt": 0
       },
       "fields": [
@@ -10630,7 +10745,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 41,
+        "viewCnt": 42,
         "scrapCnt": 0
       },
       "fields": [
@@ -10714,7 +10829,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 46,
+        "viewCnt": 47,
         "scrapCnt": 0
       },
       "fields": [
@@ -10798,7 +10913,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 803,
+        "viewCnt": 815,
         "scrapCnt": 23
       },
       "fields": [
@@ -11018,7 +11133,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 203,
+        "viewCnt": 207,
         "scrapCnt": 3
       },
       "fields": [
@@ -11102,7 +11217,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 582,
+        "viewCnt": 586,
         "scrapCnt": 2
       },
       "fields": [
@@ -11186,7 +11301,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 753,
+        "viewCnt": 755,
         "scrapCnt": 9
       },
       "fields": [
@@ -11270,7 +11385,7 @@
         "phoneNumber": null
       },
       "counts": {
-        "viewCnt": 792,
+        "viewCnt": 794,
         "scrapCnt": 9
       },
       "fields": [
