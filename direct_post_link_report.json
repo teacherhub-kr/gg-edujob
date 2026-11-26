@@ -1,10 +1,10 @@
 {
   "policy": "search-result-card-exact-detail-or-nonclickable-v2",
-  "totalRows": 9344,
-  "nonDirectBeforeRepair": 130,
+  "totalRows": 9339,
+  "nonDirectBeforeRepair": 135,
   "recoveredRows": 0,
-  "nonDirectAfterRepair": 130,
-  "cultureFoundationRows": 72,
+  "nonDirectAfterRepair": 135,
+  "cultureFoundationRows": 71,
   "cultureFoundationNonDirectRows": 27,
   "recoveredExamples": [],
   "nonDirectExamples": [
@@ -301,6 +301,51 @@
       "source": "레슨인포",
       "title": "2026년 제3차 (재)생거진천 문화재단 직원채용",
       "school": "문화재단",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95495",
+      "source": "레슨인포",
+      "title": "국립고궁박물관 ≪독대 獨對 안중근이 남긴 여덟 글자≫ 운영 매니저, 스태프 모집",
+      "school": "국립고궁박물관",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95494",
+      "source": "레슨인포",
+      "title": "[10월마감] 케이옥션 신입·경력 경매스페셜리스트 양성과정 채용",
+      "school": "10월마감",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95493",
+      "source": "레슨인포",
+      "title": "[아미고발레] 발레 강사 모집(무용 전공자 우대 / 대학생 가능)",
+      "school": "아미고발레",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95490",
+      "source": "레슨인포",
+      "title": "<톡톡 라이브쇼> 헬로카봇 티켓매니저/MD판매원/하우스어셔 (주말) 인력 구인",
+      "school": "레슨인포 구인",
+      "url": "",
+      "reason": "lessoninfo-generic-or-missing-id",
+      "direct": false
+    },
+    {
+      "sourceIdentity": "culture:id:95489",
+      "source": "레슨인포",
+      "title": "[주식회사 아트나] 문화예술 기획팀 경력직 모집 공고",
+      "school": "주식회사 아트나",
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
@@ -862,51 +907,6 @@
       "url": "",
       "reason": "lessoninfo-generic-or-missing-id",
       "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95372",
-      "source": "레슨인포",
-      "title": "[NOL 씨어터 대학로] Audience Officer(공연장 안내원) 모집",
-      "school": "NOL 씨어터 대학로",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95371",
-      "source": "레슨인포",
-      "title": "2026년도 1차 아르코·대학로예술극장 티켓안내원 모집 공고(~10/21 18시 서류 접수 마감)",
-      "school": "레슨인포 구인",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95365",
-      "source": "레슨인포",
-      "title": "(주)뉴프로덕션 제작팀 컴퍼니 매니저 구인공고",
-      "school": "레슨인포 구인",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95364",
-      "source": "레슨인포",
-      "title": "엔터테인먼트 공연사업부 홍보마케팅 경력직 채용",
-      "school": "레슨인포 구인",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
-    },
-    {
-      "sourceIdentity": "culture:id:95363",
-      "source": "레슨인포",
-      "title": "[사비나미술관] 2026 예비학예인력 모집 공고",
-      "school": "사비나미술관",
-      "url": "",
-      "reason": "lessoninfo-generic-or-missing-id",
-      "direct": false
     }
   ],
   "cultureFoundationExamples": [
@@ -1150,15 +1150,6 @@
       "title": "진행중 2026년 서울문화재단 제3차 직원 공개채용",
       "school": "서울문화재단",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95735",
-      "reason": "artmore-rec-idx",
-      "direct": true
-    },
-    {
-      "sourceIdentity": "artmore:95731",
-      "source": "아트모아",
-      "title": "진행중 [관악문화재단] 2027년 싱글벙글교육센터 평생학습 교육프로그램 강사 공개 모집",
-      "school": "관악문화재단",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95731",
       "reason": "artmore-rec-idx",
       "direct": true
     },
