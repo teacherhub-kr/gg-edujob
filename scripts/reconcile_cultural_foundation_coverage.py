@@ -18,6 +18,37 @@ UNIFIED = Path("unified_jobs.json")
 OFFICIAL = Path("official_foundation_jobs.json")
 REPORT = Path("cultural_foundation_coverage_report.json")
 
+# The production supervisor has a 22-hour freshness allowance for this source.
+# A historical "healthy: true" report does not prove a live official board today.
+OFFICIAL_REPORT_MAX_AGE_HOURS = 22.0
+
+
+def official_report_freshness(report: dict, *, now: datetime | None = None) -> dict:
+    """Describe current primary-official proof; never promote stale/naive timestamps."""
+    raw = str(report.get("generatedAt") or "").strip()
+    result = {
+        "state": "missing-or-invalid",
+        "generatedAt": raw,
+        "maxAgeHours": OFFICIAL_REPORT_MAX_AGE_HOURS,
+        "ageHours": None,
+    }
+    if not raw:
+        return result
+    try:
+        generated = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if generated.tzinfo is None:
+            return result
+        checked_at = now if now is not None else datetime.now(KST)
+        if checked_at.tzinfo is None:
+            raise ValueError("now must be timezone-aware")
+        age_hours = (checked_at - generated).total_seconds() / 3600
+    except (ValueError, OverflowError):
+        return result
+    result["ageHours"] = round(age_hours, 3)
+    result["state"] = "fresh" if 0 <= age_hours <= OFFICIAL_REPORT_MAX_AGE_HOURS else "stale-or-future"
+    return result
+
+
 
 def load(path: Path, default):
     try:
@@ -253,10 +284,19 @@ def main() -> int:
     }
     component_reports = {k: load(path, {}) for k, path in component_paths.items()}
     component_available = {k: path.exists() for k, path in component_paths.items()}
+    official_freshness = official_report_freshness(component_reports["official"])
     component_health = {
         k: (bool(component_reports[k].get("healthy")) if component_available[k] else None)
         for k in component_paths
     }
+    # A missing or stale primary report is not proof of healthy official coverage.
+    # Cross-check staleness is a separate issue; do not equate it with primary proof.
+    component_health["official"] = (
+        bool(component_reports["official"].get("healthy"))
+        and component_available["official"]
+        and official_freshness["state"] == "fresh"
+    )
+    missing_critical_components = ["official"] if not component_available["official"] else []
     failed_available_components = [
         k for k in component_paths
         if component_available[k] and component_health[k] is False
@@ -265,12 +305,14 @@ def main() -> int:
     report = {
         "generatedAt":datetime.now(KST).isoformat(timespec="seconds"),
         "policy":"official-primary+multi-sensor-gap-detection-v3",
-        "healthy": not failed_available_components and not gaps,
+        "healthy": not failed_available_components and not missing_critical_components and not gaps,
         "registryInstitutions":len(foundations),
         "officialBoardsConfigured":configured_official,
         "officialCoverageComplete":configured_official == len(foundations),
         "componentAvailable":component_available,
         "componentHealth":component_health,
+        "officialReportFreshness":official_freshness,
+        "missingCriticalComponents":missing_critical_components,
         "failedAvailableComponents":failed_available_components,
         "currentMappedBySource":{s:sum(len(mapped[fid].get(s,[])) for fid in by_fid) for s in datasets},
         "coverageGapCount":len(gaps),
@@ -282,7 +324,7 @@ def main() -> int:
         "institutions":institutions,
     }
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    summary = {k:report[k] for k in ("healthy","registryInstitutions","officialBoardsConfigured","officialCoverageComplete","componentAvailable","componentHealth","failedAvailableComponents","currentMappedBySource","coverageGapCount","discoveryOnlyGapCount")}
+    summary = {k:report[k] for k in ("healthy","registryInstitutions","officialBoardsConfigured","officialCoverageComplete","componentAvailable","componentHealth","officialReportFreshness","missingCriticalComponents","failedAvailableComponents","currentMappedBySource","coverageGapCount","discoveryOnlyGapCount")}
     summary["coverageGaps"] = report["coverageGaps"][:20]
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0 if report["healthy"] else 2
