@@ -15,6 +15,7 @@ except ModuleNotFoundError:
 
 sys.path.insert(0, "scripts")
 import crawl_lessoninfo_browser as lesson
+import build_unified_search_multi as multi
 from private_source_registry import lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates
 
 
@@ -127,6 +128,42 @@ class LessoninfoFullViewTests(unittest.TestCase):
         self.assertTrue(row["clickable"])
         self.assertEqual(row["statusGroup"], "current")
         self.assertEqual(row["title"], active["title"])
+
+
+    def test_audit_breakdown_distinguishes_source_current_unknown_and_unsafe_links(self):
+        original = [
+            {"sourceIdentity": "board:1", "statusGroup": "current", "title": "음악교사 모집"},
+            {"sourceIdentity": "board:2", "statusGroup": "deadline-unknown", "title": "마감일 미상"},
+            {"sourceIdentity": "board:3", "statusGroup": "unverified-link", "title": "상세 링크 미확인"},
+            {"sourceIdentity": "board:4", "statusGroup": "closed", "title": "모집 종료"},
+        ]
+        selected = [original[0], original[2]]
+        projected = [
+            {"url": "https://school.example/jobs/1", "detailLinkVerified": True},
+            {"url": "", "detailLinkVerified": False},
+        ]
+        snapshot = [dict(row) for row in original]
+        report = multi.summarize_lessoninfo_evidence(original, selected, projected, True)
+        self.assertEqual(report["rawCandidates"], 4)
+        self.assertEqual(report["selectedCandidates"], 2)
+        self.assertEqual(report["excludedCandidates"], 2)
+        self.assertEqual(report["sourceStatusCounts"]["deadline-unknown"], 1)
+        self.assertEqual(report["unknownDeadlineExcluded"], 1)
+        self.assertEqual(report["unverifiedLinkSelected"], 1)
+        self.assertEqual(report["selectedWithVerifiedDirectUrl"], 1)
+        self.assertEqual(report["selectedWithoutVerifiedDirectUrl"], 1)
+        self.assertEqual(report["sourceLabeledCurrentSelected"], 1)
+        self.assertEqual(original, snapshot, "An audit must not mutate the canonical candidate rows")
+
+    def test_evidence_reporting_never_claims_disabled_source_is_published(self):
+        rows = [{"statusGroup": "current", "sourceIdentity": "board:1"}]
+        projected = [{"url": "", "detailLinkVerified": False}]
+        report = multi.summarize_lessoninfo_evidence(rows, rows, projected, False)
+        self.assertEqual(report["selectedCandidates"], 1)
+        self.assertEqual(report["publishedSourceOccurrencesBeforeDedup"], 0)
+        self.assertEqual(report["selectedWithVerifiedDirectUrl"], 0)
+        self.assertFalse(report["publicationEnabled"])
+
 
 
 if __name__ == "__main__":
