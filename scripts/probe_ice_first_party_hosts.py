@@ -21,6 +21,9 @@ ENDPOINTS = (
     ("ice-central-contract", "https://contract.ice.go.kr/ice/na/ntt/selectNttList.do?bbsId=1981&mi=10997"),
     ("ice-afterschool-primary", "https://www.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"),
     ("ice-afterschool-safety", "https://safety.ice.go.kr/afterschool/na/ntt/selectNttList.do?bbsId=1534&mi=10571"),
+    ("ice-official-detail-primary", "https://www.ice.go.kr/ice/na/ntt/selectNttInfo.do?mi=10997&nttSn=3389669"),
+    ("ice-official-detail-safety", "https://safety.ice.go.kr/ice/na/ntt/selectNttInfo.do?mi=10997&nttSn=3389669"),
+    ("ice-official-home-primary", "https://www.ice.go.kr/ice/main.do"),
 )
 POST_ID_RE = re.compile(r"nttSn\s*[=:,'\"() ]+\s*(\d{5,})", re.I)
 META_REFRESH_RE = re.compile(r"<meta[^>]*http-equiv\s*=\s*['\"]?refresh", re.I)
@@ -76,6 +79,20 @@ def main() -> int:
             try:
                 reply = session.get(url, timeout=(8, 15), allow_redirects=True)
                 record.update(classify_response(reply.content, reply.url, reply.status_code))
+                if name.startswith("ice-official-detail-"):
+                    # This is only a known public detail-page transport control,
+                    # not evidence of complete list pagination.
+                    text = reply.content.decode("utf-8", errors="replace")
+                    record["knownPublicDetailVisible"] = (
+                        record["officialHost"] and record["httpStatus"] == 200
+                        and not record["metaRefresh"] and len(reply.content) >= 1024
+                        and "인천가현초" in text
+                    )
+                elif name == "ice-official-home-primary":
+                    record["homeNonPlaceholder"] = (
+                        record["officialHost"] and record["httpStatus"] == 200
+                        and not record["metaRefresh"] and len(reply.content) >= 1024
+                    )
             except requests.RequestException as exc:
                 record.update({"realBoardCandidate": False, "errorType": type(exc).__name__})
             results.append(record)
@@ -84,6 +101,8 @@ def main() -> int:
         "policy": "first-party-only-read-only-no-publication",
         "candidates": [r["surface"] for r in results if r.get("realBoardCandidate")],
         "totalSurfaces": len(results),
+        "knownDetailVisible": [r["surface"] for r in results if r.get("knownPublicDetailVisible")],
+        "homeNonPlaceholder": [r["surface"] for r in results if r.get("homeNonPlaceholder")],
         "provenComplete": False,
         "note": "HTML transport candidate is not a pagination, freshness or official coverage proof",
     }, ensure_ascii=False), flush=True)
