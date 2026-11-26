@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-26T07:45:03+09:00",
+  "generatedAt": "2026-11-26T13:41:48+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
-  "canonicalOfficialJobs": 14784,
+  "canonicalOfficialJobs": 14897,
   "canonicalFoundationOfficialJobs": 9,
   "canonicalPrivateJobs": 5000,
-  "selectedCanonicalOfficialJobs": 4653,
+  "selectedCanonicalOfficialJobs": 4785,
   "selectedFoundationOfficialJobs": 1,
-  "selectedOfficialJobs": 4654,
+  "selectedOfficialJobs": 4786,
   "selectedPrivateJobs": 4671,
-  "publishedJobs": 9325,
+  "publishedJobs": 9457,
   "perFeed": {
-    "official": 4654,
+    "official": 4786,
     "private": 4671
   },
   "privateSources": {
@@ -26,8 +26,8 @@
       "excludedFromUnifiedCount": 298,
       "lastVerifiedAt": "2026-11-26T06:45:29+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.99,
+        "state": "stale",
+        "ageHours": 6.94,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T06:45:29+09:00"
       },
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1045.15,
+        "ageHours": 1051.09,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -72,8 +72,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-26T07:23:52+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.36,
+        "state": "stale",
+        "ageHours": 6.3,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T07:23:39+09:00"
       },
@@ -95,8 +95,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-26T07:03:24+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.69,
+        "state": "stale",
+        "ageHours": 6.64,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T07:03:24+09:00"
       },
@@ -118,8 +118,8 @@
       "excludedFromUnifiedCount": 0,
       "lastVerifiedAt": "2026-11-26T07:10:53+09:00",
       "verificationFreshness": {
-        "state": "fresh",
-        "ageHours": 0.57,
+        "state": "stale",
+        "ageHours": 6.52,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-26T07:10:53+09:00"
       },
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1068.94,
+        "ageHours": 1074.89,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1085.0,
+        "ageHours": 1090.94,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -185,7 +185,11 @@
   "allPublicationEnabledSourcesHealthy": true,
   "allPublicationEnabledSourcesFresh": false,
   "stalePrivateSources": [
+    "lessoninfo",
     "cleaneye",
+    "jobteacher",
+    "artmore",
+    "gonggonggangsa",
     "seekle",
     "boramyc"
   ],
