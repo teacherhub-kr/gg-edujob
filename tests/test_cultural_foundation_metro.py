@@ -2,6 +2,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 from unittest.mock import patch
 
@@ -273,6 +274,34 @@ class CulturalFoundationMetroTests(unittest.TestCase):
                          crawler.base.date(2026,10,6))
         anchor['onclick']="goView('../../bad', '');"
         self.assertIsNone(crawler.ifac_detail_url(anchor,board))
+
+    def test_official_component_report_freshness_rejects_stale_and_invalid(self):
+        now = datetime(2026, 11, 26, 23, 0, tzinfo=timezone(timedelta(hours=9)))
+        fresh = reconcile.official_report_freshness(
+            {"generatedAt": (now - timedelta(hours=21)).isoformat()},
+            now=now,
+        )
+        self.assertEqual(fresh["state"], "fresh")
+        self.assertEqual(fresh["maxAgeHours"], 22.0)
+        stale = reconcile.official_report_freshness(
+            {"generatedAt": (now - timedelta(hours=23)).isoformat(), "healthy": True},
+            now=now,
+        )
+        self.assertEqual(stale["state"], "stale-or-future")
+        self.assertGreater(stale["ageHours"], 22)
+        future = reconcile.official_report_freshness(
+            {"generatedAt": (now + timedelta(hours=1)).isoformat()},
+            now=now,
+        )
+        self.assertEqual(future["state"], "stale-or-future")
+        self.assertEqual(reconcile.official_report_freshness({}, now=now)["state"], "missing-or-invalid")
+        self.assertEqual(reconcile.official_report_freshness(
+            {"generatedAt": "2026-11-26T20:00:00"}, now=now,
+        )["state"], "missing-or-invalid")
+        self.assertEqual(reconcile.official_report_freshness(
+            {"generatedAt": "corrupt"}, now=now,
+        )["state"], "missing-or-invalid")
+
 
 
 if __name__ == "__main__":
