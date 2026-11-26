@@ -1,6 +1,8 @@
 import json
 import sys
 import unittest
+import os
+import tempfile
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
@@ -301,6 +303,44 @@ class CulturalFoundationMetroTests(unittest.TestCase):
         self.assertEqual(reconcile.official_report_freshness(
             {"generatedAt": "corrupt"}, now=now,
         )["state"], "missing-or-invalid")
+
+
+    def test_stale_official_report_degrades_coverage_without_modifying_jobs(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "cultural_foundation_registry.json").write_text(json.dumps({
+                "institutions": [{
+                    "id": "seoul:metropolitan", "name": "서울문화재단",
+                    "region": "서울", "municipality": "서울특별시",
+                    "officialRecruitmentUrl": "https://www.sfac.or.kr/opensquare/notice/recruit_list.do",
+                }]
+            }, ensure_ascii=False), encoding="utf-8")
+            (root / "official_foundation_report.json").write_text(json.dumps({
+                "healthy": True,
+                "generatedAt": "2026-10-06T04:26:59+09:00",
+            }), encoding="utf-8")
+            (root / "unified_jobs.json").write_text(json.dumps({
+                "jobs": [{
+                    "sourceIdentity": "official:stable-1",
+                    "feedKind": "official", "province": "서울",
+                    "title": "교사 채용 공고",
+                }]
+            }, ensure_ascii=False), encoding="utf-8")
+
+            cwd = Path.cwd()
+            try:
+                os.chdir(root)
+                self.assertEqual(reconcile.main(), 2)
+                report = json.loads(Path("cultural_foundation_coverage_report.json").read_text(encoding="utf-8"))
+                self.assertFalse(report["healthy"])
+                self.assertFalse(report["componentHealth"]["official"])
+                self.assertIn("official", report["failedAvailableComponents"])
+                self.assertEqual(report["officialReportFreshness"]["state"], "stale-or-future")
+                self.assertEqual(report["coverageGapCount"], 0)
+                original = json.loads(Path("unified_jobs.json").read_text(encoding="utf-8"))
+                self.assertEqual(original["jobs"][0]["sourceIdentity"], "official:stable-1")
+            finally:
+                os.chdir(cwd)
 
 
 
