@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-28T01:01:11+09:00",
+  "generatedAt": "2026-11-28T04:15:40+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4589,
+  "privateJobs": 4549,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 156
+      "canonicalCount": 148
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -26,7 +26,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 4088
+      "canonicalCount": 4084
     },
     "artmore": {
       "name": "아트모아",
@@ -34,7 +34,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 209
+      "canonicalCount": 211
     },
     "gonggonggangsa": {
       "name": "공공강사",
@@ -42,7 +42,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 104
+      "canonicalCount": 74
     },
     "seekle": {
       "name": "시립광진청소년센터",
@@ -63,7 +63,7 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 156,
+      "jobs": 148,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 9
@@ -75,22 +75,22 @@
       "officialGapCandidates": 0
     },
     "jobteacher": {
-      "jobs": 4088,
+      "jobs": 4084,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 35
     },
     "artmore": {
-      "jobs": 209,
+      "jobs": 211,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
       "officialGapCandidates": 9
     },
     "gonggonggangsa": {
-      "jobs": 104,
+      "jobs": 74,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 10
+      "officialGapCandidates": 9
     },
     "seekle": {
       "jobs": 7,
@@ -107,7 +107,7 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 63,
+  "officialGapCandidates": 62,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
@@ -794,18 +794,6 @@
       ],
       "registered": "2026-11-25",
       "url": "https://00gangsa.com/recruitments/24677",
-      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
-    },
-    {
-      "privateSource": "gonggonggangsa",
-      "privateSourceName": "공공강사",
-      "privateId": "gonggonggangsa:24939",
-      "privateTitle": "2026학년도 배문중학교 시간강사 채용 공고(국어) - 국어",
-      "provinces": [
-        "서울"
-      ],
-      "registered": "2026-11-24",
-      "url": "https://00gangsa.com/recruitments/24939",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {

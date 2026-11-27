@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-28T01:01:09+09:00",
+  "generatedAt": "2026-11-28T04:15:38+09:00",
   "healthy": true,
-  "total": 9300,
+  "total": 9298,
   "official": 4665,
-  "privateDisplayed": 4635,
+  "privateDisplayed": 4633,
   "enabledPrivateSources": [
     "lessoninfo",
     "cleaneye",
@@ -14,8 +14,8 @@
     "boramyc"
   ],
   "degradedPrivateSources": [],
-  "privateStableIds": 4635,
-  "privateRepresentedDirectly": 4635,
+  "privateStableIds": 4633,
+  "privateRepresentedDirectly": 4633,
   "privateRepresentedByOfficial": 0,
   "missingPrivateIds": 0,
   "missingPrivateBySource": {
@@ -46,13 +46,13 @@
   "futurePrivateDates": 0,
   "nonDirectPrivateLinks": 0,
   "nonDirectPrivateLinkExamples": [],
-  "verifiedLessoninfoCultureLinks": 151,
+  "verifiedLessoninfoCultureLinks": 143,
   "verifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95859",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95859",
-      "resolvedUrlType": "official"
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95859&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
     },
     {
       "source": "lessoninfo",
@@ -169,7 +169,7 @@
       "resolvedUrlType": "official"
     }
   ],
-  "failClosedLessoninfoCultureLinks": 105,
+  "failClosedLessoninfoCultureLinks": 113,
   "failClosedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
@@ -272,13 +272,13 @@
       "title": "[놀씨어터] 코엑스아티움 하우스 부매니저 (계약직)"
     }
   ],
-  "projectedVerifiedLessoninfoCultureLinks": 151,
+  "projectedVerifiedLessoninfoCultureLinks": 143,
   "projectedVerifiedLessoninfoCultureLinkExamples": [
     {
       "source": "lessoninfo",
       "sourceIdentity": "culture:id:95859",
-      "verifiedUrl": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95859",
-      "resolvedUrlType": "official"
+      "verifiedUrl": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95859&ckattempt=1",
+      "resolvedUrlType": "lessoninfo"
     },
     {
       "source": "lessoninfo",
@@ -425,15 +425,15 @@
       "currentCount": 0
     },
     "jobteacher": {
-      "rawCount": 4088,
-      "currentCount": 4088
+      "rawCount": 4084,
+      "currentCount": 4084
     },
     "artmore": {
-      "rawCount": 209,
-      "currentCount": 209
+      "rawCount": 211,
+      "currentCount": 211
     },
     "gonggonggangsa": {
-      "rawCount": 104,
+      "rawCount": 74,
       "currentCount": 74
     },
     "seekle": {
