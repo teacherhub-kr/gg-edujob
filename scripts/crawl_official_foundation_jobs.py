@@ -21,7 +21,13 @@ RESULT_RE = re.compile(r"최종\s*합격|합격자|서류\s*(?:심사|전형)|�
 DATE_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})")
 KOREAN_DATE_RE = re.compile(r"(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일")
 MONTH_DAY_RE = re.compile(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일")
-PERIOD_HINT_RE = re.compile(r"접수\s*기간|원서\s*접수|모집\s*기간|공고\s*기간|응시원서", re.I)
+# Never equate public notice period or interview dates with application deadlines.
+APPLY_DEADLINE_HINT_RE = re.compile(r"접수\s*마감(?:\s*일시|\s*일|\s*시간)?|원서\s*마감|지원\s*마감|신청\s*마감", re.I)
+APPLY_PERIOD_HINT_RE = re.compile(r"접수\s*기간|원서\s*접수|응시원서\s*접수|신청\s*기간|지원\s*기간", re.I)
+RECRUITMENT_PERIOD_HINT_RE = re.compile(r"모집\s*기간", re.I)
+OTHER_SECTION_RE = re.compile(r"공고\s*기간|채용\s*기간|근무\s*기간|서류\s*전형|면접\s*(?:전형|심사|일자|일시)|합격자\s*발표|최종\s*발표|발표\s*일|전형\s*일정", re.I)
+NUMERIC_PERIOD_RE = re.compile(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2}).{0,40}?[~～\-–—].{0,25}?(?:(20\d{2})\s*[./-]\s*)?(\d{1,2})\s*[./-]\s*(\d{1,2})")
+KOREAN_PERIOD_RE = re.compile(r"(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일.{0,40}?(?:[~～\-–—]|부터).{0,30}?(?:(20\d{2})\s*년\s*)?(\d{1,2})\s*월\s*(\d{1,2})\s*일")
 
 
 def load(path: Path, default):
@@ -91,52 +97,58 @@ def request(session: requests.Session, url: str) -> requests.Response:
     return r
 
 
-def candidate_period_segments(text: str) -> list[str]:
-    segments = []
-    for m in PERIOD_HINT_RE.finditer(text):
-        segments.append(text[m.start():m.start() + 1200])
-    return segments or [text[:1600]]
+def candidate_period_segments(text: str):
+    """Yield bounded application-labelled text without guessing from arbitrary dates."""
+    normalized = normalize_space(text)
+    for rx, kind in (
+        (APPLY_DEADLINE_HINT_RE, "deadline"),
+        (APPLY_PERIOD_HINT_RE, "period"),
+        (RECRUITMENT_PERIOD_HINT_RE, "period"),
+    ):
+        for match in rx.finditer(normalized):
+            fragment = normalized[match.end():match.end() + 180]
+            section = OTHER_SECTION_RE.search(fragment)
+            if section:
+                fragment = fragment[:section.start()]
+            yield kind, fragment
 
 
 def extract_apply_end(text: str, registered: date | None) -> date | None:
-    candidates: list[date] = []
-    base_year = registered.year if registered else datetime.now(KST).year
+    """Infer only an evidenced application date, else leave it unverified.
+
+    Times-of-day still require separate exact-time validation; this function
+    deliberately returns only a date under the current production schema.
+    """
     today = datetime.now(KST).date()
-    for segment in candidate_period_segments(normalize_space(text)):
-        m = re.search(r"(20\d{2})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2}).{0,40}?[~～-].{0,20}?(?:(20\d{2})\s*[./-]\s*)?(\d{1,2})\s*[./-]\s*(\d{1,2})", segment)
-        if m:
-            try:
-                year = int(m.group(4) or m.group(1))
-                end = date(year, int(m.group(5)), int(m.group(6)))
-                lower = today - timedelta(days=180)
-                upper = today + timedelta(days=150)
+    lower, upper = today - timedelta(days=180), today + timedelta(days=150)
+    for kind, fragment in candidate_period_segments(text):
+        if kind == "deadline":
+            for rx in (DATE_RE, KOREAN_DATE_RE):
+                match = rx.search(fragment[:80])
+                if not match or match.start() > 30:
+                    continue
+                try:
+                    end = date(*(int(match.group(index)) for index in (1, 2, 3)))
+                except ValueError:
+                    continue
                 if lower <= end <= upper:
                     return end
-            except ValueError:
-                pass
-        for rx in (DATE_RE, KOREAN_DATE_RE):
-            for m in rx.finditer(segment):
-                try:
-                    candidates.append(date(int(m.group(1)), int(m.group(2)), int(m.group(3))))
-                except ValueError:
-                    pass
-        for m in MONTH_DAY_RE.finditer(segment):
+            continue
+        for rx in (NUMERIC_PERIOD_RE, KOREAN_PERIOD_RE):
+            match = rx.search(fragment)
+            if not match or match.start() > 35:
+                continue
             try:
-                candidates.append(date(base_year, int(m.group(1)), int(m.group(2))))
+                year = int(match.group(4) or match.group(1))
+                start = date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+                end = date(year, int(match.group(5)), int(match.group(6)))
+                if not match.group(4) and end < start:
+                    end = date(year + 1, int(match.group(5)), int(match.group(6)))
             except ValueError:
-                pass
-        m = re.search(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일?\s*부터\s*(\d{1,2})\s*일?\s*까지", segment)
-        if m:
-            try:
-                candidates.append(date(base_year, int(m.group(1)), int(m.group(3))))
-            except ValueError:
-                pass
-    if not candidates:
-        return None
-    lower = today - timedelta(days=180)
-    upper = today + timedelta(days=150)
-    plausible = [d for d in candidates if lower <= d <= upper]
-    return max(plausible) if plausible else None
+                continue
+            if lower <= end <= upper:
+                return end
+    return None
 
 
 def detail_title(soup: BeautifulSoup, fallback: str = "") -> str:
