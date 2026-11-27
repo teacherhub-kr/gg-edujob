@@ -1,3 +1,4 @@
+# 2026-11-21: re-register this existing schedule after another confirmed cross-workflow delivery gap; cron cadence unchanged.
 name: Independent guarded private recruitment scheduler
 
 on:
@@ -36,7 +37,7 @@ jobs:
   dispatch:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 55
     permissions:
       contents: read
       actions: write
@@ -53,31 +54,82 @@ jobs:
           set -euo pipefail
           git fetch origin main
           git checkout -B main origin/main
-      - name: Select one overdue source using existing circuit and active-run policy
-        id: private_gate
+      - name: Drain overdue private sources one at a time
+        # Catch up despite irregular GitHub schedule delivery. No publishing from this workflow.
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         env:
           GH_TOKEN: ${{ github.token }}
+          MAX_ROUNDS: '8'
+          DRAIN_DEADLINE_SECONDS: '2700'
+          COLLECTOR_WAIT_SECONDS: '1500'
         run: |
           set -euo pipefail
-          PYTHONPATH=scripts python scripts/scheduled_private_refresh.py --github-output "$GITHUB_OUTPUT"
-      - name: Dispatch at most one guarded private collector
-        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.private_gate.outputs.workflow != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          WORKFLOW: ${{ steps.private_gate.outputs.workflow }}
-        run: |
-          set -euo pipefail
-          # Defense in depth: the choice must be a known, existing collector.
-          case "$WORKFLOW" in
-            update-lessoninfo-jobs.yml|lessoninfo-culture-cold-verify.yml|update-jobteacher-jobs.yml|update-artmore-candidate.yml|promote-artmore.yml|update-gonggonggangsa-jobs.yml|update-cleaneye-jobs.yml|update-seekle-instructor-jobs.yml|update-boramyc-instructor-jobs.yml|cultural-foundation-coverage.yml) ;;
-            *) echo "Unexpected private target" >&2; exit 2 ;;
-          esac
-          # Re-check race with the original watchdog's dispatch path.
-          active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/runs?per_page=100" \
-            --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
-          if [ "${active:-0}" -gt 0 ]; then
-            echo "Private writer already active: ${WORKFLOW}; no duplicate."
-            exit 0
-          fi
-          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/dispatches" -f ref=main
-          echo "Dispatched one circuit-checked private collector: ${WORKFLOW}"
+          started="$(date +%s)"
+          deadline=$((started + DRAIN_DEADLINE_SECONDS))
+          completed_actions=()
+          active_runs() {
+            gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/$1/runs?per_page=100" \
+              --jq '[.workflow_runs[] | select(.event == "workflow_dispatch" and .head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length'
+          }
+          for round in $(seq 1 "$MAX_ROUNDS"); do
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              echo "Drain deadline reached."; break
+            fi
+            # Fresh main: a completed collector's publication changes its freshness.
+            git fetch -q origin main
+            git checkout -q -B main origin/main
+            out="$(mktemp)"
+            skip_args=()
+            for done_action in "${completed_actions[@]}"; do
+              skip_args+=(--skip-action "$done_action")
+            done
+            PYTHONPATH=scripts python scripts/scheduled_private_refresh.py --github-output "$out" "${skip_args[@]}"
+            ACTION="$(sed -n 's/^action=//p' "$out")"
+            WORKFLOW="$(sed -n 's/^workflow=//p' "$out")"
+            rm -f "$out"
+            if [ -z "$WORKFLOW" ]; then
+              echo "Round ${round}: no eligible private source (fresh/backoff/active/handled)."
+              break
+            fi
+            # Only dispatch known private collectors. Never bypass an access denial.
+            case "$WORKFLOW" in
+              update-lessoninfo-jobs.yml|lessoninfo-culture-cold-verify.yml|update-jobteacher-jobs.yml|update-artmore-candidate.yml|promote-artmore.yml|update-gonggonggangsa-jobs.yml|update-cleaneye-jobs.yml|update-seekle-instructor-jobs.yml|update-boramyc-instructor-jobs.yml|cultural-foundation-coverage.yml) ;;
+              *) echo "Unexpected private target: $WORKFLOW" >&2; exit 2 ;;
+            esac
+            # Recheck ALL canonical writers before each private dispatch.
+            for other in seoul-gyeonggi-official.yml update-jobs.yml recover-missing-jobs.yml unified-search.yml; do
+              other_active="$(active_runs "$other")"
+              if [ "${other_active:-0}" -gt 0 ]; then
+                echo "Shared production writer active: $other; defer $WORKFLOW."
+                exit 0
+              fi
+            done
+            active="$(active_runs "$WORKFLOW")"
+            if [ "${active:-0}" -gt 0 ]; then
+              echo "Private writer already active: $WORKFLOW; no duplicate."
+              exit 0
+            fi
+            # workflow_dispatch returns no run ID. Bind only a UNIQUE new run
+            # after the previously observed run ID; ambiguous matches fail closed.
+            before_id="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/runs?per_page=100&event=workflow_dispatch&branch=main" --jq '[.workflow_runs[].id] | max // 0')"
+            gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/dispatches" -f ref=main
+            echo "Round ${round}: dispatched $WORKFLOW"
+            completed_actions+=("$ACTION")
+            wait_until=$(( $(date +%s) + COLLECTOR_WAIT_SECONDS ))
+            if [ "$wait_until" -gt "$deadline" ]; then wait_until="$deadline"; fi
+            conclusion=""
+            while [ "$(date +%s)" -lt "$wait_until" ]; do
+              sleep 30
+              conclusion="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW}/runs?per_page=100&event=workflow_dispatch&branch=main" \
+                --jq "[.workflow_runs[] | select(.id > ${before_id})] | if length == 0 then \"waiting\" elif length > 1 then \"ambiguous\" elif .[0].status == \"completed\" then (.[0].conclusion // \"unknown\") else \"running\" end")"
+              if [ "$conclusion" = "ambiguous" ] || [ "$conclusion" = "unknown" ]; then
+                echo "Ambiguous or unknown collector run for $WORKFLOW; fail closed." >&2; exit 2
+              fi
+              if [ "$conclusion" != "waiting" ] && [ "$conclusion" != "running" ]; then break; fi
+            done
+            echo "Round ${round}: $WORKFLOW result=${conclusion:-not-observed}"
+            if [ -z "$conclusion" ] || [ "$conclusion" = "running" ] || [ "$conclusion" = "waiting" ]; then
+              echo "Collector not completed within budget; stop draining to keep one private writer."
+              break
+            fi
+          done

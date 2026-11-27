@@ -28,6 +28,13 @@ RESULT_RE = re.compile(r"최종\s*합격|합격자|서류\s*(?:심사|전형)\s*
 ALWAYS_RE = re.compile(r"상시\s*(?:채용|모집)|채용\s*시까지|충원\s*시까지", re.I)
 PRIVATE_BANNED_RE = re.compile(r"구직|학원\s*매매|악기\s*(?:판매|매매)|연습실|원생\s*모집|학생\s*모집|레슨생\s*모집|팝니다|삽니다|권리금|임대", re.I)
 PROMO_ONLY_RE = re.compile(r"(?:홍보|광고)\s*(?:글|게시글|게시|합니다|드립니다|안내)$", re.I)
+# Terminal status labels are stronger than a stale/future date field. Match only
+# explicit closure tags, not ordinary phrases such as "접수 마감일 안내".
+CONFIRMED_CLOSED_TITLE_RE = re.compile(r"(?:[\[(]\s*(?:구인\s*완료|채용\s*완료|채용\s*마감|접수\s*마감|모집\s*마감)\s*[\])]|[-—]\s*접수\s*마감\s*$)", re.I)
+
+
+def explicitly_closed_title(title):
+    return bool(CONFIRMED_CLOSED_TITLE_RE.search(str(title or "")))
 INSTRUMENT_RE = re.compile(r"피아노|바이올린|비올라|첼로|플루트|클라리넷|오보에|바순|색소폰|트럼펫|트롬본|호른|튜바|타악기|드럼|기타|우쿨렐레|우크렐레|리코더|칼림바|국악|가야금|해금|대금|사물놀이|합창|성악|작곡|지휘|반주|오케스트라", re.I)
 
 
@@ -48,6 +55,35 @@ def parse_date(value):
         return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)), tzinfo=KST).date()
     except ValueError:
         return None
+
+
+def deadline_expired(value, now=None):
+    """Recruitment closes on its documented KST date or exact time.
+
+    Date-only deadlines remain open through the entire closing day; a
+    timestamp such as 2026-11-25 17:00 closes after 17:00 KST, not midnight.
+    """
+    raw = str(value or "")
+    match = DATE_RE.search(raw)
+    if not match:
+        return False
+    try:
+        end_day = datetime(int(match.group(1)), int(match.group(2)), int(match.group(3)), tzinfo=KST)
+    except ValueError:
+        return False
+    now = now or datetime.now(KST)
+    if now.tzinfo is None:
+        raise ValueError("deadline comparison requires timezone-aware time")
+    now = now.astimezone(KST)
+    suffix = raw[match.end():]
+    clock = re.match(r"\s*(?:T|오전\s*|오후\s*)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?", suffix)
+    if clock:
+        h, m, sec = map(int, (clock.group(1), clock.group(2), clock.group(3) or 0))
+        if h > 23 or m > 59 or sec > 59:
+            return False
+        end_at = end_day.replace(hour=h, minute=m, second=sec)
+        return now > end_at
+    return end_day.date() < now.date()
 
 
 def norm(value):
@@ -83,10 +119,12 @@ def latest_official_ids(ledger):
 
 def official_current(job, protected_ids):
     title = str(job.get("title") or "")
+    if explicitly_closed_title(title):
+        return False
     if RESULT_RE.search(title):
         return False
     end = parse_date(job.get("applyEnd"))
-    if end and end < TODAY:
+    if end and (end < TODAY or deadline_expired(job.get("applyEnd"))):
         return False
     reg = parse_date(job.get("registered"))
     if reg and reg > TODAY:
@@ -103,12 +141,14 @@ def official_current(job, protected_ids):
 
 def private_current(job):
     title = str(job.get("title") or "")
+    if explicitly_closed_title(title):
+        return False
     if PRIVATE_BANNED_RE.search(title) or PROMO_ONLY_RE.search(title):
         return False
     if job.get("province") not in {"서울", "경기"}:
         return False
     end = parse_date(job.get("applyEnd"))
-    if end and end < TODAY:
+    if end and (end < TODAY or deadline_expired(job.get("applyEnd"))):
         return False
     reg = parse_date(job.get("registered"))
     if reg and reg > TODAY:

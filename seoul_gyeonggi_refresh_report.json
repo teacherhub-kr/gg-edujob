@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-17T08:15:21+09:00",
+  "generatedAt": "2026-11-27T10:19:35+09:00",
   "state": "verified",
   "policy": "seoul-gyeonggi-isolated-verified-v1",
   "counts": {
-    "gyeonggi": 14483,
-    "seoul": 886
+    "gyeonggi": 14289,
+    "seoul": 720
   },
   "supportCompleteness": {
     "lookbackDays": 90,
@@ -14,5 +14,14 @@
     "seoulComplete": 11
   },
   "incheon": "untouched; not scanned",
+  "seoulCentralIdReconciliation": {
+    "verified": true,
+    "expectedSourceIds": 425,
+    "previousMissing": 39,
+    "recoveredNow": 39,
+    "missingAfter": 0,
+    "checkedAt": "2026-11-27T10:12:43+09:00",
+    "policy": "source-native-independent-list-fail-closed-v1"
+  },
   "primaryCollectorWarnings": []
 }

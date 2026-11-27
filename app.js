@@ -225,7 +225,8 @@ const jobType=(j)=>{
   return '기타';
 };
 const regionsOf=(j)=>arr(j?.regions).length?arr(j.regions):[j?.region].filter(Boolean);
-const today0=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())};
+// Recruitment deadline semantics are always Korea-local even for visitors abroad.
+const today0=()=>{const n=new Date(Date.now()+9*3600000);return new Date(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())};
 const parseDate=(v)=>{
   if(!v)return null;
   const m=String(v).match(/(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})/);
@@ -238,7 +239,27 @@ const dayDiff=(v)=>{
   return Math.round((d-today0())/86400000);
 };
 const isToday=(v)=>{const d=parseDate(v),t=today0();return !!d&&d.getFullYear()===t.getFullYear()&&d.getMonth()===t.getMonth()&&d.getDate()===t.getDate()};
-const activeJob=(j)=>{const d=dayDiff(j.applyEnd);return d===null||d>=0};
+const deadlineInstant=(v)=>{
+  const m=String(v||'').match(/(20\d{2})[.\/-](\d{1,2})[.\/-](\d{1,2})(?:T|\s+)(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if(!m)return null;
+  const [year,month,day,hour,minute,second]=m.slice(1).map(Number);
+  if(hour>23||minute>59||second>59)return null;
+  return Date.UTC(year,month-1,day,hour-9,minute,second||0);
+};
+const explicitlyClosedTitle=(title)=>/(?:[\[(]\s*(?:구인\s*완료|채용\s*완료|채용\s*마감|접수\s*마감|모집\s*마감)\s*[\])]|[-—]\s*접수\s*마감\s*$)/i.test(String(title||''));
+const activeJob=(j)=>{
+  if(explicitlyClosedTitle(j?.title))return false;
+  if(j?.statusGroup==='closed'||['마감','모집마감','접수마감'].includes(String(j?.statusLabel||'').trim()))return false;
+  const cutoff=deadlineInstant(j?.applyEnd);
+  if(cutoff!==null&&Date.now()>cutoff)return false;
+  const d=dayDiff(j?.applyEnd);
+  if(d!==null&&d<0)return false;
+  if(j?.statusGroup==='deadline-unknown'){
+    const registered=parseDate(j?.registered);
+    if(!registered||(today0()-registered)/86400000>14)return false;
+  }
+  return true;
+};
 const fmtDate=(v)=>{const d=parseDate(v);return d?`${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`:''};
 const registeredLabel=(v)=>{
   const d=parseDate(v);if(!d)return '';
@@ -258,7 +279,7 @@ const regionLabel=(j)=>regionsOf(j).join('·')||province(j)||'지역 미분류';
 const deadlineLabel=(j)=>{
   const d=dayDiff(j.applyEnd);
   if(j.deadlineVerification==='unverified-recent-official-post')return '마감일 미확인 · 원문 확인';
-  if(d===null)return '마감일 미정';
+  if(d===null)return '마감일 미확인 · 원문 확인';
   if(d===0)return '오늘 마감';
   if(d>0)return `~ ${fmtDate(j.applyEnd)}`;
   return '마감';
@@ -353,7 +374,7 @@ const buildIndex=(jobs)=>jobs.map((j,i)=>({
 
 const selectedCount=(set)=>set.size;
 const matchesFilters=(r)=>{
-  if(!r.active)return false;
+  if(!activeJob(r.j))return false;
   if(state.surface&&r.surface!==state.surface)return false;
   if(state.provinces.size&&!state.provinces.has(r.province))return false;
   if(state.regions.size&&!r.regions.some(x=>regionsMatch(state.regions,r.province,x)))return false;
@@ -420,7 +441,7 @@ const profileSignature=(p)=>JSON.stringify({
 });
 const matchesProfile=(r,p)=>{
   const ps=arr(p?.provinces),rs=arr(p?.regions),ss=arr(p?.schools),ts=arr(p?.types),src=arr(p?.sources),cats=arr(p?.categories),subs=arr(p?.subjects),q=norm(p?.q||'');
-  if(!r.active)return false;
+  if(!activeJob(r.j))return false;
   if(ps.length&&!ps.includes(r.province))return false;
   if(rs.length&&!r.regions.some(x=>rs.some(s=>regionSelectionMatches(normalizeSavedRegion(s,ps),r.province,x))))return false;
   if(ss.length&&!ss.includes(r.school))return false;
@@ -466,7 +487,7 @@ const cardHtml=(r,{forceFavorite=false}={})=>{
   const badges=badgeData(j).map(([cls,label])=>`<span class="badge ${cls}">${esc(label)}</span>`).join('');
   const summary=summaryOf(j);
   const deadline=deadlineLabel(j);
-  const showDeadline=Boolean(parseDate(j.applyEnd))||j.deadlineVerification==='unverified-recent-official-post';
+  const showDeadline=true;
   return `<article class="job-card" data-job-key="${esc(r.key)}" tabindex="0" role="link" aria-label="${esc(j.title||'채용 공고')}">
     <div class="badge-row">${badges}</div>
     <div class="job-content">
@@ -500,7 +521,7 @@ const skeleton=()=>`<div class="skeleton"><div class="skeleton-card"></div><div 
 
 const optionCounts=(getter)=>{
   const m=new Map();
-  state.indexed.filter(r=>r.active).forEach(r=>{
+  state.indexed.filter(r=>activeJob(r.j)).forEach(r=>{
     const vals=arr(getter(r));
     vals.forEach(v=>{if(v)m.set(v,(m.get(v)||0)+1)});
   });
@@ -510,15 +531,15 @@ const provinceOptions=()=>['경기','서울','인천'].map(v=>[v,optionCounts(r=
 const canonicalOptions=(values,getter)=>{const m=optionCounts(getter);return values.map(v=>[v,m.get(v)||0])};
 const regionCounts=()=>{
   const m=new Map();
-  state.indexed.filter(r=>r.active).forEach(r=>r.regions.forEach(v=>{const k=regionToken(r.province,v);if(k)m.set(k,(m.get(k)||0)+1)}));
+  state.indexed.filter(r=>activeJob(r.j)).forEach(r=>r.regions.forEach(v=>{const k=regionToken(r.province,v);if(k)m.set(k,(m.get(k)||0)+1)}));
   return m;
 };
 const regionOptions=(provinceName,values)=>{const m=regionCounts();return values.map(v=>{const key=regionToken(provinceName,v);return [key,m.get(key)||0,v]})};
 const schoolOptions=()=>canonicalOptions(SCHOOL_VALUES,r=>[r.school]);
 const typeOptions=()=>canonicalOptions(TYPE_VALUES,r=>[r.type]);
-const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.sources.has(v)).length]);
-const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&r.categories.has(v)).length]);
-const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>r.active&&matchesSubject(r.j,v)).length]);
+const sourceOptions=()=>SOURCE_VALUES.map(v=>[v,state.indexed.filter(r=>activeJob(r.j)&&r.sources.has(v)).length]);
+const categoryOptions=()=>CATEGORY_VALUES.map(v=>[v,state.indexed.filter(r=>activeJob(r.j)&&r.categories.has(v)).length]);
+const subjectOptions=()=>SUBJECT_VALUES.map(v=>[v,state.indexed.filter(r=>activeJob(r.j)&&matchesSubject(r.j,v)).length]);
 const chipsHtml=(name,options,set,cls='')=>`<div class="check-grid ${cls}">${options.map(([v,n,label=v])=>`<label class="check-chip ${set.has(v)?'checked':''}"><input type="checkbox" data-filter="${name}" value="${esc(v)}" ${set.has(v)?'checked':''}><span>${esc(label)} <small>${n.toLocaleString()}</small></span></label>`).join('')}</div>`;
 const regionGroupHtml=(title,key,values)=>{
   const scoped=values.map(v=>regionToken(title,v));
@@ -569,7 +590,7 @@ const homeHtml=()=>{
   const p=store()?.profile?.get?.();
   const favorites=favoriteKeys().size;
   const alerts=store()?.alerts?.get?.()||{enabled:false};
-  const active=state.indexed.filter(r=>r.active);
+  const active=state.indexed.filter(r=>activeJob(r.j));
   const latest=[...active].sort((a,b)=>b.registered-a.registered);
   const matches=p?[...profileMatches(p)].sort((a,b)=>b.registered-a.registered):[];
   const newRows=p?[...newProfileRows(p)].sort((a,b)=>b.registered-a.registered):[];
@@ -650,7 +671,7 @@ const radarHtml=()=>{
 
 const savedHtml=()=>{
   const fav=favoriteKeys();
-  const savedRows=state.indexed.filter(r=>fav.has(r.key)&&r.active).sort((a,b)=>b.registered-a.registered);
+  const savedRows=state.indexed.filter(r=>fav.has(r.key)&&activeJob(r.j)).sort((a,b)=>b.registered-a.registered);
   const recentMap=new Map(state.indexed.map(r=>[r.key,r]));
   const recent=recentRows().map(x=>recentMap.get(x.key)).filter(Boolean);
   const rows=state.savedTab==='saved'?savedRows:recent;
@@ -958,6 +979,8 @@ function installStaticEvents(){
   const compactHeader=()=>$('#appHeader')?.classList.toggle('compact',window.scrollY>36);
   window.addEventListener('scroll',compactHeader,{passive:true});compactHeader();
   window.addEventListener('hashchange',routeFromHash);
+// Re-evaluate deadlines when the user returns to a tab after midnight KST.
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});
   window.addEventListener('edujob:user-state-changed',()=>render());
 }
 

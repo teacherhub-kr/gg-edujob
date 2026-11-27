@@ -226,13 +226,15 @@ def foundation_official_current(job):
     if not str(job.get("url") or "").startswith("https://"):
         return False
     title = str(job.get("title") or "")
+    if base.explicitly_closed_title(title):
+        return False
     if base.PRIVATE_BANNED_RE.search(title) or base.PROMO_ONLY_RE.search(title) or base.RESULT_RE.search(title):
         return False
     registered = base.parse_date(job.get("registered"))
     deadline = base.parse_date(job.get("applyEnd"))
     if not registered or registered > base.TODAY or registered < base.TODAY - timedelta(days=120):
         return False
-    if deadline and (deadline < base.TODAY or registered > deadline):
+    if deadline and (base.deadline_expired(job.get("applyEnd")) or registered > deadline):
         return False
     if not deadline and (job.get("deadlineVerification") != "unverified-recent-official-post" or registered < base.TODAY - timedelta(days=14)):
         return False
@@ -302,6 +304,50 @@ def verified_regional_snapshot():
     return snapshot
 
 
+
+def summarize_lessoninfo_evidence(rows, selected, projected, publication_enabled):
+    """Audit-only pre-dedup counts; never upgrades a candidate into a verified open job.
+
+    In particular a statusGroup='current' is a source classification, not
+    proof of an actual application deadline or a validated direct link.
+    """
+    from collections import Counter
+
+    def status(row):
+        return str((row or {}).get("statusGroup") or "unclassified")
+
+    selected_objects = {id(row) for row in selected}
+    all_statuses = Counter(status(row) for row in rows)
+    selected_statuses = Counter(status(row) for row in selected)
+    excluded_statuses = Counter(
+        status(row) for row in rows if id(row) not in selected_objects
+    )
+    projected_clickable = sum(
+        bool(str(row.get("url") or "").strip()) and row.get("detailLinkVerified") is True
+        for row in projected
+    )
+    # An unverified source URL may be displayed as disabled context but must
+    # not be reported as an actionable, verified application link.
+    return {
+        "scope": "lessoninfo-candidate-selection-pre-dedup",
+        "policy": "keep-14d-unknown-deadline-safety; no-automatic-relisting",
+        "rawCandidates": len(rows),
+        "selectedCandidates": len(selected),
+        "excludedCandidates": len(rows) - len(selected),
+        "publicationEnabled": bool(publication_enabled),
+        "publishedSourceOccurrencesBeforeDedup": len(projected) if publication_enabled else 0,
+        "sourceStatusCounts": dict(sorted(all_statuses.items())),
+        "selectedStatusCounts": dict(sorted(selected_statuses.items())),
+        "excludedStatusCounts": dict(sorted(excluded_statuses.items())),
+        "selectedWithVerifiedDirectUrl": projected_clickable,
+        "selectedWithoutVerifiedDirectUrl": len(projected) - projected_clickable,
+        "sourceLabeledCurrentSelected": selected_statuses.get("current", 0),
+        "unknownDeadlineExcluded": excluded_statuses.get("deadline-unknown", 0),
+        "unverifiedLinkSelected": selected_statuses.get("unverified-link", 0),
+        "notice": "Source status/current and selected counts do not prove an open vacancy or clickable application destination.",
+    }
+
+
 def main():
     official_data=load("jobs.json",{})
     regional_snapshot=verified_regional_snapshot()
@@ -312,6 +358,7 @@ def main():
     projected_foundation_official=[project_foundation_official(j) for j in foundation_official_jobs if foundation_official_current(j)]
     projected_official=projected_canonical_official+projected_foundation_official
     all_private=[]; private_meta={}; canonical_private_total=0; enabled_private_sources=0; degraded_private_sources=[]
+    lessoninfo_evidence=None
     for spec in PRIVATE_SOURCES:
         source_path=spec.get("full_jobs") if spec["key"]=="lessoninfo" and spec.get("full_jobs") else spec["jobs"]
         pdata=load(source_path,[]); preport=load(spec["report"],{}); dreport=load(spec["detail_report"],{}) if spec.get("detail_report") else None
@@ -325,11 +372,12 @@ def main():
         projected=[project_private_generic(j,spec["name"]) for j in selected]
         configured_enabled=publication_enabled(preport); healthy=source_health(spec,preport,dreport); effective_enabled=configured_enabled and healthy
         freshness=source_verification_freshness(spec,preport,dreport,now=datetime.now(KST))
+        if spec["key"]=="lessoninfo": lessoninfo_evidence=summarize_lessoninfo_evidence(jobs,selected,projected,effective_enabled)
         if effective_enabled:
             enabled_private_sources+=1; canonical_private_total+=len(jobs); all_private.extend(projected)
         elif configured_enabled and not healthy: degraded_private_sources.append(spec["key"])
         unverified_links=sum(1 for j in selected if str(j.get("sourceSurface") or "")=="culture-arts" and j.get("detailLinkVerified") is not True) if spec["key"]=="lessoninfo" else 0
-        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"full-120d-source-labelled-user-judgment" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
+        private_meta[spec["key"]]={"name":spec["name"],"configuredPublicationEnabled":configured_enabled,"publicationEnabled":effective_enabled,"degraded":configured_enabled and not healthy,"ok":healthy,"candidateCount":len(projected),"count":len(projected) if effective_enabled else 0,"rawCandidateCount":len(jobs),"excludedFromUnifiedCount":len(jobs)-len(selected),"lastVerifiedAt":(dreport or preport).get("generatedAt") if isinstance((dreport or preport),dict) else None,"verificationFreshness":freshness,"missingAfterCount":preport.get("missingAfterCount") if isinstance(preport,dict) else None,"detailErrorCount":(dreport or preport).get("detailErrorCount") if isinstance(preport,dict) else None,"publicationPolicy":"live-only-closed-excluded-14d-unknown-window" if spec["key"]=="lessoninfo" else "verified-source","unverifiedLinkCount":unverified_links}
     stale_private_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="stale"]
     unknown_private_freshness_sources=[spec["key"] for spec in PRIVATE_SOURCES if private_meta[spec["key"]]["configuredPublicationEnabled"] and private_meta[spec["key"]]["verificationFreshness"]["state"]=="unknown"]
     remaining_private,explicit_aliases,ambiguous_aliases=base.merge_explicit_official_aliases(projected_official,all_private)
@@ -357,7 +405,7 @@ def main():
             **regional_snapshot["sources"],
         }
     Path("unified_jobs.next.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources,"allPublicationEnabledSourcesFresh":not stale_private_sources and not unknown_private_freshness_sources,"stalePrivateSources":stale_private_sources,"unknownPrivateFreshnessSources":unknown_private_freshness_sources}
+    report={"generatedAt":datetime.now(KST).isoformat(timespec="seconds"),"policy":"unified-search-v3-private-source-labelled-user-judgment","canonicalOfficialJobs":len(official_jobs),"canonicalFoundationOfficialJobs":len(foundation_official_jobs),"canonicalPrivateJobs":canonical_private_total,"selectedCanonicalOfficialJobs":len(projected_canonical_official),"selectedFoundationOfficialJobs":len(projected_foundation_official),"selectedOfficialJobs":len(projected_official),"selectedPrivateJobs":len(all_private),"publishedJobs":len(rows),"perFeed":per_feed,"privateSources":private_meta,"protectedOfficialIds":len(protected),"explicitOfficialAliasGroupsMerged":len(explicit_aliases),"exactUrlAliasGroupsMerged":len(exact_url_groups),"ambiguousExplicitOfficialLinks":len(ambiguous_aliases),"semanticDuplicatePolicy":"same-source/exact-official aliases only; preserve cross-private identities","degradedPrivateSources":degraded_private_sources,"allPublicationEnabledSourcesHealthy":not degraded_private_sources,"allPublicationEnabledSourcesFresh":not stale_private_sources and not unknown_private_freshness_sources,"stalePrivateSources":stale_private_sources,"unknownPrivateFreshnessSources":unknown_private_freshness_sources,"lessoninfoPublicationEvidence":{**(lessoninfo_evidence or {}),"displayedAsPrivateAfterDedup":per_private_source_displayed["lessoninfo"]}}
     Path("unified_search_report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(report,ensure_ascii=False,indent=2))
 

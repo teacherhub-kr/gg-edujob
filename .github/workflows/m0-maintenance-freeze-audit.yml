@@ -13,11 +13,18 @@ on:
       - 'scripts/source_catalog.py'
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
+      - 'scripts/build_unified_search.py'
+      - 'scripts/build_unified_search_multi.py'
+      - 'scripts/validate_unified_search_multi.py'
+      - 'tests/test_recruitment_expiry.py'
+      - 'tests/test_lessoninfo_full_view.py'
       - 'scripts/crawl_cleaneye_foundation_jobs.py'
       - 'tests/test_production_supervisor.py'
       - 'tests/test_supervisor_blocked_official_simulation.py'
       - 'tests/test_supervisor_decision_e2e.py'
       - 'tests/test_private_refresh_policy.py'
+      - 'scripts/pr_source_live_scope.py'
+      - 'tests/test_private_pr_live_scope.py'
       - 'tests/test_lessoninfo_publication_dependency.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_source_onboarding_workflow.py'
@@ -25,6 +32,7 @@ on:
       - 'tests/test_cleaneye_retry_contract.py'
       - 'tests/test_jobteacher_workflow_contract.py'
       - 'app.js'
+      - 'tests/test_closed_jobs_visibility.js'
       - 'app.css'
       - 'index.html'
       - 'manifest.webmanifest'
@@ -44,6 +52,14 @@ jobs:
           python-version: '3.12'
       - name: Verify automatic state changes remain frozen
         run: python scripts/audit_m0_maintenance_freeze.py
+      - name: Verify private PR live-probe policy preserves direct source safety
+        run: python -m unittest tests.test_private_pr_live_scope
+      - name: Verify closed recruitment publication dates in backend
+        run: python -m unittest tests.test_recruitment_expiry
+      - name: Verify active recruitment cards expire at KST cutoff
+        run: |
+          node --check app.js
+          node tests/test_closed_jobs_visibility.js
       - name: Verify CleanEye bounded bootstrap retry
         run: python -m unittest tests.test_cleaneye_retry_contract
       - name: Verify JobTeacher publication is fail-closed

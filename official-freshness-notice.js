@@ -42,12 +42,18 @@
   }
   function classifyPrivate(payload, nowMs){
     var sources=payload&&payload.privateSources;
-    if(!sources||typeof sources!=='object')return {status:'unknown',stale:[],unverified:[]};
+    if(!sources||typeof sources!=='object')return {status:'unknown',stale:[],unverified:[],degraded:[]};
     var now=Number.isFinite(nowMs)?nowMs:Date.now();
-    var stale=[],unverified=[];
+    var stale=[],unverified=[],degraded=[];
     Object.keys(sources).forEach(function(key){
       var source=sources[key];
-      if(!source||source.publicationEnabled!==true||Number(source.count||0)<=0)return;
+      // Zero published jobs or a fail-closed health rejection must not hide
+      // configured sources from the public freshness warning.
+      if(!source||(source.publicationEnabled!==true&&source.configuredPublicationEnabled!==true))return;
+      if(source.degraded===true || (source.configuredPublicationEnabled===true && source.ok===false)){
+        degraded.push(source.name||key);
+        return;
+      }
       var evidence=source.verificationFreshness||{};
       var when=Date.parse(String(evidence.evidenceAt||''));
       var limit=Number(evidence.maxAgeHours);
@@ -59,7 +65,8 @@
         unverified.push(source.name||key);
       }
     });
-    return {status:stale.length||unverified.length?'attention':'fresh',stale:stale,unverified:unverified};
+    return {status:stale.length||unverified.length||degraded.length?'attention':'fresh',
+      stale:stale,unverified:unverified,degraded:degraded};
   }
   function renderPrivate(status){
     if(typeof document==='undefined')return;
@@ -82,6 +89,7 @@
     var parts=[];
     if(status.stale.length)parts.push('마지막 수집 검증 지연: '+status.stale.join(', '));
     if(status.unverified.length)parts.push('최신성 확인 불가: '+status.unverified.join(', '));
+    if(status.degraded&&status.degraded.length)parts.push('수집 또는 검증 실패: '+status.degraded.join(', '));
     detail.textContent=parts.join('. ')+'. 이전 수집 공고를 계속 표시할 수 있으니 지원 전에 반드시 게시기관 원문과 마감일을 확인하세요.';
     box.appendChild(heading);
     box.appendChild(detail);

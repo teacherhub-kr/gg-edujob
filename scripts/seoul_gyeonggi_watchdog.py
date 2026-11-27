@@ -162,6 +162,14 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
     """Return (action, reason), never edit data, never declare Incheon healthy."""
     if selected in {"skip-active-run", "skip-status-running"}:
         return selected, "another official writer is active"
+    # A verified regional crawl is a canonical writer even before it reaches
+    # the publication transaction. Do not allow Unified or private writers to
+    # advance main while that long-running proof is still in flight: the
+    # regional commit would otherwise be correctly rejected as superseded.
+    active = [r for r in runs if r.get("event") == "workflow_dispatch" and
+              r.get("head_branch") == "main" and r.get("status") in ACTIVE]
+    if active:
+        return "skip-active-run", "regional refresh writer already active; defer competing production writers"
     latest_verified = verified_snapshot(report, snapshot)
     snapshot_age = now - latest_verified if latest_verified else None
     # Public display freshness and preemptive refresh timing are independent.
@@ -188,10 +196,6 @@ def decide(selected, report, runs, now, *, snapshot=None, unified=None, unified_
         if official_paused and private_fallback in ALLOWED_PRIVATE_FALLBACK:
             return private_fallback, "verified Seoul/Gyeonggi current, Incheon held; use circuit-checked isolated private slot"
         return ("skip-incheon-hold", "verified regional snapshot fresh; full ICE pipeline held") if official_paused else (selected, "verified regional snapshot fresh")
-    active = [r for r in runs if r.get("event") == "workflow_dispatch" and
-              r.get("head_branch") == "main" and r.get("status") in ACTIVE]
-    if active:
-        return ("skip-incheon-hold", "regional refresh already active") if official_paused else (selected, "regional refresh already active")
     finished = sorted(
         (r for r in runs if r.get("event") == "workflow_dispatch" and
          r.get("head_branch") == "main" and r.get("status") == "completed"),

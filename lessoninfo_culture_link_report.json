@@ -1,37 +1,39 @@
 {
-  "generatedAt": "2026-11-15T09:06:29+09:00",
-  "startedAt": "2026-11-15T08:55:35+09:00",
+  "generatedAt": "2026-11-27T10:32:02+09:00",
+  "startedAt": "2026-11-27T10:24:06+09:00",
   "policy": "lessoninfo-culture-cold-link-v2",
   "healthy": true,
-  "totalInputJobs": 154,
+  "totalInputJobs": 157,
   "expiredCultureRemoved": 1,
   "expiredCultureExamples": [
     {
-      "sourceIdentity": "culture:id:95671",
-      "title": "(재)부천아트센터 2026년 제3차 공연장 안내원(아르바이트생) 모집 공고(~11/11)",
-      "applyEnd": "2026-11-11"
+      "sourceIdentity": "culture:id:95746",
+      "title": "아르코·대학로예술극장 고객지원센터 안내원(파트타이머) 모집공고(~11.18)",
+      "applyEnd": "2026-11-18"
     }
   ],
-  "eligibleCultureRows": 149,
+  "eligibleCultureRows": 153,
   "verifiedCultureRows": 147,
-  "verifiedOfficialRows": 147,
-  "verifiedLessoninfoRows": 0,
-  "unverifiedCultureRows": 2,
+  "verifiedOfficialRows": 146,
+  "verifiedLessoninfoRows": 1,
+  "unverifiedCultureRows": 6,
   "verificationMissingCount": 0,
   "verificationMissingExamples": [],
   "knownBadSentinels": [
     "culture:id:94673"
   ],
   "reasonCounts": {
-    "cold-browser-official-title-match": 53,
-    "cold-browser-route-mismatch": 2,
-    "cold-browser-artmore-id-title-match": 94
+    "cold-browser-official-title-match": 48,
+    "cold-browser-error:TimeoutError": 4,
+    "cold-browser-id-title-match": 1,
+    "cold-browser-artmore-id-title-match": 98,
+    "cold-browser-route-mismatch": 2
   },
-  "artmoreFallbackAttemptedRows": 96,
-  "artmoreFallbackRecoveredRows": 94,
+  "artmoreFallbackAttemptedRows": 100,
+  "artmoreFallbackRecoveredRows": 98,
   "artmoreFallbackOutcomeCounts": {
-    "artmore-title-mismatch": 2,
-    "recovered": 94
+    "recovered": 98,
+    "artmore-title-mismatch": 2
   },
   "artmoreFallbackPolicy": "exact-rec-idx+detail-route+title+cold-mobile-v1"
 }

@@ -6,6 +6,8 @@ on:
     paths:
       - 'scripts/crawl_seekle_instructor_jobs.py'
       - 'scripts/private_source_registry.py'
+      - 'scripts/pr_source_live_scope.py'
+      - 'tests/test_private_pr_live_scope.py'
       - 'scripts/build_unified_search_multi.py'
       - 'scripts/direct_post_links.py'
       - 'tests/test_seekle_historical_fixture.py'
@@ -42,8 +44,17 @@ jobs:
         run: python -m py_compile scripts/crawl_seekle_instructor_jobs.py scripts/private_source_registry.py scripts/build_unified_search_multi.py scripts/direct_post_links.py
       - name: Historical parser and direct-link regression
         run: python -m unittest tests.test_seekle_historical_fixture
+      - name: Determine whether this PR changes seekle source-specific semantics
+        id: live_scope
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python -m unittest tests.test_private_pr_live_scope
+          python scripts/pr_source_live_scope.py --source seekle --base "$BASE_SHA" --head HEAD >> "$GITHUB_OUTPUT"
       - name: Collect fail-closed source candidate
         id: collect
+        if: github.event_name != 'pull_request' || steps.live_scope.outputs.required == 'true'
         continue-on-error: true
         run: python scripts/crawl_seekle_instructor_jobs.py
       - name: Verify live source, exact link, and search exposure
@@ -106,5 +117,5 @@ jobs:
           git restore --worktree unified_search_report.json 2>/dev/null || true
           git diff --quiet -- unified_search_report.json
       - name: Fail after preserving diagnostics
-        if: steps.collect.outcome != 'success'
+        if: (github.event_name != 'pull_request' || steps.live_scope.outputs.required == 'true') && steps.collect.outcome != 'success'
         run: exit 1

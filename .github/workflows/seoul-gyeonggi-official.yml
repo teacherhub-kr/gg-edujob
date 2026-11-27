@@ -1,20 +1,29 @@
+# 2026-11-25: tighten existing read-only heartbeat from 3h to 1h after observed watchdog schedule delivery gaps.
 name: Verified Seoul-Gyeonggi official refresh (Incheon isolated)
 on:
   workflow_dispatch:
-  # Direct 3-hour official refresh. The scheduled job only dispatches when
+  # Hourly supervisor heartbeat. The scheduled job only dispatches collection when
   # the verified regional policy says collection is due and safe.
   schedule:
-    - cron: '17 */3 * * *'
+    - cron: '17 * * * *'
   pull_request:
     paths:
       - '.github/workflows/seoul-gyeonggi-official.yml'
+      - 'scripts/wake_overdue_supervisor.py'
+      - 'tests/test_wake_overdue_supervisor.py'
       - 'scripts/publish_seoul_gyeonggi_snapshot.py'
+      - 'scripts/revalidate_regional_publication.py'
+      - 'scripts/reconcile_seoul_central_ids.py'
+      - 'scripts/verify_central_pagination.py'
+      - 'tests/test_seoul_central_id_reconciliation.py'
       - 'scripts/build_unified_search_multi.py'
       - 'scripts/validate_required_metro_publication.py'
       - 'tests/test_seoul_gyeonggi_snapshot.py'
       - 'tests/test_guri_support_board_contract.py'
       - 'tests/test_mircms_pagination_proof.py'
       - 'scripts/complete_support_coverage.py'
+      - 'scripts/quarantine_verified_delisted_support.py'
+      - 'tests/test_verified_delisted_support.py'
       - 'scripts/probe_guri_support.py'
       - 'sources.json'
       - 'board_cache.json'
@@ -58,6 +67,31 @@ jobs:
             --runs /tmp/sg-scheduled-runs.json \
             --unified-runs /tmp/sg-scheduled-unified.json \
             --github-output "$GITHUB_OUTPUT"
+      - name: Wake overdue existing production watchdog without bypassing safety
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          watchdog_runs="/tmp/sg-watchdog-runs.json"
+          fetch_runs() {
+            gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/production-operations-watchdog.yml/runs?per_page=100" > "$watchdog_runs"
+          }
+          fetch_runs
+          python scripts/wake_overdue_supervisor.py --runs "$watchdog_runs" --github-output /tmp/sg-watchdog-wake
+          if ! grep -qx 'wake=true' /tmp/sg-watchdog-wake; then
+            echo 'Watchdog is already fresh/active; no wake needed.'
+            exit 0
+          fi
+          # Recheck immediately before dispatch: a late schedule event may have arrived.
+          fetch_runs
+          python scripts/wake_overdue_supervisor.py --runs "$watchdog_runs" --github-output /tmp/sg-watchdog-recheck
+          if ! grep -qx 'wake=true' /tmp/sg-watchdog-recheck; then
+            echo 'Watchdog resumed between checks; skip redundant dispatch.'
+            exit 0
+          fi
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/production-operations-watchdog.yml/dispatches" -f ref=main
+          echo 'Woke overdue existing production watchdog; actual repair remains guarded by its own policy.'
       - name: Dispatch only independently due Seoul/Gyeonggi collection
         if: github.event_name == 'schedule' && steps.official_gate.outputs.action == 'seoul-gyeonggi'
         env:
@@ -157,10 +191,13 @@ jobs:
           python-version: '3.12'
       - name: Install verified collector dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Verify watchdog wake remains bounded and fail-closed
+        run: python -m unittest tests.test_wake_overdue_supervisor
       - name: Static and regression contracts (no Incheon network calls)
         run: |
-          python -m py_compile scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py
-          PYTHONPATH=scripts python -m unittest tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
+          python -m py_compile scripts/revalidate_regional_publication.py scripts/publish_seoul_gyeonggi_snapshot.py scripts/build_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/reconcile_seoul_central_ids.py scripts/verify_central_pagination.py scripts/quarantine_verified_delisted_support.py
+          python scripts/revalidate_regional_publication.py
+          PYTHONPATH=scripts python -m unittest tests.test_publication_transaction tests.test_verified_delisted_support tests.test_seoul_central_id_reconciliation tests.test_seoul_gyeonggi_snapshot tests.test_guri_support_board_contract tests.test_mircms_pagination_proof tests.test_official_direct_schedule
       - name: Capture immutable official baseline
         if: github.event_name != 'pull_request'
         run: |
@@ -194,7 +231,15 @@ jobs:
         timeout-minutes: 45
         run: |
           python scripts/verify_central_pagination.py
+          # Exact source-native ID reconciliation, not only page/count agreement;
+          # recover verified missing IDs via first-party re-crawl or fail closed.
+          python scripts/reconcile_seoul_central_ids.py
           python scripts/verify_gyeonggi_central_90d.py
+          # A confirmed HTTP400/404/410 can be removed from the unpublished
+          # workspace only when its exact native ID is absent from a second
+          # complete 90-day first-party board traversal and its URL fails again.
+          # All unverified errors retain fail-closed verification below.
+          python scripts/quarantine_verified_delisted_support.py
           python scripts/verify_jobs.py
       - name: Construct verified regional snapshot without touching jobs.json
         if: github.event_name != 'pull_request'
@@ -214,7 +259,28 @@ jobs:
           python scripts/publication_transaction.py publish \
             --baseline-file /tmp/sg-official-base-sha \
             --status-file /tmp/sg-official-transaction.json \
-            --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)'
+            --message 'Publish verified Seoul/Gyeonggi official snapshot (Incheon held)' \
+            --allow-concurrent-path 'jobteacher_*.json' \
+            --allow-concurrent-path 'gonggonggangsa_*.json' \
+            --allow-concurrent-path 'lessoninfo_*.json' \
+            --allow-concurrent-path 'artmore_*.json' \
+            --allow-concurrent-path 'boramyc_*.json' \
+            --allow-concurrent-path 'seekle_*.json' \
+            --allow-concurrent-path 'cleaneye_*.json' \
+            --allow-concurrent-path 'unified_*.json' \
+            --allow-concurrent-path 'direct_post_link_report.json' \
+            --allow-concurrent-path 'cultural_foundation_coverage_report.json' \
+            --allow-concurrent-path 'app.js' \
+            --allow-concurrent-path 'app.css' \
+            --allow-concurrent-path 'index.html' \
+            --allow-concurrent-path 'tests/test_app_frontend_contract.py' \
+            --allow-concurrent-path 'tests/test_closed_jobs_visibility.js' \
+            --allow-concurrent-path '.github/workflows/m0-maintenance-freeze-audit.yml' \
+            --allow-concurrent-path '.github/workflows/update-seekle-instructor-jobs.yml' \
+            --allow-concurrent-path '.github/workflows/update-boramyc-instructor-jobs.yml' \
+            --allow-concurrent-path 'scripts/pr_source_live_scope.py' \
+            --allow-concurrent-path 'tests/test_private_pr_live_scope.py' \
+            --revalidate-command 'python scripts/revalidate_regional_publication.py'
           python - <<'PY'
           import json
           from pathlib import Path
@@ -235,3 +301,39 @@ jobs:
             seoul_gyeonggi_refresh_report.json
           if-no-files-found: warn
           retention-days: 14
+
+  delisted_support_live_proof:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install exact source crawler dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Prove Kimpo native ID is delisted, HTTP400 persists and in-memory quarantine is bounded
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import json
+          import quarantine_verified_delisted_support as q
+          import complete_support_coverage as cov
+          import verify_jobs
+          url="https://www.gpoe.kr/gpoe/na/ntt/selectNttInfo.do?bbsId=5218&mi=9406&nttSn=1148220"
+          row={"province":"경기","source":"김포교육지원청",
+               "sourceType":"교육지원청 개별 게시판",
+               "title":"[김포금빛초]계약제교원(시간강사) 채용 2차 공고(2학년 담임)",
+               "url":url}
+          session=verify_jobs.build_session()
+          result,report=q.proactively_quarantine_office(
+             [row],cov.SOURCES,"김포교육지원청",
+             cov.gyeonggi_board,
+             lambda u,b:q.confirmed_unavailable(session,u,b))
+          print("DELISTED_SUPPORT_LIVE_TEST",json.dumps(report,ensure_ascii=False))
+          assert not result and report["quarantined"]==1 and report["ids"]==["1148220"],(
+              "Source-list absence and exact error must BOTH prove quarantine")
+          print("DELISTED_SUPPORT_LIVE_TEST_PASSED (in-memory only; published data untouched)")
+          PY

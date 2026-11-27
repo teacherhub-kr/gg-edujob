@@ -124,6 +124,20 @@ def validate_snapshot(candidate, registry, central, gyeonggi90, prior=None):
                 f"{province}: exact support detail links incomplete ({exact}/{total})")
     require(candidate.get("verification", {}).get("state") != "critical",
             "second-stage independent job/link verification is critical")
+
+    # Central count-only proof was insufficient: active source-native 113663
+    # appeared in the official list while absent from Regional and Unified.
+    # The independent source-ID gate must have resolved every native ID before
+    # this snapshot can be marked verified.
+    seoul_central = next((x for x in central["sources"] if x.get("province") == "서울"), None)
+    native = candidate.get("seoulCentralIdReconciliation") or {}
+    require(seoul_central is not None and
+            native.get("verified") is True and
+            int(native.get("missingAfter", -1)) == 0 and
+            int(native.get("expectedSourceIds") or 0) ==
+            int(seoul_central.get("stableIdCount") or -1),
+            "Seoul central official source-native ID reconciliation missing or incomplete")
+
     if prior:
         historical = [j for j in prior.get("jobs", []) if isinstance(j, dict) and j.get("province") in REGIONS.values()]
         if len(historical) >= 500:
@@ -166,6 +180,7 @@ def finalize():
                         for k in ("lookbackDays", "gyeonggiTotal", "gyeonggiComplete",
                                   "seoulTotal", "seoulComplete")},
                     "incheon": "untouched; not scanned",
+                    "seoulCentralIdReconciliation": candidate.get("seoulCentralIdReconciliation"),
                     "primaryCollectorWarnings": candidate.get("errors") or []},
                    ensure_ascii=False, indent=2), encoding="utf-8"
     )

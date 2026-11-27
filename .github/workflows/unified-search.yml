@@ -13,6 +13,10 @@ on:
       - 'scripts/reconcile_cultural_foundation_coverage.py'
       - 'scripts/source_registry.py'
       - 'scripts/private_source_registry.py'
+      - 'scripts/promote_artmore_candidate.py'
+      - 'scripts/crawl_artmore_browser.py'
+      - 'tests/test_artmore_short_detail_retry.py'
+      - 'tests/test_artmore_list_navigation_retry.py'
       - 'tests/test_private_source_freshness.py'
       - 'tests/test_official_freshness_notice.js'
       - 'official-freshness-notice.js'
@@ -24,6 +28,7 @@ on:
       - 'scripts/crawl_boramyc_instructor_jobs.py'
       - 'scripts/crawl_lessoninfo_browser.py'
       - 'scripts/publication_transaction.py'
+      - 'scripts/revalidate_unified_publication.py'
       - 'tests/test_boramyc_historical_fixture.py'
       - 'tests/fixtures/boramyc_25441.html'
       - 'tests/test_seekle_historical_fixture.py'
@@ -79,13 +84,15 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements.txt
       - name: Syntax check unified multi-source pipeline and UI
         run: |
-          python -m py_compile scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/mark_foundation_degraded.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py scripts/crawl_lessoninfo_browser.py
+          python -m py_compile scripts/revalidate_unified_publication.py scripts/publication_transaction.py scripts/source_registry.py scripts/private_source_registry.py scripts/build_unified_search.py scripts/build_unified_search_multi.py scripts/validate_unified_search_multi.py scripts/validate_required_metro_publication.py scripts/crosscheck_private_official.py scripts/reconcile_cultural_foundation_coverage.py scripts/mark_foundation_degraded.py scripts/direct_post_links.py scripts/audit_direct_post_links.py scripts/apply_unified_frontend.py scripts/crawl_seekle_instructor_jobs.py scripts/crawl_boramyc_instructor_jobs.py scripts/crawl_lessoninfo_browser.py
           node --check unified-ui.js
           node --check metro-ui.js
           node --check mobile-ui.js
           node --check direct-link-guard.js
           node --check official-freshness-notice.js
           node tests/test_official_freshness_notice.js
+      - name: Verify optimistic publisher preserves fail-closed source races
+        run: python -m unittest tests.test_publication_transaction
       - name: Verify source registries resolve independently
         run: |
           python - <<'PY'
@@ -101,6 +108,10 @@ jobs:
           PY
       - name: Historical private-source parser and direct-link regressions
         run: python -m unittest tests.test_boramyc_historical_fixture tests.test_seekle_historical_fixture tests.test_lessoninfo_full_view tests.test_lessoninfo_drop_guard
+      - name: Verify ArtMore candidate initial page timeouts are bounded and fail-closed
+        run: python -m unittest tests.test_artmore_list_navigation_retry
+      - name: Verify bounded ArtMore detail retry never bypasses source identity or access denial
+        run: python -m unittest tests.test_artmore_short_detail_retry
       - name: Verify independent private verification recency and conservative timestamps
         run: python -m unittest tests.test_private_source_freshness
       - name: Verify foundation projection and degraded-section isolation
@@ -192,6 +203,9 @@ jobs:
         id: foundation_degrade
         if: steps.foundation_reconcile.outcome == 'failure' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success'
         run: python scripts/mark_foundation_degraded.py
+      - name: Exercise latest-main Unified rebuild on PR without publishing
+        if: github.event_name == 'pull_request' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success' && (steps.foundation_reconcile.outcome == 'success' || steps.foundation_degrade.outcome == 'success')
+        run: python scripts/revalidate_unified_publication.py
       - name: Publish verified search transaction
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && steps.prepare_publication.outcome == 'success' && steps.crosscheck.outcome == 'success' && (steps.foundation_reconcile.outcome == 'success' || steps.foundation_degrade.outcome == 'success')
         shell: bash
@@ -206,7 +220,19 @@ jobs:
           python scripts/publication_transaction.py publish \
             --baseline-file /tmp/unified_publication_base_sha \
             --status-file /tmp/unified-publication-transaction.json \
-            --message 'Publish verified multi-source recruitment search'
+            --message 'Publish verified multi-source recruitment search' \
+            --allow-concurrent-path 'jobteacher_*.json' \
+            --allow-concurrent-path 'gonggonggangsa_*.json' \
+            --allow-concurrent-path 'lessoninfo_*.json' \
+            --allow-concurrent-path 'artmore_*.json' \
+            --allow-concurrent-path 'boramyc_*.json' \
+            --allow-concurrent-path 'seekle_*.json' \
+            --allow-concurrent-path 'cleaneye_*.json' \
+            --allow-concurrent-path 'seoul_gyeonggi_jobs.json' \
+            --allow-concurrent-path 'seoul_gyeonggi_refresh_report.json' \
+            --allow-concurrent-path 'official_foundation_jobs.json' \
+            --allow-concurrent-path 'official_foundation_report.json' \
+            --revalidate-command 'python scripts/revalidate_unified_publication.py'
       - name: Upload unified publication transaction status
         if: always() && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
@@ -221,3 +247,38 @@ jobs:
       - name: Fail after preserving diagnostics
         if: steps.build_candidate.outcome == 'failure' || steps.link_audit.outcome == 'failure' || steps.validate_candidate.outcome != 'success' || steps.crosscheck.outcome == 'failure' || (steps.foundation_reconcile.outcome == 'failure' && steps.foundation_degrade.outcome != 'success')
         run: exit 1
+
+  wake_private_backlog:
+    # Reuse an existing approved manual production workflow to wake the private
+    # scheduler after Unified finishes; no new scheduled/workflow_run trigger.
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Dispatch at most one follow-on private catch-up in two hours
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # A private collector can itself lead to a Unified rebuild. Never
+          # create an unbounded private -> Unified -> private dispatch loop.
+          # Failed REST queries halt this step (fail-closed).
+          recent="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/independent-private-scheduler.yml/runs?per_page=100&event=workflow_dispatch&branch=main" \
+            --jq '[.workflow_runs[] | select((now - (.created_at | fromdateiso8601)) >= 0 and (now - (.created_at | fromdateiso8601)) < 7200)] | length')"
+          if [ "${recent:-0}" -gt 0 ]; then
+            echo "Recent follow-on private scheduler dispatch within two hours; skip to prevent feedback loop."
+            exit 0
+          fi
+          active="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/independent-private-scheduler.yml/runs?per_page=100" \
+            --jq '[.workflow_runs[] | select(.head_branch == "main" and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))] | length')"
+          if [ "${active:-0}" -gt 0 ]; then
+            echo "Private scheduler already running or queued; skip duplicate wake."
+            exit 0
+          fi
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/independent-private-scheduler.yml/dispatches" -f ref=main
+          echo "Follow-on private scheduler dispatched after verified Unified success."

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin
 
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, Error as PlaywrightError, TimeoutError as PlaywrightTimeoutError
 
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST).date()
@@ -136,6 +136,22 @@ async def enable_current_only(page):
         raise RuntimeError("current-only handler failed")
 
 
+async def load_list_with_single_timeout_retry(page):
+    """Retry only one transient Playwright list-navigation timeout.
+
+    This is not a challenge/access-denial bypass: HTTP 4xx and block pages
+    are handled by the existing fail-closed filter and identity checks.
+    No retry is permitted for other navigation errors or a second timeout.
+    """
+    try:
+        return await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+    except PlaywrightError as exc:
+        if not (isinstance(exc, PlaywrightTimeoutError) or "net::ERR_TIMED_OUT" in str(exc)):
+            raise
+        await asyncio.sleep(1.0)
+        return await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+
+
 async def establish_filter(page, region: str, code: str):
     """Submit ArtMore's verified search contract directly.
 
@@ -145,7 +161,7 @@ async def establish_filter(page, region: str, code: str):
     page preserved both values before any rows are accepted.
     """
     expected = f"2000-{code}"
-    await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+    await load_list_with_single_timeout_retry(page)
     await page.wait_for_timeout(500)
     body = await page.locator("body").inner_text()
     if BLOCK_RE.search(body):

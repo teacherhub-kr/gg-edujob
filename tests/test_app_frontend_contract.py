@@ -24,7 +24,7 @@ for needle in [
     "openMethod==='POST'",
     "surface:j.feedKind==='private'?'민간공고':'공식공고'",
     "regionsOf",
-    "마감일 미정",
+    "마감일 미확인 · 원문 확인",
     "store()?.recent",
     "resetLocal",
     "location.hash",

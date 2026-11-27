@@ -7,7 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -72,6 +72,18 @@ class SeekleHistoricalFixtureTest(unittest.TestCase):
         self.assertEqual(report["jobCount"], 0)
         self.assertEqual(report["missingAfterCount"], 0)
         self.assertEqual(jobs, [])
+
+
+    def test_forbidden_source_does_not_retry_and_identifies_operator(self):
+        response = seekle.requests.Response()
+        response.status_code = 403
+        response.url = seekle.LIST
+        session = Mock()
+        session.get.return_value = response
+        with self.assertRaises(seekle.requests.HTTPError):
+            seekle.get(session, seekle.LIST)
+        session.get.assert_called_once()
+        self.assertIn("github.com/teacherhub-kr/gg-edujob", seekle.HEADERS["User-Agent"])
 
 
 if __name__ == "__main__":

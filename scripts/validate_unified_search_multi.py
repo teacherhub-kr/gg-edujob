@@ -6,7 +6,7 @@ import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from build_unified_search import RESULT_RE, private_current
+from build_unified_search import RESULT_RE, private_current, deadline_expired, explicitly_closed_title
 from private_source_registry import PRIVATE_SOURCES, detail_url_is_specific, lessoninfo_culture_failclosed, lessoninfo_full_candidate_publishable, merge_lessoninfo_full_candidates, publication_enabled, source_health
 from source_registry import official_source_count
 
@@ -121,9 +121,8 @@ def main():
         healthy = source_health(spec, rep, drep)
         effective_enabled = configured_enabled and healthy
 
-        # Lessoninfo intentionally publishes the full 120-day candidate set (except rows
-        # explicitly classified out-of-scope/non-recruitment) so users can judge private
-        # postings themselves. Other private sources keep the current-only gate.
+        # Keep the original 120-day Lessoninfo dataset for audit, but its live
+        # projection must omit closed, elapsed and stale unverified postings.
         if effective_enabled and spec.get("key") == "lessoninfo" and spec.get("full_jobs"):
             src = [j for j in raw_src if lessoninfo_full_candidate_publishable(j)]
         else:
@@ -200,8 +199,8 @@ def main():
                     })
         if spec.get("key") != "lessoninfo":
             banned += sum(1 for j in src if BANNED.search(str(j.get("title") or "")) or PROMO_ONLY.search(str(j.get("title") or "")))
-            expired += sum(1 for j in src if parse_date(j.get("applyEnd")) and parse_date(j.get("applyEnd")) < TODAY)
             future += sum(1 for j in src if parse_date(j.get("registered")) and parse_date(j.get("registered")) > TODAY)
+        expired += sum(1 for j in src if deadline_expired(j.get("applyEnd")))
 
     extra_private = sorted(represented - source_ids_union)
     if extra_private: errors.append(f"Unified dataset invented {len(extra_private)} private stable IDs")
@@ -258,6 +257,18 @@ def main():
         errors.append(f"Unified private projection contains {len(projected_private_unknown_source)} rows from unknown/unpublished sources")
     if projected_private_non_detail:
         errors.append(f"Unified private projection contains {len(projected_private_non_detail)} cards without exact per-post detail URLs")
+
+    # A green Unified validation must certify there are no confirmed closed
+    # recruitment cards in the publication, including explicit same-day KST times.
+    published_closed = [
+        j for j in jobs
+        if str(j.get("statusGroup") or "") == "closed"
+        or str(j.get("statusLabel") or "").strip() in {"마감", "접수마감", "모집마감"}
+        or explicitly_closed_title(j.get("title"))
+        or deadline_expired(j.get("applyEnd"))
+    ]
+    if published_closed:
+        errors.append(f"Unified publication still contains {len(published_closed)} closed/expired recruitment postings")
 
     ids = [str(j.get("sourceIdentity") or "") for j in jobs if j.get("sourceIdentity")]
     duplicate_ids = len(ids) - len(set(ids))
@@ -330,6 +341,8 @@ def main():
         "projectedNonMetroPrivate": len(projected_non_metro),
         "bannedPrivate": banned,
         "expiredPrivate": expired,
+        "publishedClosedOrExpired": len(published_closed),
+        "publishedClosedOrExpiredExamples": [str(j.get("sourceIdentity") or "") for j in published_closed[:12]],
         "futurePrivateDates": future,
         "nonDirectPrivateLinks": len(non_detail_links),
         "nonDirectPrivateLinkExamples": non_detail_links[:20],
