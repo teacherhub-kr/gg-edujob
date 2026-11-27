@@ -137,6 +137,24 @@ def crawl_official_ids():
     sources = []
     all_rows = []
 
+    # Read all Incheon first, before a lengthy independent Gyeonggi/Seoul
+    # traversal. In the 2026-11-26 independent preflight, the fresh ICE
+    # scan succeeded in the preceding job but this second job encountered
+    # tiny redirect placeholders after ~30 minutes spent scanning other
+    # regions. This ordering does not reuse a previous snapshot, reduce any
+    # native-ID gate or suppress a failed live board.
+    incheon_rows, incheon_meta = incheon.scrape_incheon_with_transient_retry(
+        lookback_days=cov.LOOKBACK_DAYS,
+        max_pages=240,
+        check_only=True,
+        transient_retries=2,
+        retry_delay_seconds=15.0,
+    )
+    support_results, _support_rows = incheon_support.crawl_all_support_offices(
+        lookback_days=cov.LOOKBACK_DAYS,
+        max_pages=500,
+    )
+
     gg_central = central_recent.scrape_gyeonggi_central_recent()
     gg_central_health = [dict(x) for x in central_recent.scrape_gyeonggi_central_recent.last_coverage]
     gg_central_complete = (
@@ -187,9 +205,9 @@ def crawl_official_ids():
         ))
         all_rows.extend(rows)
 
-    # Incheon central + all five support offices are independently traversed. Registry presence
-    # alone never satisfies completeness; every logical source must provide current traversal proof.
-    incheon_rows, incheon_meta = incheon.scrape_incheon_central(lookback_days=cov.LOOKBACK_DAYS)
+    # Both Incheon central and the five support offices were live-read before
+    # the other regions. The final report uses those same full native-ID rows;
+    # failed/partial proof is never upgraded to complete.
     sources.insert(2, source_status(
         "인천", incheon.SOURCE_NAME, incheon_rows,
         coverage_complete=bool(incheon_meta.get("coverageComplete")),
@@ -200,10 +218,6 @@ def crawl_official_ids():
     ))
     all_rows.extend(incheon_rows)
 
-    support_results, _support_rows = incheon_support.crawl_all_support_offices(
-        lookback_days=cov.LOOKBACK_DAYS,
-        max_pages=500,
-    )
     insert_at = 3
     for result in support_results:
         status = result["status"]
