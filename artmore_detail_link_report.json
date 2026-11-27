@@ -1,16 +1,28 @@
 {
-  "generatedAt": "2026-11-27T10:38:43+09:00",
+  "generatedAt": "2026-11-27T14:46:00+09:00",
   "source": "아트모아",
   "healthy": true,
   "detailCoverageComplete": true,
-  "candidateCount": 203,
-  "verifiedCount": 203,
+  "candidateCount": 206,
+  "verifiedCount": 206,
   "detailErrorCount": 0,
   "abnormalDrop": false,
-  "previousCanonicalCount": 202,
+  "previousCanonicalCount": 203,
   "candidateDropRatio": 0.0,
   "errors": [],
   "verifiedExamples": [
+    {
+      "sourceIdentity": "artmore:95868",
+      "stableId": "95868",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95868",
+      "httpStatus": 200
+    },
+    {
+      "sourceIdentity": "artmore:95867",
+      "stableId": "95867",
+      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95867",
+      "httpStatus": 200
+    },
     {
       "sourceIdentity": "artmore:95863",
       "stableId": "95863",
@@ -117,18 +129,6 @@
       "sourceIdentity": "artmore:95826",
       "stableId": "95826",
       "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95826",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95848",
-      "stableId": "95848",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95848",
-      "httpStatus": 200
-    },
-    {
-      "sourceIdentity": "artmore:95846",
-      "stableId": "95846",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95846",
       "httpStatus": 200
     }
   ]
