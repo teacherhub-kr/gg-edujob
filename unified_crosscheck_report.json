@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-27T04:09:16+09:00",
+  "generatedAt": "2026-11-27T10:21:00+09:00",
   "policy": "explicit-url-strong; semantic-review-only; no-title-based-delete; publication-effective-private-only",
-  "privateJobs": 4559,
+  "privateJobs": 4582,
   "officialJobs": 19187,
   "privateSources": {
     "lessoninfo": {
@@ -10,7 +10,7 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "canonicalCount": 134
+      "canonicalCount": 157
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -63,10 +63,10 @@
   },
   "perSource": {
     "lessoninfo": {
-      "jobs": 134,
+      "jobs": 157,
       "strongOfficialMatches": 0,
       "semanticReviewCandidates": 0,
-      "officialGapCandidates": 7
+      "officialGapCandidates": 9
     },
     "cleaneye": {
       "jobs": 18,
@@ -107,10 +107,34 @@
   },
   "strongOfficialMatches": 0,
   "semanticReviewCandidates": 0,
-  "officialGapCandidates": 61,
+  "officialGapCandidates": 63,
   "strongMatches": [],
   "reviewCandidates": [],
   "gapCandidates": [
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "culture:id:95834",
+      "privateTitle": "[한국종합예술학교 산학협력단] 2027-1학기 협력종합예술활동 예술강사 모집공고",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-25",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95834",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
+    {
+      "privateSource": "lessoninfo",
+      "privateSourceName": "레슨인포",
+      "privateId": "culture:id:95794",
+      "privateTitle": "[국민대학교] 학생지원팀 계약직원 모집",
+      "provinces": [
+        "서울"
+      ],
+      "registered": "2026-11-23",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95794",
+      "reason": "school-or-afterschool-private-post-with-no-official-candidate"
+    },
     {
       "privateSource": "lessoninfo",
       "privateSourceName": "레슨인포",
@@ -120,7 +144,7 @@
         "서울"
       ],
       "registered": "2026-11-17",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95742",
+      "url": "https://www.lessoninfo.co.kr/culture-jobs/detail.php?id=95742",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -132,7 +156,7 @@
         "경기"
       ],
       "registered": "2026-11-09",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95647",
+      "url": "",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -144,7 +168,7 @@
         "경기"
       ],
       "registered": "2026-11-09",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95646",
+      "url": "",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
@@ -156,7 +180,7 @@
         "서울"
       ],
       "registered": "2026-11-05",
-      "url": "https://www.artmore.kr/sub/recruit/search_view.do?rec_idx=95615",
+      "url": "",
       "reason": "school-or-afterschool-private-post-with-no-official-candidate"
     },
     {
