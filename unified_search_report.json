@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-28T17:48:19+09:00",
+  "generatedAt": "2026-11-28T19:50:37+09:00",
   "policy": "unified-search-v3-private-source-labelled-user-judgment",
   "canonicalOfficialJobs": 15170,
   "canonicalFoundationOfficialJobs": 9,
-  "canonicalPrivateJobs": 4969,
+  "canonicalPrivateJobs": 4968,
   "selectedCanonicalOfficialJobs": 4668,
   "selectedFoundationOfficialJobs": 1,
   "selectedOfficialJobs": 4669,
-  "selectedPrivateJobs": 4638,
-  "publishedJobs": 9307,
+  "selectedPrivateJobs": 4637,
+  "publishedJobs": 9306,
   "perFeed": {
     "official": 4669,
-    "private": 4638
+    "private": 4637
   },
   "privateSources": {
     "lessoninfo": {
@@ -20,22 +20,22 @@
       "publicationEnabled": true,
       "degraded": false,
       "ok": true,
-      "candidateCount": 265,
-      "count": 265,
-      "rawCandidateCount": 565,
+      "candidateCount": 264,
+      "count": 264,
+      "rawCandidateCount": 564,
       "excludedFromUnifiedCount": 300,
-      "lastVerifiedAt": "2026-11-28T12:26:47+09:00",
+      "lastVerifiedAt": "2026-11-28T17:56:17+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 5.36,
+        "ageHours": 1.91,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-28T12:26:47+09:00"
+        "evidenceAt": "2026-11-28T17:56:17+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
       "publicationPolicy": "live-only-closed-excluded-14d-unknown-window",
-      "unverifiedLinkCount": 111,
-      "displayedAsPrivate": 265
+      "unverifiedLinkCount": 110,
+      "displayedAsPrivate": 264
     },
     "cleaneye": {
       "name": "클린아이 잡플러스",
@@ -50,7 +50,7 @@
       "lastVerifiedAt": "2026-10-13T18:36:07+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1103.2,
+        "ageHours": 1105.24,
         "maxAgeHours": 24,
         "evidenceAt": "2026-10-13T18:36:07+09:00"
       },
@@ -73,7 +73,7 @@
       "lastVerifiedAt": "2026-11-28T14:27:23+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 3.35,
+        "ageHours": 5.39,
         "maxAgeHours": 6,
         "evidenceAt": "2026-11-28T14:27:09+09:00"
       },
@@ -93,12 +93,12 @@
       "count": 213,
       "rawCandidateCount": 213,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-28T14:06:09+09:00",
+      "lastVerifiedAt": "2026-11-28T18:13:24+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 3.7,
+        "ageHours": 1.62,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-28T14:06:09+09:00"
+        "evidenceAt": "2026-11-28T18:13:24+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
@@ -116,12 +116,12 @@
       "count": 74,
       "rawCandidateCount": 74,
       "excludedFromUnifiedCount": 0,
-      "lastVerifiedAt": "2026-11-28T14:14:32+09:00",
+      "lastVerifiedAt": "2026-11-28T18:21:27+09:00",
       "verificationFreshness": {
         "state": "fresh",
-        "ageHours": 3.56,
+        "ageHours": 1.49,
         "maxAgeHours": 6,
-        "evidenceAt": "2026-11-28T14:14:32+09:00"
+        "evidenceAt": "2026-11-28T18:21:27+09:00"
       },
       "missingAfterCount": 0,
       "detailErrorCount": 0,
@@ -142,7 +142,7 @@
       "lastVerifiedAt": "2026-10-12T18:48:38+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1126.99,
+        "ageHours": 1129.03,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T18:48:38+09:00"
       },
@@ -165,7 +165,7 @@
       "lastVerifiedAt": "2026-10-12T02:45:15+09:00",
       "verificationFreshness": {
         "state": "stale",
-        "ageHours": 1143.05,
+        "ageHours": 1145.09,
         "maxAgeHours": 12,
         "evidenceAt": "2026-10-12T02:45:15+09:00"
       },
@@ -193,23 +193,23 @@
   "lessoninfoPublicationEvidence": {
     "scope": "lessoninfo-candidate-selection-pre-dedup",
     "policy": "keep-14d-unknown-deadline-safety; no-automatic-relisting",
-    "rawCandidates": 565,
-    "selectedCandidates": 265,
+    "rawCandidates": 564,
+    "selectedCandidates": 264,
     "excludedCandidates": 300,
     "publicationEnabled": true,
-    "publishedSourceOccurrencesBeforeDedup": 265,
+    "publishedSourceOccurrencesBeforeDedup": 264,
     "sourceStatusCounts": {
       "closed": 1,
       "current": 156,
       "deadline-unknown": 285,
       "excluded": 2,
       "out-of-scope": 13,
-      "unverified-link": 108
+      "unverified-link": 107
     },
     "selectedStatusCounts": {
       "current": 156,
       "out-of-scope": 1,
-      "unverified-link": 108
+      "unverified-link": 107
     },
     "excludedStatusCounts": {
       "closed": 1,
@@ -218,11 +218,11 @@
       "out-of-scope": 12
     },
     "selectedWithVerifiedDirectUrl": 151,
-    "selectedWithoutVerifiedDirectUrl": 114,
+    "selectedWithoutVerifiedDirectUrl": 113,
     "sourceLabeledCurrentSelected": 156,
     "unknownDeadlineExcluded": 285,
-    "unverifiedLinkSelected": 108,
+    "unverifiedLinkSelected": 107,
     "notice": "Source status/current and selected counts do not prove an open vacancy or clickable application destination.",
-    "displayedAsPrivateAfterDedup": 265
+    "displayedAsPrivateAfterDedup": 264
   }
 }
